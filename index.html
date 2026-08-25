@@ -27,8 +27,8 @@
       href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&amp;family=Shippori+Mincho:wght@500;700&amp;family=Zen+Kaku+Gothic+New:wght@500;700;900&amp;family=Zen+Kurenaido&amp;display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=174" />
-    <script src="./script.js?v=51" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=179" />
+    <script src="./script.js?v=52" defer></script>
   </head>
 
   <body>
@@ -89,12 +89,13 @@
 
       <!-- ==================== SCENE 01 / SONG REQUEST ==================== -->
       <section class="scene scene--request" id="experience" data-theme="request" data-page="01" data-scene-motion="request" aria-labelledby="request-title">
-        <!-- CD-R。このセクションには焼き込みの個体が無いので重複しない。
-             スクロール量で回る。 -->
-        <div class="obj obj--disc" aria-hidden="true">
-          <span><img src="./assets/fv-obj-disc.png" alt="" width="520" height="520" loading="lazy" decoding="async" /></span>
-        </div>
         <div class="scene__in request-layout">
+          <!-- CD-R。pinで貼り付く .scene__in の中に置く。
+               セクション直下だと pin 中に画面外へ流れて、
+               回転と退場が見えなかった。 -->
+          <div class="obj obj--disc" aria-hidden="true">
+            <span><img src="./assets/fv-obj-disc.png" alt="" width="520" height="520" loading="lazy" decoding="async" /></span>
+          </div>
           <div class="request-copy sheet sheet--torn-bottom">
             <span class="sheet__fiber" aria-hidden="true"></span>
             <div class="sheet__face">

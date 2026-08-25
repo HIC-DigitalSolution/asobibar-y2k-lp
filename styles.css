@@ -3575,32 +3575,69 @@ a { color: inherit; }
    残す3つは「増やさず、サイズ差を強める」方向で扱う。 */
 
 @media (min-width: 880px) {
-  /* 1. 写真を主役に。紙より大きく、紙からはみ出させる */
-  .play-layout { align-items: center; }
+  /* 奥＝紙／中＝写真／前＝シール。3つの層をはっきり分ける。
+     写真は紙に噛ませたうえで、右は画面の外まで抜く。
+     抜く量＝(画面幅 - コンテンツ幅)/2 ＋ 内側の余白 ＋ 行き過ぎ分。
+     calc に min()/max() を入れ子にすると宣言ごと落ちる環境が
+     あるので、外側の clamp 1つで収める。 */
+  .scene--play {
+    --play-bleed: clamp(80px, calc(50vw - var(--content-max) / 2 + 4.5vw + 64px), 900px);
+  }
+
+  /* 1. 写真を主役に。列で 6:4 を作り、右は画面外へ */
+  .play-layout {
+    align-items: center;
+    grid-template-columns: minmax(0, 40%) minmax(0, 1fr);
+  }
   .play-photo {
     z-index: 2;
-    margin-left: -8%;
-    width: 108%;
+    margin-left: -10%;
+    margin-right: calc(-1 * var(--play-bleed));
+    width: auto;
     max-width: none;
   }
   .play-copy.sheet { z-index: 1; }
 
-  /* 2. PLAY TOGETHER のシールを一段大きく。写真の角にまたがる */
+  /* 2. PLAY TOGETHER のシールは、紙と写真の継ぎ目にまたがせる。
+     右端に置くと写真の上に完全に乗ってしまい、層の境目が見えない。 */
   .y2k-sticker--play {
-    left: auto;
-    right: clamp(8px, 3vw, 56px);
-    /* 上の帯（Y2K NIGHT）がセクション上端で切れていた */
-    top: clamp(38px, 5.4vw, 78px);
-    width: clamp(196px, 17vw, 262px);
+    /* 38%だと TOGETHER の左端が柱（03 ── 遊ぶ）の罫線に乗ったので、
+       継ぎ目をまたぐ範囲を保ったまま右へ寄せる */
+    left: 41%;
+    right: auto;
+    top: clamp(22px, 3.6vw, 54px);
+    width: clamp(216px, 20vw, 300px);
+  }
+  .y2k-sticker--play .y2k-sticker__surface strong {
+    font-size: clamp(1.6rem, 2.7vw, 2.4rem);
   }
 
-  /* 3. GOOD SHOT! は一瞬のアクセント。小さく、白フチの外に掛ける */
+  /* 3. GOOD SHOT! は写真の右が画面外へ抜けるので左下へ */
   .play-photo > span {
-    left: auto;
-    right: 14px;
+    left: 20px;
+    right: auto;
     bottom: -13px;
     font-size: 11px;
     letter-spacing: 0.06em;
+  }
+
+  /* 4. 3層パララックス。奥10px / 中25px / 前55px。
+     --scene-y は -40〜+40px なので係数で割り当てる。
+     どれも入場ルール (0,4,0) に負けていたので id で書き、
+     スクラブ対象の transition は切る（残すと値が追従しない）。 */
+  #play .play-copy {
+    transform: translate3d(0, calc(-22px + var(--scene-y, 0px) * 0.25), 0);
+    transition: none;
+  }
+  #play .play-photo {
+    transform: translate3d(0, calc(18px + var(--scene-y, 0px) * 0.625), 0) rotate(-1deg);
+    transition: none;
+  }
+  /* シールは登場のポップ（rotate＋scale）を殺さないよう、
+     動かすのは中の面だけにする */
+  #play .y2k-sticker--play .y2k-sticker__surface {
+    transform: translate3d(0, calc(var(--scene-y, 0px) * 1.375), 0);
+    transition: none;
   }
 }
 
@@ -3817,7 +3854,13 @@ a { color: inherit; }
 
 /* デッキを主役の大きさに。CDは装飾へ後退 */
 .request-copy .replay-deck { max-width: 440px; }
-#experience .obj--disc { width: clamp(96px, 11.5vw, 150px); }
+/* pinされる .scene__in が基準になったので、位置を取り直す。
+   紙面の右上、写真の外側に掛ける */
+#experience .obj--disc {
+  width: clamp(96px, 11.5vw, 150px);
+  right: -2%;
+  top: 12%;
+}
 
 @media (min-width: 880px) {
   /* pinの尺。PCは100vh分 */
@@ -3841,7 +3884,8 @@ a { color: inherit; }
     transition: none;
   }
 
-  /* 15-25% TRACK情報が下からマスクで出る */
+  /* 5-15% TRACK情報が下からマスクで出る。
+     15%開始だと pin 直後にデッキが空箱に見えたので前へ寄せた */
   .replay-deck__track p { clip-path: inset(0 0 calc((1 - var(--s-track, 1)) * 100%) 0); }
 
   /* 25%以降CDが回り、90-100%で回転しながら上へ抜ける */

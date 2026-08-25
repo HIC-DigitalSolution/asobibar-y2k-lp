@@ -266,7 +266,7 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
            0→1 の素の数値を渡して、CSSは掛けるだけにする。 */
         const ramp = (from, to) => clamp01((pin - from) / (to - from)).toFixed(4);
         scene.style.setProperty("--s-play", ramp(0, 0.15));
-        scene.style.setProperty("--s-track", ramp(0.15, 0.25));
+        scene.style.setProperty("--s-track", ramp(0.05, 0.15));
         scene.style.setProperty("--s-photo", ramp(0.75, 0.9));
         scene.style.setProperty("--s-exit", ramp(0.9, 1));
       }
