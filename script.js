@@ -253,10 +253,22 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
         scene.style.setProperty("--scene-y-reverse", `${(travel * -28).toFixed(2)}px`);
       }
 
-      /* デッキはセクションの通過に合わせて満タンまで進める。
-         タップで自走している間はスクロールに奪わせない。 */
-      if (requestDeck && !deckSelfPlaying && scene.dataset.sceneMotion === "request") {
-        paintDeck((progress - 0.28) / 0.5);
+      /* SONG REQUEST の段送り。pin区間を7つに割る。
+         progress bar は 35〜75% の帯だけを使い、
+         そこへ入る前は0、抜けたら1で止める。 */
+      if (requestDeck && scene.dataset.sceneMotion === "request") {
+        if (!deckSelfPlaying) paintDeck((pin - 0.35) / 0.4);
+        requestDeck.classList.toggle("is-mode-on", pin >= 0.55);
+
+        /* 段のランプをJSで出す。CSS側で clamp や min を calc に
+           入れ子にすると、宣言ごと落ちる環境があった（実測で
+           PLAYの押し込みとCDの退場が効かなかった）。
+           0→1 の素の数値を渡して、CSSは掛けるだけにする。 */
+        const ramp = (from, to) => clamp01((pin - from) / (to - from)).toFixed(4);
+        scene.style.setProperty("--s-play", ramp(0, 0.15));
+        scene.style.setProperty("--s-track", ramp(0.15, 0.25));
+        scene.style.setProperty("--s-photo", ramp(0.75, 0.9));
+        scene.style.setProperty("--s-exit", ramp(0.9, 1));
       }
     });
   };

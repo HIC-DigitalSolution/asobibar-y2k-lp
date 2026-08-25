@@ -2030,11 +2030,6 @@ a { color: inherit; }
   .y2k-sticker__surface > span { animation: kira 2.4s ease-in-out infinite; }
   .y2k-sticker__surface::after { animation: kira 3.1s ease-in-out 0.7s infinite; }
 
-  /* 実機のように点滅させる。steps で滑らかにせず、パッと切り替える */
-  .replay-deck.is-playing .replay-deck__top b {
-    animation: blink 2.6s steps(1, end) infinite;
-  }
-
   /* ゲージが息をする */
 
   /* 100 のクロムに光を流す */
@@ -3800,7 +3795,96 @@ a { color: inherit; }
 }
 .replay-deck__play:active { transform: scale(0.94); }
 
+/* ===================== 01 SONG REQUEST：pin と段送り =====================
+   実測の問題:
+   ・ラベル6つのうち Y2K REPLAY は柱と重複、受付中 は REQUEST MODE と重複 → 削除
+   ・CD 262px がデッキ 380px の視線を奪っていた（装飾＞PLAYER）
+   ・セクション高 715px＝1画面未満で、段送りの尺が無かった
+   pinで尺を作り、pin区間を7段に割る。 */
+
+/* 上の帯はラベル1つになったので右へ寄せる */
+.replay-deck__top { justify-content: flex-end; }
+
+/* 曲名の列が2つになった */
+.replay-deck__track { grid-template-columns: auto minmax(0, 1fr); }
+
+/* REQUEST MODE は 55% で点灯。実機のようにパッと切り替える */
+.replay-deck__top b { opacity: 0.32; transition: opacity 120ms steps(1, end); }
+.replay-deck.is-mode-on .replay-deck__top b {
+  opacity: 1;
+  animation: blink 2.6s steps(1, end) infinite;
+}
+
+/* デッキを主役の大きさに。CDは装飾へ後退 */
+.request-copy .replay-deck { max-width: 440px; }
+#experience .obj--disc { width: clamp(96px, 11.5vw, 150px); }
+
+@media (min-width: 880px) {
+  /* pinの尺。PCは100vh分 */
+  .scene--request { height: 200vh; }
+  .scene--request .scene__in {
+    position: sticky;
+    top: 0;
+    display: grid;
+    align-content: center;
+    min-height: 100svh;
+  }
+
+  /* 段はJSが 0→1 のランプ（--s-*）で渡す。CSSは掛けるだけ */
+
+  /* 0-15% PLAYが押し込まれる。
+     入場ルール .motion-ready .replay-deck__play (0,2,0) が
+     translateY(7px) を当てていて負けていたので詳細度を合わせ、
+     入場の移動と押し込みを1つの transform にまとめる。 */
+  .motion-ready .replay-deck.is-playing .replay-deck__play {
+    transform: scale(calc(1 - 0.08 * var(--s-play, 0)));
+    transition: none;
+  }
+
+  /* 15-25% TRACK情報が下からマスクで出る */
+  .replay-deck__track p { clip-path: inset(0 0 calc((1 - var(--s-track, 1)) * 100%) 0); }
+
+  /* 25%以降CDが回り、90-100%で回転しながら上へ抜ける */
+  /* 入場ルールの transition: opacity が残っていると、
+     スクラブした値が遅れて追従する（プレビューでは固まる）。
+     詳細度を上げて transition を切る。 */
+  .motion-ready .scene--request.is-scene-in .obj--disc {
+    transform: rotate(calc(var(--pin, 0) * 260deg)) translateY(calc(var(--s-exit, 0) * -70px));
+    opacity: calc(1 - var(--s-exit, 0));
+    transition: none;
+  }
+
+  /* 75-90% 写真が前へ。
+     .reveal-ready .request-photo[data-reveal].is-in (0,4,0) が
+     transform を上書きしていたので、同じ詳細度で書く。 */
+  .request-photo,
+  .reveal-ready .request-photo[data-reveal].is-in {
+    transform:
+      translate3d(0, calc(var(--scene-y-reverse, 0px) * 0.6), 0)
+      rotate(1deg)
+      scale(calc(1 + 0.035 * var(--s-photo, 0)));
+    /* 登場時の transform transition が残っていると、
+       スクラブした値がそのトランジションに食われて動かない。
+       実機でもスクラブが遅れるので切る。 */
+    transition: none;
+  }
+}
+
+/* SPはpinしない（走行距離を食うため） */
+@media (max-width: 879px) {
+  .scene--request { height: auto; }
+  .scene--request .scene__in { position: static; min-height: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .purikura, .seal--holo, .seal--kira { animation: none; }
   .album { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .replay-deck__play,
+  .replay-deck__track p,
+  #experience .obj--disc,
+  .request-photo { transform: none; clip-path: none; opacity: 1; }
+  .replay-deck__top b { opacity: 1; animation: none; }
 }
