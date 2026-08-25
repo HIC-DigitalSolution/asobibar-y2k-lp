@@ -27,7 +27,7 @@
       href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&amp;family=Shippori+Mincho:wght@500;700&amp;family=Zen+Kaku+Gothic+New:wght@500;700;900&amp;family=Zen+Kurenaido&amp;display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=141" />
+    <link rel="stylesheet" href="./styles.css?v=160" />
     <script src="./script.js?v=45" defer></script>
   </head>
 
@@ -164,9 +164,6 @@
 
       <!-- ==================== SCENE 03 / PLAY TOGETHER ==================== -->
       <section class="scene scene--play" id="play" data-theme="play" data-page="03" data-scene-motion="play" aria-labelledby="play-title">
-        <div class="obj obj--phone" aria-hidden="true">
-          <span><img src="./assets/fv-obj-phone.png" alt="" width="560" height="560" loading="lazy" decoding="async" /></span>
-        </div>
         <div class="y2k-sticker y2k-sticker--play" data-reveal="sticker" aria-hidden="true">
           <div class="y2k-sticker__surface">
             <small>Y2K NIGHT</small>
@@ -244,66 +241,64 @@
       </section>
 
       <!-- ==================== PRICE ====================
-           01・03 と同じ構成。紙が左、写真が右。 -->
+           100 を情報ではなく図版として扱う。紙の左端を突き抜けて
+           画面の4割強を占め、その右に情報を積む。 -->
       <section class="information-section price-zone" id="price" data-theme="price" data-page="05" data-scene-motion="price" aria-labelledby="price-title">
-        <div class="price-zone__in price-layout">
+        <div class="price-zone__in">
 
           <div class="price-copy sheet sheet--torn-bottom">
             <span class="sheet__fiber" aria-hidden="true"></span>
             <div class="sheet__face">
               <p class="scene-label"><b>05</b><i aria-hidden="true"></i><span>料金</span><em>PRICE</em></p>
 
-              <h2 class="paper-h" id="price-title">あと<span class="ruby"><span class="ruby__t" aria-hidden="true">ヒャップン</span>100分</span>だけ<br />遊ぼう</h2>
+              <h2 class="paper-h" id="price-title">あと<span class="ruby"><span class="ruby__t" aria-hidden="true">ヒャップン</span>100分</span>だけ遊ぼう</h2>
 
-              <p class="lead-ami">100分間、マッチングし放題<b>＋</b>飲み放題。</p>
+              <div class="price-main">
+                <div class="bignum">
+                  <span class="bignum__stack">
+                    <span class="bignum__ghost" data-count-mirror aria-hidden="true">100</span>
+                    <strong class="bignum__ink" data-count="100">100</strong>
+                  </span>
+                  <span class="bignum__unit"><span class="bignum__ja">分</span></span>
+                </div>
 
-              <div class="bignum">
-                <span class="bignum__stack">
-                  <span class="bignum__ghost" data-count-mirror aria-hidden="true">100</span>
-                  <strong class="bignum__ink" data-count="100">100</strong>
-                </span>
-                <span class="bignum__unit"><span class="bignum__ja">分</span></span>
+                <div class="price-info">
+                  <p class="lead-ami">100分間、マッチングし放題<b>＋</b>飲み放題。</p>
+
+                  <dl class="plan-prices">
+                    <div>
+                      <dt>関西</dt>
+                      <dd><span data-count="2800">2,800</span><small>円</small></dd>
+                    </div>
+                    <div>
+                      <dt>関東</dt>
+                      <dd><span data-count="3300">3,300</span><small>円</small></dd>
+                    </div>
+                  </dl>
+
+                  <p class="paper-note">※ 料金はエリア・曜日によって異なります。詳しい条件は公式HPをご確認ください。</p>
+
+                  <a class="ink-button" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer">
+                    料金・プランを詳しく見る<i aria-hidden="true">↗</i>
+                  </a>
+                </div>
               </div>
-
-              <ul class="stamps">
-                <li>マッチングし放題</li>
-                <li>飲み放題</li>
-              </ul>
-
-              <div class="price-rule" aria-hidden="true"><span class="paper-dash"></span></div>
-
-              <dl class="plan-prices">
-                <div>
-                  <dt>関西</dt>
-                  <dd><span data-count="2800">2,800</span><small>円</small></dd>
-                </div>
-                <div>
-                  <dt>関東</dt>
-                  <dd><span data-count="3300">3,300</span><small>円</small></dd>
-                </div>
-              </dl>
-
-              <p class="paper-note">※ 料金はエリア・曜日によって異なります。詳しい条件は公式HPをご確認ください。</p>
-
-              <a class="ink-button" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer">
-                料金・プランを詳しく見る<i aria-hidden="true">↗</i>
-              </a>
             </div>
             <span class="tape tape--y tape--a1" aria-hidden="true"></span>
           </div>
 
-          <figure class="price-photo print">
+          <figure class="print price-photo">
             <img src="./assets/experience-cheers.jpg" alt="" width="1800" height="1200" loading="lazy" />
             <span class="print__cast" aria-hidden="true"></span>
             <figcaption>2001.02.11</figcaption>
           </figure>
 
-        </div>
+          <span class="foil price-foil" aria-hidden="true">
+            <span class="foil__eyebrow">Y2K NIGHT</span>
+            <span class="foil__word">PLAY<br />MORE!<span class="foil__gloss"></span></span>
+          </span>
 
-        <span class="foil price-foil" aria-hidden="true">
-          <span class="foil__eyebrow">Y2K NIGHT</span>
-          <span class="foil__word">PLAY<br />MORE!<span class="foil__gloss"></span></span>
-        </span>
+        </div>
       </section>
 
       <!-- ==================== EVENT INFORMATION ==================== -->

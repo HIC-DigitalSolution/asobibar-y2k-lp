@@ -598,15 +598,6 @@ a { color: inherit; }
   padding: var(--section-space) clamp(20px, 4vw, 54px);
 }
 
-.karaoke-type {
-  margin: 0 0 28px;
-  color: transparent;
-  -webkit-text-stroke: 1.6px rgba(255, 255, 255, 0.44);
-  font-size: clamp(3.4rem, 15vw, 7.8rem);
-  font-weight: 900;
-  line-height: 0.82;
-  letter-spacing: -0.07em;
-}
 
 .scene--karaoke .scene-title {
   max-width: none;
@@ -665,16 +656,6 @@ a { color: inherit; }
   align-self: center;
   /* .play-type をカラム幅基準で組むための計測元 */
   container-type: inline-size;
-}
-.play-type {
-  margin: 0 0 30px;
-  color: rgba(37, 25, 63, 0.08);
-  /* 15vw だとカラムより字が広くなり右端で切れていた。
-     一番長い行 TOGETHER が収まる上限はカラム幅の約22%。 */
-  font-size: min(4.6rem, 22cqw);
-  font-weight: 900;
-  line-height: 0.78;
-  letter-spacing: -0.07em;
 }
 
 /* ===================== POP BALLOON STICKERS =====================
@@ -1189,11 +1170,9 @@ a { color: inherit; }
   .karaoke-photo img { object-position: 52% 50%; }
   .karaoke-photo::after { background: linear-gradient(180deg, rgba(7, 8, 10, 0.16), rgba(7, 8, 10, 0.28) 43%, rgba(7, 8, 10, 0.9)); }
   .karaoke-copy { align-self: end; padding-top: 160px; }
-  .karaoke-type { font-size: clamp(3.3rem, 17vw, 5rem); }
   .play-photo { min-height: 360px; }
   .play-layout { gap: 30px; padding-top: 10px; }
   .play-photo img { object-position: 59% 50%; }
-  .play-type { font-size: clamp(4rem, 21vw, 6rem); }
   .y2k-sticker--play { display: none; }
   .scene--new-memory { min-height: 560px; }
   .memory-photo img { object-position: 48% 50%; }
@@ -1472,7 +1451,6 @@ a { color: inherit; }
   /* .motion-ready を足して侵入ルール(0,4,0)と同じ詳細度にする。
      後勝ちで追従が有効になる。これが無いと侵入側の transform:none が
      勝ち続けて、PLAY TOGETHERの背景文字だけ動かなかった。 */
-  .motion-ready .scene--play.is-scene-in .play-type { transform: translate3d(0, var(--scene-y-soft), 0); }
   .motion-ready .scene--play .y2k-sticker__surface { transform: translate3d(0, var(--scene-y-reverse), 0); }
   .memory-photo img { transform: translate3d(0, var(--scene-y-soft), 0) scale(1.1); }
   .motion-ready .price-zone .y2k-sticker__surface { transform: translate3d(0, var(--scene-y-soft), 0); }
@@ -1681,11 +1659,6 @@ a { color: inherit; }
     padding: 30px 18px 46px;
   }
 
-  .karaoke-type {
-    margin-bottom: 20px;
-    font-size: clamp(2.45rem, 12vw, 3.3rem);
-    line-height: 0.88;
-  }
 
   .scene--karaoke .scene-title {
     font-size: clamp(1.8rem, 8vw, 2.2rem);
@@ -1703,10 +1676,6 @@ a { color: inherit; }
     border-radius: 20px;
   }
 
-  .play-type {
-    margin-bottom: 22px;
-    font-size: clamp(3.25rem, 17vw, 4.7rem);
-  }
 
   /* NEW MEMORYも写真とコピーを分離 */
   .scene--new-memory {
@@ -1844,9 +1813,7 @@ a { color: inherit; }
 .motion-ready [data-scene-motion].is-scene-in .ln > i { transform: none; }
 
 /* シーンごとの出だしのずれ */
-.scene--karaoke .karaoke-type { --ln-base: 120ms; }
 .scene--karaoke .scene-title { --ln-base: 300ms; }
-.scene--play .play-type { --ln-base: 140ms; }
 .scene--play .scene-title { --ln-base: 300ms; }
 .scene--new-memory .scene-title { --ln-base: 420ms; }
 .final-night__content h2 { --ln-base: 220ms; }
@@ -1902,9 +1869,6 @@ a { color: inherit; }
   }
 
   /* 巨大英字は写真と逆へ。奥行きが出る */
-  .motion-ready .scene--karaoke.is-scene-in .karaoke-type {
-    transform: translate3d(0, calc(var(--pin, 0) * -46px), 0);
-  }
 
   /* コピーは進むほど上がる */
   .karaoke-copy,
@@ -1952,13 +1916,6 @@ a { color: inherit; }
   /* --- 3. 02 → 03 文字が先行 ---
      .play-type だけ --enter の最初の35%で入れ切る。02の写真が
      まだ抜けている途中に、03の文字が先に画面へ入る。 */
-  .motion-ready .scene--play.is-scene-in .play-type {
-    transform: translate3d(
-      0,
-      calc(var(--scene-y-soft, 0px) + (1 - min(1, var(--enter, 1) / 0.35)) * 52px),
-      0
-    );
-  }
 
   /* --- 4. 03 → 04 残留 --- */
   /* 元のステッカーは境界の手前で消し、固定レイヤーの複製に渡す */
@@ -2052,13 +2009,6 @@ a { color: inherit; }
 @keyframes ledPulse {
   0%, 100% { opacity: 0.78; }
   50%      { opacity: 1; }
-}
-
-/* クロムの光が字面を流れる。background-position を動かすので
-   これだけは合成でなく再描画になる。要素は1つ、周期9秒に抑える。 */
-@keyframes chromeShift {
-  0%, 100% { background-position: 50% 0%; }
-  50%      { background-position: 50% 100%; }
 }
 
 @keyframes hero-breath {
@@ -2601,10 +2551,6 @@ a { color: inherit; }
 /* --- 03 PLAY TOGETHER --- */
 .play-copy.sheet { align-self: center; }
 .play-copy .sheet__face { padding-top: clamp(30px, 3.6vw, 42px); }
-.play-copy .play-type {
-  color: rgba(37, 25, 63, 0.1);
-  font-size: min(4.6rem, 22cqw);
-}
 .play-copy .scene-title,
 .play-copy .paper-h { color: var(--print-ink); }
 .play-copy .scene-text {
@@ -2732,7 +2678,6 @@ a { color: inherit; }
   line-height: 1.2;
 }
 /* コンテナ幅の22%だと TOGETHER が面から出て切れる */
-.play-copy .play-type { font-size: min(3.4rem, 15cqw); }
 
 /* 狭い紙では面の余白を詰める */
 .play-copy .sheet__face,
@@ -2941,7 +2886,6 @@ a { color: inherit; }
   .y2k-sticker__surface::after,
   .replay-deck.is-playing .replay-deck__top b,
   .plan-main::after,
-  .plan-time strong,
   .motion-ready .cover.is-scene-in .cover__keyvisual,
   .motion-ready .scene--play.is-scene-in .play-photo > span {
     animation: none;
@@ -3205,29 +3149,25 @@ a { color: inherit; }
 
 @media (min-width: 880px) {
   .request-layout,
-  .play-layout,
-  .price-layout {
+  .play-layout {
     grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
     align-items: stretch;
     gap: clamp(34px, 5vw, 72px);
   }
 
   .request-copy.sheet,
-  .play-copy.sheet,
-  .price-copy.sheet { align-self: start; }
+  .play-copy.sheet { align-self: start; }
 
   /* プリントは列いっぱいに伸ばす。中の画像を拡大せず紙ごと動かす */
   .request-photo,
-  .play-photo,
-  .price-photo {
+  .play-photo {
     align-self: stretch;
     display: flex;
     flex-direction: column;
     min-height: 0;
   }
   .request-photo img,
-  .play-photo img,
-  .price-photo img {
+  .play-photo img {
     flex: 1 1 auto;
     min-height: 340px;
     height: auto;
@@ -3330,7 +3270,6 @@ a { color: inherit; }
    写真が本文へ食い込む事故が続いた。紙が左・写真が右の
    2カラムに揃える。 */
 
-.price-layout { display: grid; gap: 42px; width: min(var(--content-max), 100%); margin-inline: auto; }
 .price-zone { position: relative; }
 
 .price-copy .plan-prices {
@@ -3389,7 +3328,6 @@ a { color: inherit; }
 }
 
 @media (max-width: 879px) {
-  .price-layout { gap: 26px; }
   .price-copy .plan-prices { grid-template-columns: 1fr; gap: 14px; }
   .price-foil { right: 6px; top: 14px; transform: rotate(7deg) scale(0.86); }
 }
@@ -3435,8 +3373,7 @@ a { color: inherit; }
 /* 紙を主、写真を従にする */
 @media (min-width: 880px) {
   .request-layout,
-  .play-layout,
-  .price-layout {
+  .play-layout {
     grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
   }
 }
@@ -3636,6 +3573,232 @@ a { color: inherit; }
 
 .memory-copy .scene-title { max-width: 15em; margin-inline: auto; }
 .memory-copy { max-width: 44em; }
+
+/* ===================== 04 PLAY TOGETHER：整理 =====================
+   指示書の優先順位 1.写真 2.PLAY TOGETHER 3.GOOD SHOT! 4.最小限のホログラム。
+   クリアのガラケーは4項目に無いので撤去した。
+   残す3つは「増やさず、サイズ差を強める」方向で扱う。 */
+
+@media (min-width: 880px) {
+  /* 1. 写真を主役に。紙より大きく、紙からはみ出させる */
+  .play-layout { align-items: center; }
+  .play-photo {
+    z-index: 2;
+    margin-left: -8%;
+    width: 108%;
+    max-width: none;
+  }
+  .play-copy.sheet { z-index: 1; }
+
+  /* 2. PLAY TOGETHER のシールを一段大きく。写真の角にまたがる */
+  .y2k-sticker--play {
+    left: auto;
+    right: clamp(8px, 3vw, 56px);
+    /* 上の帯（Y2K NIGHT）がセクション上端で切れていた */
+    top: clamp(38px, 5.4vw, 78px);
+    width: clamp(196px, 17vw, 262px);
+  }
+
+  /* 3. GOOD SHOT! は一瞬のアクセント。小さく、白フチの外に掛ける */
+  .play-photo > span {
+    left: auto;
+    right: 14px;
+    bottom: -13px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* SPは写真のはみ出しを止める */
+@media (max-width: 879px) {
+  .play-photo { width: auto; margin-left: 0; }
+}
+
+/* ===================== 06 PRICE：100を図版にする =====================
+   これまで 100 は紙の1カラムに収まる「数字情報」だった（最大144px）。
+   指示書のとおり画面の4割強を占める図版として扱う。
+   紙の左端を突き抜け、右に情報を積む。読みやすさは落とさない。 */
+
+.price-zone__in { position: relative; }
+.price-copy { width: 100%; }
+
+.price-main { margin-top: clamp(16px, 2.4vw, 30px); }
+
+/* 100 は行送りを潰して、字の箱そのものを図版の面にする */
+.bignum {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: clamp(8px, 1.4vw, 22px);
+  min-height: 0;
+  margin: 0;
+}
+.bignum__stack { line-height: 0.72; }
+.bignum__ghost,
+.bignum__ink {
+  font-size: clamp(7rem, 34vw, 26rem);
+  line-height: 0.72;
+  letter-spacing: -0.07em;
+}
+/* 紙の左端を突き抜けさせる */
+.bignum__stack { margin-left: calc(-1 * clamp(14px, 4.6vw, 76px)); }
+.bignum__unit { padding-bottom: clamp(6px, 1.4vw, 20px); }
+.bignum__ja { font-size: clamp(1.9rem, 5vw, 4rem); }
+
+/* 情報は 100 の右へ。一瞬で読める順に積む */
+.price-info { display: flex; flex-direction: column; gap: clamp(14px, 1.8vw, 22px); }
+.price-info .lead-ami { align-self: flex-start; }
+.price-copy .plan-prices { margin: 0; }
+
+@media (min-width: 1000px) {
+  /* 100 と情報を横に並べる。100が左45%、情報が右 */
+  .price-main {
+    display: grid;
+    grid-template-columns: minmax(0, auto) minmax(300px, 1fr);
+    align-items: end;
+    gap: clamp(24px, 4vw, 64px);
+  }
+  .price-info { padding-bottom: clamp(10px, 1.6vw, 24px); }
+
+  /* 写真は列ではなく、紙の角に貼るアクセントに落とす */
+  .price-photo {
+    position: absolute;
+    right: 0;
+    top: clamp(-18px, -1vw, -6px);
+    z-index: 3;
+    width: clamp(180px, 19vw, 260px);
+    transform: rotate(3.4deg);
+  }
+  .price-photo img { aspect-ratio: 4 / 3; }
+  .price-foil { right: clamp(200px, 22vw, 300px); top: clamp(-14px, -0.6vw, -4px); }
+  /* 見出しは写真とぶつからない幅で止める */
+  .price-copy .paper-h { max-width: 15em; }
+}
+
+@media (max-width: 999px) {
+  .price-photo { width: min(300px, 70%); margin: 22px auto 0; transform: rotate(-2.6deg); }
+  .price-foil { right: 4px; top: 10px; transform: rotate(7deg) scale(0.86); }
+  .price-copy .plan-prices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 599px) {
+  .price-copy .plan-prices { grid-template-columns: 1fr; }
+}
+
+/* 情報列は縦積みなので、ボタンが列幅いっぱいに伸びて帯に見えていた */
+.price-info .ink-button { align-self: flex-start; }
+
+/* 版ズレは px 固定だと図版サイズでは見えない。字送りに比例させる */
+.bignum__ghost { transform: translate(-0.014em, 0.012em); }
+
+/* 見出しと情報の間の空きを詰める */
+.price-copy .paper-h { margin-bottom: 0; }
+
+/* ===================== 02 SONG REQUEST：UI精度 =====================
+   「グラフィック装飾のUI」に見えていた原因は実測で3つ。
+   ・線が全部1px（情報の階層が線で表現されていない）
+   ・PLAYの見た目が20px（タップ領域44pxは確保済みだが小さく見える）
+   ・数字が等幅でないので、走ると桁が揺れる
+   情報は増やさず、精度だけ上げる。 */
+
+/* 盤に角丸を与える。形状のコントラスト:
+   写真=スクエア / 盤=6px / 紙=2px / CTA=999px */
+.request-copy .replay-deck {
+  border-radius: 8px;
+  padding: 8px 8px 10px;
+}
+.request-copy .replay-deck { background-clip: content-box; background-origin: content-box; }
+
+/* 線に階層をつける。外枠は太く、内部の区切りは細く */
+.request-copy .replay-deck__top {
+  padding-top: 14px;
+  padding-bottom: 11px;
+  border-bottom: 1.5px solid rgba(150, 240, 255, 0.26);
+}
+.request-copy .replay-deck__track { margin-top: 13px; padding-bottom: 13px; }
+.request-copy .replay-deck__bar { margin-top: 0; }
+.request-copy .replay-deck__meta { padding-top: 9px; border-top: 0.5px solid rgba(255, 255, 255, 0.14); }
+
+/* 上の帯。ラベルと状態を字送りで分ける */
+.replay-deck__top { font-size: 9.5px; letter-spacing: 0.2em; }
+.replay-deck__top b { letter-spacing: 0.14em; }
+
+/* PLAY。円形のボタンとして見せる */
+.replay-deck__play {
+  width: 30px;
+  height: 30px;
+  min-width: 44px;
+  min-height: 44px;
+  margin: -7px;
+  border-radius: 50%;
+  color: var(--cyan);
+  font-size: 13px;
+  transition: transform 180ms var(--ease-out), background-color 180ms ease-out;
+}
+.replay-deck__play::before {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid rgba(86, 216, 232, 0.55);
+  border-radius: 50%;
+  background: rgba(86, 216, 232, 0.09);
+  transform: translate(-50%, -50%);
+  content: "";
+}
+.replay-deck__play > span { position: relative; padding-left: 2px; }
+
+/* TRACK ラベルと曲名を階層で分ける */
+.replay-deck__track small {
+  font-size: 9px;
+  letter-spacing: 0.26em;
+  color: rgba(255, 255, 255, 0.5);
+}
+.replay-deck__track strong {
+  margin-top: 3px;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.replay-deck__track em {
+  padding: 3px 8px 4px;
+  border: 1px solid rgba(255, 74, 148, 0.5);
+  border-radius: 3px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+
+/* progress bar。太くして、進行端に位置の点を置く */
+.replay-deck__bar { position: relative; height: 8px; border-radius: 2px; }
+.replay-deck__bar::after {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--deck, 0) * 100%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 7px rgba(86, 216, 232, 0.9);
+  transform: translate(-50%, -50%);
+  opacity: calc(min(1, var(--deck, 0) * 12));
+  content: "";
+}
+
+/* 数字は等幅。走っても桁が揺れない */
+.replay-deck__meta {
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 触れる反応は小さく。過剰にしない */
+@media (hover: hover) and (pointer: fine) {
+  .replay-deck__play:hover { transform: scale(1.06); }
+  .replay-deck__play:hover::before { border-color: rgba(189, 248, 255, 0.9); background: rgba(86, 216, 232, 0.18); }
+  .request-copy .replay-deck:hover .replay-deck__track em { border-color: rgba(255, 74, 148, 0.85); }
+}
+.replay-deck__play:active { transform: scale(0.94); }
 
 @media (prefers-reduced-motion: reduce) {
   .purikura, .seal--holo, .seal--kira { animation: none; }
