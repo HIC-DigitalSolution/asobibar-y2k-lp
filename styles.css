@@ -575,7 +575,7 @@ a { color: inherit; }
   min-height: 680px;
   display: grid;
   align-items: end;
-  background: #2b1641;
+  background: #0e0b0d;
 }
 
 .karaoke-photo { position: absolute; inset: 0; }
@@ -788,7 +788,7 @@ a { color: inherit; }
   display: grid;
   place-items: center;
   text-align: center;
-  background: #2b1641;
+  background: #0e0b0d;
 }
 
 .memory-photo { position: absolute; inset: 0; }
@@ -1835,7 +1835,9 @@ a { color: inherit; }
     height: 200vh;
   }
   .scene--new-memory { height: 180vh; }
-  .final-night { height: 190vh; }
+  /* 190vh の pin は中身が1画面で終わるため、下に810pxの
+     真っ黒な空走が残っていた。1画面に戻す。 */
+  .final-night { height: auto; min-height: 100svh; }
 
   .scene__pin {
     position: sticky;
@@ -1959,9 +1961,9 @@ a { color: inherit; }
   }
 
   /* --- 7. 06 → 07 落下。全体で唯一の上→下 --- */
-  .final-night .scene__pin {
-    clip-path: inset(0 0 calc((1 - var(--enter, 1)) * 100%) 0);
-  }
+  /* clip-path で下から詰めると、--enter が1に届かない位置で
+     下辺が切れ、地色（ほぼ黒）が板で出る。写真の寄りと
+     本文のリビールで足りるので落とす。 */
 
   .final-night__photo {
     transform: translateY(calc((1 - var(--enter, 1)) * -7%));
@@ -2212,13 +2214,14 @@ a { color: inherit; }
   white-space: nowrap;
 }
 
-/* 網掛けのリード。平網ではなく実際の点。格子2枚を半ピッチずらして45度にする */
+/* 網掛けのリード。平網ではなく実際の点。格子2枚を半ピッチずらして45度にする。
+   書体は本文と同じゴシック */
 .lead-ami {
   display: inline-block;
   margin: 0;
   padding: 7px 13px 8px;
   color: #2a2040;
-  font-family: var(--font-mincho);
+  font-family: var(--font-main);
   font-size: clamp(12px, 1.1vw, 13px);
   font-weight: 700;
   line-height: 1.7;
@@ -2230,11 +2233,11 @@ a { color: inherit; }
 }
 .lead-ami b { color: var(--print-accent); font-weight: 700; }
 
-/* 紙の上の注記は明朝 */
+/* 紙の上の注記。本文系は明朝をやめてゴシックに統一した */
 .paper-note {
   margin: 0;
   color: var(--print-sub);
-  font-family: var(--font-mincho);
+  font-family: var(--font-main);
   font-size: 11px;
   font-weight: 500;
   line-height: 1.9;
@@ -2422,7 +2425,7 @@ a { color: inherit; }
   padding-bottom: 5px;
   border-bottom: 4px double var(--magenta);
   color: var(--print-ink);
-  font-family: var(--font-mincho);
+  font-family: var(--font-main);
   font-size: clamp(1.9rem, 3.4vw, 2.875rem);
   font-weight: 700;
   line-height: 1;
@@ -2512,7 +2515,7 @@ a { color: inherit; }
   max-width: 32em;
   margin: 14px 0 0;
   color: rgba(37, 25, 63, 0.78);
-  font-family: var(--font-mincho);
+  font-family: var(--font-main);
   font-size: 13px;
   font-weight: 500;
   line-height: 2;
@@ -2551,7 +2554,7 @@ a { color: inherit; }
 .play-copy .scene-text {
   max-width: 30em;
   color: rgba(37, 25, 63, 0.78);
-  font-family: var(--font-mincho);
+  font-family: var(--font-main);
   font-size: 13px;
   font-weight: 500;
   line-height: 2;
@@ -2586,7 +2589,7 @@ a { color: inherit; }
 }
 .event-sheet .event-list dt {
   color: var(--print-accent);
-  font-family: var(--font-mincho);
+  font-family: var(--font-main);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -3286,7 +3289,7 @@ a { color: inherit; }
 }
 .price-copy .plan-prices dt {
   color: var(--print-accent);
-  font-family: var(--font-mincho);
+  font-family: var(--font-main);
   font-size: 12.5px;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -3302,7 +3305,7 @@ a { color: inherit; }
 .price-copy .plan-prices small {
   display: inline-block;
   margin-left: 0.1em;
-  font-family: var(--font-mincho);
+  font-family: var(--font-main);
   font-size: 0.37em;
   font-weight: 700;
   letter-spacing: 0;
@@ -3481,7 +3484,8 @@ a { color: inherit; }
   border-radius: 999px;
   background:
     repeating-linear-gradient(108deg, rgba(255, 255, 255, 0.5) 0 5px, transparent 5px 11px),
-    linear-gradient(124deg, #d8f0f7, #e7dcf6 24%, #fbd9e8 46%, #dcf6e6 68%, #e4e6fa 88%, #fbd9e8);
+    /* ラベンダー（#e7dcf6 / #e4e6fa）を抜き、水色→桃→若草→クリームで組む */
+    linear-gradient(124deg, #d8f0f7, #fbd9e8 26%, #dcf6e6 50%, #fff3cf 74%, #fbd9e8);
   box-shadow: 0 0 0 3px #fff, 0 6px 12px rgba(0, 0, 0, 0.3);
   transform: rotate(8deg);
 }
@@ -3625,18 +3629,21 @@ a { color: inherit; }
      --scene-y は -40〜+40px なので係数で割り当てる。
      どれも入場ルール (0,4,0) に負けていたので id で書き、
      スクラブ対象の transition は切る（残すと値が追従しない）。 */
+  /* 当初は 20/49/108px にしたが、前の層が108px動くと
+     「シールが一緒にスクロールしてくる」見え方になった。
+     層の順序（奥＜中＜前）は保ったまま、全体を1/3に落とす。 */
   #play .play-copy {
-    transform: translate3d(0, calc(-22px + var(--scene-y, 0px) * 0.25), 0);
+    transform: translate3d(0, calc(-22px + var(--scene-y, 0px) * 0.12), 0);
     transition: none;
   }
   #play .play-photo {
-    transform: translate3d(0, calc(18px + var(--scene-y, 0px) * 0.625), 0) rotate(-1deg);
+    transform: translate3d(0, calc(18px + var(--scene-y, 0px) * 0.3), 0) rotate(-1deg);
     transition: none;
   }
   /* シールは登場のポップ（rotate＋scale）を殺さないよう、
      動かすのは中の面だけにする */
   #play .y2k-sticker--play .y2k-sticker__surface {
-    transform: translate3d(0, calc(var(--scene-y, 0px) * 1.375), 0);
+    transform: translate3d(0, calc(var(--scene-y, 0px) * 0.5), 0);
     transition: none;
   }
 }
@@ -3931,4 +3938,122 @@ a { color: inherit; }
   #experience .obj--disc,
   .request-photo { transform: none; clip-path: none; opacity: 1; }
   .replay-deck__top b { opacity: 1; animation: none; }
+}
+
+/* ===================== 型（タイプスケール）の統一 =====================
+   指摘:「セクション５の100がずっとでかいまま/デカすぎます」
+        「基本的なLPのフォントサイズに合わせてください」
+        「全体を通してフォントの文字サイズが気になります」
+
+   実測すると、見出しが 56 / 70.4 / 68 / 54.4px とセクションごとに
+   バラバラで、本文は 16.5px。見出しと本文の比が最大4.2倍あり、
+   100 は 416px（本文の25倍）だった。
+   一般的な日本語LPの比（見出し2.3倍前後）に寄せ、段を4つに絞る。
+
+     見出し    40px
+     数字（100）72px   … ページ内で一番大きい数字。ただし図版ではない
+     金額      32px
+     本文      17px
+     注記      13px
+
+   ここが最終の基準。上流のセクション別指定は全部これで上書きする。 */
+
+/* --- 見出し --- */
+.paper-h,
+.play-copy .paper-h,
+.scene-title,
+.scene--karaoke .scene-title,
+.memory-copy .scene-title,
+.final-night__content h2,
+.info-heading h2 {
+  font-size: clamp(1.55rem, 3.1vw, 2.5rem);
+}
+
+/* --- 本文 --- */
+.scene-text,
+.request-copy .scene-text,
+.play-copy .scene-text,
+.scene--karaoke .scene-text {
+  font-size: clamp(15px, 1.3vw, 17px);
+}
+.lead-ami { font-size: clamp(13px, 1.15vw, 15px); }
+.paper-note { font-size: clamp(12px, 1.05vw, 13px); }
+
+/* --- 数字 --- */
+.plan-prices dd,
+.price-copy .plan-prices dd { font-size: clamp(1.5rem, 2.4vw, 2rem); }
+.event-date,
+.event-sheet .event-date { font-size: clamp(1.5rem, 2.6vw, 2.125rem); }
+
+/* ===================== 05 の 100 を図版から数字へ =====================
+   図版として扱う前提で組んでいた値（行送り0.72 / 字送り-0.07em /
+   紙の左端を突き抜ける負のマージン / 6pxの縁取り）は、
+   72px では全部やり過ぎになる。素の数字として組み直す。 */
+
+.bignum__ink,
+.bignum__ghost {
+  font-size: clamp(3rem, 5.4vw, 4.5rem);
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+.bignum__stack {
+  margin-left: 0;
+  line-height: 0.95;
+}
+/* 縁取りは字の太さに比例させる。6pxは416px用の値だった */
+.bignum__ink { -webkit-text-stroke: 2.5px var(--print-ink); }
+.bignum__ja { font-size: clamp(1.15rem, 1.9vw, 1.75rem); }
+.bignum__unit { padding-bottom: 0; }
+
+/* 100 が図版でなくなったので、左に置く意味がなくなった。
+   「100分」→ 内訳 → 金額 → 注記 → CTA と縦に読ませる */
+@media (min-width: 880px) {
+  .price-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(14px, 1.8vw, 22px);
+  }
+  .price-info { padding-bottom: 0; }
+}
+
+/* 07 だけ柱が 16.5px / ノンブルが 20.6px と、他セクション
+   （11px / 13.8px）より大きかった。写真の上なので別扱いに
+   していたが、統一の妨げになるので基準に戻す */
+.final-night__content .scene-label { font-size: 11px; }
+.final-night__content .scene-label b { font-size: 13.8px; }
+.final-night__content .scene-label em { font-size: 10.5px; }
+.final-night__content > p { font-size: clamp(15px, 1.3vw, 17px); }
+
+/* ===================== 05 を 01・03 と同じ2カラムに =====================
+   100 を図版から数字に落としたため、紙が全幅のままだと右半分が
+   500pxほど空いた（実測 紙1050px に対して中身505px）。
+   「05の構成は01と一緒に」という指示どおり、
+   左＝コピーの紙 / 右＝写真 の2カラムに組み直す。 */
+
+@media (min-width: 880px) {
+  .price-zone__in {
+    display: grid;
+    grid-template-columns: minmax(0, 44%) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(28px, 4vw, 64px);
+  }
+  .price-copy { width: auto; }
+  .price-copy .paper-h { max-width: none; }
+
+  /* 写真は角のアクセントではなく、右の列そのものに戻す */
+  .price-photo {
+    position: static;
+    z-index: 2;
+    width: auto;
+    margin: 0;
+    transform: rotate(2deg);
+  }
+
+  /* 箔シールは紙と写真の継ぎ目へ。03と同じ扱い */
+  .price-foil {
+    right: auto;
+    left: 39%;
+    top: clamp(-10px, -0.4vw, 0px);
+  }
 }
