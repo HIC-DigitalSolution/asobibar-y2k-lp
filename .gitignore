@@ -1,0 +1,24 @@
+# バックアップと試作は公開しない
+_backup-*/
+_proto/
+
+# OS
+.DS_Store
+
+# 素材は「実際に使っているものだけ」を入れる。
+# 元データ（数MBのPNG等）はローカルに残るが、リポジトリには含めない。
+assets/*
+!assets/asobibar-logo.svg
+!assets/favicon.svg
+!assets/experience-cheers.jpg
+!assets/experience-game.jpg
+!assets/experience-karaoke.jpg
+!assets/experience-music.jpg
+!assets/final-night.jpg
+!assets/fv-obj-disc.png
+!assets/fv-obj-phone.png
+!assets/gallery-y2k-v2.jpg
+!assets/hero-collage-typography-v2.jpg
+
+# エディタ設定
+.claude/

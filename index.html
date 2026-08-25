@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Y2Kを無限リピート！ | ASOBIBAR Y2K NIGHT</title>
+    <meta
+      name="description"
+      content="2000年代の音楽をリクエストして、話して、歌って、遊んで、乾杯する。懐かしさが今夜の新しい思い出になる、ASOBIBARのY2K NIGHT。"
+    />
+    <meta name="theme-color" content="#a98ee8" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Y2Kを無限リピート！ | ASOBIBAR Y2K NIGHT" />
+    <meta
+      property="og:description"
+      content="2000年代の音楽をきっかけに、話して、歌って、遊んで、乾杯する。懐かしさが今夜の新しい思い出になる夜。"
+    />
+    <meta property="og:image" content="./assets/hero-collage-typography-v2.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" as="image" href="./assets/hero-collage-typography-v2.jpg" fetchpriority="high" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&amp;family=Shippori+Mincho:wght@500;700&amp;family=Zen+Kaku+Gothic+New:wght@500;700;900&amp;family=Zen+Kurenaido&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css?v=141" />
+    <script src="./script.js?v=45" defer></script>
+  </head>
+
+  <body>
+    <a class="skip" href="#main">本文へ移動</a>
+
+    <header class="bar" data-bar>
+      <a class="bar__brand" href="#top" aria-label="ASOBIBAR Y2K NIGHT トップへ">
+        <img src="./assets/asobibar-logo.svg" alt="ASOBIBAR" width="4564" height="796" />
+        <span class="bar__tag">Y2K NIGHT</span>
+      </a>
+      <!-- 誌面のノンブル。スクロールでページ番号が進む -->
+      <p class="bar__nombre" aria-hidden="true">P.<b data-nombre>01</b></p>
+    </header>
+
+    <main id="main">
+      <!-- ==================== 表紙 ====================
+           2000年代の記憶をコラージュした一枚絵にタイトルを統合。
+           見出しと説明はアクセシビリティのためHTMLにも保持する。 -->
+      <section class="cover cover--keyvisual" id="top" data-theme="cover" data-page="00" data-scene-motion="hero" aria-labelledby="cover-title">
+        <div class="cover__stage">
+          <div class="cover__visual">
+            <picture class="cover__keyvisual" aria-hidden="true">
+              <img
+                src="./assets/hero-collage-typography-v2.jpg"
+                alt=""
+                width="1536"
+                height="1024"
+                fetchpriority="high"
+                decoding="async"
+              />
+            </picture>
+
+            <div class="cover__core visually-hidden">
+              <p class="cover__eyebrow"><span>Y2K NIGHT 2026</span><span>2000s REPLAY</span></p>
+              <h1 class="cover__title" id="cover-title">
+                <span class="cover__title-y2k">Y2K</span>
+                <span class="cover__title-ja">を無限リピート</span>
+              </h1>
+              <p class="cover__lead">あの頃の青春、今夜再生。</p>
+            </div>
+          </div>
+
+          <div class="cover__info">
+            <div class="cover__request" aria-label="2000年代ソング リクエスト受付中">
+              <span>2000年代ソング</span>
+              <strong>リクエスト受付中</strong>
+              <small>2000年代に聴いていた曲をリクエストできます。</small>
+            </div>
+
+            <a class="cta cta--metal" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
+              <span data-reserve-label>公式HPから予約する</span><i aria-hidden="true">›</i>
+            </a>
+
+            <p class="cover__when">2026.9.1 〜 9.30</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SCENE 01 / SONG REQUEST ==================== -->
+      <section class="scene scene--request" id="experience" data-theme="request" data-page="01" data-scene-motion="request" aria-labelledby="request-title">
+        <!-- CD-R。このセクションには焼き込みの個体が無いので重複しない。
+             スクロール量で回る。 -->
+        <div class="obj obj--disc" aria-hidden="true">
+          <span><img src="./assets/fv-obj-disc.png" alt="" width="520" height="520" loading="lazy" decoding="async" /></span>
+        </div>
+        <div class="scene__in request-layout">
+          <div class="request-copy sheet sheet--torn-bottom">
+            <span class="sheet__fiber" aria-hidden="true"></span>
+            <div class="sheet__face">
+            <p class="scene-label"><b>01</b><i aria-hidden="true"></i><span>曲リクエスト</span><em>SONG REQUEST</em></p>
+            <h2 class="paper-h" id="request-title">あの頃聴いていた曲を、今夜もう一度。</h2>
+            <p class="scene-text">
+              2000年代の曲をリクエスト。イントロが流れた瞬間の「これ知ってる！」から、今夜の会話が始まります。
+            </p>
+
+            <div class="replay-deck" data-request-player aria-label="2000年代ソングのリクエスト受付中">
+              <div class="replay-deck__top">
+                <span>Y2K REPLAY</span><b>REQUEST MODE</b>
+              </div>
+              <div class="replay-deck__track">
+                <button
+                  class="replay-deck__play"
+                  type="button"
+                  data-deck-play
+                  aria-label="再生デモを動かす（音は出ません）"
+                >
+                  <span aria-hidden="true">▶</span>
+                </button>
+                <p><small>TRACK</small><strong>2000s SONG REQUEST</strong></p>
+                <em>受付中</em>
+              </div>
+              <div class="replay-deck__bar" aria-hidden="true"><i></i></div>
+              <div class="replay-deck__meta" aria-hidden="true">
+                <span data-deck-time>MEMORY 00:00</span><span>REPLAY 03:45</span>
+              </div>
+            </div>
+            </div>
+            <span class="tape tape--y tape--r1" aria-hidden="true"></span>
+          </div>
+
+          <figure class="request-photo scene-photo" data-reveal="media">
+            <img
+              src="./assets/experience-music.jpg"
+              alt="DJが流す懐かしい曲をきっかけに会話を始める人たち"
+              width="1800"
+              height="1200"
+              loading="eager"
+            />
+            <figcaption>“これ知ってる！”が、今夜の合図。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ==================== SCENE 02 / KARAOKE & TALK ==================== -->
+      <section class="scene scene--karaoke" id="karaoke" data-theme="karaoke" data-page="02" data-scene-motion="karaoke" aria-labelledby="karaoke-title">
+        <div class="scene__pin">
+          <figure class="karaoke-photo scene-photo" data-reveal="media">
+          <img
+            src="./assets/experience-karaoke.jpg"
+            alt="懐かしい曲を一緒に歌いながら笑い合う人たち"
+            width="1800"
+            height="1200"
+            loading="lazy"
+          />
+          </figure>
+          <div class="karaoke-copy">
+            <p class="scene-label"><b>02</b><i aria-hidden="true"></i><span>歌う</span><em>KARAOKE &amp; TALK</em></p>
+            <h2 class="scene-title" id="karaoke-title">同じサビで笑えば、<br />会話はもう始まっている。</h2>
+            <p class="scene-text">あの頃の定番曲が、初対面の距離を自然にほどいていきます。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SCENE 03 / PLAY TOGETHER ==================== -->
+      <section class="scene scene--play" id="play" data-theme="play" data-page="03" data-scene-motion="play" aria-labelledby="play-title">
+        <div class="obj obj--phone" aria-hidden="true">
+          <span><img src="./assets/fv-obj-phone.png" alt="" width="560" height="560" loading="lazy" decoding="async" /></span>
+        </div>
+        <div class="y2k-sticker y2k-sticker--play" data-reveal="sticker" aria-hidden="true">
+          <div class="y2k-sticker__surface">
+            <small>Y2K NIGHT</small>
+            <strong>PLAY<br />TOGETHER</strong>
+            <span>✦</span>
+          </div>
+        </div>
+        <div class="play-layout">
+          <div class="play-copy sheet sheet--torn-top">
+            <span class="sheet__fiber" aria-hidden="true"></span>
+            <div class="sheet__face">
+            <p class="scene-label"><b>03</b><i aria-hidden="true"></i><span>遊ぶ</span><em>PLAY TOGETHER</em></p>
+            <h2 class="paper-h" id="play-title">遊ぶほど、自然に距離が縮まる。</h2>
+            <p class="scene-text">
+              ダーツやビリヤードなど、言葉だけに頼らない遊びがあるから、初対面でも同じ瞬間に笑えます。
+            </p>
+            </div>
+            <span class="tape tape--c tape--p1" aria-hidden="true"></span>
+          </div>
+          <figure class="play-photo scene-photo" data-reveal="media">
+            <img
+              src="./assets/experience-game.jpg"
+              alt="ダーツをきっかけに一緒に盛り上がる人たち"
+              width="1800"
+              height="1200"
+              loading="lazy"
+            />
+            <span aria-hidden="true">GOOD SHOT!</span>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ==================== SCENE 04 / NEW MEMORY ==================== -->
+      <section class="scene scene--new-memory" id="memory" data-theme="memory" data-page="04" data-scene-motion="memory" aria-labelledby="memory-title">
+        <div class="scene__pin">
+          <figure class="memory-photo scene-photo">
+          <img
+            src="./assets/experience-cheers.jpg"
+            alt="グラスを合わせ、笑顔で乾杯する人たち"
+            width="1800"
+            height="1200"
+            loading="lazy"
+          />
+          </figure>
+          <!-- シール帳。中央のコピーには重ねない。
+               プリクラの帯は「上に置いた物」なので通常合成、
+               シールは乗算で写真に沈ませる。乗算が効くように
+               縁だけ薄い白を敷いてある。 -->
+          <div class="album" aria-hidden="true">
+            <span class="album__wash"></span>
+
+            <div class="purikura">
+              <span class="purikura__cell"><img src="./assets/experience-karaoke.jpg" alt="" loading="lazy" /></span>
+              <span class="purikura__cell"><img src="./assets/experience-game.jpg" alt="" loading="lazy" /></span>
+              <span class="purikura__cell"><img src="./assets/gallery-y2k-v2.jpg" alt="" loading="lazy" /></span>
+              <span class="purikura__foot">2001.9</span>
+            </div>
+
+            <div class="album__ink">
+              <span class="seal seal--holo"><b>なかよし</b></span>
+              <span class="seal seal--date">2001.9.14</span>
+              <span class="seal seal--heart">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5 3.8 12.6a5 5 0 0 1 7.1-7L12 6.7l1.1-1.1a5 5 0 0 1 7.1 7Z"/></svg>
+              </span>
+              <span class="seal seal--star"></span>
+              <span class="seal seal--kira"></span>
+            </div>
+          </div>
+
+          <div class="memory-copy">
+            <p class="scene-label"><b>04</b><i aria-hidden="true"></i><span>思い出</span><em>NEW MEMORY</em></p>
+            <h2 class="scene-title" id="memory-title">今夜が、<br />次の“あの頃”になる。</h2>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PRICE ====================
+           01・03 と同じ構成。紙が左、写真が右。 -->
+      <section class="information-section price-zone" id="price" data-theme="price" data-page="05" data-scene-motion="price" aria-labelledby="price-title">
+        <div class="price-zone__in price-layout">
+
+          <div class="price-copy sheet sheet--torn-bottom">
+            <span class="sheet__fiber" aria-hidden="true"></span>
+            <div class="sheet__face">
+              <p class="scene-label"><b>05</b><i aria-hidden="true"></i><span>料金</span><em>PRICE</em></p>
+
+              <h2 class="paper-h" id="price-title">あと<span class="ruby"><span class="ruby__t" aria-hidden="true">ヒャップン</span>100分</span>だけ<br />遊ぼう</h2>
+
+              <p class="lead-ami">100分間、マッチングし放題<b>＋</b>飲み放題。</p>
+
+              <div class="bignum">
+                <span class="bignum__stack">
+                  <span class="bignum__ghost" data-count-mirror aria-hidden="true">100</span>
+                  <strong class="bignum__ink" data-count="100">100</strong>
+                </span>
+                <span class="bignum__unit"><span class="bignum__ja">分</span></span>
+              </div>
+
+              <ul class="stamps">
+                <li>マッチングし放題</li>
+                <li>飲み放題</li>
+              </ul>
+
+              <div class="price-rule" aria-hidden="true"><span class="paper-dash"></span></div>
+
+              <dl class="plan-prices">
+                <div>
+                  <dt>関西</dt>
+                  <dd><span data-count="2800">2,800</span><small>円</small></dd>
+                </div>
+                <div>
+                  <dt>関東</dt>
+                  <dd><span data-count="3300">3,300</span><small>円</small></dd>
+                </div>
+              </dl>
+
+              <p class="paper-note">※ 料金はエリア・曜日によって異なります。詳しい条件は公式HPをご確認ください。</p>
+
+              <a class="ink-button" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer">
+                料金・プランを詳しく見る<i aria-hidden="true">↗</i>
+              </a>
+            </div>
+            <span class="tape tape--y tape--a1" aria-hidden="true"></span>
+          </div>
+
+          <figure class="price-photo print">
+            <img src="./assets/experience-cheers.jpg" alt="" width="1800" height="1200" loading="lazy" />
+            <span class="print__cast" aria-hidden="true"></span>
+            <figcaption>2001.02.11</figcaption>
+          </figure>
+
+        </div>
+
+        <span class="foil price-foil" aria-hidden="true">
+          <span class="foil__eyebrow">Y2K NIGHT</span>
+          <span class="foil__word">PLAY<br />MORE!<span class="foil__gloss"></span></span>
+        </span>
+      </section>
+
+      <!-- ==================== EVENT INFORMATION ==================== -->
+      <section class="information-section event-zone" id="event" data-theme="event" data-page="06" data-scene-motion="event" aria-labelledby="event-title">
+        <div class="event-zone__in">
+          <div class="sheet sheet--torn-bottom event-sheet">
+            <span class="sheet__fiber" aria-hidden="true"></span>
+            <div class="sheet__face">
+              <p class="scene-label"><b>06</b><i aria-hidden="true"></i><span>開催情報</span><em>EVENT INFORMATION</em></p>
+
+              <h2 class="paper-h" id="event-title">9月、まるっと開催。</h2>
+
+              <p class="event-date"><time datetime="2026-09-01">2026.9.1</time><i>—</i><time datetime="2026-09-30">9.30</time></p>
+
+              <dl class="event-list">
+                <div><dt>対象店舗</dt><dd>公式HPでご確認ください</dd></div>
+                <div><dt>料金</dt><dd>関西 2,800円 / 関東 3,300円</dd></div>
+                <div><dt>予約方法</dt><dd data-reservation-method>公式HPから予約</dd></div>
+              </dl>
+
+              <a class="ink-button" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer">
+                ASOBIBAR公式HPで詳細を見る<i aria-hidden="true">↗</i>
+              </a>
+            </div>
+            <span class="tape tape--c tape--e1" aria-hidden="true"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== FINAL CTA ==================== -->
+      <section class="final-night" id="reserve" data-theme="reserve" data-page="07" data-scene-motion="final" aria-labelledby="last-title">
+        <div class="scene__pin">
+          <figure class="final-night__photo">
+          <img
+            src="./assets/final-night.jpg"
+            alt="ASOBIBARの夜に自然な笑顔を見せる5人"
+            width="1920"
+            height="1080"
+            loading="lazy"
+          />
+          </figure>
+          <div class="final-night__content">
+          <p class="scene-label"><b>07</b><i aria-hidden="true"></i><span>予約</span><em>RESERVE</em></p>
+          <h2 id="last-title">懐かしいだけで終わらない。<br />今夜を、<br class="sp-br" />新しい思い出に。</h2>
+          <p>あの頃の曲から始まる、大人のY2Kナイトへ。</p>
+            <a class="cta cta--final" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
+              <span data-reserve-label>公式HPから予約する</span><i aria-hidden="true">›</i>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <a class="bar__brand" href="#top" aria-label="ASOBIBAR Y2K NIGHT トップへ">
+        <img src="./assets/asobibar-logo.svg" alt="ASOBIBAR" width="4564" height="796" loading="lazy" />
+        <span class="bar__tag">Y2K NIGHT</span>
+      </a>
+      <nav aria-label="フッターナビゲーション">
+        <a href="#experience">曲リクエスト</a><a href="#karaoke">歌う</a><a href="#play">遊ぶ</a><a href="#price">料金</a><a href="#event">開催情報</a><a href="#reserve">予約</a>
+      </nav>
+      <small>© ASOBIBAR Y2K NIGHT</small>
+    </footer>
+
+    <div class="ctabar" data-ctabar>
+      <p class="ctabar__txt"><b>Y2Kを無限リピート！</b><span>2026.9.1〜9.30</span></p>
+      <a class="cta cta--bar" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
+        <span data-reserve-label>公式HPから予約する</span><i aria-hidden="true">›</i>
+      </a>
+    </div>
+  </body>
+</html>

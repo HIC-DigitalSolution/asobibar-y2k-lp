@@ -1,0 +1,442 @@
+/* =========================================================
+   ASOBIBAR Y2K NIGHT
+   Reservation routing / page number / scene motion
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   予約先の一元設定
+   ---------------------------------------------------------
+   HTML側の href は公式HP（https://asobibar.net/）を既定にして
+   あるので、ここが空でもボタンは必ず機能する。旧版は空文字だと
+   ボタンを全部 hidden にして「準備中です」と出すだけになり、
+   LP上に押せるCTAが1つも無い状態だった。
+   LINE予約URLが確定したら、承認済みのHTTPS URLをここに入れる。
+   --------------------------------------------------------- */
+const OFFICIAL_RESERVATION_URL = "https://asobibar.net/";
+const OFFICIAL_RESERVATION_LABEL = "公式HPから予約する";
+const LINE_RESERVATION_URL = "";
+const LINE_RESERVATION_LABEL = "LINEで予約する";
+
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+const easeOutCubic = (t) => 1 - (1 - t) ** 3;
+
+/* ---------- 見出しを行に割る ----------
+   ブロックごとフェードさせると、読む順番と動きが噛み合わない。
+   <br> で行に割って、行ごとに下から立ち上げる。
+   属性付きの <br>（.sp-br など）は割らない。SP専用の改行なので、
+   割ると PC の行数が変わってしまう。 */
+(() => {
+  const targets = document.querySelectorAll(
+    ".scene-title, .paper-h, .info-heading h2, .final-night__content h2, .karaoke-type, .play-type",
+  );
+
+  targets.forEach((el) => {
+    if (el.dataset.lines) return;
+    const parts = el.innerHTML.split(/<br\s*\/?>/i);
+    el.innerHTML = parts
+      .map((part, i) => `<span class="ln" style="--ln:${i}"><i>${part}</i></span>`)
+      .join("");
+    el.dataset.lines = String(parts.length);
+  });
+})();
+
+/* ---------- 予約リンクと表示文言を必ず一致させる ---------- */
+(() => {
+  let reservationUrl = OFFICIAL_RESERVATION_URL;
+  let reservationLabel = OFFICIAL_RESERVATION_LABEL;
+  let reservationMethod = "公式HPから予約";
+
+  if (LINE_RESERVATION_URL) {
+    try {
+      const lineUrl = new URL(LINE_RESERVATION_URL);
+      if (lineUrl.protocol === "https:") {
+        reservationUrl = lineUrl.href;
+        reservationLabel = LINE_RESERVATION_LABEL;
+        reservationMethod = "LINEから予約";
+      }
+    } catch {
+      /* 不正なURLの場合は公式HPへ安全にフォールバックする */
+    }
+  }
+
+  document.querySelectorAll("[data-reserve]").forEach((a) => {
+    a.href = reservationUrl;
+    const label = a.querySelector("[data-reserve-label]");
+    if (label) label.textContent = reservationLabel;
+  });
+
+  document.querySelectorAll("[data-reservation-method]").forEach((el) => {
+    el.textContent = reservationMethod;
+  });
+})();
+
+/* ---------- シーンモーション ----------
+   IntersectionObserverで一度だけシーンを起動し、PCのみスクロール量を
+   CSS Custom Propertiesへ渡す。スクロール自体は奪わない。 */
+(() => {
+  const scenes = [...document.querySelectorAll("[data-scene-motion]")];
+  if (!scenes.length) return;
+
+  const requestDeck = document.querySelector("[data-request-player]");
+  const deckTime = document.querySelector("[data-deck-time]");
+  const deckPlay = document.querySelector("[data-deck-play]");
+  const desktopMotion = window.matchMedia("(min-width: 1024px) and (pointer: fine)");
+  const wideLayout = window.matchMedia("(min-width: 768px)");
+  const activeScenes = new Set();
+  let scrollFrame = 0;
+
+  /* ---------- 持ち越しレイヤー ----------
+     .scene は overflow: clip なので、セクションを跨いで残る要素は
+     その外に出さないと必ず切られる。body直下に position: fixed の
+     1枚を立てて、そこへ複製を置く。
+     複製元は aria-hidden の装飾なので、読み上げは二重にならない。 */
+  const playSticker = document.querySelector(".y2k-sticker--play");
+  let carry = null;
+
+  if (playSticker && wideLayout.matches) {
+    carry = document.createElement("div");
+    carry.className = "carry";
+    carry.setAttribute("aria-hidden", "true");
+    const clone = playSticker.cloneNode(true);
+    clone.removeAttribute("data-reveal");
+    clone.classList.add("is-in");
+    carry.appendChild(clone);
+    document.body.appendChild(carry);
+  }
+
+  /* ---------- SONG REQUEST のスクラブ ----------
+     旧実装は is-playing で1回だけバーを流すだけだった。
+     スクロール量に直結させ、タイムコードも一緒に進める。
+     音は鳴らさない（ブラウザが止めるし、押しつけになる）。 */
+  const DECK_TOTAL = 225; /* 03:45 */
+  let deckSelfPlaying = false;
+
+  const paintDeck = (value) => {
+    if (!requestDeck) return;
+    const t = clamp01(value);
+    requestDeck.style.setProperty("--deck", t.toFixed(4));
+    if (deckTime) {
+      const s = Math.floor(DECK_TOTAL * t);
+      const mm = String(Math.floor(s / 60)).padStart(2, "0");
+      const ss = String(s % 60).padStart(2, "0");
+      deckTime.textContent = `MEMORY ${mm}:${ss}`;
+    }
+  };
+
+  if (deckPlay) {
+    deckPlay.addEventListener("click", () => {
+      if (reduceMotion) {
+        paintDeck(1);
+        return;
+      }
+      const start = performance.now();
+      deckSelfPlaying = true;
+      const step = (now) => {
+        const t = clamp01((now - start) / 2600);
+        paintDeck(t);
+        if (t < 1) requestAnimationFrame(step);
+        else deckSelfPlaying = false;
+      };
+      requestAnimationFrame(step);
+    });
+  }
+
+  const playScene = (scene) => {
+    if (scene.classList.contains("is-scene-in")) return;
+    scene.classList.add("is-scene-in");
+
+    /* SONG REQUEST は状態表示を点灯させる。バーの進みはスクロール直結。 */
+    if (scene.dataset.sceneMotion === "request" && requestDeck) {
+      window.setTimeout(() => requestDeck.classList.add("is-playing"), reduceMotion ? 0 : 150);
+    }
+
+    /* 数字を主役にする。0から実数まで数え上げる */
+    scene.querySelectorAll("[data-count]").forEach((el, i) => {
+      const target = Number.parseInt(el.dataset.count, 10);
+      if (!Number.isFinite(target) || el.dataset.counted) return;
+      el.dataset.counted = "1";
+
+      const final = el.textContent;
+      const mirror = el.parentElement && el.parentElement.querySelector("[data-count-mirror]");
+      if (reduceMotion) return; /* 最終値のまま置いておく */
+
+      const begin = performance.now() + i * 90;
+      const step = (now) => {
+        if (now < begin) {
+          requestAnimationFrame(step);
+          return;
+        }
+        const t = clamp01((now - begin) / 680);
+        el.textContent = Math.round(target * easeOutCubic(t)).toLocaleString("ja-JP");
+        /* 版ズレの複製にも同じ値を書く。放置すると数え上げ中だけ
+           complement 側が最終値のまま残り、版ズレではなく別の数字に見える */
+        if (mirror) mirror.textContent = el.textContent;
+        if (t < 1) requestAnimationFrame(step);
+        else {
+          el.textContent = final; /* 桁区切りを元の表記に戻す */
+          if (mirror) mirror.textContent = final;
+        }
+      };
+      requestAnimationFrame(step);
+    });
+  };
+
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    scenes.forEach(playScene);
+    return;
+  }
+
+  document.documentElement.classList.add("motion-ready");
+
+  const entranceObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        playScene(entry.target);
+        observer.unobserve(entry.target);
+      });
+    },
+    { rootMargin: "0px 0px -10%", threshold: 0.16 },
+  );
+
+  scenes
+    .filter((scene) => scene.dataset.sceneMotion !== "hero")
+    .forEach((scene) => entranceObserver.observe(scene));
+
+  /* 最初の描画を1フレーム見せてからHeroを開始し、CLSを発生させずに
+     背景→情報→CTAの順序を作る。 */
+  const hero = scenes.find((scene) => scene.dataset.sceneMotion === "hero");
+  if (hero) requestAnimationFrame(() => requestAnimationFrame(() => playScene(hero)));
+
+  const updateSceneProgress = () => {
+    scrollFrame = 0;
+
+    const viewportHeight = window.innerHeight || 1;
+    /* px単位のパララックスはPCのマウス時だけ。進捗そのものは
+       全環境で配る（スクラブとpinはSPでも使う）。 */
+    const wide = desktopMotion.matches;
+
+    activeScenes.forEach((scene) => {
+      const rect = scene.getBoundingClientRect();
+      const progress = clamp01((viewportHeight - rect.top) / (viewportHeight + rect.height));
+      const travel = (progress - 0.5) * 2;
+      scene.style.setProperty("--scene-progress", progress.toFixed(4));
+
+      /* pin区間の進捗。sticky が貼り付いている間だけ 0→1 になる。
+         セクションが1画面以下なら pin する余地が無いので progress を流す。 */
+      const pinRange = rect.height - viewportHeight;
+      const pin = pinRange > 40 ? clamp01(-rect.top / pinRange) : progress;
+      scene.style.setProperty("--pin", pin.toFixed(4));
+
+      /* 抜ける直前の退き。最後の28%だけ効かせる */
+      scene.style.setProperty("--exit", clamp01((pin - 0.72) / 0.28).toFixed(4));
+
+      /* 境界用の2本。--enter はセクションの上辺が画面下→画面上へ、
+         --leave は下辺が画面下→画面上へ動く間の進捗。
+         隣り合うセクションの leave と enter は同じ境界を指すので、
+         前のシーンの退場と次のシーンの入場を噛み合わせられる。 */
+      const enter = clamp01((viewportHeight - rect.top) / viewportHeight);
+      const leave = clamp01((viewportHeight - rect.bottom) / viewportHeight);
+      scene.style.setProperty("--enter", enter.toFixed(4));
+      scene.style.setProperty("--leave", leave.toFixed(4));
+
+      /* 03→04 の「残留」。ステッカーだけ固定レイヤーで居残らせる */
+      if (carry && scene.dataset.sceneMotion === "play") {
+        carry.style.setProperty("--carry", leave.toFixed(4));
+      }
+
+      if (wide) {
+        scene.style.setProperty("--scene-y", `${(travel * 40).toFixed(2)}px`);
+        scene.style.setProperty("--scene-y-soft", `${(travel * 26).toFixed(2)}px`);
+        scene.style.setProperty("--scene-y-reverse", `${(travel * -28).toFixed(2)}px`);
+      }
+
+      /* デッキはセクションの通過に合わせて満タンまで進める。
+         タップで自走している間はスクロールに奪わせない。 */
+      if (requestDeck && !deckSelfPlaying && scene.dataset.sceneMotion === "request") {
+        paintDeck((progress - 0.28) / 0.5);
+      }
+    });
+  };
+
+  const requestProgressUpdate = () => {
+    if (scrollFrame) return;
+    scrollFrame = requestAnimationFrame(updateSceneProgress);
+  };
+
+  const activityObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) activeScenes.add(entry.target);
+        else activeScenes.delete(entry.target);
+      });
+      requestProgressUpdate();
+    },
+    { rootMargin: "35% 0px" },
+  );
+
+  scenes.forEach((scene) => activityObserver.observe(scene));
+  window.addEventListener("scroll", requestProgressUpdate, { passive: true });
+  window.addEventListener("resize", requestProgressUpdate, { passive: true });
+  desktopMotion.addEventListener?.("change", requestProgressUpdate);
+
+  /* Heroの一枚絵そのものを壊さず、PCのマウス時だけごく弱く反応させる。 */
+  if (hero) {
+    let pointerFrame = 0;
+    let pointerX = 0;
+    let pointerY = 0;
+
+    const updatePointer = () => {
+      pointerFrame = 0;
+      hero.style.setProperty("--hero-x", `${pointerX.toFixed(2)}px`);
+      hero.style.setProperty("--hero-y", `${pointerY.toFixed(2)}px`);
+    };
+
+    hero.addEventListener(
+      "pointermove",
+      (event) => {
+        if (!desktopMotion.matches) return;
+        const rect = hero.getBoundingClientRect();
+        pointerX = ((event.clientX - rect.left) / rect.width - 0.5) * 8;
+        pointerY = ((event.clientY - rect.top) / rect.height - 0.5) * 6;
+        if (!pointerFrame) pointerFrame = requestAnimationFrame(updatePointer);
+      },
+      { passive: true },
+    );
+
+    hero.addEventListener("pointerleave", () => {
+      pointerX = 0;
+      pointerY = 0;
+      if (!pointerFrame) pointerFrame = requestAnimationFrame(updatePointer);
+    });
+  }
+})();
+
+/* ---------- ノンブル（ページ番号） ---------- */
+(() => {
+  const nombre = document.querySelector("[data-nombre]");
+  const sections = [...document.querySelectorAll("[data-theme]")];
+  let ticking = false;
+
+  const update = () => {
+    ticking = false;
+
+    /* 誌面のノンブル。いま見ているセクションの順番を出す */
+    if (nombre && sections.length) {
+      const mid = window.innerHeight / 2;
+      let idx = 0;
+      sections.forEach((s, i) => {
+        const r = s.getBoundingClientRect();
+        if (r.top <= mid) idx = i;
+      });
+      /* 印刷されている節番号（data-page）に合わせる。
+         以前は表紙を1として数えていたので、誌面の「05」に対して
+         ノンブルが「06」を出していた。 */
+      nombre.textContent = sections[idx].dataset.page || String(idx + 1).padStart(2, "0");
+    }
+
+  };
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    },
+    { passive: true },
+  );
+  window.addEventListener("resize", update, { passive: true });
+  update();
+})();
+
+/* ---------- 出現アニメーション ---------- */
+(() => {
+  const items = [...document.querySelectorAll("[data-reveal]")];
+  if (!items.length) return;
+
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    items.forEach((el) => el.classList.add("is-in"));
+    return;
+  }
+
+  /* JSが正常に起動した時だけ非表示状態を有効にする。
+     file://表示や通信障害でJSが読めない場合も本文を消さない。 */
+  document.documentElement.classList.add("reveal-ready");
+
+  const io = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((e) => {
+        /* 通り過ぎた要素も出す。isIntersecting だけを見ると、アンカー
+           遷移や高速スクロールで飛ばされた要素が隠れたままになる。 */
+        const passed = e.rootBounds && e.boundingClientRect.bottom < e.rootBounds.top;
+        if (e.isIntersecting || passed) {
+          e.target.classList.add("is-in");
+          obs.unobserve(e.target);
+        }
+      });
+    },
+    { rootMargin: "0px 0px -8%", threshold: 0.14 },
+  );
+  items.forEach((el) => io.observe(el));
+
+  /* IntersectionObserver は高速な通過を取りこぼすことがあるので、
+     スクロールが止まったタイミングで画面より上を掃除する。 */
+  let sweep = null;
+  window.addEventListener(
+    "scroll",
+    () => {
+      clearTimeout(sweep);
+      sweep = setTimeout(() => {
+        items.forEach((el) => {
+          if (el.classList.contains("is-in")) return;
+          if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
+            el.classList.add("is-in");
+            io.unobserve(el);
+          }
+        });
+      }, 140);
+    },
+    { passive: true },
+  );
+})();
+
+/* ---------- 固定CTAの出し入れ ----------
+   隠す条件は2つ。
+   - FV内の予約ボタンが見えている（ロード直後に同じボタンが2つ並ぶ）
+   - 最終CTAが見えている
+   初期状態の非表示はJSから付ける。CSSで最初から隠すと、JSが
+   読めなかった時に押せるCTAが1つも無くなる。 */
+(() => {
+  const bar = document.querySelector("[data-ctabar]");
+  if (!bar || !("IntersectionObserver" in window)) return;
+
+  const heroCta = document.querySelector(".cover .cta");
+  const finalSection = document.querySelector("#reserve");
+  if (!heroCta && !finalSection) return;
+
+  const visible = new Set();
+
+  const sync = () => bar.classList.toggle("is-suppressed", visible.size > 0);
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) visible.add(entry.target);
+        else visible.delete(entry.target);
+      });
+      sync();
+    },
+    { threshold: 0.18 },
+  );
+
+  if (heroCta) {
+    /* ロード時点ではまだ観測結果が無いので、FVのボタンがある前提で
+       先に隠しておく。1フレーム後に実測で確定する。 */
+    bar.classList.add("is-suppressed");
+    io.observe(heroCta);
+  }
+  if (finalSection) io.observe(finalSection);
+})();

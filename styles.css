@@ -1,0 +1,3643 @@
+/* =========================================================
+   ASOBIBAR Y2K NIGHT
+   Digital nostalgia: violet / cyan / magenta / chrome / ivory
+   ========================================================= */
+
+:root {
+  --black: #07080a;
+  --graphite: #101216;
+  --graphite-2: #17191e;
+  --ivory: #f2ecdf;
+  --white: #fff;
+  --muted: #aaa9b0;
+  --line: rgba(242, 236, 223, 0.2);
+  --magenta: #d62471;
+  --magenta-bright: #ff4a94;
+  --cyan: #56d8e8;
+  --chrome-light: #f8fafc;
+  --chrome-mid: #9aa2ab;
+  --chrome-dark: #444951;
+  --night-violet: #211139;
+  --violet: #7048d9;
+  --blue-violet: #313d9f;
+  --bubble-pink: #ff72bd;
+  --ice-cyan: #bdf8ff;
+  --page-lilac: #cbb8f5;
+  --ink: #25193f;
+
+  --font-main: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --font-display: "Mochiy Pop One", "Hiragino Maru Gothic ProN", sans-serif;
+  --font-hand: "Zen Kurenaido", "Hiragino Kaku Gothic ProN", sans-serif;
+
+  --gutter: clamp(18px, 4.5vw, 64px);
+  --section-space: clamp(56px, 7vw, 96px);
+  --content-max: 1180px;
+  --radius: clamp(18px, 2.2vw, 30px);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* tote.design の実測値。0.5秒超の指定が1つも無く、
+     easeOutCubic と、要所だけ僅かに行き過ぎる easeOutBack を使っている */
+  --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* ===== 紙の素材（案B）=====
+     角丸・影・テクスチャの基準をここ1箇所で決める。
+     以前は radius が12種・影が13種あって、それが雑に見える原因だった。 */
+  --paper: #fbf7ee;          /* 温かい紙。純白は使わない */
+  --paper-fiber: #fffdf5;    /* ちぎれ口の繊維 */
+  --paper-photo: #fbf8f2;    /* 写真の白フチ */
+  /* 紫を排除。印刷の黒はわずかに温かい */
+  --print-ink: #231815;
+  --print-sub: #6d635e;
+  --print-accent: #b0175e;
+  --print-misreg: rgba(0, 168, 204, 0.44);
+  --r-paper: 2px;            /* 紙は角丸を持たない */
+  --shadow-paper: 0 2px 2px rgba(37, 25, 63, 0.2), 0 16px 26px rgba(37, 25, 63, 0.24);
+  --shadow-photo: 0 2px 3px rgba(37, 25, 63, 0.22), 0 13px 24px rgba(37, 25, 63, 0.28);
+  --grain-fine: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='1'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.14 0 0 0 0 0.1 0 0 0 0 0.25 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23a)'/%3E%3C/svg%3E");
+  --grain-coarse: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.28' numOctaves='2'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.2 0 0 0 0 0.15 0 0 0 0 0.3 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23b)'/%3E%3C/svg%3E");
+  --font-mincho: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 74px;
+}
+
+body {
+  margin: 0;
+  padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  background:
+    radial-gradient(circle at 8% 14%, rgba(255, 236, 249, 0.9), transparent 26%),
+    radial-gradient(circle at 91% 38%, rgba(153, 232, 255, 0.72), transparent 28%),
+    linear-gradient(165deg, #eadbff 0%, var(--page-lilac) 37%, #8fccec 68%, #f3b6d7 100%);
+  color: var(--white);
+  font-family: var(--font-main);
+  font-size: 16px;
+  line-height: 1.8;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip { position: absolute; left: -9999px; }
+.skip:focus {
+  left: 10px;
+  top: 10px;
+  z-index: 200;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--ivory);
+  color: var(--black);
+}
+
+:where(a, button):focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 4px;
+}
+
+/* ===================== HEADER ===================== */
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 66px;
+  padding: 10px var(--gutter);
+  border-bottom: 1px solid rgba(190, 235, 242, 0.32);
+  background:
+    linear-gradient(180deg, rgba(50, 59, 66, 0.96), rgba(15, 20, 25, 0.93));
+  box-shadow: 0 8px 22px rgba(28, 38, 45, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(16px) saturate(112%);
+}
+
+.bar__brand { display: grid; gap: 3px; text-decoration: none; }
+.bar__brand img { width: 112px; }
+
+.bar__tag {
+  color: #9beef3;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+}
+
+.bar__nombre {
+  margin: 0;
+  color: #cbd6d9;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.bar__nombre b {
+  color: #ff78b3;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===================== HERO ===================== */
+
+.cover {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #281541;
+}
+
+.cover__stage {
+  position: relative;
+  width: 100%;
+  margin-inline: auto;
+  overflow: hidden;
+  background: #281541;
+}
+
+.cover__visual {
+  position: relative;
+  height: clamp(360px, 98vw, 500px);
+  overflow: hidden;
+}
+
+.cover__visual::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(7, 8, 10, 0.2), transparent 20%, transparent 80%, rgba(7, 8, 10, 0.2)),
+    linear-gradient(180deg, rgba(7, 8, 10, 0.08), transparent 55%, rgba(7, 8, 10, 0.2));
+  content: "";
+}
+
+.cover__keyvisual {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cover__keyvisual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.cover__info {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px var(--gutter) 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(circle at 18% 0, rgba(86, 216, 232, 0.3), transparent 44%),
+    radial-gradient(circle at 82% 10%, rgba(255, 114, 189, 0.3), transparent 48%),
+    linear-gradient(135deg, #48276d, #1c285a 58%, #2e153f);
+}
+
+/* 1536pxのコラージュをSPで見ると縮小率が0.25倍になり、焼き込まれた
+   注記が実効6px前後で読めない。PCは画像内の文字で足りるので
+   読み上げ専用のままにし、SPだけ実文字として起こす。 */
+.cover__request {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.cover__when {
+  margin: 11px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===================== CTA ===================== */
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 0 26px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  color: #21151f;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.16) 42%, transparent 55%),
+    linear-gradient(110deg, #70767e 0%, #fafcff 18%, #a5acb5 36%, #fff 51%, #9aa1ab 70%, #e8edf1 86%, #686e77 100%);
+  box-shadow: 0 3px 0 #5c6068, 0 12px 26px rgba(0, 0, 0, 0.36), inset 0 1px 0 #fff;
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 1.25;
+  letter-spacing: 0.035em;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #fff;
+  transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease;
+}
+
+.cta i {
+  font-style: normal;
+  font-family: var(--font-main);
+  font-size: 1.35em;
+  line-height: 1;
+}
+
+.cover__info > .cta { width: min(100%, 420px); min-height: 56px; }
+
+.cta:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow: 0 1px 0 #5c6068, 0 7px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 #fff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cta:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+    box-shadow: 0 5px 0 #5c6068, 0 16px 32px rgba(0, 0, 0, 0.42), inset 0 1px 0 #fff;
+  }
+}
+
+/* ===================== SHARED SCENE ===================== */
+
+.scene {
+  position: relative;
+  isolation: isolate;
+  margin: clamp(12px, 2vw, 24px) var(--gutter);
+  overflow: clip;
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  border-radius: clamp(24px, 4vw, 48px);
+  box-shadow: 0 18px 44px rgba(61, 35, 105, 0.16);
+  background: var(--night-violet);
+}
+
+.scene__in {
+  position: relative;
+  z-index: 2;
+  width: min(var(--content-max), 100%);
+  margin-inline: auto;
+  padding: var(--section-space) clamp(20px, 4vw, 54px);
+}
+
+.scene-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.2em;
+}
+
+.scene-label span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 50%;
+  color: var(--magenta-bright);
+  background: rgba(255, 255, 255, 0.04);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.scene-title {
+  margin: 0;
+  color: var(--ivory);
+  font-size: clamp(2rem, 7.8vw, 3.6rem);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.scene-text {
+  max-width: 36em;
+  margin: 24px 0 0;
+  color: rgba(242, 236, 223, 0.72);
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.scene-photo { position: relative; margin: 0; overflow: hidden; }
+.scene-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ===================== 01 SONG REQUEST ===================== */
+
+.scene--request {
+  background:
+    radial-gradient(circle at 84% 18%, rgba(217, 255, 255, 0.84), transparent 31%),
+    radial-gradient(circle at 12% 82%, rgba(255, 211, 237, 0.76), transparent 31%),
+    linear-gradient(142deg, #89dcf1 0%, #a99bed 52%, #f5a7cd 100%);
+}
+
+.scene--request::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(37, 25, 63, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 25, 63, 0.055) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
+  content: "";
+}
+
+.scene--request .scene-label,
+.scene--play .scene-label { color: rgba(37, 25, 63, 0.66); }
+
+.scene--request .scene-label span,
+.scene--play .scene-label span {
+  border-color: rgba(37, 25, 63, 0.28);
+  color: #a21563;
+  background: rgba(255, 255, 255, 0.36);
+}
+
+.scene--request .scene-title,
+.scene--play .scene-title { color: var(--ink); }
+
+.scene--request .scene-text,
+.scene--play .scene-text { color: rgba(37, 25, 63, 0.76); }
+
+.request-layout { display: grid; gap: 42px; }
+.request-copy { align-self: center; }
+
+.request-photo {
+  min-height: 360px;
+  border-radius: var(--radius);
+  box-shadow: 0 24px 54px rgba(52, 33, 93, 0.22);
+}
+
+.request-photo::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, transparent 58%, rgba(7, 8, 10, 0.74)),
+    linear-gradient(110deg, rgba(214, 36, 113, 0.08), transparent 40%, rgba(86, 216, 232, 0.08));
+  content: "";
+}
+
+.request-photo img { object-position: 50% 50%; }
+
+.request-photo figcaption {
+  position: absolute;
+  z-index: 2;
+  right: 22px;
+  bottom: 18px;
+  color: var(--ivory);
+  font-family: var(--font-hand);
+  font-size: clamp(1.2rem, 4vw, 1.75rem);
+}
+
+.replay-deck {
+  position: relative;
+  overflow: hidden;
+  margin-top: 32px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.035)),
+    rgba(21, 23, 29, 0.82);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 18px 40px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(16px);
+}
+
+.replay-deck::after {
+  position: absolute;
+  inset: -70% auto -70% -45%;
+  width: 26%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: skewX(-18deg);
+  transition: transform 1.2s var(--ease);
+  content: "";
+}
+
+.replay-deck.is-playing::after { transform: translateX(680%) skewX(-18deg); }
+
+.replay-deck__top,
+.replay-deck__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #c5c7ce;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.14em;
+}
+
+.replay-deck__top b { color: var(--cyan); font-size: inherit; }
+
+.replay-deck__track {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.replay-deck__play {
+  /* span から button にしたのでUA既定を落とす。
+     見た目は小さいままだが、タップ領域は44px確保する。 */
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin: -12px;
+  padding: 0;
+  appearance: none;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  width: 20px;
+  color: var(--cyan);
+  font-size: 17px;
+  line-height: 1;
+  text-shadow: 0 0 14px rgba(86, 216, 232, 0.46);
+}
+
+.replay-deck__play:active { transform: scale(0.9); }
+.replay-deck__play:focus-visible { outline: 2px solid var(--ice-cyan); outline-offset: 0; border-radius: 6px; }
+
+.replay-deck__track p { min-width: 0; margin: 0; }
+.replay-deck__track small {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+}
+
+.replay-deck__track strong {
+  display: block;
+  overflow: hidden;
+  color: var(--ivory);
+  font-size: 13px;
+  line-height: 1.35;
+  letter-spacing: 0.03em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.replay-deck__track em {
+  color: var(--magenta-bright);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.replay-deck__bar {
+  height: 6px;
+  margin: 16px 0 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.13) 0 8px, transparent 8px 11px);
+}
+
+.replay-deck__bar i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 8px, rgba(7, 8, 10, 0.75) 8px 11px),
+    linear-gradient(90deg, var(--cyan), var(--chrome-light), var(--magenta-bright));
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* 旧: is-playing で1回だけ0→1へ流していた。
+   スクロール量に直結させて「いま再生している」感じを作る。 */
+.motion-ready .replay-deck__bar i {
+  transform: scaleX(var(--deck, 0));
+  transition: none;
+}
+
+/* 旧: is-playing で常に scaleX(1) にしていた。詳細度が上なので
+   スクロール直結の scaleX(var(--deck)) に勝ってしまい、
+   バーが最初から満タンのままだった。スクラブに一本化する。 */
+
+/* ===================== 02 KARAOKE & TALK ===================== */
+
+/* 全幅に抜く。パネル→全幅→パネルの交互で、同じカードの連続に
+   見えないようにする。写真をカードに閉じ込めない。 */
+.scene--karaoke,
+.scene--new-memory {
+  margin-inline: 0;
+  border-inline: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.scene--karaoke {
+  min-height: 680px;
+  display: grid;
+  align-items: end;
+  background: #2b1641;
+}
+
+.karaoke-photo { position: absolute; inset: 0; }
+.karaoke-photo img { object-position: 48% 50%; }
+
+.karaoke-photo::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(7, 8, 10, 0.88), rgba(7, 8, 10, 0.3) 58%, rgba(7, 8, 10, 0.12)),
+    linear-gradient(180deg, rgba(7, 8, 10, 0.12), transparent 50%, rgba(7, 8, 10, 0.74));
+  content: "";
+}
+
+.karaoke-copy {
+  position: relative;
+  z-index: 2;
+  width: min(var(--content-max), 100%);
+  margin-inline: auto;
+  padding: var(--section-space) clamp(20px, 4vw, 54px);
+}
+
+.karaoke-type {
+  margin: 0 0 28px;
+  color: transparent;
+  -webkit-text-stroke: 1.6px rgba(255, 255, 255, 0.44);
+  font-size: clamp(3.4rem, 15vw, 7.8rem);
+  font-weight: 900;
+  line-height: 0.82;
+  letter-spacing: -0.07em;
+}
+
+.scene--karaoke .scene-title {
+  max-width: none;
+  font-size: clamp(2.7rem, 4vw, 4rem);
+}
+.scene--karaoke .scene-text { max-width: 31em; }
+
+/* ===================== 03 PLAY TOGETHER ===================== */
+
+.scene--play {
+  background:
+    radial-gradient(circle at 82% 18%, rgba(255, 224, 242, 0.86), transparent 29%),
+    radial-gradient(circle at 12% 80%, rgba(205, 255, 251, 0.74), transparent 33%),
+    linear-gradient(135deg, #f1a9cf, #a995eb 54%, #79d9e6);
+}
+
+.play-layout {
+  display: grid;
+  gap: 42px;
+  width: min(var(--content-max), 100%);
+  margin-inline: auto;
+  padding: var(--section-space) clamp(20px, 4vw, 54px);
+}
+
+.play-photo {
+  min-height: 470px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  box-shadow: -14px 16px 0 rgba(214, 36, 113, 0.14), 0 26px 60px rgba(52, 33, 93, 0.22);
+}
+
+.play-photo img { object-position: 58% 50%; }
+.play-photo::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 58%, rgba(7, 8, 10, 0.28));
+  content: "";
+}
+
+.play-photo > span {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  z-index: 2;
+  padding: 8px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  color: var(--ivory);
+  background: rgba(8, 9, 11, 0.54);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  backdrop-filter: blur(8px);
+}
+
+.play-copy {
+  align-self: center;
+  /* .play-type をカラム幅基準で組むための計測元 */
+  container-type: inline-size;
+}
+.play-type {
+  margin: 0 0 30px;
+  color: rgba(37, 25, 63, 0.08);
+  /* 15vw だとカラムより字が広くなり右端で切れていた。
+     一番長い行 TOGETHER が収まる上限はカラム幅の約22%。 */
+  font-size: min(4.6rem, 22cqw);
+  font-weight: 900;
+  line-height: 0.78;
+  letter-spacing: -0.07em;
+}
+
+/* ===================== POP BALLOON STICKERS =====================
+   角丸のホログラムプレートではなく、参照画像のように「文字そのものが
+   ダイカットされたシール」として組む。
+
+   白フチは -webkit-text-stroke ではなく、親に白の drop-shadow を
+   重ねて作る。理由は2つ:
+   - text-stroke は paint-order を付けても、内側の膨らみを作る
+     text-shadow が必ずフチの後ろへ回り込んで見えなくなる
+   - drop-shadow なら small・strong・✦ をまとめた「合体シルエット」の
+     外側にフチが付くので、実物のダイカットと同じ挙動になる
+   ぼかし付きの白を3枚重ねると α が積算して約7pxの実線フチになる。 */
+
+.y2k-sticker {
+  position: absolute;
+  z-index: 6;
+  width: clamp(178px, 15vw, 236px);
+  padding: 0;
+  overflow: visible;   /* 文字の外へフチを出すので切らない */
+  background: none;
+  clip-path: none;
+  filter:
+    drop-shadow(0 0 5px #fff)
+    drop-shadow(0 0 5px #fff)
+    drop-shadow(0 0 4px #fff)
+    drop-shadow(0 0 3px #fff)
+    drop-shadow(0 0 2px #fff)
+    drop-shadow(0 10px 12px rgba(74, 10, 50, 0.36));
+  font-family: var(--font-display);
+  text-align: center;
+  pointer-events: none;
+}
+
+.y2k-sticker__surface {
+  position: relative;
+  display: grid;
+  gap: 5px;
+  place-items: center;
+  width: 100%;
+  height: auto;
+  padding: 0;
+  overflow: visible;
+  background: none;
+  clip-path: none;
+  line-height: 1;
+  text-align: center;
+}
+
+/* プレートを廃した時点で、板の上を走る艶は掛ける面が無い */
+.y2k-sticker::before { display: none; }
+
+.y2k-sticker__surface small,
+.y2k-sticker__surface strong,
+.y2k-sticker__surface span { position: relative; z-index: 2; }
+
+/* 見出しは小さいピンクのカプセル。フチは親の drop-shadow が付ける */
+.y2k-sticker__surface small {
+  align-self: center;
+  padding: 3px 9px 4px;
+  border-radius: 999px;
+  background: #ff4aa2;
+  color: #fff;
+  font-family: var(--font-main);
+  font-size: 7.5px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+/* 膨らんだ風船文字。面は明るいピンクで、下方向へ濃いマゼンタを
+   1pxずつ積んで厚みを作る。上が明るく見えるので光源は上になる。 */
+.y2k-sticker__surface strong {
+  align-self: center;
+  color: #ff8ecb;
+  font-size: clamp(1.5rem, 2.35vw, 2.05rem);
+  /* 影を下へ7px積むので、行間はそれを越える必要がある。
+     1.04だと2行目が1行目の影に食い込んで潰れた。 */
+  line-height: 1.3;
+  /* 詰めすぎると隣の字の影と溶けて1つの塊になる */
+  letter-spacing: 0.012em;
+  text-shadow:
+    /* 上の縁だけ淡い色を覗かせて、光源が上にあることを示す */
+    0 -1.5px 0 #ffe2f2,
+    /* 下へ濃いマゼンタを1pxずつ積んで厚みにする */
+    0 1px 0 #ff6cb8,
+    0 2px 0 #fb4ba5,
+    0 3px 0 #ed2f93,
+    0 4px 0 #d81a80,
+    0 5px 0 #bd0f6d,
+    0 6px 0 #9e0759,
+    0 7px 3px rgba(74, 4, 44, 0.4);
+}
+
+/* きらめき。参照画像の白い4条の光 */
+.y2k-sticker__surface > span {
+  position: absolute;
+  right: 2%;
+  top: 24%;
+  z-index: 3;
+  color: #fff;
+  font-size: clamp(0.9rem, 1.25vw, 1.2rem);
+  text-shadow: 0 0 5px #fff, 0 0 10px #ff4aa2, 0 0 18px #ff4aa2;
+}
+
+.y2k-sticker__surface::after {
+  position: absolute;
+  left: 3%;
+  bottom: 12%;
+  z-index: 3;
+  color: #fff;
+  font-size: 0.58em;
+  text-shadow: 0 0 4px #fff, 0 0 9px #ff4aa2, 0 0 15px #ff4aa2;
+  content: "\2726";
+}
+
+.y2k-sticker--play {
+  left: calc(50% + clamp(18px, 5vw, 72px));
+  /* 上の帯（Y2K NIGHT）がセクションの上端で切れていた */
+  top: clamp(36px, 5.6vw, 78px);
+  transform: rotate(5deg);
+}
+
+
+/* 和文はラテンより字面が大きいので一段落とす */
+
+/* ===================== 04 NEW MEMORY ===================== */
+
+.scene--new-memory {
+  min-height: 680px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background: #2b1641;
+}
+
+.memory-photo { position: absolute; inset: 0; }
+.memory-photo img { object-position: 50% 50%; }
+.memory-photo::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(7, 8, 10, 0.32), rgba(7, 8, 10, 0.26) 42%, rgba(7, 8, 10, 0.78)),
+    radial-gradient(circle at 50% 45%, transparent 15%, rgba(7, 8, 10, 0.5) 78%);
+  content: "";
+}
+
+.memory-copy {
+  position: relative;
+  z-index: 2;
+  width: min(1050px, 100%);
+  padding: var(--section-space) clamp(20px, 4vw, 54px);
+}
+
+.memory-copy .scene-label { justify-content: center; color: rgba(255, 255, 255, 0.72); }
+.memory-copy .scene-title {
+  font-size: clamp(2.2rem, 6vw, 4.25rem);
+  line-height: 1.25;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.82);
+}
+
+/* ===================== PRICE / EVENT INFORMATION ===================== */
+
+.information-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin: clamp(12px, 2vw, 24px) var(--gutter);
+  padding: var(--section-space) clamp(20px, 4vw, 54px);
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  border-radius: clamp(24px, 4vw, 48px);
+  box-shadow: 0 18px 44px rgba(61, 35, 105, 0.16);
+}
+
+.price-zone {
+  background:
+    radial-gradient(circle at 13% 10%, rgba(228, 255, 255, 0.92), transparent 29%),
+    radial-gradient(circle at 88% 84%, rgba(255, 225, 240, 0.88), transparent 34%),
+    radial-gradient(circle at 76% 8%, rgba(231, 218, 255, 0.78), transparent 26%),
+    linear-gradient(140deg, #86dbe6 0%, #b2abe9 50%, #e8a9c9 100%);
+}
+
+.event-zone {
+  background:
+    radial-gradient(circle at 84% 12%, rgba(255, 244, 205, 0.88), transparent 27%),
+    radial-gradient(circle at 12% 82%, rgba(211, 255, 244, 0.78), transparent 31%),
+    linear-gradient(138deg, #a8ddd7 0%, #a6cae7 48%, #dcc4e8 100%);
+}
+
+.information-section::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(135deg, rgba(0, 0, 0, 0.8), transparent 64%);
+  content: "";
+}
+
+.price-zone__in,
+.event-zone__in {
+  position: relative;
+  z-index: 2;
+  width: min(var(--content-max), 100%);
+  margin-inline: auto;
+}
+
+
+/* 淡いパネルに灰色の数字を置くだけではクロムが成立しない
+   （明地にクロムを乗せると、必ずどこかの停止点が地と同化する）。
+   暗い盤に置き換えて、SONG REQUESTのデッキと同じ語彙にする。 */
+
+/* 上辺の帯 */
+
+/* 下辺のLEDゲージ。デッキのプログレスと同じ言い方で「満タン」を示す */
+
+
+/* 暗い盤に乗るので、光源が上・中央に地平線のある正調のクロムが引ける。
+   輪郭は text-shadow ではなく filter: drop-shadow。background-clip:text で
+   color:transparent にしていると text-shadow が字の内側から透けて
+   グラデーションを濁らせる。
+   旧実装は 0 5px 0 の黒影1枚で、明地の上では版ズレのように見えていた。 */
+.plan-time strong,
+.plan-prices dd span[data-count] {
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* 暗い盤に乗るので白ヌキにする */
+
+.plan-prices {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 24px 0 0;
+}
+
+.plan-prices > div {
+  padding: 18px;
+  border-left: 2px solid var(--magenta);
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.plan-prices dt { color: rgba(37, 25, 63, 0.58); font-size: 10px; font-weight: 900; letter-spacing: 0.13em; }
+.plan-prices dd {
+  margin: 4px 0 0;
+  color: var(--ink);
+  font-size: clamp(2rem, 8vw, 3.1rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.plan-prices small { margin-left: 2px; font-size: 0.48em; }
+
+
+.event-date {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 34px 0 0;
+  color: var(--ink);
+  font-size: clamp(2.1rem, 8vw, 4rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+.event-date i { color: var(--magenta-bright); font-style: normal; font-weight: 500; }
+.event-list { margin: 32px 0 0; border-top: 1px solid rgba(37, 25, 63, 0.18); }
+.event-list > div {
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr);
+  gap: 16px;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(37, 25, 63, 0.18);
+}
+.event-list dt { color: rgba(37, 25, 63, 0.6); font-size: 12px; font-weight: 900; }
+.event-list dd { margin: 0; color: var(--ink); font-size: 14px; font-weight: 700; }
+
+.information-section .scene-label { color: rgba(37, 25, 63, 0.64); }
+.information-section .scene-label span {
+  border-color: rgba(37, 25, 63, 0.22);
+  color: #a21563;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+/* ===================== FINAL CTA ===================== */
+
+.final-night {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: center;
+  min-height: 700px;
+  /* 終着点なので全幅で受ける */
+  margin: clamp(12px, 2vw, 24px) 0 0;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+  background: #08090b;
+}
+
+.final-night__photo { position: absolute; inset: 0; margin: 0; }
+.final-night__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 48% 50%; }
+.final-night__photo::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(7, 8, 10, 0.18), rgba(7, 8, 10, 0.66) 58%, rgba(7, 8, 10, 0.92)),
+    linear-gradient(180deg, rgba(7, 8, 10, 0.14), transparent 40%, rgba(7, 8, 10, 0.58));
+  content: "";
+}
+
+.final-night__content {
+  position: relative;
+  z-index: 2;
+  width: min(var(--content-max), 100%);
+  margin-inline: auto;
+  padding: var(--section-space) clamp(20px, 4vw, 54px);
+  text-align: left;
+}
+
+.final-night__content .scene-label,
+.final-night__content h2,
+.final-night__content > p { max-width: 720px; margin-left: auto; }
+
+.final-night__content h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: var(--ivory);
+  font-size: clamp(2.15rem, 3.7vw, 3.35rem);
+  font-weight: 900;
+  line-height: 1.22;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+  text-shadow: 0 5px 32px rgba(0, 0, 0, 0.8);
+}
+
+.final-night__content > p {
+  margin-top: 22px;
+  margin-bottom: 0;
+  color: rgba(242, 236, 223, 0.72);
+  font-size: 16px;
+}
+
+.cta--final { display: flex; width: min(100%, 360px); margin: 34px 0 0 auto; }
+
+/* ===================== FOOTER ===================== */
+
+.foot {
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+  padding: 42px var(--gutter) 50px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: #12191e;
+  text-align: center;
+}
+.foot .bar__brand { justify-items: center; }
+.foot nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 20px; }
+.foot nav a { color: var(--muted); font-size: 12px; font-weight: 700; text-decoration: none; }
+.foot small { color: #75767b; font-size: 10px; letter-spacing: 0.08em; }
+
+/* ===================== FIXED CTA ===================== */
+
+.ctabar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px var(--gutter) calc(9px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid rgba(190, 235, 242, 0.34);
+  background:
+    linear-gradient(180deg, rgba(43, 55, 62, 0.96), rgba(13, 18, 22, 0.95));
+  box-shadow: 0 -10px 26px rgba(31, 45, 52, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px) saturate(112%);
+  transition: opacity 220ms ease, transform 280ms var(--ease), visibility 220ms ease;
+}
+
+/* FV内に予約ボタンがある間と、最終CTAが見えている間は隠す。
+   初期状態はJSが付ける。CSSで隠すとJS失敗時に押せるCTAが
+   1つも無くなるため。 */
+.ctabar.is-suppressed {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(110%);
+}
+
+.ctabar__txt { display: grid; gap: 1px; min-width: 0; margin: 0; }
+.ctabar__txt b { overflow: hidden; font-size: 13px; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; }
+.ctabar__txt span { color: var(--muted); font-size: 10px; letter-spacing: 0.06em; }
+.cta--bar {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding-inline: 16px;
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+/* ===================== REVEAL ===================== */
+
+[data-reveal] { transition: opacity 720ms var(--ease), transform 820ms var(--ease), clip-path 900ms var(--ease); }
+.reveal-ready [data-reveal="copy"] { opacity: 0; transform: translateY(28px); }
+.reveal-ready [data-reveal="media"] { opacity: 0; clip-path: inset(0 0 12% 0); transform: scale(1.035); }
+.reveal-ready [data-reveal].is-in { opacity: 1; clip-path: inset(0); transform: none; }
+.reveal-ready .y2k-sticker--play[data-reveal="sticker"] {
+  opacity: 0;
+  transform: translate(14px, -8px) rotate(9deg) scale(0.86);
+}
+.reveal-ready .y2k-sticker--play[data-reveal="sticker"].is-in {
+  opacity: 1;
+  transform: rotate(5deg) scale(1);
+}
+.y2k-sticker.is-in::before { transform: translateX(760%) skewX(-18deg); }
+.sp-br { display: none; }
+
+/* ===================== TABLET / PC ===================== */
+
+@media (min-width: 768px) {
+  body { padding-bottom: 72px; }
+  .request-photo { min-height: 430px; }
+  .scene--karaoke { min-height: min(94vh, 820px); }
+  .karaoke-copy { padding-right: 22%; }
+  .scene--new-memory { min-height: min(94vh, 820px); }
+  .ctabar { padding-inline: max(var(--gutter), calc((100vw - var(--content-max)) / 2)); }
+}
+
+@media (min-width: 900px) {
+  .cover__stage {
+    width: min(1536px, 100%);
+    aspect-ratio: 3 / 2;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
+  }
+  .cover__visual { position: absolute; inset: 0; height: auto; }
+  .cover__info {
+    position: absolute;
+    left: 50%;
+    top: 74%;
+    width: min(38%, 540px);
+    padding: 0;
+    border: 0;
+    background: none;
+    transform: translateX(-50%);
+  }
+  .cover__info > .cta { width: min(100%, 310px); }
+  .cover__when { font-size: 11px; }
+}
+
+@media (min-width: 1200px) {
+  .bar { padding-inline: max(var(--gutter), calc((100vw - 1380px) / 2)); }
+  .scene-title { font-size: clamp(3rem, 4.4vw, 4.3rem); }
+}
+
+@media (min-width: 1024px) {
+  .request-layout {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: clamp(48px, 7vw, 96px);
+  }
+  .request-copy { transform: translateY(18px); }
+  .request-photo { min-height: 480px; transform: translateY(-16px) rotate(1deg); }
+  .play-layout {
+    grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+    align-items: center;
+    gap: clamp(52px, 7vw, 100px);
+  }
+  .play-photo { min-height: 520px; transform: translateY(18px) rotate(-1deg); }
+  .play-copy {
+    padding: clamp(24px, 3vw, 38px);
+    border: 1px solid rgba(255, 255, 255, 0.54);
+    border-radius: 30px 12px 30px 12px;
+    background: rgba(255, 255, 255, 0.26);
+    box-shadow: 0 18px 34px rgba(57, 39, 91, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.52);
+    transform: translateY(-22px);
+    backdrop-filter: blur(9px);
+  }
+  .reveal-ready .request-copy[data-reveal].is-in { transform: translateY(18px); }
+  .reveal-ready .request-photo[data-reveal].is-in { transform: translateY(-16px) rotate(1deg); }
+  .reveal-ready .play-photo[data-reveal].is-in { transform: translateY(18px) rotate(-1deg); }
+  .reveal-ready .play-copy[data-reveal].is-in { transform: translateY(-22px); }
+}
+
+@media (min-width: 1200px) {
+  .request-photo { min-height: 500px; }
+}
+
+/* ===================== MOBILE ===================== */
+
+@media (max-width: 767px) {
+  :root { --section-space: 54px; --gutter: clamp(16px, 4.8vw, 22px); }
+  .bar { min-height: 62px; }
+  .bar__brand img { width: 104px; }
+  .scene-title br { display: none; }
+  .request-layout { gap: 36px; }
+  .request-photo { min-height: 340px; }
+  .request-photo img { object-position: 55% 50%; }
+  .replay-deck__top span { display: none; }
+  .replay-deck__top { justify-content: flex-end; }
+  .replay-deck__meta { font-size: 8.5px; letter-spacing: 0.08em; }
+  .scene--karaoke { min-height: 570px; }
+  .karaoke-photo img { object-position: 52% 50%; }
+  .karaoke-photo::after { background: linear-gradient(180deg, rgba(7, 8, 10, 0.16), rgba(7, 8, 10, 0.28) 43%, rgba(7, 8, 10, 0.9)); }
+  .karaoke-copy { align-self: end; padding-top: 160px; }
+  .karaoke-type { font-size: clamp(3.3rem, 17vw, 5rem); }
+  .play-photo { min-height: 360px; }
+  .play-layout { gap: 30px; padding-top: 10px; }
+  .play-photo img { object-position: 59% 50%; }
+  .play-type { font-size: clamp(4rem, 21vw, 6rem); }
+  .y2k-sticker--play { display: none; }
+  .scene--new-memory { min-height: 560px; }
+  .memory-photo img { object-position: 48% 50%; }
+  .memory-copy { align-self: end; padding-top: 190px; }
+  .memory-copy .scene-title { font-size: clamp(2rem, 9.6vw, 2.55rem); }
+  .plan-prices { grid-template-columns: 1fr; }
+  .plan-prices > div { padding: 16px; }
+  .event-list > div { grid-template-columns: 76px minmax(0, 1fr); gap: 12px; }
+  .final-night { min-height: 610px; align-items: end; }
+  .final-night__photo img { object-position: 37% 50%; }
+  .final-night__photo::after { background: linear-gradient(180deg, rgba(7, 8, 10, 0.12), rgba(7, 8, 10, 0.28) 43%, rgba(7, 8, 10, 0.94)); }
+  .final-night__content { padding-top: 210px; }
+  .final-night__content h2 { font-size: clamp(2rem, 9.2vw, 2.5rem); }
+  .sp-br { display: block; }
+  .final-night__content .scene-label,
+  .final-night__content h2,
+  .final-night__content > p { margin-left: 0; }
+  .cta--final { width: 100%; margin-left: 0; }
+  .ctabar__txt { display: none; }
+  .cta--bar { width: 100%; min-height: 50px; }
+}
+
+@media (max-width: 390px) {
+  .cover__visual { height: 380px; }
+  .scene-title { font-size: 1.95rem; }
+  .request-photo { min-height: 320px; }
+  .replay-deck { padding: 14px; }
+  .replay-deck__track { grid-template-columns: auto minmax(0, 1fr); }
+  .replay-deck__track em { grid-column: 2; }
+  .event-date { font-size: 2rem; }
+}
+
+/* ===================== SCENE MOTION SYSTEM =====================
+   既存レイアウトは動かさず、シーン内の順序とレイヤー差だけを追加する。
+   JSが起動した場合に限り .motion-ready が付くため、通信・JSエラー時も
+   コンテンツが非表示にならない。 */
+
+[data-scene-motion] {
+  --scene-progress: 0.5;
+  --scene-y: 0px;
+  --scene-y-soft: 0px;
+  --scene-y-reverse: 0px;
+  --hero-x: 0px;
+  --hero-y: 0px;
+}
+
+/* Hero: 一枚絵の情報階層を壊さず、背景→予約情報の順に開始する */
+.motion-ready .cover__keyvisual {
+  opacity: 0;
+  transform: scale(1.025);
+  transform-origin: 50% 46%;
+  transition: opacity 720ms ease-out, transform 1100ms var(--ease);
+}
+
+.motion-ready .cover.is-scene-in .cover__keyvisual {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.motion-ready .cover__info > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 520ms ease-out, transform 620ms var(--ease);
+}
+
+.motion-ready .cover.is-scene-in .cover__info > * { opacity: 1; transform: none; }
+.motion-ready .cover.is-scene-in .cover__info > .cta { transition-delay: 420ms; }
+.motion-ready .cover.is-scene-in .cover__info > .cover__when { transition-delay: 540ms; }
+
+/* 各シーン共通のタイポ順序。wrapperのRevealとは別レイヤーで動かす */
+/* 見出しは行マスク(.ln)で出すため、ここには含めない。
+   両方かけると入れ子のフェードになる。
+   duration も tote の 0.25s 帯へ寄せた（旧 560/720ms）。 */
+.motion-ready [data-scene-motion] .scene-label,
+.motion-ready [data-scene-motion] .scene-text {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 300ms ease-out, transform 400ms var(--ease-out);
+}
+
+.motion-ready [data-scene-motion].is-scene-in .scene-label,
+.motion-ready [data-scene-motion].is-scene-in .scene-text {
+  opacity: 1;
+  transform: none;
+}
+
+.motion-ready [data-scene-motion].is-scene-in .scene-label { transition-delay: 60ms; }
+.motion-ready [data-scene-motion].is-scene-in .scene-text { transition-delay: 300ms; }
+
+/* SONG REQUEST: PLAY → TRACK → PROGRESS → REQUEST */
+.motion-ready .replay-deck {
+  opacity: 0;
+  transform: translateY(14px) scale(0.985);
+  transition: opacity 520ms ease-out, transform 680ms var(--ease);
+}
+
+.motion-ready .scene--request.is-scene-in .replay-deck {
+  opacity: 1;
+  transform: none;
+  transition-delay: 240ms;
+}
+
+.motion-ready .replay-deck__top,
+.motion-ready .replay-deck__play,
+.motion-ready .replay-deck__track p,
+.motion-ready .replay-deck__track em,
+.motion-ready .replay-deck__meta {
+  opacity: 0;
+  transform: translateY(7px);
+  transition: opacity 360ms ease-out, transform 460ms var(--ease);
+}
+
+.motion-ready .replay-deck.is-playing .replay-deck__top,
+.motion-ready .replay-deck.is-playing .replay-deck__play,
+.motion-ready .replay-deck.is-playing .replay-deck__track p,
+.motion-ready .replay-deck.is-playing .replay-deck__track em,
+.motion-ready .replay-deck.is-playing .replay-deck__meta {
+  opacity: 1;
+  transform: none;
+}
+
+/* 旧: em 1480ms / meta 1620ms。デッキ自体の430msとJS側の360msが
+   積み上がって「受付中」が約1.8秒後に出ていた。全体を0.9秒に収める。 */
+.motion-ready .replay-deck.is-playing .replay-deck__top { transition-delay: 60ms; }
+.motion-ready .replay-deck.is-playing .replay-deck__play { transition-delay: 150ms; }
+.motion-ready .replay-deck.is-playing .replay-deck__track p { transition-delay: 240ms; }
+.motion-ready .replay-deck.is-playing .replay-deck__track em { transition-delay: 560ms; }
+.motion-ready .replay-deck.is-playing .replay-deck__meta { transition-delay: 660ms; }
+
+.motion-ready .scene--karaoke.is-scene-in .scene-title { transition-delay: 430ms; }
+.motion-ready .scene--karaoke.is-scene-in .scene-text { transition-delay: 540ms; }
+
+/* PLAY: 写真、バッジ、背景タイポ、コピーを別々に到着させる。
+   背景タイポの出現は行マスク(.ln)が担う。 */
+.motion-ready .play-photo > span {
+  opacity: 0;
+  transform: translateY(10px) rotate(-3deg) scale(0.94);
+  transition: opacity 420ms ease-out, transform 560ms var(--ease);
+}
+
+.motion-ready .scene--play.is-scene-in .play-photo > span {
+  opacity: 1;
+  transition-delay: 480ms;
+  /* 着地でボヨンと弾んでから、微呼吸のループへ引き継ぐ。
+     同じ transform を2本のアニメーションで奪い合うが、
+     後から始まった方が勝つので受け渡しになる。 */
+  animation:
+    boyon 620ms var(--ease-back) 480ms both,
+    breath 5.4s ease-in-out 1150ms infinite;
+}
+
+.motion-ready .scene--play.is-scene-in .scene-title { transition-delay: 390ms; }
+.motion-ready .scene--play.is-scene-in .scene-text { transition-delay: 500ms; }
+
+/* NEW MEMORY: 写真の余韻を先に見せてからコピーを置く */
+.motion-ready .scene--new-memory .memory-copy .scene-label,
+.motion-ready .scene--new-memory .memory-copy .scene-title {
+  transition-duration: 760ms;
+}
+
+.motion-ready .scene--new-memory.is-scene-in .memory-copy .scene-label { transition-delay: 320ms; }
+.motion-ready .scene--new-memory.is-scene-in .memory-copy .scene-title { transition-delay: 470ms; }
+
+/* PRICE: 大きな数字を主役にし、料金を同時に出さない */
+.motion-ready .plan-time strong,
+.motion-ready .plan-prices > div,
+.motion-ready .price-guide-button {
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition: opacity 560ms ease-out, transform 720ms var(--ease);
+}
+
+.motion-ready .price-zone.is-scene-in .plan-time strong,
+.motion-ready .price-zone.is-scene-in .plan-prices > div,
+.motion-ready .price-zone.is-scene-in .price-guide-button {
+  opacity: 1;
+  transform: none;
+}
+
+.motion-ready .price-zone.is-scene-in .plan-prices > div:first-child { transition-delay: 430ms; }
+.motion-ready .price-zone.is-scene-in .plan-prices > div:last-child { transition-delay: 540ms; }
+
+/* EVENT: 日付→情報行→リンクの順で読みやすく進める */
+.motion-ready .event-date,
+.motion-ready .event-list > div,
+.motion-ready .event-details .text-link {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 500ms ease-out, transform 660ms var(--ease);
+}
+
+.motion-ready .event-zone.is-scene-in .event-date,
+.motion-ready .event-zone.is-scene-in .event-list > div,
+.motion-ready .event-zone.is-scene-in .event-details .text-link {
+  opacity: 1;
+  transform: none;
+}
+
+.motion-ready .event-zone.is-scene-in .event-date { transition-delay: 220ms; }
+.motion-ready .event-zone.is-scene-in .event-list > div:nth-child(1) { transition-delay: 360ms; }
+.motion-ready .event-zone.is-scene-in .event-list > div:nth-child(2) { transition-delay: 450ms; }
+.motion-ready .event-zone.is-scene-in .event-list > div:nth-child(3) { transition-delay: 540ms; }
+
+/* FINAL: 写真を見せた後に感情コピー、最後にCTA */
+.motion-ready .final-night__content > p,
+.motion-ready .final-night__content .cta {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 560ms ease-out, transform 720ms var(--ease);
+}
+
+.motion-ready .final-night.is-scene-in .final-night__content > p,
+.motion-ready .final-night.is-scene-in .final-night__content .cta {
+  opacity: 1;
+  transform: none;
+}
+
+.motion-ready .final-night.is-scene-in .scene-title,
+.motion-ready .final-night.is-scene-in h2 { transition-delay: 300ms; }
+.motion-ready .final-night.is-scene-in .final-night__content > p { transition-delay: 440ms; }
+.motion-ready .final-night.is-scene-in .final-night__content .cta { transition-delay: 580ms; }
+
+@media (hover: hover) and (pointer: fine) {
+  .motion-ready .cover.is-scene-in .cover__info > .cta:hover,
+  .motion-ready .final-night.is-scene-in .final-night__content .cta:hover {
+    transform: translateY(-2px);
+  }
+
+}
+
+.motion-ready .cover.is-scene-in .cover__info > .cta:active,
+.motion-ready .final-night.is-scene-in .final-night__content .cta:active,
+.motion-ready .price-zone.is-scene-in .price-guide-button:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+/* SPは連続追従を行わず、移動量と待ち時間も短くする */
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .motion-ready [data-scene-motion] .scene-label,
+  .motion-ready [data-scene-motion] .scene-text { transform: translateY(8px); }
+
+  .motion-ready [data-scene-motion].is-scene-in .scene-label,
+  .motion-ready [data-scene-motion].is-scene-in .scene-text { transform: none; }
+
+  .motion-ready [data-scene-motion].is-scene-in .scene-label { transition-delay: 60ms; }
+  .motion-ready [data-scene-motion].is-scene-in .scene-title { transition-delay: 120ms; }
+  .motion-ready [data-scene-motion].is-scene-in .scene-text { transition-delay: 190ms; }
+
+  .motion-ready .replay-deck { transform: translateY(8px) scale(0.99); }
+  .motion-ready .scene--request.is-scene-in .replay-deck { transform: none; transition-delay: 160ms; }
+  .motion-ready .replay-deck.is-playing .replay-deck__track em { transition-delay: 420ms; }
+  .motion-ready .replay-deck.is-playing .replay-deck__meta { transition-delay: 500ms; }
+  .motion-ready .scene--karaoke.is-scene-in .scene-title,
+  .motion-ready .scene--play.is-scene-in .scene-title { transition-delay: 260ms; }
+  .motion-ready .scene--karaoke.is-scene-in .scene-text,
+  .motion-ready .scene--play.is-scene-in .scene-text { transition-delay: 340ms; }
+}
+
+/* PCの連続モーション。画面付近の要素だけJSから値が更新される */
+@media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .cover__keyvisual img {
+    transform: translate3d(var(--hero-x), calc(var(--hero-y) + var(--scene-y-soft)), 0) scale(1.035);
+    transition: transform 120ms linear;
+    will-change: transform;
+  }
+
+  .request-photo img,
+  .karaoke-photo img,
+  .play-photo img,
+  .memory-photo img,
+  .final-night__photo img { transition: transform 120ms linear; }
+
+  .request-photo img { transform: translate3d(0, var(--scene-y-reverse), 0) scale(1.14); }
+  .karaoke-photo img { transform: translate3d(0, var(--scene-y-soft), 0) scale(1.1); }
+  .play-photo img { transform: translate3d(0, var(--scene-y-reverse), 0) scale(1.14); }
+  /* .motion-ready を足して侵入ルール(0,4,0)と同じ詳細度にする。
+     後勝ちで追従が有効になる。これが無いと侵入側の transform:none が
+     勝ち続けて、PLAY TOGETHERの背景文字だけ動かなかった。 */
+  .motion-ready .scene--play.is-scene-in .play-type { transform: translate3d(0, var(--scene-y-soft), 0); }
+  .motion-ready .scene--play .y2k-sticker__surface { transform: translate3d(0, var(--scene-y-reverse), 0); }
+  .memory-photo img { transform: translate3d(0, var(--scene-y-soft), 0) scale(1.1); }
+  .motion-ready .price-zone .y2k-sticker__surface { transform: translate3d(0, var(--scene-y-soft), 0); }
+  .final-night__photo img { transform: translate3d(0, var(--scene-y-soft), 0) scale(1.1); }
+}
+
+/* ===================== MOBILE LAYOUT REPAIR =====================
+   PCの全面写真レイアウトを縮小せず、写真→コピーの順で読める構成へ。
+   375 / 390 / 430pxで共通して安全な幅を確保する。 */
+
+@media (max-width: 767px) {
+  :root {
+    --gutter: clamp(10px, 3.2vw, 14px);
+    --section-space: clamp(42px, 12vw, 52px);
+  }
+
+  body {
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .bar {
+    gap: 10px;
+    min-height: 58px;
+    padding-block: 8px;
+  }
+
+  .bar__brand { min-width: 0; }
+  .bar__brand img { width: clamp(94px, 28vw, 108px); }
+  .bar__tag { font-size: 8px; letter-spacing: 0.16em; }
+  .bar__nombre { flex: 0 0 auto; }
+
+  /* 3:2のキービジュアルを切らずに表示する */
+  .cover__visual {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+  }
+
+  .cover__keyvisual img {
+    object-fit: cover;
+    object-position: 50% 50%;
+  }
+
+  .cover__info {
+    padding: 16px max(16px, var(--gutter)) 20px;
+  }
+
+  /* SPだけ実文字に起こす。画像内の同じ文言は小さすぎて読めない */
+  .cover__request {
+    position: static;
+    display: grid;
+    gap: 3px;
+    justify-items: center;
+    width: 100%;
+    height: auto;
+    margin: 0 0 14px;
+    padding: 12px 16px 13px;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+    border: 1px solid rgba(189, 248, 255, 0.5);
+    /* 角丸は 錠剤999px / 丸囲み50% / 紙2px の3系統に絞る */
+    border-radius: var(--r-paper);
+    background: linear-gradient(150deg, rgba(12, 16, 22, 0.92), rgba(28, 20, 48, 0.92));
+    text-align: center;
+  }
+
+  .cover__request span {
+    color: var(--ice-cyan);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+  }
+
+  .cover__request strong {
+    color: #fff;
+    font-size: 1.24rem;
+    font-weight: 900;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .cover__request small {
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 10.5px;
+    line-height: 1.6;
+  }
+
+  .cover__info > .cta {
+    width: min(100%, 360px);
+    min-height: 52px;
+    padding-inline: 20px;
+    font-size: 13px;
+  }
+
+  .cover__when { margin-top: 9px; }
+
+  .scene,
+  .information-section,
+  .final-night {
+    margin: 10px var(--gutter);
+    border-radius: clamp(20px, 6vw, 28px);
+  }
+
+  /* 写真主役の3つはSPでも全幅にする。カードで囲むと横幅が25px減って
+     写真が小さくなるうえ、PCで崩したはずの「同じカードの連続」に戻る。
+     この一括ルールより後に置いて上書きする。 */
+  .scene--karaoke,
+  .scene--new-memory,
+  .final-night {
+    margin-inline: 0;
+    border-radius: 0;
+  }
+
+  .scene__in,
+  .play-layout {
+    padding: var(--section-space) 18px;
+  }
+
+  .scene-label {
+    gap: 8px;
+    margin-bottom: 14px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+
+  .scene-label span {
+    width: 28px;
+    height: 28px;
+    font-size: 9px;
+  }
+
+  .scene-title,
+  .info-heading h2 {
+    font-size: clamp(1.75rem, 8vw, 2.15rem);
+    line-height: 1.28;
+    letter-spacing: -0.035em;
+    text-wrap: pretty;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .scene-text {
+    margin-top: 18px;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  /* 長い1行を作らず、短いコピーの意図した改行だけ残す */
+  .scene-title br { display: block; }
+  .scene--request .scene-title br { display: none; }
+
+  /* SONG REQUEST */
+  .request-layout { gap: 28px; }
+
+  .request-photo {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+    border-radius: 20px;
+  }
+
+  .request-photo figcaption {
+    right: 14px;
+    bottom: 12px;
+    font-size: clamp(1rem, 5vw, 1.3rem);
+  }
+
+  .replay-deck {
+    margin-top: 24px;
+    padding: 14px;
+    border-radius: 15px;
+  }
+
+  .replay-deck__track {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  .replay-deck__track strong { font-size: 11px; }
+  .replay-deck__track em {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  /* KARAOKEは全面オーバーレイを解除 */
+  .scene--karaoke {
+    display: block;
+    min-height: 0;
+  }
+
+  .karaoke-photo {
+    position: relative;
+    inset: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .karaoke-photo::after {
+    background: linear-gradient(180deg, transparent 55%, rgba(7, 8, 10, 0.42));
+  }
+
+  .karaoke-photo img { object-position: 52% 45%; }
+
+  .karaoke-copy {
+    width: 100%;
+    padding: 30px 18px 46px;
+  }
+
+  .karaoke-type {
+    margin-bottom: 20px;
+    font-size: clamp(2.45rem, 12vw, 3.3rem);
+    line-height: 0.88;
+  }
+
+  .scene--karaoke .scene-title {
+    font-size: clamp(1.8rem, 8vw, 2.2rem);
+  }
+
+  /* PLAY */
+  .play-layout {
+    gap: 28px;
+    padding-top: var(--section-space);
+  }
+
+  .play-photo {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+    border-radius: 20px;
+  }
+
+  .play-type {
+    margin-bottom: 22px;
+    font-size: clamp(3.25rem, 17vw, 4.7rem);
+  }
+
+  /* NEW MEMORYも写真とコピーを分離 */
+  .scene--new-memory {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    text-align: left;
+  }
+
+  .memory-photo {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+  }
+
+  .memory-photo::after {
+    background: linear-gradient(180deg, transparent 52%, rgba(7, 8, 10, 0.36));
+  }
+
+  .memory-photo img { object-position: 50% 45%; }
+
+  .memory-copy {
+    width: 100%;
+    padding: 30px 18px 46px;
+  }
+
+  .memory-copy .scene-label { justify-content: flex-start; }
+  .memory-copy .scene-title {
+    font-size: clamp(1.8rem, 8vw, 2.2rem);
+    text-shadow: none;
+  }
+
+  /* PRICE / EVENT */
+  .information-section {
+    padding: var(--section-space) 16px;
+  }
+
+
+  /* 9px は 94px の数字に対して小さすぎた */
+
+  .plan-prices { gap: 10px; margin-top: 20px; }
+  .plan-prices > div { padding: 15px 14px; }
+  .plan-prices dd { font-size: clamp(2rem, 12vw, 2.75rem); }
+
+
+  .event-date {
+    flex-wrap: nowrap;
+    gap: 6px;
+    margin-top: 24px;
+    font-size: clamp(1.7rem, 8vw, 2.1rem);
+    white-space: nowrap;
+  }
+
+  .event-list { margin-top: 24px; }
+  .event-list > div {
+    grid-template-columns: 68px minmax(0, 1fr);
+    gap: 10px;
+    padding: 13px 0;
+  }
+
+  .event-list dd {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* FINAL CTAも写真を先に見せ、本文を下へ置く */
+  .final-night {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+  }
+
+  .final-night__photo {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+  }
+
+  .final-night__photo::after {
+    background: linear-gradient(180deg, transparent 50%, rgba(7, 8, 10, 0.42));
+  }
+
+  .final-night__photo img { object-position: 42% 48%; }
+
+  .final-night__content {
+    width: 100%;
+    padding: 30px 18px 46px;
+  }
+
+  .final-night__content .scene-label,
+  .final-night__content h2,
+  .final-night__content > p { margin-left: 0; }
+
+  .final-night__content h2 {
+    font-size: clamp(1.85rem, 8.3vw, 2.25rem);
+    line-height: 1.3;
+  }
+
+  .final-night__content > p { margin-top: 16px; line-height: 1.75; }
+  .cta--final { width: 100%; margin: 26px 0 0; }
+
+  .foot { padding: 34px 16px 46px; }
+  .foot nav { gap: 9px 14px; }
+
+  .ctabar {
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .cta--bar {
+    width: 100%;
+    min-height: 50px;
+    font-size: 13px;
+  }
+}
+
+/* ===================== REDUCED MOTION ===================== */
+
+/* ===================== 行マスク =====================
+   見出しを <br> で行に割り、行ごとに下から立ち上げる。
+   ブロック単位のフェードと違い、読む順番がそのまま動きになる。
+   JSが起動しない場合は .ln が作られないので、素の見出しが出る。 */
+
+.ln { display: block; overflow: hidden; }
+.ln > i { display: block; font-style: normal; }
+
+.motion-ready [data-scene-motion] .ln > i {
+  transform: translateY(110%);
+  transition: transform 420ms var(--ease-out);
+  transition-delay: calc(var(--ln, 0) * 70ms + var(--ln-base, 0ms));
+}
+
+.motion-ready [data-scene-motion].is-scene-in .ln > i { transform: none; }
+
+/* シーンごとの出だしのずれ */
+.scene--karaoke .karaoke-type { --ln-base: 120ms; }
+.scene--karaoke .scene-title { --ln-base: 300ms; }
+.scene--play .play-type { --ln-base: 140ms; }
+.scene--play .scene-title { --ln-base: 300ms; }
+.scene--new-memory .scene-title { --ln-base: 420ms; }
+.final-night__content h2 { --ln-base: 220ms; }
+
+/* ===================== シーンのpin =====================
+   参考サイトの核は「画面を留めたまま中身がスクロールで進む」構造。
+   1画面ぶんの見え方は今のままにして、セクションを縦に伸ばし、
+   中の1画面を sticky で留める。--pin は貼り付いている区間の進捗。
+   SPでは留めない（走行距離を食うため）。 */
+
+.scene__pin { position: relative; }
+
+@media (min-width: 768px) {
+  .scene--karaoke,
+  .scene--new-memory,
+  .final-night {
+    display: block;
+    min-height: 0;
+    height: 200vh;
+  }
+  .scene--new-memory { height: 180vh; }
+  .final-night { height: 190vh; }
+
+  .scene__pin {
+    position: sticky;
+    top: 0;
+    display: grid;
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  .scene--karaoke .scene__pin { align-items: end; }
+  .scene--new-memory .scene__pin { place-items: center; }
+  .final-night .scene__pin { align-items: center; }
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  /* 写真は滞在中ずっと等速で寄る。加減速を付けると「演出」に見える */
+  .karaoke-photo img,
+  .memory-photo img,
+  .final-night__photo img {
+    transform: scale(calc(1.16 - 0.16 * var(--pin, 0)));
+    transition: none;
+    will-change: transform;
+  }
+
+  /* 覆いは進むほど濃くして、次のシーンへ落ちる準備をする */
+  .karaoke-photo::after,
+  .memory-photo::after,
+  .final-night__photo::after {
+    /* 1.0まで濃くすると終わりで暗くなりすぎる */
+    opacity: calc(0.72 + 0.16 * var(--pin, 0));
+  }
+
+  /* 巨大英字は写真と逆へ。奥行きが出る */
+  .motion-ready .scene--karaoke.is-scene-in .karaoke-type {
+    transform: translate3d(0, calc(var(--pin, 0) * -46px), 0);
+  }
+
+  /* コピーは進むほど上がる */
+  .karaoke-copy,
+  .memory-copy,
+  .final-night__content { transform: translate3d(0, calc(var(--pin, 0) * -54px), 0); }
+
+  /* 抜ける直前に画面ごと少し退く。次のシーンが上から乗る余地を作る */
+  .scene__pin {
+    transform: scale(calc(1 - 0.045 * var(--exit, 0)));
+    opacity: calc(1 - 0.4 * var(--exit, 0));
+  }
+}
+
+/* ===================== シーン境界の遷移 =====================
+   セクションごとに違う型を当てる。全部同じにすると、結局
+   「同じ動きの繰り返し」に戻る。
+   駆動は --enter（上辺が画面下→上）と --leave（下辺が画面下→上）。
+   隣接セクションの leave と enter は同じ境界を指すので、前の退場と
+   次の入場が自動で噛み合う。 */
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  /* --- 1. FV → 01 吸い込み --- */
+  .cover__visual {
+    transform: scale(calc(1 - 0.06 * var(--leave, 0)))
+      translateY(calc(var(--leave, 0) * -4%));
+  }
+
+  /* 01のグリッドが下から上書きする */
+  .scene--request::before {
+    opacity: var(--enter, 1);
+    transform: translateY(calc((1 - var(--enter, 1)) * 7%));
+  }
+
+  /* --- 2. 01 → 02 明から暗へ。間に黒を挟まず連続させる --- */
+  .request-copy,
+  .request-photo {
+    transform: translateY(calc(var(--leave, 0) * -12%));
+  }
+
+  /* 02の写真は下から開く。inset の1つ目を削ると下側から見えてくる */
+  .scene--karaoke .scene__pin {
+    clip-path: inset(calc((1 - var(--enter, 1)) * 100%) 0 0 0);
+  }
+
+  /* --- 3. 02 → 03 文字が先行 ---
+     .play-type だけ --enter の最初の35%で入れ切る。02の写真が
+     まだ抜けている途中に、03の文字が先に画面へ入る。 */
+  .motion-ready .scene--play.is-scene-in .play-type {
+    transform: translate3d(
+      0,
+      calc(var(--scene-y-soft, 0px) + (1 - min(1, var(--enter, 1) / 0.35)) * 52px),
+      0
+    );
+  }
+
+  /* --- 4. 03 → 04 残留 --- */
+  /* 元のステッカーは境界の手前で消し、固定レイヤーの複製に渡す */
+  .scene--play .y2k-sticker--play {
+    opacity: calc(1 - min(1, var(--leave, 0) / 0.34));
+  }
+
+  .carry {
+    position: fixed;
+    right: clamp(24px, 6vw, 90px);
+    top: clamp(80px, 12vh, 150px);
+    z-index: 70;
+    pointer-events: none;
+    /* 0.30→0.46 で現れ、0.62→0.9 で消える */
+    opacity: calc(
+      min(1, max(0, (var(--carry, 0) - 0.3) / 0.16)) *
+        (1 - min(1, max(0, (var(--carry, 0) - 0.62) / 0.28)))
+    );
+    transform: translateY(calc(var(--carry, 0) * -40px)) rotate(calc(5deg - var(--carry, 0) * 7deg));
+  }
+
+  /* --- 5. 04 → 05 明転。暗いシーンから紙面へ持ち上げる --- */
+  .price-zone::after {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: #0d0718;
+    opacity: calc(max(0, 1 - var(--enter, 1) / 0.62) * 0.88);
+    content: "";
+  }
+
+  /* --- 6. 05 → 06 横スライド。上下運動を一度だけ横に振る --- */
+  .price-zone__in {
+    transform: translateX(calc(var(--leave, 0) * -3%));
+  }
+
+  .event-zone__in {
+    transform: translateX(calc((1 - var(--enter, 1)) * 3%))
+      scale(calc(1 - 0.03 * var(--leave, 0)));
+  }
+
+  /* --- 7. 06 → 07 落下。全体で唯一の上→下 --- */
+  .final-night .scene__pin {
+    clip-path: inset(0 0 calc((1 - var(--enter, 1)) * 100%) 0);
+  }
+
+  .final-night__photo {
+    transform: translateY(calc((1 - var(--enter, 1)) * -7%));
+  }
+}
+
+/* ===================== アイドルモーション =====================
+   参考サイト(mememe)との差の正体はモーションの質ではなく、
+   「常時動いているか」だった。あちらは fuwa / boyon / kuru / bomb と
+   いった名前付きループを20種以上持ち、装飾ひとつずつに割り当てて
+   いる。当LPは keyframes が0件で、スクロールを止めた瞬間に完全な
+   静止画になっていた。
+
+   量ではなく「止まっていない」ことが目的なので、振幅は全部小さく、
+   周期は互いに素に近い値にして揃わないようにする。 */
+
+@keyframes fuwa {
+  0%, 100% { transform: rotate(5deg) translateY(0); }
+  50%      { transform: rotate(3.4deg) translateY(-7px); }
+}
+
+@keyframes kira {
+  0%, 100% { opacity: 0.34; transform: scale(0.8) rotate(0deg); }
+  50%      { opacity: 1;    transform: scale(1.14) rotate(24deg); }
+}
+
+@keyframes boyon {
+  0%   { opacity: 0; transform: translateY(12px) rotate(-4deg) scale(0.88); }
+  55%  { opacity: 1; transform: translateY(0) rotate(-1deg) scale(1.07); }
+  78%  { opacity: 1; transform: translateY(0) rotate(0deg) scale(0.975); }
+  100% { opacity: 1; transform: none; }
+}
+
+@keyframes breath {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50%      { transform: scale(1.035) rotate(-0.8deg); }
+}
+
+@keyframes blink {
+  0%, 46%  { opacity: 1; }
+  50%, 96% { opacity: 0.26; }
+  100%     { opacity: 1; }
+}
+
+@keyframes ledPulse {
+  0%, 100% { opacity: 0.78; }
+  50%      { opacity: 1; }
+}
+
+/* クロムの光が字面を流れる。background-position を動かすので
+   これだけは合成でなく再描画になる。要素は1つ、周期9秒に抑える。 */
+@keyframes chromeShift {
+  0%, 100% { background-position: 50% 0%; }
+  50%      { background-position: 50% 100%; }
+}
+
+@keyframes hero-breath {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.008); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ステッカーはふわふわ＋わずかに首を振る */
+  .y2k-sticker--play { animation: fuwa 7s ease-in-out infinite; }
+
+  /* 持ち越しレイヤーの複製は位置指定を外して固定枠に収める */
+  .carry .y2k-sticker--play {
+    position: static;
+    animation: fuwa 7.6s ease-in-out infinite;
+  }
+
+  /* キラはまたたく。2つの周期をずらして同時に光らせない */
+  .y2k-sticker__surface > span { animation: kira 2.4s ease-in-out infinite; }
+  .y2k-sticker__surface::after { animation: kira 3.1s ease-in-out 0.7s infinite; }
+
+  /* 実機のように点滅させる。steps で滑らかにせず、パッと切り替える */
+  .replay-deck.is-playing .replay-deck__top b {
+    animation: blink 2.6s steps(1, end) infinite;
+  }
+
+  /* ゲージが息をする */
+
+  /* 100 のクロムに光を流す */
+
+  /* FVはごく僅かに呼吸させる。入場が終わってから始める */
+  .motion-ready .cover.is-scene-in .cover__keyvisual {
+    animation: hero-breath 16s ease-in-out 1.6s infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [data-reveal],
+  .reveal-ready [data-reveal],
+  .reveal-ready [data-reveal].is-in {
+    opacity: 1;
+    clip-path: none;
+    transform: none;
+    transition: none;
+  }
+  .replay-deck::after { display: none; }
+  .replay-deck__bar i { transform: scaleX(1); transition: none; }
+  .y2k-sticker::before { display: none; }
+  .motion-ready [data-scene-motion] *,
+  .motion-ready [data-scene-motion]::before,
+  .motion-ready [data-scene-motion]::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .motion-ready [data-scene-motion] :where(.scene-label, .scene-title, .scene-text, .karaoke-type, .play-type, .event-date, .price-guide-button),
+  .motion-ready .cover__keyvisual,
+  .motion-ready .cover__info > *,
+  .motion-ready .replay-deck,
+  .motion-ready .replay-deck__top,
+  .motion-ready .replay-deck__play,
+  .motion-ready .replay-deck__track p,
+  .motion-ready .replay-deck__track em,
+  .motion-ready .replay-deck__meta,
+  .motion-ready .plan-time strong,
+  .motion-ready .plan-prices > div,
+  .motion-ready .event-list > div,
+  .motion-ready .event-details .text-link,
+  .motion-ready .final-night__content h2,
+  .motion-ready .final-night__content > p,
+  .motion-ready .final-night__content .cta {
+    opacity: 1;
+    clip-path: none;
+    transform: none;
+  }
+  .cta,
+  .ctabar { transition: none; }
+}
+
+/* ===================== 追加分の reduced-motion ===================== */
+
+@media (prefers-reduced-motion: reduce) {
+  /* スクラブ系は「無効化」ではなく「最終状態に固定」。
+     バーが0のまま残ると壊れて見える。 */
+  .ln > i,
+  .motion-ready [data-scene-motion] .ln > i {
+    transform: none;
+    transition: none;
+  }
+  .motion-ready .replay-deck__bar i { transform: scaleX(1); transition: none; }
+  .scene__pin { transform: none; opacity: 1; }
+  .karaoke-photo img,
+  .memory-photo img,
+  .final-night__photo img { transform: none; will-change: auto; }
+  .karaoke-type,
+  .karaoke-copy,
+  .memory-copy,
+  .final-night__content { transform: none; }
+}
+
+/* ===================== 境界遷移の reduced-motion ===================== */
+
+/* SPでは持ち越しをしない（複製元のステッカー自体が非表示） */
+@media (max-width: 767px) {
+  .carry { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carry { display: none; }
+  .cover__visual,
+  .request-copy,
+  .request-photo,
+  .price-zone__in,
+  .event-zone__in,
+  .final-night__photo { transform: none; }
+  .scene--request::before { opacity: 1; transform: none; }
+  .scene--karaoke .scene__pin,
+  .final-night .scene__pin { clip-path: none; }
+  .scene--play .y2k-sticker--play { opacity: 1; }
+  .price-zone::after { display: none; }
+}
+
+/* ===================== アイドルモーションの reduced-motion ===================== */
+
+/* =========================================================
+   紙の素材システム（案B）
+   ---------------------------------------------------------
+   規則: 線・影・傾きを足していいのは写真とシールとマステだけ。
+   本文・注記・料金表はアミ点の紙に墨で置くだけにする。
+   1画面につき 箔シール1枚 / 版ズレ1箇所 / ちぎれた縁1辺。
+   ========================================================= */
+
+.sheet {
+  position: relative;
+  filter:
+    drop-shadow(0 2px 2px rgba(37, 25, 63, 0.2))
+    drop-shadow(0 16px 26px rgba(37, 25, 63, 0.24));
+}
+
+/* ちぎれ口の繊維。断面が白く毛羽立つのを、一段明るい紙を後ろに敷いて作る */
+.sheet__fiber {
+  position: absolute;
+  inset: 0;
+  background: var(--paper-fiber);
+}
+
+.sheet__face {
+  position: relative;
+  padding: clamp(22px, 3vw, 34px) clamp(18px, 2.6vw, 34px) clamp(40px, 4.4vw, 56px);
+  color: var(--print-ink);
+  /* 折り目 → アミ点 → 細かい粒 → 粗い斑。1層だけだと均一なノイズで紙に見えない */
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(92deg, transparent 44%, rgba(37, 25, 63, 0.045) 48.4%, rgba(255, 255, 255, 0.62) 50.2%, transparent 55%),
+    radial-gradient(circle at 30% 30%, rgba(37, 25, 63, 0.05) 0.7px, transparent 0.8px),
+    var(--grain-fine),
+    var(--grain-coarse);
+  background-size: 100% 100%, 4px 4px, 140px 140px, 320px 320px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.66), inset 0 -1px 0 rgba(37, 25, 63, 0.07);
+}
+
+/* 下辺がちぎれた台紙 */
+.sheet--torn-bottom .sheet__fiber {
+  clip-path: polygon(0 0,100% 0,100% 99.2%,96.4% 100%,92.1% 99%,88.3% 99.9%,83.6% 99.1%,79.2% 100%,74.1% 99%,69.8% 99.8%,64.6% 98.9%,60.2% 100%,55.4% 99.2%,50.1% 99.9%,45.3% 99%,40.8% 100%,35.2% 99.1%,30.6% 99.8%,25.4% 98.9%,20.1% 100%,15.3% 99%,10.2% 99.9%,5.4% 99%,0 99.8%);
+}
+.sheet--torn-bottom .sheet__face {
+  clip-path: polygon(0 0,100% 0,100% 98.6%,96.4% 99.5%,92.1% 98.3%,88.3% 99.4%,83.6% 98.5%,79.2% 99.6%,74.1% 98.4%,69.8% 99.3%,64.6% 98.2%,60.2% 99.5%,55.4% 98.6%,50.1% 99.4%,45.3% 98.3%,40.8% 99.6%,35.2% 98.5%,30.6% 99.3%,25.4% 98.2%,20.1% 99.5%,15.3% 98.4%,10.2% 99.4%,5.4% 98.3%,0 99.2%);
+}
+
+/* 上辺がちぎれた切れ端 */
+.sheet--torn-top .sheet__fiber {
+  clip-path: polygon(0 0.7%,5.3% 0,10.4% 1%,15.2% 0.1%,20.6% 0.9%,26.1% 0,32.3% 0.8%,38.2% 0.1%,44.4% 1%,50.2% 0,56.1% 0.7%,62.4% 0,68.2% 1%,74.3% 0.2%,80.1% 0.8%,86.2% 0,92.4% 0.9%,97.1% 0.1%,100% 0.6%,100% 100%,0 100%);
+}
+.sheet--torn-top .sheet__face {
+  clip-path: polygon(0 1.4%,5.3% 0.6%,10.4% 1.7%,15.2% 0.8%,20.6% 1.6%,26.1% 0.6%,32.3% 1.5%,38.2% 0.8%,44.4% 1.7%,50.2% 0.6%,56.1% 1.4%,62.4% 0.6%,68.2% 1.7%,74.3% 0.9%,80.1% 1.5%,86.2% 0.6%,92.4% 1.6%,97.1% 0.8%,100% 1.3%,100% 100%,0 100%);
+  padding-top: clamp(30px, 3.6vw, 40px);
+}
+
+/* 柱とノンブル。誌面の作法 */
+
+
+/* 見出し。仮名と数字で字間を分け、先頭を光学的に食い込ませる */
+.paper-h {
+  margin: 0 0 clamp(10px, 1.4vw, 14px) -0.055em;
+  color: var(--print-ink);
+  font-size: clamp(1.9rem, 4.6vw, 3rem);
+  font-weight: 900;
+  line-height: 1.13;
+  letter-spacing: -0.055em;
+}
+.paper-h .num { letter-spacing: -0.03em; }
+
+/* ふりがな。読む文字の真上だけに置く */
+.ruby { position: relative; display: inline-block; letter-spacing: -0.03em; }
+.ruby__t {
+  position: absolute;
+  left: 50%;
+  top: -0.46em;
+  transform: translateX(-50%);
+  color: var(--print-accent);
+  font-family: var(--font-mincho);
+  font-size: 0.215em;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  white-space: nowrap;
+}
+
+/* 網掛けのリード。平網ではなく実際の点。格子2枚を半ピッチずらして45度にする */
+.lead-ami {
+  display: inline-block;
+  margin: 0;
+  padding: 7px 13px 8px;
+  color: #2a2040;
+  font-family: var(--font-mincho);
+  font-size: clamp(12px, 1.1vw, 13px);
+  font-weight: 700;
+  line-height: 1.7;
+  background-image:
+    radial-gradient(circle, rgba(37, 25, 63, 0.5) 1.05px, transparent 1.2px),
+    radial-gradient(circle, rgba(37, 25, 63, 0.5) 1.05px, transparent 1.2px);
+  background-size: 5px 5px, 5px 5px;
+  background-position: 0 0, 2.5px 2.5px;
+}
+.lead-ami b { color: var(--print-accent); font-weight: 700; }
+
+/* 紙の上の注記は明朝 */
+.paper-note {
+  margin: 0;
+  color: var(--print-sub);
+  font-family: var(--font-mincho);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.9;
+}
+
+/* 破線の罫 */
+.paper-dash {
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--print-ink) 0 5px, transparent 5px 10px);
+}
+
+/* 紙に押したスタンプ */
+.stamps { display: flex; flex-wrap: wrap; gap: 9px; margin: clamp(14px, 2vw, 18px) 0 0; padding: 0; list-style: none; }
+.stamps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px 7px;
+  border: 1.5px solid var(--print-ink);
+  border-radius: var(--r-paper);
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--print-ink);
+  font-size: 12px;
+  font-weight: 900;
+}
+.stamps li:nth-child(odd) { transform: rotate(-0.9deg); }
+.stamps li:nth-child(even) { transform: rotate(0.7deg); }
+.stamps li::before {
+  flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+  background: #ffd23f;
+  clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 92%, 50% 70%, 21% 92%, 32% 57%, 2% 35%, 39% 35%);
+  content: "";
+}
+
+/* マステ。multiply と粘着の筋の2つが要。どちらか欠けると色の板になる */
+.tape {
+  position: absolute;
+  mix-blend-mode: multiply;
+  clip-path: polygon(0 8%, 4% 0, 96% 5%, 100% 0, 100% 92%, 96% 100%, 4% 95%, 0 100%);
+  pointer-events: none;
+}
+.tape--y {
+  background-image:
+    repeating-linear-gradient(84deg, rgba(255, 255, 255, 0.3) 0 1px, transparent 1px 5px),
+    linear-gradient(102deg, rgba(255, 230, 150, 0.88), rgba(255, 243, 198, 0.7) 44%, rgba(255, 226, 140, 0.9));
+}
+.tape--c {
+  background-image:
+    repeating-linear-gradient(96deg, rgba(255, 255, 255, 0.3) 0 1px, transparent 1px 5px),
+    linear-gradient(96deg, rgba(189, 248, 255, 0.84), rgba(226, 252, 255, 0.66) 46%, rgba(178, 243, 255, 0.88));
+}
+
+/* 写真は「プリント」。白フチはクリーム、影は接地＋環境の2枚 */
+.print {
+  position: relative;
+  margin: 0;
+  padding: 7px 7px 25px;
+  background: var(--paper-photo);
+  box-shadow: var(--shadow-photo);
+}
+.print img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.print figcaption {
+  margin: 7px 3px 0;
+  color: var(--print-sub);
+  font-family: var(--font-hand);
+  font-size: 14px;
+}
+/* 2000年代のプリントの色。マゼンタ寄りの転びと締まらない黒、そして粒子 */
+.print__cast {
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  top: 7px;
+  bottom: 32px;
+  pointer-events: none;
+}
+.print__cast::before,
+.print__cast::after { position: absolute; inset: 0; content: ""; }
+.print__cast::before {
+  mix-blend-mode: soft-light;
+  background: linear-gradient(158deg, rgba(255, 190, 220, 0.5), rgba(255, 236, 190, 0.34) 62%, rgba(150, 190, 255, 0.3));
+}
+.print__cast::after {
+  opacity: 0.5;
+  background-color: rgba(251, 247, 238, 0.1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='1'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.14 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 余白の書き込み。ゲルペンの体 */
+.margin-note {
+  margin: 0;
+  color: #00a8cc;
+  font-family: var(--font-hand);
+  font-size: clamp(17px, 1.7vw, 21px);
+  line-height: 1.5;
+}
+
+/* 墨ベタのボタン */
+.ink-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 15px 10px;
+  border: 1.5px solid var(--print-ink);
+  border-radius: var(--r-paper);
+  background: var(--print-ink);
+  color: var(--paper);
+  font-size: 11.5px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transform: rotate(-0.8deg);
+}
+.ink-button i { font-style: normal; color: #ff8ecb; }
+.ink-button:active { transform: rotate(-0.8deg) translateY(1px); }
+
+/* ===================== PRICE のコラージュ =====================
+   SPは順に積む（絡み合った配置は390pxで成立しない）。
+   PCだけ絶対配置で紙を重ねる。 */
+
+/* パステルの地を机の面に見せる */
+.price-zone::before {
+  background:
+    radial-gradient(120% 80% at 22% 8%, rgba(255, 255, 255, 0.5), transparent 52%),
+    radial-gradient(130% 100% at 78% 96%, rgba(37, 25, 63, 0.2), transparent 58%);
+}
+
+
+/* 巨大な数字。紙の左端で断ち落とす */
+.bignum {
+  position: relative;
+  display: flex;
+  /* flex-end だと箱の底で揃うので、行送り0.72の100に対して
+     「分」が中央あたりに浮いた。ベースラインで揃える */
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: clamp(14px, 2.6vw, 40px);
+  margin-top: clamp(6px, 1vw, 10px);
+  min-height: clamp(112px, 15vw, 182px);
+}
+.bignum__ghost,
+.bignum__ink {
+  font-size: clamp(6.5rem, 15vw, 12.75rem);
+  font-weight: 900;
+  letter-spacing: -0.064em;
+  line-height: 0.72;
+  font-variant-numeric: tabular-nums;
+}
+/* 幽霊とインクを同じ入れ物に入れる。flexのbaseline揃えに対して
+   絶対配置のleft/bottomを当てていたので、基準が食い違って
+   版ズレが30px近くまで開いていた */
+.bignum__stack {
+  position: relative;
+  display: inline-block;
+  margin-left: calc(-1 * clamp(20px, 3.4vw, 58px));
+  line-height: 0.72;
+}
+/* インラインのままだと line-height 0.72 で字が箱から溢れ、
+   絶対配置の基準と70px以上ずれた。両方をブロックにして
+   同じ箱を占めさせ、ずれは transform だけで作る */
+.bignum__ghost,
+.bignum__ink { display: block; }
+.bignum__ghost {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-3px, 3px);
+  color: var(--print-misreg);
+  pointer-events: none;
+}
+.bignum__ink {
+  position: relative;
+  color: var(--magenta);
+  -webkit-text-stroke: 6px var(--print-ink);
+  paint-order: stroke fill;
+}
+.bignum__unit {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(8px, 1vw, 14px);
+}
+.bignum__ja {
+  padding-bottom: 5px;
+  border-bottom: 4px double var(--magenta);
+  color: var(--print-ink);
+  font-family: var(--font-mincho);
+  font-size: clamp(1.9rem, 3.4vw, 2.875rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* 切れ端Bの中身 */
+
+/* 料金表を紙の上に置き直す。ガラスのカードだった指定を打ち消す */
+
+/* 箔シール */
+.foil {
+  display: block;
+  width: clamp(150px, 15vw, 192px);
+  text-align: center;
+  filter:
+    drop-shadow(0 0 5px #fff) drop-shadow(0 0 5px #fff) drop-shadow(0 0 4px #fff)
+    drop-shadow(0 11px 15px rgba(74, 10, 50, 0.36));
+  pointer-events: none;
+}
+.foil__eyebrow {
+  display: inline-block;
+  margin-bottom: 2px;
+  padding: 3px 11px 4px;
+  border-radius: 999px;
+  background: #ff4aa2;
+  color: #fff;
+  font-size: 8.5px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+.foil__word {
+  position: relative;
+  display: block;
+  color: #ff8ecb;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.6vw, 2.125rem);
+  line-height: 1.24;
+  letter-spacing: 0.012em;
+  /* 白フチは親の drop-shadow が作る。膨らみは濃いマゼンタを1pxずつ */
+  text-shadow:
+    0 -1.5px 0 #ffe2f2,
+    0 1px 0 #ff6cb8, 0 2px 0 #fb4ba5, 0 3px 0 #ed2f93,
+    0 4px 0 #d81a80, 0 5px 0 #bd0f6d, 0 6px 0 #9e0759,
+    0 7px 3px rgba(74, 4, 44, 0.4);
+}
+.foil__gloss {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen;
+  background: linear-gradient(104deg, transparent 33%, rgba(255, 255, 255, 0.8) 45%, transparent 55%);
+}
+
+/* ---------- SP：順に積む ---------- */
+@media (max-width: 1149px) {
+  /* 積む配置では最後の要素として地に浮いていた。
+     台紙の右上角にまたがらせる */
+  .tape--a1 { left: -18px; top: 18px; width: 92px; height: 24px; transform: rotate(-30deg); }
+  .tape--b1 { left: 26px; top: -13px; width: 96px; height: 24px; transform: rotate(-6deg); }
+  .tape--b2 { right: 14px; top: -11px; width: 78px; height: 21px; transform: rotate(5deg); }
+}
+
+/* ---------- 広い画面：紙を重ねる ----------
+   当初は絶対配置で座標を当てていたが、写真が料金表の「関西」を
+   覆い隠していた。数値を当てにいくと必ずこうなるので、
+   2カラム＋負マージンで重なりを作る。 */
+@media (min-width: 1150px) {
+  .price-zone { padding-block: clamp(60px, 7vw, 96px); }
+
+
+  /* 写真は2枚の紙の蝶番。Bの上辺にかぶるが、料金の行には触れない */
+
+
+  /* 台紙の面の中、100の右の空きに置く。
+     .collage 基準に置くと写真の上に乗って読めなくなった */
+
+  .tape--a1 { left: -26px; top: 22px; width: 118px; height: 29px; transform: rotate(-30deg); }
+  .tape--b1 { left: 34px; top: -17px; width: 124px; height: 30px; transform: rotate(-6deg); }
+  .tape--b2 { right: 18px; top: -14px; width: 100px; height: 26px; transform: rotate(5deg); }
+}
+
+/* ===================== 各セクションを紙に揃える =====================
+   ガラス面の指定を打ち消して、紙の素材に一本化する。 */
+
+/* --- 01 SONG REQUEST --- */
+.request-copy.sheet { align-self: center; }
+.request-copy .scene-text {
+  max-width: 32em;
+  margin: 14px 0 0;
+  color: rgba(37, 25, 63, 0.78);
+  font-family: var(--font-mincho);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 2;
+}
+/* プレイヤーは「機器を切り抜いて貼った写真」として紙に載せる。
+   独立したUIとして置くと紙と喧嘩する */
+.request-copy .replay-deck {
+  margin-top: 22px;
+  padding: 7px 7px 9px;
+  border: 0;
+  border-radius: 0;
+  background: var(--paper-photo);
+  box-shadow: var(--shadow-photo);
+  transform: rotate(-1.4deg);
+}
+.request-copy .replay-deck > * { position: relative; z-index: 1; }
+.request-copy .replay-deck__top,
+.request-copy .replay-deck__track,
+.request-copy .replay-deck__bar,
+.request-copy .replay-deck__meta { padding-inline: 14px; }
+.request-copy .replay-deck__top { padding-top: 13px; }
+.request-copy .replay-deck__meta { padding-bottom: 12px; }
+.request-copy .replay-deck::after { display: none; }
+/* 盤の面。切り抜きの内側だけ暗くする */
+.request-copy .replay-deck {
+  background-image: linear-gradient(158deg, #251b40 0%, #130e24 52%, #1d1533 100%);
+  background-clip: content-box;
+  background-origin: content-box;
+}
+
+/* --- 03 PLAY TOGETHER --- */
+.play-copy.sheet { align-self: center; }
+.play-copy .sheet__face { padding-top: clamp(30px, 3.6vw, 42px); }
+.play-copy .play-type {
+  color: rgba(37, 25, 63, 0.1);
+  font-size: min(4.6rem, 22cqw);
+}
+.play-copy .scene-title,
+.play-copy .paper-h { color: var(--print-ink); }
+.play-copy .scene-text {
+  max-width: 30em;
+  color: rgba(37, 25, 63, 0.78);
+  font-family: var(--font-mincho);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 2;
+}
+
+/* --- 06 EVENT --- */
+.event-sheet { width: min(760px, 100%); margin-inline: auto; }
+.event-sheet .event-date {
+  margin: 16px 0 0;
+  color: var(--print-ink);
+  font-size: clamp(2rem, 4.4vw, 3.25rem);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+}
+.event-sheet .event-date i {
+  margin-inline: 0.14em;
+  color: var(--magenta);
+  font-style: normal;
+  font-weight: 500;
+}
+.event-sheet .event-list {
+  margin: 24px 0 22px;
+  border-top: 1px solid rgba(37, 25, 63, 0.28);
+}
+.event-sheet .event-list > div {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(37, 25, 63, 0.18);
+}
+.event-sheet .event-list dt {
+  color: var(--print-accent);
+  font-family: var(--font-mincho);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+.event-sheet .event-list dd {
+  margin: 0;
+  color: var(--print-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* --- 02 / 04 / 07 は紙にしない ---
+   コピーの容器が幅いっぱいなので、背面に紙を敷くと写真を覆い尽くした。
+   加えて巨大英字が <p> 経由で明朝になり、書体まで崩れた。
+   誌面には「印刷されたページ」と「全面写真の図版」の両方があるのが
+   普通なので、写真主役の3つは図版のまま白ヌキで通す。
+   混在が問題だったのはガラス面・暗い盤・シール・クロームという
+   4つの素材が同格で争っていたことであって、紙と写真は争わない。 */
+
+/* マステの位置 */
+.tape--e1 { left: 40px; top: -15px; width: 112px; height: 28px; transform: rotate(-5deg); }
+.tape--r1 { right: -20px; top: 30px; width: 104px; height: 27px; transform: rotate(32deg); }
+.tape--p1 { left: 26px; top: -14px; width: 108px; height: 27px; transform: rotate(-6deg); }
+
+@media (max-width: 767px) {
+  .event-sheet .event-list > div { grid-template-columns: 84px minmax(0, 1fr); gap: 10px; }
+  .tape--r1 { right: -12px; top: 22px; width: 82px; height: 22px; }
+}
+
+/* ===================== 紙にした後の破綻の修正 =====================
+
+   1) 03 は「写真1.25fr / コピー0.75fr」の割りに紙のpaddingが入って
+      文字幅が約250pxまで落ち、見出しが語中で折れた（自然/に距/離が縮）。
+      列の比を入れ替え、この節だけ見出しを一段落とす。
+   2) 写真が角丸のカードのままで、紙の言語と噛み合っていなかった。
+      白フチのプリントに揃える。 */
+
+/* --- 写真をプリントに揃える ---
+   下の余白はキャプションが白フチの上に乗る分を確保する。
+   8px だと文字が紙の外（パステルの地）へ落ちて読めなくなる。 */
+.request-photo,
+.play-photo {
+  padding: 7px 7px 24px;
+  border-radius: 0;
+  background: var(--paper-photo);
+  box-shadow: var(--shadow-photo);
+  overflow: visible;
+}
+.request-photo img,
+.play-photo img { border-radius: 0; }
+.request-photo::after,
+.play-photo::after { display: none; }
+
+/* キャプションは写真の外・白フチの下に手書きで置く */
+.request-photo figcaption {
+  position: static;
+  right: auto;
+  bottom: auto;
+  margin: 11px 3px 0;
+  color: var(--print-accent);
+  font-family: var(--font-hand);
+  font-size: clamp(14px, 1.2vw, 16px);
+  line-height: 1.3;
+  text-align: left;
+}
+.play-photo > span {
+  right: auto;
+  left: 10px;
+  bottom: -14px;
+}
+
+/* --- 03 の列の比と文字サイズ --- */
+@media (min-width: 1024px) {
+  .play-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(420px, 0.98fr);
+    gap: clamp(34px, 4vw, 58px);
+  }
+  .play-photo { min-height: 0; }
+  .play-photo img { aspect-ratio: 4 / 3; }
+}
+
+.play-copy .paper-h {
+  font-size: clamp(1.6rem, 2.5vw, 2.15rem);
+  line-height: 1.2;
+}
+/* コンテナ幅の22%だと TOGETHER が面から出て切れる */
+.play-copy .play-type { font-size: min(3.4rem, 15cqw); }
+
+/* 狭い紙では面の余白を詰める */
+.play-copy .sheet__face,
+.request-copy .sheet__face {
+  padding-inline: clamp(16px, 2vw, 26px);
+}
+
+/* --- 01 の紙とプレイヤー --- */
+.request-copy .replay-deck { max-width: 380px; }
+
+/* ===================== SPでの紙の調整 =====================
+   1) 柱が2行に折れて丸囲みの番号と衝突していた
+   2) 網掛けの点が11pxの明朝を潰して読めなくなっていた */
+
+@media (max-width: 767px) {
+
+  /* 12.5pxの明朝の下に点を敷くと必ず沈む。網点は文字が大きい
+     PCだけに残し、SPは平網＋左の罫にする（誌面のリードの別作法） */
+  .lead-ami {
+    padding: 7px 0 7px 12px;
+    border-left: 3px solid var(--print-accent);
+    background-image: none;
+    background-color: rgba(37, 25, 63, 0.055);
+    color: var(--print-ink);
+    font-size: 12.5px;
+    font-weight: 700;
+  }
+
+  .bignum { gap: 10px; }
+
+  /* 見出しの下限が高すぎて「あの頃聴いていた曲を、」が
+     2行に割れ、「を、」が孤立していた */
+  .paper-h { font-size: clamp(1.72rem, 7.4vw, 2.1rem); }
+
+  .sheet__face { padding: 22px 16px 38px; }
+  .sheet--torn-top .sheet__face { padding-top: 28px; }
+
+  .margin-note { font-size: 17px; }
+  .ink-button { font-size: 11px; padding: 9px 13px 10px; }
+}
+
+/* ===================== セクションの枠を外す =====================
+   紙が角丸のパステルカードの中に入っていて、消したかった
+   「同じカードの連続」が枠として残っていた。
+   地は机の面として連続させ、縁を持つのは紙・写真・シールだけにする。
+   （実測: 画面に出ている角丸は 999px=錠剤 / 50%=丸囲み数字 /
+     2px=紙 の3系統に絞られる） */
+
+.scene,
+.information-section,
+.final-night {
+  margin-inline: 0;
+  border-inline: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* 地が続くので、内側の余白でリズムを作る */
+.scene__in,
+.price-zone__in,
+.event-zone__in,
+.play-layout {
+  padding-inline: clamp(18px, 4.5vw, 64px);
+}
+
+@media (max-width: 767px) {
+  .scene,
+  .information-section,
+  .final-night { margin-inline: 0; border-radius: 0; }
+}
+
+/* ===================== 表紙の情報帯を紙にする =====================
+   コラージュ画像は制作物なので触らない。その下の情報帯だけが
+   暗い紫のグラデーションで、旧いガラス期の言語が1箇所だけ
+   残っていた。画像を「紙に貼った図版」として受ける形にする。 */
+
+.cover__stage { background: var(--paper); }
+
+.cover__visual {
+  padding: clamp(8px, 1.2vw, 12px) clamp(8px, 1.2vw, 12px) 0;
+  background: var(--paper-photo);
+}
+
+.cover__info {
+  border-top: 0;
+  padding: clamp(16px, 2.4vw, 24px) var(--gutter) clamp(20px, 3vw, 28px);
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(circle at 30% 30%, rgba(37, 25, 63, 0.05) 0.7px, transparent 0.8px),
+    var(--grain-fine);
+  background-size: 4px 4px, 140px 140px;
+}
+
+.cover__when {
+  color: var(--print-sub);
+  font-family: var(--font-mincho);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+@media (max-width: 767px) {
+  .cover__request {
+    gap: 2px;
+    padding: 0 0 4px;
+    border: 0;
+    border-radius: 0;
+    background: none;
+  }
+  .cover__request span {
+    color: var(--print-accent);
+    font-family: var(--font-mincho);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+  }
+  .cover__request strong {
+    color: var(--print-ink);
+    font-size: 1.32rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+  }
+  .cover__request small {
+    color: var(--print-sub);
+    font-family: var(--font-mincho);
+    font-size: 10.5px;
+    font-weight: 500;
+    line-height: 1.75;
+  }
+}
+
+@media (min-width: 900px) {
+  /* PCでは画像の上に重ねるので紙の地は敷かない */
+  .cover__info { padding: 0; background: none; }
+  .cover__when { color: rgba(255, 255, 255, 0.82); }
+}
+
+/* ===================== 机の上の実物 =====================
+   FVのコラージュは1枚のJPEGなので、その中の物は個別に動かせない。
+   別個体の透過素材を「印刷面の上に置かれた実物」として画面の縁から
+   差し込む。焼き込まれた物とは別個体なので二重にならない。
+
+   外側(.desk__obj)がスクロール視差、内側(span)が浮遊。
+   同じ transform を1要素で2つのアニメーションに奪い合わせない。 */
+
+.desk {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.desk__obj { position: absolute; }
+.desk__obj > span { display: block; }
+.desk__obj img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 14px 22px rgba(20, 8, 34, 0.5));
+}
+
+.desk__obj--star  { width: clamp(96px, 14vw, 196px); left: -4%;  top: -5%; }
+
+.desk__obj--star > span  { transform: rotate(-8deg); }
+
+/* 浮遊。周期を互いに素に近い値にして揃わないようにする */
+@keyframes desk-float-a {
+  0%, 100% { transform: rotate(-8deg) translateY(0); }
+  50%      { transform: rotate(-5.6deg) translateY(-11px); }
+}
+@keyframes desk-float-b {
+  0%, 100% { transform: rotate(6deg) translateY(0); }
+  50%      { transform: rotate(3.4deg) translateY(-14px); }
+}
+@keyframes desk-float-c {
+  0%, 100% { transform: rotate(11deg) translateY(0); }
+  50%      { transform: rotate(8.2deg) translateY(-9px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .desk__obj--star > span  { animation: desk-float-a 7.2s ease-in-out infinite; }
+}
+
+/* スクロール視差。層ごとに係数を変えて奥行きを作る */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .desk__obj--star  { transform: translate3d(0, calc(var(--scene-progress, 0.5) * 54px), 0); }
+}
+
+/* 登場。背景→写真→オブジェクトの順に入れる */
+.motion-ready .desk__obj { opacity: 0; }
+.motion-ready .cover.is-scene-in .desk__obj {
+  opacity: 1;
+  transition: opacity 420ms var(--ease-out);
+}
+.motion-ready .cover.is-scene-in .desk__obj--star  { transition-delay: 300ms; }
+
+/* SPは点数を減らす。ガラケーは焼き込みの個体と近いので落とす */
+@media (max-width: 767px) {
+  .desk__obj--star { width: 96px; left: -6%; top: -3%; }
+  .desk__obj img { filter: drop-shadow(0 8px 14px rgba(20, 8, 34, 0.44)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .y2k-sticker--play,
+  .carry .y2k-sticker--play,
+  .y2k-sticker__surface > span,
+  .y2k-sticker__surface::after,
+  .replay-deck.is-playing .replay-deck__top b,
+  .plan-main::after,
+  .plan-time strong,
+  .motion-ready .cover.is-scene-in .cover__keyvisual,
+  .motion-ready .scene--play.is-scene-in .play-photo > span {
+    animation: none;
+  }
+  /* ボヨンをkeyframesで作ったので、止めた時に見える状態を明示する */
+  .motion-ready .scene--play.is-scene-in .play-photo > span {
+    opacity: 1;
+    transform: none;
+  }
+  .y2k-sticker__surface > span,
+  .y2k-sticker__surface::after { opacity: 1; }
+}
+
+/* ===================== セクションに置く実物 =====================
+   FVのコラージュには物が飽和しているので、CDとガラケーは
+   それが無いセクションへ回す。外側が位置と視差、内側が浮遊。 */
+
+.obj { position: absolute; z-index: 4; pointer-events: none; }
+.obj > span { display: block; }
+.obj img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 12px 20px rgba(37, 25, 63, 0.34));
+}
+
+/* 01：CD-R。スクロール量で回る */
+.obj--disc {
+  width: clamp(112px, 15vw, 214px);
+  right: -3%;
+  top: 8%;
+  transform: rotate(calc(var(--scene-progress, 0) * 210deg));
+}
+
+/* 03：クリアのガラケー */
+.obj--phone {
+  width: clamp(96px, 12.5vw, 178px);
+  left: -3%;
+  bottom: 6%;
+  transform: translate3d(0, calc(var(--scene-progress, 0.5) * -64px), 0) rotate(-14deg);
+}
+
+@keyframes obj-float-a {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-13px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .obj--disc > span { animation: obj-float-a 8.6s ease-in-out infinite; }
+  .obj--phone > span { animation: obj-float-a 6.4s ease-in-out 0.8s infinite; }
+}
+
+.motion-ready .obj { opacity: 0; }
+.motion-ready .is-scene-in .obj {
+  opacity: 1;
+  transition: opacity 420ms var(--ease-out) 340ms;
+}
+
+@media (max-width: 767px) {
+  .obj--disc { width: 104px; right: -6%; top: 3%; }
+  .obj--phone { width: 92px; left: -7%; bottom: 2%; }
+  .obj img { filter: drop-shadow(0 7px 12px rgba(37, 25, 63, 0.3)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desk__obj,
+  .desk__obj > span { animation: none; }
+  .desk__obj { opacity: 1; transform: none; }
+}
+
+/* .scene-photo の overflow:hidden が白フチの下のキャプションを
+   切っていた。プリントは外に出す。 */
+.request-photo,
+.play-photo {
+  display: block;
+  overflow: visible;
+}
+.request-photo figcaption {
+  position: static !important;
+  display: block;
+  right: auto !important;
+  bottom: auto !important;
+  z-index: auto;
+}
+
+/* プリントに変えたので、旧い min-height と height:100% の画像を解く。
+   キャプションを流し込みに戻したため、この2つが残ると
+   白フチの下に空の帯ができてキャプションが切れる。 */
+.request-photo,
+.play-photo {
+  min-height: 0 !important;
+  height: auto;
+}
+.request-photo img,
+.play-photo img {
+  height: auto;
+  aspect-ratio: 3 / 2;
+}
+.play-photo img { aspect-ratio: 4 / 3; }
+
+/* 白フチのプリントの中で画像を scale すると、フチの外へ溢れて
+   キャプションを覆う（実測 箱348px に対して描画407px）。
+   プリントは「物」なので、中身を拡大せず紙ごと動かす。 */
+@media (min-width: 1024px) and (pointer: fine) {
+  .request-photo img,
+  .play-photo img {
+    transform: none;
+    transition: none;
+  }
+  .request-photo { transform: translate3d(0, calc(var(--scene-y-reverse, 0px) * 0.6), 0) rotate(1deg); }
+  .play-photo { transform: translate3d(0, calc(var(--scene-y, 0px) * 0.5), 0) rotate(-1deg); }
+}
+
+/* ===================== 指摘への対応 =====================
+
+   1) 紙の柱の丸囲み番号を外す（右上の「1」）。柱の文言だけで足りる
+   2) 02 から紫を抜き、暗さを緩め、日本語見出しを主役に据える
+      （巨大英字を外したので、大きい文字はこの見出しになる）
+   3) 02 の退場が縮んで薄くなる動きが不自然だったので弱める */
+
+/* --- 1) 丸囲み番号を外す --- */
+
+/* --- 2) 02 KARAOKE：紫を抜く / 明るくする / 文字を大きく --- */
+
+.scene--karaoke { background: #141210; }
+
+/* 覆いを浅くして写真を明るく通す。紫は混ぜない */
+.karaoke-photo::after {
+  background:
+    linear-gradient(90deg, rgba(16, 14, 12, 0.72), rgba(16, 14, 12, 0.2) 56%, rgba(16, 14, 12, 0.06)),
+    linear-gradient(180deg, rgba(16, 14, 12, 0.06), transparent 46%, rgba(16, 14, 12, 0.6));
+}
+
+.scene--karaoke .scene-title {
+  max-width: 16em;
+  font-size: clamp(2.4rem, 5.2vw, 4.4rem);
+  line-height: 1.18;
+  letter-spacing: -0.05em;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.62);
+}
+
+.scene--karaoke .scene-text {
+  max-width: 30em;
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.9;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.scene--karaoke .scene-label { color: rgba(255, 255, 255, 0.82); }
+
+/* --- 3) 退場の動きを弱める --- */
+.scene--karaoke .scene__pin {
+  transform: none;
+  opacity: 1;
+}
+
+/* 01：写真の下に160pxの空きが出ていた。プリントを紙の高さに
+   合わせて伸ばし、右の列を写真が持つようにする。
+   キャプションは流し込みのままなので、画像側を伸縮させる。 */
+@media (min-width: 1024px) {
+  .request-layout { align-items: stretch; }
+  .request-copy.sheet { align-self: start; }
+  .request-photo {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+  }
+  .request-photo img {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    aspect-ratio: auto;
+    object-fit: cover;
+  }
+}
+
+/* ===================== 柱（セクション表記）=====================
+   紙は「曲リクエスト ─ ASOBIBAR Y2K NIGHT」、写真は「02 KARAOKE & TALK」と
+   形式が割れていて、番号も紙側だけ消えていた。
+   番号 / 和名 / 英名 の1形式に統一する。和名はフッターのナビと揃えた。
+   地の明暗が違うので、色だけ currentColor 経由で切り替える。 */
+
+.scene-label {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  margin: 0 0 clamp(14px, 2vw, 20px);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.scene-label b {
+  flex-shrink: 0;
+  color: var(--magenta-bright);
+  font-size: 1.25em;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.scene-label i {
+  flex-shrink: 0;
+  width: 26px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+.scene-label span {
+  flex-shrink: 0;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font-size: 1.16em;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.scene-label em {
+  font-family: var(--font-mincho);
+  font-size: 0.95em;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  opacity: 0.66;
+  white-space: nowrap;
+}
+
+/* 紙の上：墨で組み、下に罫を引く */
+.sheet .scene-label {
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgba(37, 25, 63, 0.3);
+  color: var(--print-sub);
+}
+.sheet .scene-label span { display: inline; color: var(--print-ink); }
+.sheet .scene-label b { color: var(--print-accent); }
+
+/* 写真の上：白ヌキ */
+.scene--karaoke .scene-label,
+.scene--new-memory .scene-label,
+.final-night .scene-label { color: rgba(255, 255, 255, 0.82); }
+
+@media (max-width: 767px) {
+  .scene-label { flex-wrap: wrap; gap: 0.5em 0.6em; font-size: 10px; }
+  .scene-label i { width: 18px; }
+  .scene-label em { letter-spacing: 0.14em; }
+}
+
+/* ===================== 01 と 03 を同じ構成に =====================
+   2カラムの指定が min-width:1024px からだったので、900〜1023px の
+   帯域で1カラムに落ち、右側が空いて写真が紙の下へ回っていた。
+   横並びの下限を 880px まで下げる。
+   03 は写真が左・紙が右だったので、01 と同じ「紙が左・写真が右」に
+   並べ替えた（HTML側も同順にしたので読み上げ順も見出しが先になる）。 */
+
+@media (min-width: 880px) {
+  .request-layout,
+  .play-layout,
+  .price-layout {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    align-items: stretch;
+    gap: clamp(34px, 5vw, 72px);
+  }
+
+  .request-copy.sheet,
+  .play-copy.sheet,
+  .price-copy.sheet { align-self: start; }
+
+  /* プリントは列いっぱいに伸ばす。中の画像を拡大せず紙ごと動かす */
+  .request-photo,
+  .play-photo,
+  .price-photo {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .request-photo img,
+  .play-photo img,
+  .price-photo img {
+    flex: 1 1 auto;
+    min-height: 340px;
+    height: auto;
+    aspect-ratio: auto;
+    object-fit: cover;
+  }
+
+  /* GOOD SHOT! は白フチの左下に掛ける */
+  .play-photo > span { left: 12px; right: auto; bottom: -12px; }
+}
+
+/* ===================== 05 の指摘対応 =====================
+   1) 紙どうしの重なりが不自然 → 積む配置では重ねず、テープで留める
+   2) 水色の手書きが読めない → 紙の上はアクセント（マゼンタ）で書く
+   3) 金額が小さい → 100 との関係が立つ大きさへ
+   4) CTAのトーンが暗い → 墨ベタをやめてブランドのマゼンタに */
+
+/* --- 2) 手書きの色 --- */
+.margin-note { color: var(--print-accent); }
+
+/* --- 3) 金額 --- */
+
+/* --- 4) CTA。暗い墨ベタをやめる --- */
+.ink-button {
+  border-color: var(--magenta);
+  background: var(--magenta);
+  color: #fff;
+  box-shadow: 0 3px 0 #9c1550;
+}
+.ink-button i { color: #ffd7ea; }
+.ink-button:active { transform: rotate(-0.8deg) translateY(2px); box-shadow: 0 1px 0 #9c1550; }
+
+/* --- 1) 積む配置では紙を重ねない --- */
+/* 積む配置で紙が788pxまで広がる一方、中身は狭い段組みのままで
+   右半分が空いていた。紙の幅を中身に合わせて、余りは机として見せる。 */
+@media (min-width: 700px) and (max-width: 1149px) {
+  .bignum__ink,
+  .bignum__ghost { font-size: clamp(9rem, 17vw, 11.5rem); }
+}
+
+/* ===================== 04 と 06 の修正 =====================
+
+   04: .scene__pin が946pxのセクション内で600pxまで潰れ、
+       左右に地の紫が帯として出ていた。
+       セクション側の place-items: center が pin を grid item として
+       中央に縮めていたのが原因。pin は常に全幅で敷く。
+
+   06: 値が左に寄って右側が大きく空いていた。
+       目次のリーダー罫で項目と値をつないで埋める。 */
+
+.scene__pin {
+  width: 100%;
+  justify-self: stretch;
+  align-self: stretch;
+}
+
+.scene--new-memory,
+.final-night {
+  display: block;
+  place-items: initial;
+}
+
+/* 04 のコピーは pin の中で中央に置く */
+@media (min-width: 768px) {
+  .scene--new-memory .scene__pin {
+    display: grid;
+    place-items: center;
+  }
+  .memory-copy { justify-self: center; text-align: center; }
+}
+
+/* --- 06 リーダー罫 --- */
+.event-sheet .event-list > div {
+  display: grid;
+  grid-template-columns: 108px auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0 14px;
+}
+.event-sheet .event-list dd { order: 3; justify-self: end; text-align: right; }
+.event-sheet .event-list > div::after {
+  order: 2;
+  align-self: center;
+  height: 1px;
+  margin: 0 4px;
+  background: repeating-linear-gradient(90deg, rgba(35, 24, 21, 0.42) 0 2px, transparent 2px 6px);
+  content: "";
+}
+
+@media (max-width: 767px) {
+  .event-sheet .event-list > div {
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 6px 10px;
+  }
+  .event-sheet .event-list dd { order: 2; justify-self: start; text-align: left; }
+  .event-sheet .event-list > div::after { display: none; }
+}
+
+/* ===================== 05 を 01・03 と同じ構成に =====================
+   2枚の紙を重ねるコラージュは、幅が変わるたびに紙が細って
+   写真が本文へ食い込む事故が続いた。紙が左・写真が右の
+   2カラムに揃える。 */
+
+.price-layout { display: grid; gap: 42px; width: min(var(--content-max), 100%); margin-inline: auto; }
+.price-zone { position: relative; }
+
+.price-copy .plan-prices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0 0 18px;
+}
+.price-copy .plan-prices > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 0 8px;
+  border: 0;
+  border-bottom: 2px solid var(--print-ink);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.price-copy .plan-prices dt {
+  color: var(--print-accent);
+  font-family: var(--font-mincho);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+.price-copy .plan-prices dd {
+  margin: 0;
+  color: var(--print-ink);
+  font-size: clamp(2.1rem, 3.4vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -0.055em;
+  font-variant-numeric: tabular-nums;
+}
+.price-copy .plan-prices small {
+  display: inline-block;
+  margin-left: 0.1em;
+  font-family: var(--font-mincho);
+  font-size: 0.37em;
+  font-weight: 700;
+  letter-spacing: 0;
+  vertical-align: 0.1em;
+}
+
+.price-rule { margin: clamp(18px, 2.4vw, 26px) 0; }
+.price-copy .paper-note { margin-bottom: 16px; }
+
+/* 箔シールは紙の右上角にまたがらせる */
+.price-foil {
+  position: absolute;
+  right: clamp(10px, 3vw, 48px);
+  /* セクションの上端で帯（Y2K NIGHT）が切れていた */
+  top: clamp(26px, 4vw, 54px);
+  z-index: 4;
+  transform: rotate(8deg);
+}
+
+@media (max-width: 879px) {
+  .price-layout { gap: 26px; }
+  .price-copy .plan-prices { grid-template-columns: 1fr; gap: 14px; }
+  .price-foil { right: 6px; top: 14px; transform: rotate(7deg) scale(0.86); }
+}
+
+/* ===================== 左右の余白を1つに揃える =====================
+   実測で 43 / 82 / 93 / 38 / 0 と5段階にばらけていた。
+   セクションごとに padding を足していった結果なので、
+   中身を包む要素に同じ値を1回だけ与える形にする。 */
+
+:root { --pad-x: clamp(18px, 4.5vw, 64px); }
+
+.scene__in,
+.play-layout,
+.price-zone__in,
+.event-zone__in,
+.karaoke-copy,
+.memory-copy,
+.final-night__content {
+  padding-inline: var(--pad-x);
+}
+
+/* セクション側に足されていた分を打ち消す */
+.information-section { padding-inline: 0; }
+.price-zone__in,
+.event-zone__in { width: min(var(--content-max), 100%); margin-inline: auto; }
+.event-sheet { width: 100%; }
+
+/* 02 は右に22%のpaddingで余白を作っていた。
+   余白ではなく本文の最大幅で決める */
+.karaoke-copy { padding-right: var(--pad-x); }
+.scene--karaoke .scene-title { max-width: 15em; }
+.scene--karaoke .scene-text { max-width: 27em; }
+
+/* 04・07 は中身が全幅に接していた */
+.memory-copy,
+.final-night__content { width: min(var(--content-max), 100%); margin-inline: auto; }
+
+/* ===================== 主従と文字サイズ =====================
+   実測: 見出しが 44.2 / 50 / 25.6 / 57.7 / 44.2 / 44.2 / 35.6 と割れ、
+   03 だけ 25.6px（列が狭かった頃の上限が残っていた）。
+   写真(438) が紙(373) より広く、主従も逆だった。 */
+
+/* 紙を主、写真を従にする */
+@media (min-width: 880px) {
+  .request-layout,
+  .play-layout,
+  .price-layout {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  }
+}
+
+/* 見出しの基準を1つに戻す */
+.paper-h {
+  font-size: clamp(2.15rem, 5.6vw, 3.5rem);
+  line-height: 1.16;
+  /* <br> を固定すると幅が変わったとき「まる。」のような孤立が出る。
+     行数はブラウザに均等割りさせる */
+  text-wrap: balance;
+}
+/* 03 の個別の上限を解除（01・05・06 と同じ基準に戻す） */
+.play-copy .paper-h { font-size: clamp(2.15rem, 5.6vw, 3.5rem); line-height: 1.16; }
+
+/* 本文。11〜13pxは紙の上では小さすぎた */
+.request-copy .scene-text,
+.play-copy .scene-text {
+  font-size: clamp(14px, 1.55vw, 16.5px);
+  line-height: 1.95;
+}
+.paper-note { font-size: clamp(12px, 1.2vw, 13px); line-height: 1.85; }
+.lead-ami { font-size: clamp(13px, 1.35vw, 14.5px); }
+
+/* 07 は中身が中央寄せで左に183pxの空きが出ていた */
+.final-night__content { margin-inline: 0; }
+.final-night__content h2 { font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.2; }
+.final-night__content > p { font-size: clamp(14px, 1.4vw, 16.5px); }
+
+@media (max-width: 879px) {
+  .paper-h,
+  .play-copy .paper-h { font-size: clamp(1.72rem, 7.4vw, 2.2rem); }
+}
+
+/* 07 だけ margin-left: auto で右寄せになっていて、
+   左に183pxの空きが出ていた。他セクションと同じ左揃えにする。 */
+.final-night__content .scene-label,
+.final-night__content h2,
+.final-night__content > p {
+  max-width: 24em;
+  margin-left: 0;
+}
+.final-night__content > p { max-width: 30em; }
+.cta--final { margin: 32px auto 0 0; }
+
+/* ===================== 04 シール帳 =====================
+   中央のコピーには重ねない。縁だけに置く。
+   プリクラの帯は「写真の上に置いた物」なので通常合成で影を落とし、
+   シールは乗算で写真に沈ませる。乗算は暗い地の上では消えるので、
+   縁だけ薄い白を敷いてから掛ける。 */
+
+.album {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* 乗算が効くための下地。中央は透明のまま */
+.album__wash {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(58% 46% at 50% 50%, transparent 58%, rgba(255, 252, 244, 0.3) 100%),
+    linear-gradient(90deg, rgba(255, 252, 244, 0.22), transparent 26%, transparent 74%, rgba(255, 252, 244, 0.22));
+}
+
+.album__ink { position: absolute; inset: 0; mix-blend-mode: multiply; }
+
+/* --- プリクラの帯 --- */
+.purikura {
+  position: absolute;
+  /* 中央のコピーに触れないよう、帯の半分は画面外に出す */
+  left: clamp(-72px, -5vw, -34px);
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: clamp(96px, 11vw, 138px);
+  padding: 7px 7px 5px;
+  background: var(--paper-photo);
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4), 0 16px 30px rgba(0, 0, 0, 0.44);
+  transform: translateY(-50%) rotate(-3.2deg);
+}
+.purikura__cell {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 2 / 3;
+  background: #241c18;
+}
+.purikura__cell img { width: 100%; height: 100%; object-fit: cover; }
+.purikura__cell:nth-child(1) img { object-position: 52% 40%; }
+.purikura__cell:nth-child(2) img { object-position: 58% 45%; }
+.purikura__cell:nth-child(3) img { object-position: 50% 42%; }
+.purikura__foot {
+  padding-top: 3px;
+  color: var(--print-accent);
+  font-family: var(--font-hand);
+  font-size: 12px;
+  text-align: center;
+}
+
+/* --- 縁のシール --- */
+.seal { position: absolute; display: grid; place-items: center; }
+
+.seal--holo {
+  right: clamp(14px, 4vw, 64px);
+  top: clamp(40px, 9vh, 96px);
+  padding: 9px 15px 10px;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(108deg, rgba(255, 255, 255, 0.5) 0 5px, transparent 5px 11px),
+    linear-gradient(124deg, #d8f0f7, #e7dcf6 24%, #fbd9e8 46%, #dcf6e6 68%, #e4e6fa 88%, #fbd9e8);
+  box-shadow: 0 0 0 3px #fff, 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: rotate(8deg);
+}
+.seal--holo b {
+  color: #8c245d;
+  font-family: var(--font-display);
+  font-size: clamp(12px, 1.3vw, 15px);
+  letter-spacing: -0.02em;
+}
+
+.seal--date {
+  right: clamp(30px, 7vw, 118px);
+  bottom: clamp(50px, 11vh, 118px);
+  padding: 5px 12px 6px;
+  background: #ffd23f;
+  box-shadow: 0 0 0 2.5px #fff, 0 5px 10px rgba(0, 0, 0, 0.28);
+  color: #3a2a06;
+  font-family: var(--font-mincho);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  transform: rotate(-5deg);
+}
+
+.seal--heart {
+  right: clamp(10px, 3vw, 44px);
+  bottom: clamp(140px, 26vh, 250px);
+  width: clamp(28px, 3.2vw, 42px);
+  transform: rotate(-12deg);
+}
+.seal--heart svg { width: 100%; height: auto; fill: #ff4aa2; filter: drop-shadow(0 0 0 #fff) drop-shadow(0 0 3px #fff); }
+
+.seal--star {
+  left: clamp(130px, 15vw, 210px);
+  top: clamp(34px, 8vh, 84px);
+  width: clamp(26px, 3vw, 40px);
+  aspect-ratio: 1;
+  background: linear-gradient(160deg, #fff6c8, #ffd23f 54%, #c9901c);
+  clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 92%, 50% 70%, 21% 92%, 32% 57%, 2% 35%, 39% 35%);
+  transform: rotate(-14deg);
+}
+
+.seal--kira {
+  left: clamp(150px, 17vw, 250px);
+  bottom: clamp(60px, 13vh, 140px);
+  width: clamp(20px, 2.4vw, 32px);
+  aspect-ratio: 1;
+  background: #fff;
+  clip-path: polygon(50% 0, 57% 43%, 100% 50%, 57% 57%, 50% 100%, 43% 57%, 0 50%, 43% 43%);
+  transform: rotate(10deg);
+}
+
+/* 入場。写真とコピーの間に差し込む */
+.motion-ready .album { opacity: 0; }
+.motion-ready .scene--new-memory.is-scene-in .album {
+  opacity: 1;
+  transition: opacity 520ms var(--ease-out) 240ms;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .purikura { animation: desk-float-a 9.2s ease-in-out infinite; }
+  .seal--holo { animation: breath 6.4s ease-in-out infinite; }
+  .seal--kira { animation: kira 2.8s ease-in-out infinite; }
+}
+
+/* SPは点数を減らす */
+@media (max-width: 767px) {
+  .purikura { width: 78px; left: -30px; padding: 5px 5px 4px; }
+  .purikura__foot { font-size: 10px; }
+  .seal--star,
+  .seal--kira { display: none; }
+  .seal--holo { right: 10px; top: 26px; padding: 7px 12px 8px; }
+  .seal--date { right: 14px; bottom: 30px; }
+  .seal--heart { right: 8px; bottom: 96px; width: 26px; }
+  .album__wash { background: linear-gradient(90deg, rgba(255,252,244,0.2), transparent 30%, transparent 70%, rgba(255,252,244,0.2)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .obj, .obj > span { animation: none; }
+  .obj { opacity: 1; }
+  .obj--disc { transform: rotate(24deg); }
+  .obj--phone { transform: rotate(-14deg); }
+}
+
+.memory-copy .scene-title { max-width: 15em; margin-inline: auto; }
+.memory-copy { max-width: 44em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .purikura, .seal--holo, .seal--kira { animation: none; }
+  .album { opacity: 1; }
+}
