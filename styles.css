@@ -4544,3 +4544,22 @@ a { color: inherit; }
       rgba(20, 6, 30, 0.52)
     );
 }
+
+/* ===================== SPの写真を小さくする =====================
+   実測すると 01・03 とも写真が画面幅の91%（355px）を占め、
+   紙と同じ幅で並んでいた。紙が主・写真が従の関係が出ないうえ、
+   縦スクロールで写真が場所を取りすぎる。
+   幅を絞って中央に置き、紙との差をつける。 */
+
+@media (max-width: 767px) {
+  .request-photo,
+  .play-photo {
+    width: min(78%, 300px);
+    margin-inline: auto;
+  }
+  /* 幅が減るぶん、高さの下限も下げる（余った箱が出ないように） */
+  .request-photo { min-height: 0; }
+  .play-photo { min-height: 0; }
+  .request-photo img,
+  .play-photo img { aspect-ratio: 4 / 3; }
+}
