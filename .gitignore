@@ -24,3 +24,4 @@ assets/*
 .claude/
 !assets/play-together-sticker.webp
 !assets/hero-group.jpg
+!assets/date-sticker.webp

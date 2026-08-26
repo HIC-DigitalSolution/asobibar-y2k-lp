@@ -4146,3 +4146,87 @@ a { color: inherit; }
   transform: none;
   opacity: 1;
 }
+
+/* ===================== 05 リードの網掛け =====================
+   実測: 文字 15px / 色 #2a2040 の真下に
+   rgba(37,25,63,.5) の点（半径1.05px）を敷いていた。
+   点と字画が同じ太さで干渉し、読みにくくなっていた。
+   コード内に「12.5pxの下に点を敷くと必ず沈む」と書いて
+   SPだけ平網に逃がしてあったが、PCでも同じことが起きていた。
+   全幅で平網＋左の罫に統一する。紫も同時に外す。 */
+
+.lead-ami,
+.price-info .lead-ami {
+  padding: 9px 14px 10px 13px;
+  border-left: 3px solid var(--print-accent);
+  background-image: none;
+  background-color: rgba(35, 24, 21, 0.055);
+  color: var(--print-ink);
+  font-size: clamp(13px, 1.15vw, 15px);
+  line-height: 1.65;
+}
+
+/* ===================== 05 シールの沈み =====================
+   山吹イエロー(#ffd233)は紙のクリーム(#fbf7ee)と明度が近く、
+   紙に乗った半分が沈んでいた（背景の藤色に乗った半分は読める）。
+   白フチは藤色との分離には効くが、クリームとの分離には効かない。
+   字そのものを一段深い琥珀に落とし、押し出しを濃い茶へ伸ばす。 */
+
+.price-foil {
+  width: clamp(132px, 13vw, 168px);
+}
+
+.price-foil .foil__word {
+  color: #f7a80c;
+  font-size: clamp(1.3rem, 2.1vw, 1.75rem);
+  line-height: 1.14;
+  text-shadow:
+    0 -1.5px 0 #ffe9a8,
+    0 1px 0 #e08f04, 0 2px 0 #c97c02, 0 3px 0 #b06900,
+    0 4px 0 #955700, 0 5px 0 #7b4700, 0 6px 0 #5f3600,
+    0 7px 3px rgba(50, 26, 2, 0.46);
+}
+
+/* ===================== 05 CTAをホバーで押し込む =====================
+   :active と同じ「押された状態」をホバーでも見せる。
+   box-shadow の 3px が土台なので、その分だけ沈めて影を1pxに
+   落とすと、実際に押し込まれたように見える。
+   タッチ環境では hover が張り付くので (hover: hover) で囲う。 */
+
+@media (hover: hover) and (pointer: fine) {
+  .price-info .ink-button {
+    transition:
+      transform 120ms var(--ease-out),
+      box-shadow 120ms var(--ease-out);
+  }
+  .price-info .ink-button:hover {
+    /* rotate を書かないと基準の傾き(-0.8deg)が消えて
+       ホバーの瞬間だけ水平に戻ってしまう */
+    transform: rotate(-0.8deg) translateY(2px);
+    box-shadow: 0 1px 0 #9c1550;
+  }
+  .price-info .ink-button:hover i { color: #fff; }
+}
+
+/* ===================== 04 日付シールを画像へ =====================
+   CSSで組んだ黄色のピルから、支給素材のクロム／ホロ箔に差し替え。
+   絵柄が自前で白フチと光沢を持つので、こちらで足すのは
+   落ち影だけにする。 */
+
+.album__ink .seal--date {
+  display: block;
+  width: clamp(112px, 12vw, 176px);
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+  transform: rotate(-6deg);
+}
+
+.album__ink .seal--date img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 520 / 132;
+}
