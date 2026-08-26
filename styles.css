@@ -4751,3 +4751,17 @@ body { padding-bottom: 0; }
 @media (max-width: 767px) {
   .foot nav { gap: 0 12px; }
 }
+
+/* ===================== 写真セクションの見出し書体統一 =====================
+   02・04・07だけ丸みの強いディスプレイ書体だったため、
+   01・03・05・06と同じ太い角ゴシックへ揃える。
+   写真上の白抜きと版ズレ表現は可読性とシーンの強弱として残す。 */
+.scene--karaoke .scene-title,
+.scene--new-memory .scene-title,
+.memory-copy .scene-title,
+.final-night__content h2 {
+  font-family: var(--font-main);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  line-height: 1.28;
+}
