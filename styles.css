@@ -4765,17 +4765,3 @@ body { padding-bottom: 0; }
   letter-spacing: -0.045em;
   line-height: 1.28;
 }
-
-/* 04 SP：非表示だった右側のプリクラ帯を復活。
-   左右とも約25〜30pxだけ見せ、中央のコピー領域は侵食しない。 */
-@media (max-width: 767px) {
-  .purikura--r {
-    display: block;
-    left: auto;
-    right: -66px;
-    top: -8%;
-    bottom: -8%;
-    width: 84px;
-    transform: rotate(2.4deg);
-  }
-}
