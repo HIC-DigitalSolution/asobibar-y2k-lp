@@ -27,3 +27,5 @@ assets/*
 !assets/date-sticker.webp
 !assets/wall/
 !assets/wall/*
+!assets/font/
+!assets/font/*
