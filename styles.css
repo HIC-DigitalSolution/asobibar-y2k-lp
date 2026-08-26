@@ -4508,3 +4508,44 @@ a { color: inherit; }
 
 /* 長押しで持ち上がる直前の予兆。押している実感を出す */
 [data-peel].is-arming { scale: 0.97; }
+
+/* ===================== 剥がれる手応え =====================
+   持ち上げるだけでは「浮いた」に留まり、剥がした感じが出ない。
+   掴んだ側の辺が紙から浮くように、3Dで傾ける。
+
+   transform は回転（rotate(5deg)など）が使っているので触れない。
+   独立した rotate プロパティを使う。これは transform より先に
+   適用され、両方が合成される。3Dを効かせるため、親に
+   perspective を置く（要素側に perspective() を書くと
+   transform を奪ってしまうため）。 */
+
+.scene--play,
+.album__ink,
+.price-zone__in {
+  perspective: 900px;
+}
+
+[data-peel] {
+  /* JSが掴んだ位置から軸と符号を決める */
+  rotate: var(--peel-ax, 1) var(--peel-ay, 0) 0 var(--peel-deg, 0deg);
+  transform-origin: var(--peel-ox, 50%) var(--peel-oy, 50%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-peel] {
+    transition:
+      scale 200ms var(--ease-back),
+      rotate 200ms var(--ease-out),
+      filter 200ms var(--ease-out);
+  }
+  [data-peel].is-dragging { transition: none; }
+}
+
+/* 剥がれている間は、浮いた辺の側に影を落として厚みを見せる */
+[data-peel].is-lifted {
+  filter:
+    drop-shadow(
+      calc(var(--peel-sx, 0) * 14px) calc(var(--peel-sy, 1) * 16px) 16px
+      rgba(20, 6, 30, 0.52)
+    );
+}

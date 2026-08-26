@@ -509,9 +509,34 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
       el.classList.remove("is-arming");
     };
 
+    /* 掴んだ位置から「どの辺が浮くか」を決める。
+       右端を掴めば右辺が浮く＝左辺を軸にY回転、という具合。
+       軸は掴んだ点から遠い辺に置くので、transform-origin は反対側。 */
+    const setPeel = (cx, cy) => {
+      const b = el.getBoundingClientRect();
+      const nx = (cx - b.left) / b.width - 0.5; /* -0.5〜0.5 */
+      const ny = (cy - b.top) / b.height - 0.5;
+      /* 掴んだ方向が強い軸を採用する。両方使うと捻れて見える */
+      const useY = Math.abs(nx) >= Math.abs(ny);
+      const amt = Math.min(1, Math.abs(useY ? nx : ny) / 0.5);
+      const deg = (14 + amt * 12).toFixed(1);
+
+      el.style.setProperty("--peel-ax", useY ? "0" : "1");
+      el.style.setProperty("--peel-ay", useY ? "1" : "0");
+      /* Y軸回転は右が浮くとき負、X軸回転は下が浮くとき正 */
+      const sign = useY ? (nx > 0 ? 1 : -1) : ny > 0 ? -1 : 1;
+      el.style.setProperty("--peel-deg", `${sign * deg}deg`);
+      el.style.setProperty("--peel-ox", useY ? (nx > 0 ? "0%" : "100%") : "50%");
+      el.style.setProperty("--peel-oy", useY ? "50%" : ny > 0 ? "0%" : "100%");
+      /* 影は浮いた辺と反対へ落とす */
+      el.style.setProperty("--peel-sx", useY ? (nx > 0 ? "-1" : "1") : "0");
+      el.style.setProperty("--peel-sy", useY ? "0.6" : ny > 0 ? "-1" : "1");
+    };
+
     const lift = () => {
       armed = true;
       el.classList.remove("is-arming");
+      setPeel(startX, startY);
       el.classList.add("is-lifted", "is-dragging");
       /* 持ち上げた合図。対応端末だけ鳴る */
       if (navigator.vibrate) navigator.vibrate(8);
@@ -526,6 +551,8 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
       active = null;
       disarm();
       el.classList.remove("is-lifted", "is-dragging");
+      /* 貼り直す。傾きは戻すが位置は残す */
+      el.style.setProperty("--peel-deg", "0deg");
     };
 
     el.addEventListener("pointerdown", (ev) => {
