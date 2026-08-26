@@ -4232,3 +4232,82 @@ a { color: inherit; }
   height: auto;
   aspect-ratio: 520 / 132;
 }
+
+/* ===================== 06 の下：記憶の壁 =====================
+   06 は情報が「表」で、ページ内で唯一 photography も動きも無い面
+   だった。読み終えるとそのまま07の暗い写真へ落ちる。
+   FVが「たくさん作れそう」に見えるのは断片の数なので、
+   ここも大きい絵1枚ではなく、断片を横に流して量で見せる。
+   04 のプリクラ帯と同じ仕組み（複製した組を translate で送る）。 */
+
+.wall {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(18px, 2.6vw, 34px) 0 clamp(26px, 3.4vw, 44px);
+  /* 紙面と07の暗い写真の間の踊り場。地は触らず、端だけ落とす */
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.wall__track {
+  display: flex;
+  width: max-content;
+}
+
+.wall__set {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: clamp(12px, 1.4vw, 22px);
+  padding-right: clamp(12px, 1.4vw, 22px);
+}
+
+/* 1枚ずつがプリント。白フチと落ち影で「貼った物」にする */
+.wall__cell {
+  display: block;
+  flex: 0 0 auto;
+  width: clamp(104px, 11vw, 158px);
+  padding: 7px 7px 9px;
+  background: var(--paper-photo);
+  box-shadow: 0 2px 3px rgba(37, 25, 63, 0.24), 0 12px 22px rgba(37, 25, 63, 0.26);
+}
+
+.wall__cell img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+/* 角度は1枚ずつ振る。等間隔に見せないための最小限のばらつき */
+.wall__cell:nth-child(4n + 1) { transform: rotate(-2.4deg); }
+.wall__cell:nth-child(4n + 2) { transform: rotate(1.8deg); }
+.wall__cell:nth-child(4n + 3) { transform: rotate(-1.2deg); }
+.wall__cell:nth-child(4n + 4) { transform: rotate(2.6deg); }
+
+/* 空の1枠。ここだけ中身が無く、読み手を指す */
+.wall__cell--you {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1 / 1;
+  border: 2px dashed rgba(176, 23, 94, 0.5);
+  background: rgba(255, 255, 255, 0.55);
+}
+.wall__cell--you b {
+  color: var(--print-accent);
+  font-family: var(--font-hand);
+  font-size: clamp(13px, 1.2vw, 16px);
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@keyframes wall-flow {
+  from { transform: translate3d(0, 0, 0); }
+  /* 2組なので半分送ると次の同一組が同じ位置に来る */
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .wall__track { animation: wall-flow 64s linear infinite; }
+}
