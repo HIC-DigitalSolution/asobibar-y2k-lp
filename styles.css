@@ -4219,7 +4219,8 @@ a { color: inherit; }
   display: block;
   /* 176pxだと 520x132 の帯が高さ45pxまで潰れ、
      クロムの階調が出ずに安く見えていた。倍近くまで上げる */
-  width: clamp(168px, 22vw, 320px);
+  /* チケット型は 520x132 の帯より縦があるので幅は少し抑える */
+  width: clamp(160px, 20vw, 300px);
   padding: 0;
   border-radius: 0;
   background: none;
@@ -4232,7 +4233,7 @@ a { color: inherit; }
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 520 / 132;
+  aspect-ratio: 640 / 177;
 }
 
 /* ===================== 06 の下：記憶の壁 =====================
