@@ -74,8 +74,15 @@ for fn, name, url in FONTS:
     dst = OUT / f"{name}.woff2"
     subprocess.run([
         subset, str(src), f"--text={text}", f"--output-file={dst}",
-        "--flavor=woff2", "--layout-features=", "--no-hinting",
-        "--desubroutinize", "--name-IDs=", "--drop-tables+=DSIG",
+        "--flavor=woff2",
+        # OpenType機能は残す。空で渡すと kern（カーニング）、
+        # palt（和文の詰め）、ccmp（濁点などの合成）まで消えて、
+        # 字間が緩み約物の位置がずれる。縦組みは使わないので
+        # vert/vrt2/vkna だけ落とす。
+        "--layout-features=*",
+        "--layout-features-=vert,vrt2,vkna",
+        "--no-hinting", "--desubroutinize",
+        "--name-IDs=", "--drop-tables+=DSIG",
     ], check=True)
     a, b = src.stat().st_size, dst.stat().st_size
     total_before += a; total_after += b
