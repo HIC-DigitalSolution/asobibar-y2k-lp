@@ -361,9 +361,9 @@ a { color: inherit; }
 
 .scene--request {
   background:
-    radial-gradient(circle at 84% 18%, rgba(217, 255, 255, 0.84), transparent 31%),
-    radial-gradient(circle at 12% 82%, rgba(255, 211, 237, 0.76), transparent 31%),
-    linear-gradient(142deg, #89dcf1 0%, #a99bed 52%, #f5a7cd 100%);
+    radial-gradient(circle at 84% 18%, rgba(230, 247, 242, 0.48), transparent 30%),
+    radial-gradient(circle at 12% 82%, rgba(255, 211, 230, 0.72), transparent 31%),
+    linear-gradient(142deg, #ddc9dc 0%, #b6a7d8 52%, #e7b1ca 100%);
 }
 
 .scene--request::before {
@@ -636,140 +636,47 @@ a { color: inherit; }
   content: "";
 }
 
-.play-photo > span {
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
-  z-index: 2;
-  padding: 8px 15px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 999px;
-  color: var(--ivory);
-  background: rgba(8, 9, 11, 0.54);
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  backdrop-filter: blur(8px);
-}
-
 .play-copy {
   align-self: center;
   /* .play-type をカラム幅基準で組むための計測元 */
   container-type: inline-size;
 }
 
-/* ===================== POP BALLOON STICKERS =====================
-   角丸のホログラムプレートではなく、参照画像のように「文字そのものが
-   ダイカットされたシール」として組む。
-
-   白フチは -webkit-text-stroke ではなく、親に白の drop-shadow を
-   重ねて作る。理由は2つ:
-   - text-stroke は paint-order を付けても、内側の膨らみを作る
-     text-shadow が必ずフチの後ろへ回り込んで見えなくなる
-   - drop-shadow なら small・strong・✦ をまとめた「合体シルエット」の
-     外側にフチが付くので、実物のダイカットと同じ挙動になる
-   ぼかし付きの白を3枚重ねると α が積算して約7pxの実線フチになる。 */
+/* ===================== PLAY TOGETHER STICKER =====================
+   ブラウザ依存の疑似文字レイヤーを廃止し、表面・側面・白フチを
+   1枚のSVG内で固定。縮小時も各層がずれず、文字の輪郭を保つ。 */
 
 .y2k-sticker {
   position: absolute;
   z-index: 6;
   width: clamp(178px, 15vw, 236px);
   padding: 0;
-  overflow: visible;   /* 文字の外へフチを出すので切らない */
+  overflow: visible;
   background: none;
   clip-path: none;
-  filter:
-    drop-shadow(0 0 5px #fff)
-    drop-shadow(0 0 5px #fff)
-    drop-shadow(0 0 4px #fff)
-    drop-shadow(0 0 3px #fff)
-    drop-shadow(0 0 2px #fff)
-    drop-shadow(0 10px 12px rgba(74, 10, 50, 0.36));
-  font-family: var(--font-display);
-  text-align: center;
+  filter: drop-shadow(0 15px 14px rgba(74, 10, 50, 0.26));
   pointer-events: none;
 }
 
 .y2k-sticker__surface {
   position: relative;
-  display: grid;
-  gap: 5px;
-  place-items: center;
+  display: block;
   width: 100%;
   height: auto;
   padding: 0;
   overflow: visible;
   background: none;
   clip-path: none;
-  line-height: 1;
-  text-align: center;
 }
 
-/* プレートを廃した時点で、板の上を走る艶は掛ける面が無い */
-.y2k-sticker::before { display: none; }
-
-.y2k-sticker__surface small,
-.y2k-sticker__surface strong,
-.y2k-sticker__surface span { position: relative; z-index: 2; }
-
-/* 見出しは小さいピンクのカプセル。フチは親の drop-shadow が付ける */
-.y2k-sticker__surface small {
-  align-self: center;
-  padding: 3px 9px 4px;
-  border-radius: 999px;
-  background: #ff4aa2;
-  color: #fff;
-  font-family: var(--font-main);
-  font-size: 7.5px;
-  font-weight: 900;
-  letter-spacing: 0.14em;
+.y2k-sticker__surface img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
-/* 膨らんだ風船文字。面は明るいピンクで、下方向へ濃いマゼンタを
-   1pxずつ積んで厚みを作る。上が明るく見えるので光源は上になる。 */
-.y2k-sticker__surface strong {
-  align-self: center;
-  color: #ff8ecb;
-  font-size: clamp(1.5rem, 2.35vw, 2.05rem);
-  /* 影を下へ7px積むので、行間はそれを越える必要がある。
-     1.04だと2行目が1行目の影に食い込んで潰れた。 */
-  line-height: 1.3;
-  /* 詰めすぎると隣の字の影と溶けて1つの塊になる */
-  letter-spacing: 0.012em;
-  text-shadow:
-    /* 上の縁だけ淡い色を覗かせて、光源が上にあることを示す */
-    0 -1.5px 0 #ffe2f2,
-    /* 下へ濃いマゼンタを1pxずつ積んで厚みにする */
-    0 1px 0 #ff6cb8,
-    0 2px 0 #fb4ba5,
-    0 3px 0 #ed2f93,
-    0 4px 0 #d81a80,
-    0 5px 0 #bd0f6d,
-    0 6px 0 #9e0759,
-    0 7px 3px rgba(74, 4, 44, 0.4);
-}
-
-/* きらめき。参照画像の白い4条の光 */
-.y2k-sticker__surface > span {
-  position: absolute;
-  right: 2%;
-  top: 24%;
-  z-index: 3;
-  color: #fff;
-  font-size: clamp(0.9rem, 1.25vw, 1.2rem);
-  text-shadow: 0 0 5px #fff, 0 0 10px #ff4aa2, 0 0 18px #ff4aa2;
-}
-
-.y2k-sticker__surface::after {
-  position: absolute;
-  left: 3%;
-  bottom: 12%;
-  z-index: 3;
-  color: #fff;
-  font-size: 0.58em;
-  text-shadow: 0 0 4px #fff, 0 0 9px #ff4aa2, 0 0 15px #ff4aa2;
-  content: "\2726";
-}
+.y2k-sticker::before,
+.y2k-sticker__surface::after { display: none; }
 
 .y2k-sticker--play {
   left: calc(50% + clamp(18px, 5vw, 72px));
@@ -1095,8 +1002,13 @@ a { color: inherit; }
 }
 
 @media (min-width: 900px) {
+  /* コラージュの原寸(1536px)で止めていたため、1680px以上の画面で
+     地の紫が左右に出ていた（1920pxで192px、2560pxで512px）。
+     object-fit: cover なので、全幅にしても letterbox にはならず
+     上下が切れるだけ。1536を超える分は拡大になるが、
+     1920で1.25倍。紫の板が出るより見え方は良い。 */
   .cover__stage {
-    width: min(1536px, 100%);
+    width: 100%;
     aspect-ratio: 3 / 2;
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
   }
@@ -1127,13 +1039,13 @@ a { color: inherit; }
     gap: clamp(48px, 7vw, 96px);
   }
   .request-copy { transform: translateY(18px); }
-  .request-photo { min-height: 480px; transform: translateY(-16px) rotate(1deg); }
+  .request-photo { min-height: 480px; transform: translateY(-16px) rotate(3deg); }
   .play-layout {
     grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
     align-items: center;
     gap: clamp(52px, 7vw, 100px);
   }
-  .play-photo { min-height: 520px; transform: translateY(18px) rotate(-1deg); }
+  .play-photo { min-height: 520px; transform: translateY(18px) rotate(-3.5deg); }
   .play-copy {
     padding: clamp(24px, 3vw, 38px);
     border: 1px solid rgba(255, 255, 255, 0.54);
@@ -1144,8 +1056,8 @@ a { color: inherit; }
     backdrop-filter: blur(9px);
   }
   .reveal-ready .request-copy[data-reveal].is-in { transform: translateY(18px); }
-  .reveal-ready .request-photo[data-reveal].is-in { transform: translateY(-16px) rotate(1deg); }
-  .reveal-ready .play-photo[data-reveal].is-in { transform: translateY(18px) rotate(-1deg); }
+  .reveal-ready .request-photo[data-reveal].is-in { transform: translateY(-16px) rotate(3deg); }
+  .reveal-ready .play-photo[data-reveal].is-in { transform: translateY(18px) rotate(-3.5deg); }
   .reveal-ready .play-copy[data-reveal].is-in { transform: translateY(-22px); }
 }
 
@@ -1173,7 +1085,6 @@ a { color: inherit; }
   .play-photo { min-height: 360px; }
   .play-layout { gap: 30px; padding-top: 10px; }
   .play-photo img { object-position: 59% 50%; }
-  .y2k-sticker--play { display: none; }
   .scene--new-memory { min-height: 560px; }
   .memory-photo img { object-position: 48% 50%; }
   .memory-copy { align-self: end; padding-top: 190px; }
@@ -1304,25 +1215,6 @@ a { color: inherit; }
 
 .motion-ready .scene--karaoke.is-scene-in .scene-title { transition-delay: 430ms; }
 .motion-ready .scene--karaoke.is-scene-in .scene-text { transition-delay: 540ms; }
-
-/* PLAY: 写真、バッジ、背景タイポ、コピーを別々に到着させる。
-   背景タイポの出現は行マスク(.ln)が担う。 */
-.motion-ready .play-photo > span {
-  opacity: 0;
-  transform: translateY(10px) rotate(-3deg) scale(0.94);
-  transition: opacity 420ms ease-out, transform 560ms var(--ease);
-}
-
-.motion-ready .scene--play.is-scene-in .play-photo > span {
-  opacity: 1;
-  transition-delay: 480ms;
-  /* 着地でボヨンと弾んでから、微呼吸のループへ引き継ぐ。
-     同じ transform を2本のアニメーションで奪い合うが、
-     後から始まった方が勝つので受け渡しになる。 */
-  animation:
-    boyon 620ms var(--ease-back) 480ms both,
-    breath 5.4s ease-in-out 1150ms infinite;
-}
 
 .motion-ready .scene--play.is-scene-in .scene-title { transition-delay: 390ms; }
 .motion-ready .scene--play.is-scene-in .scene-text { transition-delay: 500ms; }
@@ -1827,7 +1719,6 @@ a { color: inherit; }
 .scene__pin { position: relative; }
 
 @media (min-width: 768px) {
-  .scene--karaoke,
   .scene--new-memory,
   .final-night {
     display: block;
@@ -1839,7 +1730,8 @@ a { color: inherit; }
      真っ黒な空走が残っていた。1画面に戻す。 */
   .final-night { height: auto; min-height: 100svh; }
 
-  .scene__pin {
+  .scene--new-memory .scene__pin,
+  .final-night .scene__pin {
     position: sticky;
     top: 0;
     display: grid;
@@ -1847,7 +1739,20 @@ a { color: inherit; }
     overflow: hidden;
   }
 
-  .scene--karaoke .scene__pin { align-items: end; }
+  /* 02は内容が1画面で完結するため、stickyの空走を作らない。 */
+  .scene--karaoke {
+    height: auto;
+    min-height: clamp(620px, 82svh, 760px);
+  }
+  .scene--karaoke .scene__pin {
+    position: relative;
+    top: auto;
+    display: grid;
+    min-height: clamp(620px, 82svh, 760px);
+    height: auto;
+    overflow: hidden;
+    align-items: end;
+  }
   .scene--new-memory .scene__pin { place-items: center; }
   .final-night .scene__pin { align-items: center; }
 }
@@ -1878,7 +1783,8 @@ a { color: inherit; }
   .final-night__content { transform: translate3d(0, calc(var(--pin, 0) * -54px), 0); }
 
   /* 抜ける直前に画面ごと少し退く。次のシーンが上から乗る余地を作る */
-  .scene__pin {
+  .scene--new-memory .scene__pin,
+  .final-night .scene__pin {
     transform: scale(calc(1 - 0.045 * var(--exit, 0)));
     opacity: calc(1 - 0.4 * var(--exit, 0));
   }
@@ -1910,36 +1816,15 @@ a { color: inherit; }
     transform: translateY(calc(var(--leave, 0) * -12%));
   }
 
-  /* 02の写真は下から開く。inset の1つ目を削ると下側から見えてくる */
-  .scene--karaoke .scene__pin {
-    clip-path: inset(calc((1 - var(--enter, 1)) * 100%) 0 0 0);
-  }
+  /* 02の写真は最初から見せる。旧clip-pathが上側に黒い空白を
+     作っていたため撤去。 */
+  .scene--karaoke .scene__pin { clip-path: none; }
 
   /* --- 3. 02 → 03 文字が先行 ---
      .play-type だけ --enter の最初の35%で入れ切る。02の写真が
      まだ抜けている途中に、03の文字が先に画面へ入る。 */
 
-  /* --- 4. 03 → 04 残留 --- */
-  /* 元のステッカーは境界の手前で消し、固定レイヤーの複製に渡す */
-  .scene--play .y2k-sticker--play {
-    opacity: calc(1 - min(1, var(--leave, 0) / 0.34));
-  }
-
-  .carry {
-    position: fixed;
-    right: clamp(24px, 6vw, 90px);
-    top: clamp(80px, 12vh, 150px);
-    z-index: 70;
-    pointer-events: none;
-    /* 0.30→0.46 で現れ、0.62→0.9 で消える */
-    opacity: calc(
-      min(1, max(0, (var(--carry, 0) - 0.3) / 0.16)) *
-        (1 - min(1, max(0, (var(--carry, 0) - 0.62) / 0.28)))
-    );
-    transform: translateY(calc(var(--carry, 0) * -40px)) rotate(calc(5deg - var(--carry, 0) * 7deg));
-  }
-
-  /* --- 5. 04 → 05 明転。暗いシーンから紙面へ持ち上げる --- */
+  /* --- 4. 04 → 05 明転。暗いシーンから紙面へ持ち上げる --- */
   .price-zone::after {
     position: absolute;
     inset: 0;
@@ -1950,7 +1835,7 @@ a { color: inherit; }
     content: "";
   }
 
-  /* --- 6. 05 → 06 横スライド。上下運動を一度だけ横に振る --- */
+  /* --- 5. 05 → 06 横スライド。上下運動を一度だけ横に振る --- */
   .price-zone__in {
     transform: translateX(calc(var(--leave, 0) * -3%));
   }
@@ -1960,7 +1845,7 @@ a { color: inherit; }
       scale(calc(1 - 0.03 * var(--leave, 0)));
   }
 
-  /* --- 7. 06 → 07 落下。全体で唯一の上→下 --- */
+  /* --- 6. 06 → 07 落下。全体で唯一の上→下 --- */
   /* clip-path で下から詰めると、--enter が1に届かない位置で
      下辺が切れ、地色（ほぼ黒）が板で出る。写真の寄りと
      本文のリビールで足りるので落とす。 */
@@ -2021,16 +1906,6 @@ a { color: inherit; }
 @media (prefers-reduced-motion: no-preference) {
   /* ステッカーはふわふわ＋わずかに首を振る */
   .y2k-sticker--play { animation: fuwa 7s ease-in-out infinite; }
-
-  /* 持ち越しレイヤーの複製は位置指定を外して固定枠に収める */
-  .carry .y2k-sticker--play {
-    position: static;
-    animation: fuwa 7.6s ease-in-out infinite;
-  }
-
-  /* キラはまたたく。2つの周期をずらして同時に光らせない */
-  .y2k-sticker__surface > span { animation: kira 2.4s ease-in-out infinite; }
-  .y2k-sticker__surface::after { animation: kira 3.1s ease-in-out 0.7s infinite; }
 
   /* ゲージが息をする */
 
@@ -2109,13 +1984,7 @@ a { color: inherit; }
 
 /* ===================== 境界遷移の reduced-motion ===================== */
 
-/* SPでは持ち越しをしない（複製元のステッカー自体が非表示） */
-@media (max-width: 767px) {
-  .carry { display: none; }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .carry { display: none; }
   .cover__visual,
   .request-copy,
   .request-photo,
@@ -2655,12 +2524,6 @@ a { color: inherit; }
   line-height: 1.3;
   text-align: left;
 }
-.play-photo > span {
-  right: auto;
-  left: 10px;
-  bottom: -14px;
-}
-
 /* --- 03 の列の比と文字サイズ --- */
 @media (min-width: 1024px) {
   .play-layout {
@@ -2879,22 +2742,11 @@ a { color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   .y2k-sticker--play,
-  .carry .y2k-sticker--play,
-  .y2k-sticker__surface > span,
-  .y2k-sticker__surface::after,
   .replay-deck.is-playing .replay-deck__top b,
   .plan-main::after,
-  .motion-ready .cover.is-scene-in .cover__keyvisual,
-  .motion-ready .scene--play.is-scene-in .play-photo > span {
+  .motion-ready .cover.is-scene-in .cover__keyvisual {
     animation: none;
   }
-  /* ボヨンをkeyframesで作ったので、止めた時に見える状態を明示する */
-  .motion-ready .scene--play.is-scene-in .play-photo > span {
-    opacity: 1;
-    transform: none;
-  }
-  .y2k-sticker__surface > span,
-  .y2k-sticker__surface::after { opacity: 1; }
 }
 
 /* ===================== セクションに置く実物 =====================
@@ -2993,8 +2845,8 @@ a { color: inherit; }
     transform: none;
     transition: none;
   }
-  .request-photo { transform: translate3d(0, calc(var(--scene-y-reverse, 0px) * 0.6), 0) rotate(1deg); }
-  .play-photo { transform: translate3d(0, calc(var(--scene-y, 0px) * 0.5), 0) rotate(-1deg); }
+  .request-photo { transform: translate3d(0, calc(var(--scene-y-reverse, 0px) * 0.6), 0) rotate(3deg); }
+  .play-photo { transform: translate3d(0, calc(var(--scene-y, 0px) * 0.5), 0) rotate(-3.5deg); }
 }
 
 /* ===================== 指摘への対応 =====================
@@ -3014,7 +2866,7 @@ a { color: inherit; }
 .karaoke-photo::after {
   background:
     linear-gradient(90deg, rgba(16, 14, 12, 0.72), rgba(16, 14, 12, 0.2) 56%, rgba(16, 14, 12, 0.06)),
-    linear-gradient(180deg, rgba(16, 14, 12, 0.06), transparent 46%, rgba(16, 14, 12, 0.6));
+    linear-gradient(180deg, transparent 0 54%, rgba(16, 14, 12, 0.6));
 }
 
 .scene--karaoke .scene-title {
@@ -3173,8 +3025,6 @@ a { color: inherit; }
     object-fit: cover;
   }
 
-  /* GOOD SHOT! は白フチの左下に掛ける */
-  .play-photo > span { left: 12px; right: auto; bottom: -12px; }
 }
 
 /* ===================== 05 の指摘対応 =====================
@@ -3201,11 +3051,6 @@ a { color: inherit; }
 /* --- 1) 積む配置では紙を重ねない --- */
 /* 積む配置で紙が788pxまで広がる一方、中身は狭い段組みのままで
    右半分が空いていた。紙の幅を中身に合わせて、余りは机として見せる。 */
-@media (min-width: 700px) and (max-width: 1149px) {
-  .bignum__ink,
-  .bignum__ghost { font-size: clamp(9rem, 17vw, 11.5rem); }
-}
-
 /* ===================== 04 と 06 の修正 =====================
 
    04: .scene__pin が946pxのセクション内で600pxまで潰れ、
@@ -3417,11 +3262,9 @@ a { color: inherit; }
 .final-night__content > p { max-width: 30em; }
 .cta--final { margin: 32px auto 0 0; }
 
-/* ===================== 04 シール帳 =====================
-   中央のコピーには重ねない。縁だけに置く。
-   プリクラの帯は「写真の上に置いた物」なので通常合成で影を落とし、
-   シールは乗算で写真に沈ませる。乗算は暗い地の上では消えるので、
-   縁だけ薄い白を敷いてから掛ける。 */
+/* ===================== 04 プリクラストリーム =====================
+   写真をすべて別カットにし、左の画面外からはみ出す帯として
+   下から上へ途切れず流す。中央のコピーとは重ねない。 */
 
 .album {
   position: absolute;
@@ -3430,71 +3273,56 @@ a { color: inherit; }
   pointer-events: none;
 }
 
-/* 乗算が効くための下地。中央は透明のまま */
-.album__wash {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(58% 46% at 50% 50%, transparent 58%, rgba(255, 252, 244, 0.3) 100%),
-    linear-gradient(90deg, rgba(255, 252, 244, 0.22), transparent 26%, transparent 74%, rgba(255, 252, 244, 0.22));
-}
+.album__ink { position: absolute; inset: 0; }
 
-.album__ink { position: absolute; inset: 0; mix-blend-mode: multiply; }
-
-/* --- プリクラの帯 --- */
+/* --- 画面外を通るプリクラ帯 --- */
 .purikura {
   position: absolute;
-  /* 中央のコピーに触れないよう、帯の半分は画面外に出す */
-  left: clamp(-72px, -5vw, -34px);
-  top: 50%;
+  left: clamp(-74px, -4.8vw, -40px);
+  top: -12%;
+  bottom: -12%;
+  width: clamp(118px, 11.5vw, 168px);
+  overflow: hidden;
+  transform: rotate(-6deg);
+  filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.42));
+}
+.purikura__track {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  width: clamp(96px, 11vw, 138px);
-  padding: 7px 7px 5px;
-  background: var(--paper-photo);
-  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4), 0 16px 30px rgba(0, 0, 0, 0.44);
-  transform: translateY(-50%) rotate(-3.2deg);
+  width: 100%;
+  will-change: transform;
+}
+@keyframes purikura-flow {
+  from { transform: translate3d(0, 0, 0); }
+  /* 3組中の1組分だけ送る。次の同一組が同じ位置へ来るため、
+     画面高にかかわらずループの継ぎ目が露出しない。 */
+  to { transform: translate3d(0, -33.333333%, 0); }
+}
+.purikura__set {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 9px;
+  padding: 5px 6px 9px;
 }
 .purikura__cell {
   display: block;
   overflow: hidden;
-  aspect-ratio: 2 / 3;
+  aspect-ratio: 4 / 5;
+  border: 5px solid var(--paper-photo);
   background: #241c18;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.34);
 }
 .purikura__cell img { width: 100%; height: 100%; object-fit: cover; }
-.purikura__cell:nth-child(1) img { object-position: 52% 40%; }
-.purikura__cell:nth-child(2) img { object-position: 58% 45%; }
-.purikura__cell:nth-child(3) img { object-position: 50% 42%; }
-.purikura__foot {
-  padding-top: 3px;
-  color: var(--print-accent);
-  font-family: var(--font-hand);
-  font-size: 12px;
-  text-align: center;
-}
+.purikura__cell:nth-child(1) img { object-position: 52% 42%; }
+.purikura__cell:nth-child(2) img { object-position: 60% 45%; }
+.purikura__cell:nth-child(3) img { object-position: 50% 40%; }
+.purikura__cell:nth-child(4) img { object-position: 54% 44%; }
+.purikura__cell:nth-child(5) img { object-position: 40% 48%; }
+.purikura__cell:nth-child(6) img { object-position: 52% 46%; }
 
 /* --- 縁のシール --- */
 .seal { position: absolute; display: grid; place-items: center; }
-
-.seal--holo {
-  right: clamp(14px, 4vw, 64px);
-  top: clamp(40px, 9vh, 96px);
-  padding: 9px 15px 10px;
-  border-radius: 999px;
-  background:
-    repeating-linear-gradient(108deg, rgba(255, 255, 255, 0.5) 0 5px, transparent 5px 11px),
-    /* ラベンダー（#e7dcf6 / #e4e6fa）を抜き、水色→桃→若草→クリームで組む */
-    linear-gradient(124deg, #d8f0f7, #fbd9e8 26%, #dcf6e6 50%, #fff3cf 74%, #fbd9e8);
-  box-shadow: 0 0 0 3px #fff, 0 6px 12px rgba(0, 0, 0, 0.3);
-  transform: rotate(8deg);
-}
-.seal--holo b {
-  color: #8c245d;
-  font-family: var(--font-display);
-  font-size: clamp(12px, 1.3vw, 15px);
-  letter-spacing: -0.02em;
-}
 
 .seal--date {
   right: clamp(30px, 7vw, 118px);
@@ -3546,21 +3374,25 @@ a { color: inherit; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .purikura { animation: desk-float-a 9.2s ease-in-out infinite; }
-  .seal--holo { animation: breath 6.4s ease-in-out infinite; }
+  .purikura__track { animation: purikura-flow 28s linear infinite; }
   .seal--kira { animation: kira 2.8s ease-in-out infinite; }
 }
 
 /* SPは点数を減らす */
 @media (max-width: 767px) {
-  .purikura { width: 78px; left: -30px; padding: 5px 5px 4px; }
-  .purikura__foot { font-size: 10px; }
+  .purikura {
+    left: -50px;
+    top: -8%;
+    bottom: -8%;
+    width: 96px;
+    transform: rotate(-4.5deg);
+  }
+  .purikura__set { gap: 6px; padding: 4px 4px 6px; }
+  .purikura__cell { border-width: 4px; }
   .seal--star,
   .seal--kira { display: none; }
-  .seal--holo { right: 10px; top: 26px; padding: 7px 12px 8px; }
   .seal--date { right: 14px; bottom: 30px; }
   .seal--heart { right: 8px; bottom: 96px; width: 26px; }
-  .album__wash { background: linear-gradient(90deg, rgba(255,252,244,0.2), transparent 30%, transparent 70%, rgba(255,252,244,0.2)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3573,59 +3405,50 @@ a { color: inherit; }
 .memory-copy .scene-title { max-width: 15em; margin-inline: auto; }
 .memory-copy { max-width: 44em; }
 
-/* ===================== 04 PLAY TOGETHER：整理 =====================
-   指示書の優先順位 1.写真 2.PLAY TOGETHER 3.GOOD SHOT! 4.最小限のホログラム。
+/* ===================== 03 PLAY TOGETHER：整理 =====================
+   指示書の優先順位 1.写真 2.PLAY TOGETHER 3.最小限のホログラム。
    クリアのガラケーは4項目に無いので撤去した。
    残す3つは「増やさず、サイズ差を強める」方向で扱う。 */
 
 @media (min-width: 880px) {
-  /* 奥＝紙／中＝写真／前＝シール。3つの層をはっきり分ける。
-     写真は紙に噛ませたうえで、右は画面の外まで抜く。
-     抜く量＝(画面幅 - コンテンツ幅)/2 ＋ 内側の余白 ＋ 行き過ぎ分。
-     calc に min()/max() を入れ子にすると宣言ごと落ちる環境が
-     あるので、外側の clamp 1つで収める。 */
-  .scene--play {
-    --play-bleed: clamp(80px, calc(50vw - var(--content-max) / 2 + 4.5vw + 64px), 900px);
-  }
-
-  /* 1. 写真を主役に。列で 6:4 を作り、右は画面外へ */
+  /* 01と同じ「左＝紙、右＝写真」の比率・余白へ統一する。
+     旧ルールの40:60＋画面外への大きなbleedは、文字列を狭めて
+     改行と重なりを起こしていたため撤去。 */
   .play-layout {
-    align-items: center;
-    grid-template-columns: minmax(0, 40%) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    align-items: stretch;
+    gap: clamp(34px, 5vw, 72px);
   }
   .play-photo {
     z-index: 2;
-    margin-left: -10%;
-    margin-right: calc(-1 * var(--play-bleed));
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    margin: 0;
     width: auto;
-    max-width: none;
+    max-width: 100%;
   }
-  .play-copy.sheet { z-index: 1; }
+  .play-photo img {
+    flex: 1 1 auto;
+    min-height: 340px;
+    height: auto;
+    aspect-ratio: auto;
+    object-fit: cover;
+  }
+  .play-copy.sheet { z-index: 1; align-self: start; }
 
   /* 2. PLAY TOGETHER のシールは、紙と写真の継ぎ目にまたがせる。
      右端に置くと写真の上に完全に乗ってしまい、層の境目が見えない。 */
   .y2k-sticker--play {
     /* 38%だと TOGETHER の左端が柱（03 ── 遊ぶ）の罫線に乗ったので、
        継ぎ目をまたぐ範囲を保ったまま右へ寄せる */
-    left: 41%;
+    left: 50%;
     right: auto;
     top: clamp(22px, 3.6vw, 54px);
     width: clamp(216px, 20vw, 300px);
   }
-  .y2k-sticker--play .y2k-sticker__surface strong {
-    font-size: clamp(1.6rem, 2.7vw, 2.4rem);
-  }
-
-  /* 3. GOOD SHOT! は写真の右が画面外へ抜けるので左下へ */
-  .play-photo > span {
-    left: 20px;
-    right: auto;
-    bottom: -13px;
-    font-size: 11px;
-    letter-spacing: 0.06em;
-  }
-
-  /* 4. 3層パララックス。奥10px / 中25px / 前55px。
+  /* 3. 3層パララックス。奥・中・前の順に移動量を変える。
      --scene-y は -40〜+40px なので係数で割り当てる。
      どれも入場ルール (0,4,0) に負けていたので id で書き、
      スクラブ対象の transition は切る（残すと値が追従しない）。 */
@@ -3633,11 +3456,11 @@ a { color: inherit; }
      「シールが一緒にスクロールしてくる」見え方になった。
      層の順序（奥＜中＜前）は保ったまま、全体を1/3に落とす。 */
   #play .play-copy {
-    transform: translate3d(0, calc(-22px + var(--scene-y, 0px) * 0.12), 0);
+    transform: translate3d(0, calc(var(--scene-y, 0px) * 0.12), 0);
     transition: none;
   }
   #play .play-photo {
-    transform: translate3d(0, calc(18px + var(--scene-y, 0px) * 0.3), 0) rotate(-1deg);
+    transform: translate3d(0, calc(var(--scene-y-reverse, 0px) * 0.6), 0) rotate(-3.5deg);
     transition: none;
   }
   /* シールは登場のポップ（rotate＋scale）を殺さないよう、
@@ -3650,20 +3473,19 @@ a { color: inherit; }
 
 /* SPは写真のはみ出しを止める */
 @media (max-width: 879px) {
+  /* 1カラムへ切り替わる幅では紙と写真の継ぎ目がないため、
+     PC用のダイカットシールを無理に重ねない。 */
+  .y2k-sticker--play { display: none; }
   .play-photo { width: auto; margin-left: 0; }
 }
 
-/* ===================== 06 PRICE：100を図版にする =====================
-   これまで 100 は紙の1カラムに収まる「数字情報」だった（最大144px）。
-   指示書のとおり画面の4割強を占める図版として扱う。
-   紙の左端を突き抜け、右に情報を積む。読みやすさは落とさない。 */
+/* ===================== 05 PRICE ===================== */
 
 .price-zone__in { position: relative; }
 .price-copy { width: 100%; }
 
 .price-main { margin-top: clamp(16px, 2.4vw, 30px); }
 
-/* 100 は行送りを潰して、字の箱そのものを図版の面にする */
 .bignum {
   display: flex;
   align-items: baseline;
@@ -3672,18 +3494,6 @@ a { color: inherit; }
   min-height: 0;
   margin: 0;
 }
-.bignum__stack { line-height: 0.72; }
-.bignum__ghost,
-.bignum__ink {
-  font-size: clamp(7rem, 34vw, 26rem);
-  line-height: 0.72;
-  letter-spacing: -0.07em;
-}
-/* 紙の左端を突き抜けさせる */
-.bignum__stack { margin-left: calc(-1 * clamp(14px, 4.6vw, 76px)); }
-.bignum__unit { padding-bottom: clamp(6px, 1.4vw, 20px); }
-.bignum__ja { font-size: clamp(1.9rem, 5vw, 4rem); }
-
 /* 情報は 100 の右へ。一瞬で読める順に積む */
 .price-info { display: flex; flex-direction: column; gap: clamp(14px, 1.8vw, 22px); }
 .price-info .lead-ami { align-self: flex-start; }
@@ -3706,7 +3516,7 @@ a { color: inherit; }
     top: clamp(-18px, -1vw, -6px);
     z-index: 3;
     width: clamp(180px, 19vw, 260px);
-    transform: rotate(3.4deg);
+    transform: rotate(2.8deg);
   }
   .price-photo img { aspect-ratio: 4 / 3; }
   .price-foil { right: clamp(200px, 22vw, 300px); top: clamp(-14px, -0.6vw, -4px); }
@@ -3715,7 +3525,8 @@ a { color: inherit; }
 }
 
 @media (max-width: 999px) {
-  .price-photo { width: min(300px, 70%); margin: 22px auto 0; transform: rotate(-2.6deg); }
+  /* SPは紙が縦積みなので、PC（+2.8deg）と逆に振ってリズムを作る */
+  .price-photo { width: min(300px, 70%); margin: 22px auto 0; transform: rotate(-3deg); }
   .price-foil { right: 4px; top: 10px; transform: rotate(7deg) scale(0.86); }
   .price-copy .plan-prices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -3839,12 +3650,9 @@ a { color: inherit; }
 }
 .replay-deck__play:active { transform: scale(0.94); }
 
-/* ===================== 01 SONG REQUEST：pin と段送り =====================
-   実測の問題:
-   ・ラベル6つのうち Y2K REPLAY は柱と重複、受付中 は REQUEST MODE と重複 → 削除
-   ・CD 262px がデッキ 380px の視線を奪っていた（装飾＞PLAYER）
-   ・セクション高 715px＝1画面未満で、段送りの尺が無かった
-   pinで尺を作り、pin区間を7段に割る。 */
+/* ===================== 01 SONG REQUEST：コンパクトな段送り =====================
+   200vhのpinが上下に大きな色面を作っていたため、通常スクロールへ戻す。
+   UIの段送りはセクションがviewportを通過する進捗で駆動する。 */
 
 /* 上の帯はラベル1つになったので右へ寄せる */
 .replay-deck__top { justify-content: flex-end; }
@@ -3870,14 +3678,13 @@ a { color: inherit; }
 }
 
 @media (min-width: 880px) {
-  /* pinの尺。PCは100vh分 */
-  .scene--request { height: 200vh; }
+  .scene--request { height: auto; }
   .scene--request .scene__in {
-    position: sticky;
-    top: 0;
+    position: relative;
+    top: auto;
     display: grid;
-    align-content: center;
-    min-height: 100svh;
+    align-content: normal;
+    min-height: 0;
   }
 
   /* 段はJSが 0→1 のランプ（--s-*）で渡す。CSSは掛けるだけ */
@@ -3912,7 +3719,7 @@ a { color: inherit; }
   .reveal-ready .request-photo[data-reveal].is-in {
     transform:
       translate3d(0, calc(var(--scene-y-reverse, 0px) * 0.6), 0)
-      rotate(1deg)
+      rotate(3deg)
       scale(calc(1 + 0.035 * var(--s-photo, 0)));
     /* 登場時の transform transition が残っていると、
        スクラブした値がそのトランジションに食われて動かない。
@@ -3921,14 +3728,19 @@ a { color: inherit; }
   }
 }
 
-/* SPはpinしない（走行距離を食うため） */
+/* どの幅でも通常スクロール。上下余白だけ同じ基準で整える。 */
 @media (max-width: 879px) {
   .scene--request { height: auto; }
   .scene--request .scene__in { position: static; min-height: 0; }
 }
+.scene--request .scene__in {
+  padding-block: clamp(36px, 5vw, 64px);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .purikura, .seal--holo, .seal--kira { animation: none; }
+  .purikura__track,
+  .seal--kira { animation: none; }
+  .purikura__track { transform: translate3d(0, -12%, 0); will-change: auto; }
   .album { opacity: 1; }
 }
 
@@ -4047,7 +3859,7 @@ a { color: inherit; }
     z-index: 2;
     width: auto;
     margin: 0;
-    transform: rotate(2deg);
+    transform: rotate(2.8deg);
   }
 
   /* 箔シールは紙と写真の継ぎ目へ。03と同じ扱い */
@@ -4057,3 +3869,81 @@ a { color: inherit; }
     top: clamp(-10px, -0.4vw, 0px);
   }
 }
+
+/* ===================== 01–03 境界の最終調整 =====================
+   .scene の共通 margin-block からbodyの淡色背景が帯状に見えていた。
+   01と全幅写真の02は連続するシーンとして接続し、余分な帯を出さない。 */
+.scene--request,
+.scene--karaoke {
+  margin-block: 0;
+}
+
+/* ===================== セクション間の隙間を閉じる =====================
+   実測すると 02 以降すべての境界に約24pxの隙間があり、
+   body の地（linear-gradient の #eadbff）が薄紫の帯として出ていた。
+   暗い写真セクション（02・04）の下でとくに目立つ。
+   PCでは各セクションを突き合わせる。SPのカード表現はそのまま。 */
+
+@media (min-width: 768px) {
+  .scene,
+  .information-section,
+  .final-night {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+/* ===================== 05：写真を外して余白を整える =====================
+   右の列だった写真を外したので、2カラムのままだと右half が空く。
+   紙1枚を中央に置き、読む幅を本文として適正な範囲に収める。 */
+
+@media (min-width: 880px) {
+  .price-zone__in {
+    display: block;
+    max-width: 760px;
+  }
+  .price-copy { width: auto; }
+  /* 箔シールは紙の右上角に戻す */
+  .price-foil {
+    left: auto;
+    right: clamp(-8px, -0.4vw, 0px);
+    top: clamp(-12px, -0.8vw, -4px);
+  }
+}
+
+/* ===================== 01：写真を紙より控えめに =====================
+   実測 紙529px / 写真476px で、面積比は 0.94倍。
+   ほぼ互角で「紙が主、写真が従」の関係が出ていなかった。
+   列比を 53:47 → 60:40 にして、傾きも右へ少し強める。 */
+
+@media (min-width: 880px) {
+  .scene--request .scene__in.request-layout {
+    grid-template-columns: minmax(0, 58%) minmax(0, 1fr);
+  }
+  .request-photo,
+  .reveal-ready .request-photo[data-reveal].is-in {
+    transform:
+      translate3d(0, calc(var(--scene-y-reverse, 0px) * 0.6), 0)
+      rotate(4deg)
+      scale(calc(1 + 0.035 * var(--s-photo, 0)));
+    transition: none;
+  }
+}
+
+/* 100 の数字ブロックを外したので、price-main は情報1列だけになった。
+   入れ子の箱を1つ減らし、要素間を一定のリズムで積む */
+.price-main { display: block; margin-top: clamp(18px, 2.2vw, 28px); }
+/* flex-start だと金額の表も注記も中身の幅までしか伸びず、
+   紙の右半分が空いて見えた。幅は紙に沿わせ、
+   「物」であるボタンだけ左に置く。 */
+.price-info {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(18px, 2.2vw, 26px);
+  padding-bottom: 0;
+}
+.price-info .lead-ami,
+.price-info .ink-button { align-self: flex-start; }
+.price-info .plan-prices { margin: 0; }
+.price-copy .paper-note { margin-bottom: 0; }

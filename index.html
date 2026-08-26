@@ -27,8 +27,8 @@
       href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&amp;family=Shippori+Mincho:wght@500;700&amp;family=Zen+Kaku+Gothic+New:wght@500;700;900&amp;family=Zen+Kurenaido&amp;display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=183" />
-    <script src="./script.js?v=52" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=195" />
+    <script src="./script.js?v=54" defer></script>
   </head>
 
   <body>
@@ -166,9 +166,13 @@
       <section class="scene scene--play" id="play" data-theme="play" data-page="03" data-scene-motion="play" aria-labelledby="play-title">
         <div class="y2k-sticker y2k-sticker--play" data-reveal="sticker" aria-hidden="true">
           <div class="y2k-sticker__surface">
-            <small>Y2K NIGHT</small>
-            <strong>PLAY<br />TOGETHER</strong>
-            <span>✦</span>
+            <img
+              src="./assets/play-together-sticker.webp"
+              alt=""
+              width="640"
+              height="442"
+              decoding="async"
+            />
           </div>
         </div>
         <div class="play-layout">
@@ -207,22 +211,38 @@
             loading="lazy"
           />
           </figure>
-          <!-- シール帳。中央のコピーには重ねない。
-               プリクラの帯は「上に置いた物」なので通常合成、
-               シールは乗算で写真に沈ませる。乗算が効くように
-               縁だけ薄い白を敷いてある。 -->
+          <!-- 画面外から流れるプリクラ帯と、写真へ貼った小さなシール。 -->
           <div class="album" aria-hidden="true">
-            <span class="album__wash"></span>
-
             <div class="purikura">
-              <span class="purikura__cell"><img src="./assets/experience-karaoke.jpg" alt="" loading="lazy" /></span>
-              <span class="purikura__cell"><img src="./assets/experience-game.jpg" alt="" loading="lazy" /></span>
-              <span class="purikura__cell"><img src="./assets/gallery-y2k-v2.jpg" alt="" loading="lazy" /></span>
-              <span class="purikura__foot">2001.9</span>
+              <div class="purikura__track">
+                <div class="purikura__set">
+                  <span class="purikura__cell"><img src="./assets/experience-karaoke.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/experience-game.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/gallery-y2k-v2.jpg" alt="" width="1672" height="941" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/experience-music.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/final-night.jpg" alt="" width="1920" height="1080" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/experience-cheers.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
+                </div>
+                <div class="purikura__set" aria-hidden="true">
+                  <span class="purikura__cell"><img src="./assets/experience-karaoke.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/experience-game.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/gallery-y2k-v2.jpg" alt="" width="1672" height="941" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/experience-music.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/final-night.jpg" alt="" width="1920" height="1080" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/experience-cheers.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
+                </div>
+                <div class="purikura__set" aria-hidden="true">
+                  <span class="purikura__cell"><img src="./assets/experience-karaoke.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/experience-game.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/gallery-y2k-v2.jpg" alt="" width="1672" height="941" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/experience-music.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/final-night.jpg" alt="" width="1920" height="1080" loading="lazy" decoding="async" /></span>
+                  <span class="purikura__cell"><img src="./assets/experience-cheers.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
+                </div>
+              </div>
             </div>
 
             <div class="album__ink">
-              <span class="seal seal--holo"><b>なかよし</b></span>
               <span class="seal seal--date">2001.9.14</span>
               <span class="seal seal--heart">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5 3.8 12.6a5 5 0 0 1 7.1-7L12 6.7l1.1-1.1a5 5 0 0 1 7.1 7Z"/></svg>
@@ -239,9 +259,7 @@
         </div>
       </section>
 
-      <!-- ==================== PRICE ====================
-           100 を情報ではなく図版として扱う。紙の左端を突き抜けて
-           画面の4割強を占め、その右に情報を積む。 -->
+      <!-- ==================== PRICE ==================== -->
       <section class="information-section price-zone" id="price" data-theme="price" data-page="05" data-scene-motion="price" aria-labelledby="price-title">
         <div class="price-zone__in">
 
@@ -253,14 +271,6 @@
               <h2 class="paper-h" id="price-title">あと<span class="ruby"><span class="ruby__t" aria-hidden="true">ヒャップン</span>100分</span>だけ遊ぼう</h2>
 
               <div class="price-main">
-                <div class="bignum">
-                  <span class="bignum__stack">
-                    <span class="bignum__ghost" data-count-mirror aria-hidden="true">100</span>
-                    <strong class="bignum__ink" data-count="100">100</strong>
-                  </span>
-                  <span class="bignum__unit"><span class="bignum__ja">分</span></span>
-                </div>
-
                 <div class="price-info">
                   <p class="lead-ami">100分間、マッチングし放題<b>＋</b>飲み放題。</p>
 
@@ -285,12 +295,6 @@
             </div>
             <span class="tape tape--y tape--a1" aria-hidden="true"></span>
           </div>
-
-          <figure class="print price-photo">
-            <img src="./assets/experience-cheers.jpg" alt="" width="1800" height="1200" loading="lazy" />
-            <span class="print__cast" aria-hidden="true"></span>
-            <figcaption>2001.02.11</figcaption>
-          </figure>
 
           <span class="foil price-foil" aria-hidden="true">
             <span class="foil__eyebrow">Y2K NIGHT</span>

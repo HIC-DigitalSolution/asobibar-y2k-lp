@@ -83,28 +83,8 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
   const deckTime = document.querySelector("[data-deck-time]");
   const deckPlay = document.querySelector("[data-deck-play]");
   const desktopMotion = window.matchMedia("(min-width: 1024px) and (pointer: fine)");
-  const wideLayout = window.matchMedia("(min-width: 768px)");
   const activeScenes = new Set();
   let scrollFrame = 0;
-
-  /* ---------- 持ち越しレイヤー ----------
-     .scene は overflow: clip なので、セクションを跨いで残る要素は
-     その外に出さないと必ず切られる。body直下に position: fixed の
-     1枚を立てて、そこへ複製を置く。
-     複製元は aria-hidden の装飾なので、読み上げは二重にならない。 */
-  const playSticker = document.querySelector(".y2k-sticker--play");
-  let carry = null;
-
-  if (playSticker && wideLayout.matches) {
-    carry = document.createElement("div");
-    carry.className = "carry";
-    carry.setAttribute("aria-hidden", "true");
-    const clone = playSticker.cloneNode(true);
-    clone.removeAttribute("data-reveal");
-    clone.classList.add("is-in");
-    carry.appendChild(clone);
-    document.body.appendChild(carry);
-  }
 
   /* ---------- SONG REQUEST のスクラブ ----------
      旧実装は is-playing で1回だけバーを流すだけだった。
@@ -241,11 +221,6 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
       const leave = clamp01((viewportHeight - rect.bottom) / viewportHeight);
       scene.style.setProperty("--enter", enter.toFixed(4));
       scene.style.setProperty("--leave", leave.toFixed(4));
-
-      /* 03→04 の「残留」。ステッカーだけ固定レイヤーで居残らせる */
-      if (carry && scene.dataset.sceneMotion === "play") {
-        carry.style.setProperty("--carry", leave.toFixed(4));
-      }
 
       if (wide) {
         scene.style.setProperty("--scene-y", `${(travel * 40).toFixed(2)}px`);
@@ -427,11 +402,18 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
 
   const heroCta = document.querySelector(".cover .cta");
   const finalSection = document.querySelector("#reserve");
+  const requestScene = document.querySelector("#experience");
   if (!heroCta && !finalSection) return;
 
   const visible = new Set();
 
-  const sync = () => bar.classList.toggle("is-suppressed", visible.size > 0);
+  /* 01「曲リクエスト」に到達するまでは出さない。
+     以前は「FVのボタンが見えなくなったら出す」だったので、
+     出るタイミングがFVの高さに依存していた。 */
+  let reached = !requestScene;
+
+  const sync = () =>
+    bar.classList.toggle("is-suppressed", !reached || visible.size > 0);
 
   const io = new IntersectionObserver(
     (entries) => {
@@ -451,4 +433,18 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
     io.observe(heroCta);
   }
   if (finalSection) io.observe(finalSection);
+
+  if (requestScene) {
+    bar.classList.add("is-suppressed");
+    const gate = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        reached = true;
+        gate.disconnect();
+        sync();
+      },
+      { threshold: 0.12 },
+    );
+    gate.observe(requestScene);
+  }
 })();

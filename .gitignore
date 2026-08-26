@@ -22,3 +22,4 @@ assets/*
 
 # エディタ設定
 .claude/
+!assets/play-together-sticker.webp
