@@ -4376,3 +4376,41 @@ a { color: inherit; }
   height: auto;
   aspect-ratio: 560 / 418;
 }
+
+/* ===================== 書体を3声に整理 =====================
+   実測: Shippori Mincho は 109KB / 10ファイル落ちてくるのに、
+   使っているのは柱の英字7個（全部10.5px）だけだった。
+   10.5pxのラテンでは明朝である利点がほぼ出ない。撤去する。
+   Mochiy Pop One は「叫ぶ声」（02・04・07の見出し）に専念させ、
+   UI部品であるCTAボタンからは外す。
+
+     地の文  Zen Kaku Gothic New
+     叫ぶ    Mochiy Pop One
+     手書き  Zen Kurenaido          */
+
+/* --- 柱の英字。明朝をやめ、字間で「添え物」の格を作る --- */
+.scene-label em {
+  font-family: var(--font-main);
+  font-weight: 500;
+  letter-spacing: 0.24em;
+}
+
+/* --- ルビ・FVの情報帯も角ゴシックへ --- */
+.ruby__t,
+.cover__request span,
+.cover__request small {
+  font-family: var(--font-main);
+}
+
+/* --- CTAはUI部品。見出しの声と混ぜない --- */
+.cta {
+  font-family: var(--font-main);
+  font-weight: 700;
+}
+
+/* 手書きの拡大は取り消した。
+   「Shippori Mincho が109KB」という私の分類が誤っていて
+   （実際は28KB / Mochiy Pop One が109KB）、削減の前提が
+   崩れたため。広げた分だけ Kurenaido が 84 → 140KB に増え、
+   合計は 712 → 733KB と悪化していた。
+   キャプションだけの元の範囲に戻す。 */
