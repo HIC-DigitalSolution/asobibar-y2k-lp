@@ -3446,7 +3446,8 @@ a { color: inherit; }
     left: 50%;
     right: auto;
     top: clamp(22px, 3.6vw, 54px);
-    width: clamp(216px, 20vw, 300px);
+    /* 300pxは紙と写真の両方に掛かりすぎていた。一段落とす */
+    width: clamp(178px, 15.5vw, 236px);
   }
   /* 3. 3層パララックス。奥・中・前の順に移動量を変える。
      --scene-y は -40〜+40px なので係数で割り当てる。
@@ -3917,8 +3918,9 @@ a { color: inherit; }
    列比を 53:47 → 60:40 にして、傾きも右へ少し強める。 */
 
 @media (min-width: 880px) {
+  /* 60:40 でもまだ写真が強かったので、もう一段紙へ寄せる */
   .scene--request .scene__in.request-layout {
-    grid-template-columns: minmax(0, 58%) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 64%) minmax(0, 1fr);
   }
   .request-photo,
   .reveal-ready .request-photo[data-reveal].is-in {
@@ -3962,9 +3964,8 @@ a { color: inherit; }
 .scene--new-memory .scene-title,
 .memory-copy .scene-title {
   font-size: clamp(2rem, 3.9vw, 3.25rem);
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.55),
-    0 2px 10px rgba(0, 0, 0, 0.4);
+  /* 影は完全に外す。可読性は .memory-copy の背景で担保する */
+  text-shadow: none;
 }
 
 /* ===================== 04 プリクラを左右対称に =====================
@@ -3997,22 +3998,22 @@ a { color: inherit; }
    写真側の座標で覆いを当てても、文字がどこに来るかは
    画面幅で変わるので当たらない。文字ブロック自身に地を敷く。 */
 .memory-photo::after {
-  background:
-    radial-gradient(58% 32% at 50% 46%, rgba(7, 8, 10, 0.34), transparent 74%),
-    linear-gradient(180deg, rgba(7, 8, 10, 0.34), rgba(7, 8, 10, 0.26) 42%, rgba(7, 8, 10, 0.78));
+  /* 一様な覆い。位置によるムラを作らない */
+  background: linear-gradient(
+    180deg,
+    rgba(7, 8, 10, 0.54),
+    rgba(7, 8, 10, 0.56) 45%,
+    rgba(7, 8, 10, 0.82)
+  );
 }
 
-/* 擬似要素 + z-index:-1 は、親が作るスタッキング文脈の都合で
-   写真の下に潜って効かなかった。要素自身の背景にする。
-   背景は中身の後ろ・下の写真の上に必ず入る。 */
+/* 文字ブロックに地を敷くと、それ自体が
+   「文字の後ろのドロップシャドウ」に見えてしまった。
+   局所的な覆いをやめ、写真全体を均一に落として
+   白文字の地を作る（halo が出ない代わりに写真は暗くなる）。 */
 .scene--new-memory .memory-copy {
-  padding: clamp(30px, 4.4vw, 64px) clamp(26px, 4.5vw, 72px);
-  background: radial-gradient(
-    62% 62% at 50% 50%,
-    rgba(7, 8, 10, 0.84),
-    rgba(7, 8, 10, 0.6) 54%,
-    transparent 78%
-  );
+  padding: clamp(16px, 2vw, 28px) clamp(20px, 3vw, 44px);
+  background: none;
 }
 
 /* ===================== 型：もう一段上げる =====================
@@ -4037,4 +4038,93 @@ a { color: inherit; }
 .scene--karaoke .scene-text,
 .final-night__content > p {
   font-size: clamp(15px, 1.4vw, 18px);
+}
+
+/* ===================== 05 の箔シール：案A =====================
+   03 の PLAY TOGETHER と同じピンクだったため、2枚が同じ物に
+   見えていた。山吹イエローに振って反復を断つ。
+   紙のクリーム(#fbf7ee)とは明度差があるので沈まない。
+   膨らみの影だけマゼンタを残し、03との血縁は保つ。 */
+
+.price-foil .foil__eyebrow {
+  background: #ff4aa2;
+}
+
+.price-foil .foil__word {
+  color: #ffd233;
+  /* 和文は字面が大きいのでラテンより一段落とす */
+  font-size: clamp(1.45rem, 2.35vw, 1.95rem);
+  line-height: 1.18;
+  letter-spacing: 0.02em;
+  text-shadow:
+    0 -1.5px 0 #fff3c4,
+    0 1px 0 #fcbe1c, 0 2px 0 #f5a90d, 0 3px 0 #e59205,
+    0 4px 0 #cf7a02, 0 5px 0 #b26400, 0 6px 0 #8f4f00,
+    0 7px 3px rgba(74, 30, 4, 0.4);
+}
+
+/* ===================== 04 日付シール =====================
+   四角い黄色の板に白フチを1本引いただけで、
+   「貼った物」に見えていなかった。プリクラ帳の日付シールとして
+   組み直す：型抜きの白フチ、丸い書体、ハート、曜日の小さい帯。
+   白フチは box-shadow ではなく drop-shadow を重ねて作る
+   （box-shadow だと角が四角いままで型抜きに見えない）。 */
+
+.album__ink .seal--date {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 6px 13px 7px;
+  border-radius: 999px 999px 999px 999px / 60% 60% 60% 60%;
+  background: linear-gradient(160deg, #ffe27a, #ffd23f 42%, #f7b81f);
+  box-shadow: none;
+  color: #4a3403;
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  filter:
+    drop-shadow(0 0 3.5px #fff)
+    drop-shadow(0 0 3.5px #fff)
+    drop-shadow(0 0 2.5px #fff)
+    drop-shadow(0 6px 9px rgba(0, 0, 0, 0.42));
+  transform: rotate(-6deg);
+}
+
+.album__ink .seal--date b {
+  color: #f0357f;
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* 曜日は日付より一段小さく、色を落として添える */
+.album__ink .seal--date i {
+  color: #8a6407;
+  font-size: 8.5px;
+  font-style: normal;
+  letter-spacing: 0.14em;
+}
+
+@media (max-width: 767px) {
+  .album__ink .seal--date { padding: 5px 10px 6px; font-size: 11px; }
+  .album__ink .seal--date i { display: none; }
+}
+
+/* ===================== 03 シールの切れ =====================
+   1) .reveal-ready [data-reveal].is-in の clip-path: inset(0) が
+      型抜きのシールにも掛かっていた。矩形で切る意味が無いうえ、
+      縁の光彩が落ちて「途切れている」ように見えていた
+   2) 器の縦横比が 1.315 で、画像の 1.365 と合わず潰れていた */
+
+.y2k-sticker--play,
+.reveal-ready .y2k-sticker--play[data-reveal="sticker"],
+.reveal-ready .y2k-sticker--play[data-reveal="sticker"].is-in {
+  clip-path: none;
+}
+
+.y2k-sticker__surface img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 640 / 469;
 }
