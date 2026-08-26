@@ -448,3 +448,157 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
     gate.observe(requestScene);
   }
 })();
+
+/* ===================== シールを剥がして動かす =====================
+   タッチではドラッグとスクロールが同じ操作（指を置いて動かす）から
+   始まるので、素直に実装するとスクロールを奪う。
+   タッチのときだけ「長押しで持ち上げる」を挟んで区別する。
+   素早いスワイプは一度も反応しないので、スクロールは無傷。
+   マウス・ペンは誤爆の心配が無いので即ドラッグ。
+
+   位置は CSS の translate プロパティ（--peel-x/--peel-y）で与える。
+   transform は回転と登場アニメが使っているので触らない。 */
+(() => {
+  const seals = document.querySelectorAll("[data-peel]");
+  if (!seals.length) return;
+
+  const HOLD_MS = 350; /* 長押しと判定するまで */
+  const SLOP = 10; /* これ以上動いたらスクロールとみなす */
+  const KEY = "y2k-peel";
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* 位置は同じ訪問の間だけ覚える。次に来たときは元に戻っていてほしい */
+  let saved = {};
+  try {
+    saved = JSON.parse(sessionStorage.getItem(KEY) || "{}");
+  } catch (e) {
+    saved = {};
+  }
+
+  const idOf = (el) => el.className.toString().trim().split(/\s+/).join(".");
+
+  const put = (el, x, y) => {
+    el.style.setProperty("--peel-x", `${Math.round(x)}px`);
+    el.style.setProperty("--peel-y", `${Math.round(y)}px`);
+  };
+
+  const store = () => {
+    try {
+      sessionStorage.setItem(KEY, JSON.stringify(saved));
+    } catch (e) {
+      /* プライベートモードでは保存できない。動作自体は続ける */
+    }
+  };
+
+  seals.forEach((el) => {
+    const id = idOf(el);
+    const at = saved[id];
+    if (at) put(el, at.x, at.y);
+
+    let active = null; /* 掴んでいるポインタのid */
+    let armed = false;
+    let timer = 0;
+    let startX = 0;
+    let startY = 0;
+    let baseX = 0;
+    let baseY = 0;
+
+    const disarm = () => {
+      window.clearTimeout(timer);
+      timer = 0;
+      el.classList.remove("is-arming");
+    };
+
+    const lift = () => {
+      armed = true;
+      el.classList.remove("is-arming");
+      el.classList.add("is-lifted", "is-dragging");
+      /* 持ち上げた合図。対応端末だけ鳴る */
+      if (navigator.vibrate) navigator.vibrate(8);
+    };
+
+    const drop = () => {
+      if (armed) {
+        saved[id] = { x: baseX, y: baseY };
+        store();
+      }
+      armed = false;
+      active = null;
+      disarm();
+      el.classList.remove("is-lifted", "is-dragging");
+    };
+
+    el.addEventListener("pointerdown", (ev) => {
+      if (active !== null) return;
+      active = ev.pointerId;
+      startX = ev.clientX;
+      startY = ev.clientY;
+      const cs = getComputedStyle(el);
+      baseX = parseFloat(cs.getPropertyValue("--peel-x")) || 0;
+      baseY = parseFloat(cs.getPropertyValue("--peel-y")) || 0;
+
+      if (ev.pointerType === "touch") {
+        /* 指のときだけ長押しを待つ。ここでスクロールを妨げない */
+        el.classList.add("is-arming");
+        timer = window.setTimeout(lift, reduce ? 0 : HOLD_MS);
+      } else {
+        lift();
+        ev.preventDefault();
+      }
+      el.setPointerCapture(ev.pointerId);
+    });
+
+    el.addEventListener("pointermove", (ev) => {
+      if (ev.pointerId !== active) return;
+      const dx = ev.clientX - startX;
+      const dy = ev.clientY - startY;
+
+      if (!armed) {
+        /* 長押しが成立する前に動いた＝スクロールしたい。手を引く */
+        if (Math.hypot(dx, dy) > SLOP) {
+          disarm();
+          active = null;
+          try {
+            el.releasePointerCapture(ev.pointerId);
+          } catch (e) {
+            /* すでに解放済み */
+          }
+        }
+        return;
+      }
+
+      baseX += dx;
+      baseY += dy;
+      startX = ev.clientX;
+      startY = ev.clientY;
+      put(el, baseX, baseY);
+    });
+
+    ["pointerup", "pointercancel"].forEach((t) =>
+      el.addEventListener(t, (ev) => {
+        if (ev.pointerId !== active) return;
+        drop();
+      }),
+    );
+
+    /* 元の位置へ戻す */
+    el.addEventListener("dblclick", () => {
+      baseX = 0;
+      baseY = 0;
+      put(el, 0, 0);
+      delete saved[id];
+      store();
+    });
+
+    /* 持ち上がっている間だけスクロールを止める。
+       touch-action では間に合わない（指を置いた時点では
+       まだ持ち上がっていないので、その回のジェスチャに効かない）。 */
+    el.addEventListener(
+      "touchmove",
+      (ev) => {
+        if (armed) ev.preventDefault();
+      },
+      { passive: false },
+    );
+  });
+})();

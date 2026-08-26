@@ -4471,3 +4471,40 @@ a { color: inherit; }
 /* 手書き体は字面が小さく見えるので、注記だけ1px上げて
    読みやすさを保つ */
 .paper-note { font-size: clamp(13px, 1.15vw, 14px); }
+
+/* ===================== シールを剥がして動かす =====================
+   位置は transform ではなく CSS の独立した translate プロパティで
+   与える。シールは全部 transform: rotate() を持っていて、
+   しかもその指定が複数ルールに散っているため、transform を
+   奪うと回転や登場アニメが壊れる。
+   translate は transform より先に、親の座標系で適用されるので、
+   回転角に関係なく「画面上でまっすぐ」動く。 */
+
+[data-peel] {
+  translate: var(--peel-x, 0px) var(--peel-y, 0px);
+  pointer-events: auto;
+  cursor: grab;
+  /* 掴んでいる間だけ画像のドラッグ既定動作を止める */
+  -webkit-user-select: none;
+  user-select: none;
+}
+[data-peel] img { pointer-events: none; }
+
+/* 持ち上がった状態。実際に指から浮いたように見せる */
+[data-peel].is-lifted {
+  z-index: 40;
+  cursor: grabbing;
+  filter: drop-shadow(0 18px 22px rgba(20, 6, 30, 0.5));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-peel] {
+    transition: scale 160ms var(--ease-back), filter 160ms var(--ease-out);
+  }
+  [data-peel].is-lifted { scale: 1.08; }
+  /* 掴んでいる最中は追従を遅らせない */
+  [data-peel].is-dragging { transition: none; }
+}
+
+/* 長押しで持ち上がる直前の予兆。押している実感を出す */
+[data-peel].is-arming { scale: 0.97; }
