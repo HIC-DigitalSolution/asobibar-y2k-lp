@@ -4563,3 +4563,71 @@ a { color: inherit; }
   .request-photo img,
   .play-photo img { aspect-ratio: 4 / 3; }
 }
+
+/* ===================== 05と06の境界を繋ぐ =====================
+   05 と 06 はそれぞれ別の linear-gradient を地に持っていた。
+     05: #86dbe6 → #b2abe9 → #e8a9c9（水色→藤→桃）
+     06: #a8ddd7 → #a6cae7 → #dcc4e8（青緑→水色→藤）
+   端の色が合わないので境界に硬い線が出て、06の上下が
+   水色の帯として分かれて見えていた。
+
+   background-attachment: fixed で揃える手もあるが、iOSで
+   不具合が出やすい。2つを1枚のラッパーで包み、地はそこに
+   1回だけ置く。継ぎ目そのものが存在しなくなる。
+   水色の起点(#86dbe6)も外し、藤〜桃だけで通す。 */
+
+.info-zone {
+  position: relative;
+  background:
+    radial-gradient(circle at 13% 6%, rgba(255, 244, 235, 0.6), transparent 26%),
+    radial-gradient(circle at 88% 42%, rgba(255, 225, 240, 0.72), transparent 30%),
+    radial-gradient(circle at 20% 88%, rgba(231, 218, 255, 0.66), transparent 28%),
+    linear-gradient(168deg, #c9bdf0 0%, #cdb6e4 46%, #e8a9c9 100%);
+}
+
+/* 中の2セクションは地を持たない */
+.price-zone,
+.event-zone {
+  background: none;
+}
+
+/* ===================== 一番下のピンクを消す =====================
+   body の padding-bottom: 72px（固定CTAバーの逃げ場）が、
+   フッターより下に body の地（グラデ末端の桃色）を見せていた。
+   逃げ場はフッターの内側に持たせる。 */
+
+body { padding-bottom: 0; }
+
+.foot {
+  padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+}
+
+/* 地をラッパーへ移したので、中の2セクションが持っていた
+   枠（1pxの白線）・角丸・影は意味を失い、境界で線として
+   見えていた。ラッパー側に一本化する。
+   グリッドの目も、セクションごとに引き直すと境界が出るので
+   ラッパーで1回だけ引く。 */
+
+.info-zone .price-zone,
+.info-zone .event-zone {
+  margin-block: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+.info-zone .price-zone::before,
+.info-zone .event-zone::before { display: none; }
+
+.info-zone::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(135deg, rgba(0, 0, 0, 0.8), transparent 64%);
+  content: "";
+}

@@ -26,7 +26,7 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=232" />
+    <link rel="stylesheet" href="./styles.css?v=235" />
     <script src="./script.js?v=56" defer></script>
   </head>
 
@@ -285,6 +285,9 @@
       </section>
 
       <!-- ==================== PRICE ==================== -->
+      <!-- 05と06は地を共有する。別々に背景を持たせると
+           境界で色が繋がらず、水色の帯として分かれて見えた。 -->
+      <div class="info-zone">
       <section class="information-section price-zone" id="price" data-theme="price" data-page="05" data-scene-motion="price" aria-labelledby="price-title">
         <div class="price-zone__in">
 
@@ -394,6 +397,7 @@
           </div>
         </div>
       </section>
+      </div>
 
       <!-- ==================== FINAL CTA ==================== -->
       <section class="final-night" id="reserve" data-theme="reserve" data-page="07" data-scene-motion="final" aria-labelledby="last-title">
