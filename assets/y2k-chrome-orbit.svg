@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" fill="none">
+  <defs>
+    <linearGradient id="chrome" x1="145" y1="118" x2="755" y2="790" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".16" stop-color="#8C99A8"/>
+      <stop offset=".31" stop-color="#F7F4EF"/>
+      <stop offset=".48" stop-color="#D62D79"/>
+      <stop offset=".62" stop-color="#A9E7ED"/>
+      <stop offset=".8" stop-color="#4B4057"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="pearl" x1="221" y1="190" x2="689" y2="706" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity=".9"/>
+      <stop offset=".35" stop-color="#C8F1F2" stop-opacity=".5"/>
+      <stop offset=".66" stop-color="#F184B9" stop-opacity=".62"/>
+      <stop offset="1" stop-color="#776486" stop-opacity=".4"/>
+    </linearGradient>
+    <radialGradient id="sphere" cx="0" cy="0" r="1" gradientTransform="translate(411 365) rotate(53) scale(235)">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset=".22" stop-color="#E9EDF1"/>
+      <stop offset=".48" stop-color="#D72A77"/>
+      <stop offset=".72" stop-color="#6E596F"/>
+      <stop offset="1" stop-color="#191520"/>
+    </radialGradient>
+    <linearGradient id="prism" x1="566" y1="184" x2="751" y2="377" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF" stop-opacity=".94"/>
+      <stop offset=".4" stop-color="#B9EEF2" stop-opacity=".52"/>
+      <stop offset=".7" stop-color="#EC4C99" stop-opacity=".68"/>
+      <stop offset="1" stop-color="#44364F" stop-opacity=".76"/>
+    </linearGradient>
+    <filter id="shadow" x="58" y="50" width="794" height="812" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="28" stdDeviation="28" flood-color="#38243F" flood-opacity=".3"/>
+    </filter>
+    <filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)" transform="rotate(-8 450 450)">
+    <ellipse cx="437" cy="462" rx="318" ry="196" transform="rotate(31 437 462)" stroke="url(#chrome)" stroke-width="62"/>
+    <ellipse cx="437" cy="462" rx="318" ry="196" transform="rotate(31 437 462)" stroke="#FFF" stroke-opacity=".58" stroke-width="5"/>
+    <circle cx="429" cy="439" r="178" fill="url(#pearl)" fill-opacity=".52" stroke="#FFF" stroke-opacity=".82" stroke-width="3"/>
+    <circle cx="429" cy="439" r="116" fill="url(#sphere)"/>
+    <circle cx="392" cy="394" r="31" fill="#FFF" fill-opacity=".62" filter="url(#soft)"/>
+    <path d="M661 135 688 243 797 270 688 297 661 405 634 297 525 270 634 243 661 135Z" fill="url(#prism)" stroke="#FFF" stroke-opacity=".8" stroke-width="3"/>
+    <path d="m619 520 107 43-78 85-108-43 79-85Z" fill="url(#prism)" fill-opacity=".74" stroke="#FFF" stroke-opacity=".72" stroke-width="3"/>
+    <circle cx="194" cy="284" r="45" fill="#FFF" fill-opacity=".22" stroke="#FFF" stroke-opacity=".74" stroke-width="3"/>
+    <path d="M223 667 237 716 286 730 237 744 223 793 209 744 160 730 209 716 223 667Z" fill="url(#chrome)"/>
+  </g>
+</svg>

@@ -4660,6 +4660,65 @@ body { padding-bottom: 0; }
   }
 }
 
+/* ===================== 05 料金比較の視認性 =====================
+   関西・関東を縦に流すと比較するまでにスクロールが必要になる。
+   SPも2列を保ち、エリア名→金額の順で一目で比較できる
+   小さな料金票として整理する。 */
+.price-copy .plan-prices {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(8px, 1.6vw, 14px);
+}
+
+.price-copy .plan-prices > div {
+  position: relative;
+  min-width: 0;
+  gap: 7px;
+  padding: clamp(12px, 1.7vw, 17px) clamp(9px, 1.5vw, 15px) clamp(11px, 1.5vw, 15px);
+  border: 1px solid rgba(35, 24, 21, 0.2);
+  border-bottom: 3px solid var(--print-ink);
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.price-copy .plan-prices > div::before {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 34%;
+  height: 4px;
+  background: var(--print-accent);
+  content: "";
+}
+
+.price-copy .plan-prices dt {
+  align-self: flex-start;
+  padding: 2px 7px 3px;
+  background: var(--print-accent);
+  color: #fff;
+  font-size: clamp(11px, 1.1vw, 12px);
+  line-height: 1.35;
+  letter-spacing: 0.15em;
+}
+
+.price-copy .plan-prices dd {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: nowrap;
+  margin: 0;
+  color: var(--print-ink);
+  font-size: clamp(2rem, 3.1vw, 2.6rem);
+  line-height: 1;
+}
+
+@media (max-width: 599px) {
+  .price-copy .plan-prices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .price-copy .plan-prices dd {
+    font-size: clamp(1.8rem, 8.4vw, 2.2rem);
+  }
+}
+
 /* --- 2) 05：シールを見出しに重ねない --- */
 /* 紙の右上角へ、見出しより上の帯に収める。
    補助装飾なので見出しより強くしない（サイズを一段落とす） */
@@ -4791,3 +4850,64 @@ body { padding-bottom: 0; }
     padding-right: 18px;
   }
 }
+
+/* 02・04：写真セクションの白い見出し箱を撤去する最終指定。 */
+.scene--karaoke .scene-title,
+.scene--new-memory .scene-title,
+.memory-copy .scene-title {
+  padding: 0;
+  background: transparent;
+  color: var(--magenta-bright);
+  text-shadow: 0 2px 0 rgba(7, 8, 10, 0.72);
+}
+
+/* 03 SP：シールを写真から外し、白い紙面の右上角へ。
+   ラベルと見出しを覆わないよう、紙面の外側に多く逃がして
+   角へ約1/3だけ重ねる。 */
+@media (max-width: 879px) {
+  #play .y2k-sticker--play {
+    top: -10px;
+    right: 0;
+    bottom: auto;
+    left: auto;
+    width: clamp(92px, 25vw, 106px);
+  }
+}
+
+/* 07 SP：上マージンからbodyの水色地が帯状に見えていたため、
+   06の終端と最終写真を直接つなぐ。 */
+@media (max-width: 767px) {
+  .final-night {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+/* ===================== 03 シールを下へ =====================
+   実測では上端（PC y70〜247 / SP y12〜89）に置いていた。
+   紙面の下側へ移して、見出しとラベルから完全に離す。 */
+
+@media (min-width: 880px) {
+  #play .y2k-sticker--play {
+    top: auto;
+    bottom: clamp(38px, 5.4vw, 86px);
+    /* 41%だと本文（実測で右端660px）に掛かる。
+       紙の右端(723)より外へ出して、写真の左下にまたがらせる */
+    left: auto;
+    right: clamp(20%, 34%, 38%);
+  }
+}
+
+@media (max-width: 879px) {
+  #play .y2k-sticker--play {
+    top: auto;
+    bottom: 22px;
+    right: 8%;
+    left: auto;
+    width: clamp(96px, 27vw, 118px);
+  }
+}
+
+/* CTAを外したので、06の情報リストの下に余白を足して
+   紙のちぎれ口との間を持たせる */
+.event-sheet .event-list { margin-bottom: clamp(6px, 1vw, 14px); }
