@@ -3325,8 +3325,8 @@ a { color: inherit; }
 .seal { position: absolute; display: grid; place-items: center; }
 
 .seal--date {
-  right: clamp(30px, 7vw, 118px);
-  bottom: clamp(50px, 11vh, 118px);
+  right: clamp(24px, 5vw, 84px);
+  bottom: clamp(44px, 9vh, 96px);
   padding: 5px 12px 6px;
   background: #ffd23f;
   box-shadow: 0 0 0 2.5px #fff, 0 5px 10px rgba(0, 0, 0, 0.28);
@@ -4215,12 +4215,14 @@ a { color: inherit; }
 
 .album__ink .seal--date {
   display: block;
-  width: clamp(112px, 12vw, 176px);
+  /* 176pxだと 520x132 の帯が高さ45pxまで潰れ、
+     クロムの階調が出ずに安く見えていた。倍近くまで上げる */
+  width: clamp(168px, 22vw, 320px);
   padding: 0;
   border-radius: 0;
   background: none;
   box-shadow: none;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.5));
   transform: rotate(-6deg);
 }
 
