@@ -4631,3 +4631,123 @@ body { padding-bottom: 0; }
   mask-image: linear-gradient(135deg, rgba(0, 0, 0, 0.8), transparent 64%);
   content: "";
 }
+
+/* ===================== 指示1・2・4：重なりの解消 =====================
+   実測（SP 390px）
+     04 見出し 20〜370 に対し、左のプリクラ帯が45px、
+        日付シールが192px 重なっていた
+     05 見出しに One More Time が SP115px / PC153px 重なっていた
+     03 のシールは 880px 未満で完全非表示だった            */
+
+/* --- 1) 04：帯を画面外へ寄せ、日付は写真だけの上部へ --- */
+/* 実測（SP 390px）: コピー塊はセクション下部（334〜462）にあり、
+   見出し(376〜446)の下は17pxしか無い。日付を「右下」に置くと
+   必ず見出しに掛かる。上半分（40〜330）は写真だけなので
+   そこへ逃がす。 */
+@media (max-width: 767px) {
+  .purikura--l {
+    left: -68px;
+    width: 84px;
+    /* 傾きが大きいと外接矩形が横に膨らんで見出しに掛かる。
+       帯は top/bottom で伸ばしているので translateY は付けない */
+    transform: rotate(-2.4deg);
+  }
+  /* 見出しの先頭にも内側余白を足して、帯との間を空ける */
+  .scene--new-memory .memory-copy { padding-inline: 30px; }
+
+  .album__ink .seal--date {
+    display: none;
+  }
+}
+
+/* --- 2) 05：シールを見出しに重ねない --- */
+/* 紙の右上角へ、見出しより上の帯に収める。
+   補助装飾なので見出しより強くしない（サイズを一段落とす） */
+@media (min-width: 880px) {
+  .price-foil {
+    right: clamp(-6px, -0.3vw, 0px);
+    top: auto;
+    bottom: auto;
+    width: clamp(118px, 12vw, 168px);
+    /* 紙の上辺にまたがる位置。見出しの帯には入らない */
+    transform: translateY(-46%) rotate(7deg);
+  }
+}
+@media (max-width: 879px) {
+  .price-foil {
+    right: 6px;
+    width: clamp(96px, 26vw, 124px);
+    transform: translateY(-42%) rotate(7deg) scale(1);
+  }
+}
+
+/* --- 4) 03：SPでもシールを出す --- */
+@media (max-width: 879px) {
+  .y2k-sticker--play {
+    display: block;
+    /* 写真の右上角。紙と写真の継ぎ目にまたがる */
+    left: auto;
+    right: 4%;
+    top: auto;
+    bottom: clamp(144px, 40vw, 168px);
+    width: clamp(100px, 30vw, 130px);
+  }
+  /* PCの大きな浮遊量は使わない。登場時だけ軽く動かす */
+  #play .y2k-sticker--play .y2k-sticker__surface {
+    transform: none;
+  }
+}
+
+/* ===================== 局所ブラッシュアップ最終調整 =====================
+   装飾を増やさず、コピーと操作領域を守るための調整だけを行う。 */
+
+/* 04：1メッセージに対して180vhは長いため、静けさを残して空走を短縮。 */
+@media (min-width: 768px) {
+  .scene--new-memory { height: 150vh; }
+
+  /* 固定CTAに日付シールが隠れない安全域。 */
+  .album__ink .seal--date {
+    bottom: max(165px, calc(141px + env(safe-area-inset-bottom, 0px)));
+    width: clamp(220px, 22vw, 300px);
+  }
+}
+
+/* 05：紙面上辺へ明示的に固定し、見出しの文字領域から外す。 */
+@media (min-width: 880px) {
+  .price-foil {
+    top: -34px;
+    transform: rotate(7deg);
+  }
+}
+
+@media (max-width: 879px) {
+  .price-foil {
+    top: -12px;
+    right: -4px;
+    width: clamp(88px, 23vw, 104px);
+    transform: rotate(7deg);
+  }
+}
+
+/* 06：長いリーダー罫を短くし、ラベルと値を一つの情報群として読む。 */
+@media (min-width: 768px) {
+  .event-sheet .event-list {
+    width: min(820px, 100%);
+    margin-inline: auto;
+  }
+
+  .event-sheet .event-list > div {
+    grid-template-columns: 108px minmax(32px, 1fr) minmax(190px, 280px);
+  }
+}
+
+/* フッター：見た目の12pxは保ち、透明な余白でタップ領域を確保。 */
+.foot nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+@media (max-width: 767px) {
+  .foot nav { gap: 0 12px; }
+}
