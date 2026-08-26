@@ -4408,9 +4408,17 @@ a { color: inherit; }
   font-weight: 700;
 }
 
-/* 手書きの拡大は取り消した。
-   「Shippori Mincho が109KB」という私の分類が誤っていて
-   （実際は28KB / Mochiy Pop One が109KB）、削減の前提が
-   崩れたため。広げた分だけ Kurenaido が 84 → 140KB に増え、
-   合計は 712 → 733KB と悪化していた。
-   キャプションだけの元の範囲に戻す。 */
+/* --- 手書きを「人が書き込んだ」体の要素へ広げる --- */
+/* 一度取り消したが、方針として再投入。
+   容量は Kurenaido が 84 → 140KB に増える（合計 約740KB）。
+   当初「約600KBになる」と伝えたのは私の計算違いで、
+   実際は増える。手書きを核として育てるという判断を優先する。 */
+.paper-note,
+.print figcaption,
+.scene-photo figcaption {
+  font-family: var(--font-hand);
+}
+
+/* 手書き体は字面が小さく見えるので、注記だけ1px上げて
+   読みやすさを保つ */
+.paper-note { font-size: clamp(13px, 1.15vw, 14px); }
