@@ -3947,3 +3947,94 @@ a { color: inherit; }
 .price-info .ink-button { align-self: flex-start; }
 .price-info .plan-prices { margin: 0; }
 .price-copy .paper-note { margin-bottom: 0; }
+
+/* ===================== シールの影を外す =====================
+   支給素材は絵柄自体が白フチと光彩を持っている。そこへ
+   drop-shadow を掛けると、輪郭が柔らかいラスターなので
+   影が形に沿わず「薄い黒のもや」として全体に広がっていた。 */
+.y2k-sticker { filter: none; }
+
+/* ===================== 04 の見出し =====================
+   1) 全面写真の上なので、紙面の見出しと同じ40pxでは負ける
+   2) text-shadow が 30px のぼかしだけで、明るい部分では
+      効かず、暗い部分では「文字の下の薄い黒」として見えていた
+      → ぼかしを絞って輪郭に効かせ、広いもやをやめる */
+.scene--new-memory .scene-title,
+.memory-copy .scene-title {
+  font-size: clamp(2rem, 3.9vw, 3.25rem);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* ===================== 04 プリクラを左右対称に =====================
+   1本だと画面の左だけが重く、中央の見出しに対して非対称だった。
+   同じ帯を右にも置き、流れる向きを逆にする。
+   （同方向だと2本が1つの動きに見えて、対称の意味が消える） */
+
+.purikura--r {
+  left: auto;
+  right: clamp(-74px, -4.8vw, -40px);
+  transform: rotate(6deg);
+}
+/* 右は逆向きに流す。負の delay で位相をずらし、
+   左右で同じコマが並ばないようにする */
+.purikura--r .purikura__track {
+  animation-direction: reverse;
+  animation-delay: -9s;
+}
+
+@media (max-width: 767px) {
+  /* SPは幅が足りないので右は出さない */
+  .purikura--r { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .purikura--r .purikura__track { animation: none; }
+}
+
+/* 04 の見出しは全面写真の一番明るい部分（逆光のグラス）に重なる。
+   写真側の座標で覆いを当てても、文字がどこに来るかは
+   画面幅で変わるので当たらない。文字ブロック自身に地を敷く。 */
+.memory-photo::after {
+  background:
+    radial-gradient(58% 32% at 50% 46%, rgba(7, 8, 10, 0.34), transparent 74%),
+    linear-gradient(180deg, rgba(7, 8, 10, 0.34), rgba(7, 8, 10, 0.26) 42%, rgba(7, 8, 10, 0.78));
+}
+
+/* 擬似要素 + z-index:-1 は、親が作るスタッキング文脈の都合で
+   写真の下に潜って効かなかった。要素自身の背景にする。
+   背景は中身の後ろ・下の写真の上に必ず入る。 */
+.scene--new-memory .memory-copy {
+  padding: clamp(30px, 4.4vw, 64px) clamp(26px, 4.5vw, 72px);
+  background: radial-gradient(
+    62% 62% at 50% 50%,
+    rgba(7, 8, 10, 0.84),
+    rgba(7, 8, 10, 0.6) 54%,
+    transparent 78%
+  );
+}
+
+/* ===================== 型：もう一段上げる =====================
+   40px は数字としては一般的なLPのレンジだが、この誌面では
+   小さく見える。紙の面が広く（500〜700px）、セクションが
+   1画面ずつあるため、40pxだと画面に占める割合が小さい。
+   56/70pxが「デカすぎ」、40pxが「小さい」だったので、
+   その間の 48px を基準にする。本文も1px上げて釣り合いを保つ。 */
+
+.paper-h,
+.play-copy .paper-h,
+.scene-title,
+.scene--karaoke .scene-title,
+.final-night__content h2,
+.info-heading h2 {
+  font-size: clamp(1.7rem, 3.5vw, 3rem);
+}
+
+.scene-text,
+.request-copy .scene-text,
+.play-copy .scene-text,
+.scene--karaoke .scene-text,
+.final-night__content > p {
+  font-size: clamp(15px, 1.4vw, 18px);
+}
