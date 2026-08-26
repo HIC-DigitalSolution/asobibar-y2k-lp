@@ -4128,3 +4128,21 @@ a { color: inherit; }
   height: auto;
   aspect-ratio: 640 / 469;
 }
+
+/* ===================== 04 の暗転を止める =====================
+   .memory-photo::after は opacity: calc(0.72 + 0.16 * var(--pin))
+   で、スクロールするほど覆いが濃くなっていた。
+   1620px の pin 区間を通して黒く沈んでいく見え方になるので固定する。
+   0.8 は、これまで見え方を確認してきた pin=0.5 相当の濃さ。 */
+.memory-photo::after {
+  opacity: 0.8;
+}
+
+/* 抜ける直前の「画面ごと退く」演出は、04 では地色が
+   ほぼ黒(#0e0b0d)なので、opacity 0.6 まで落とすと
+   そのまま黒へ沈む＝スクロールで暗転する現象になっていた。
+   04 だけ止める（02・07 は地の作りが違うので残す）。 */
+.scene--new-memory .scene__pin {
+  transform: none;
+  opacity: 1;
+}
