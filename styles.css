@@ -4777,3 +4777,17 @@ body { padding-bottom: 0; }
 .memory-copy .scene-title {
   margin-inline: auto;
 }
+
+/* 04 SP：左のプリクラ帯は写真が判別できる幅まで内側へ。
+   コピーは帯の右側に専用の余白を取り、紙面見出しと重ねない。 */
+@media (max-width: 767px) {
+  .purikura--l {
+    left: -24px;
+    width: 96px;
+  }
+
+  .scene--new-memory .memory-copy {
+    padding-left: 86px;
+    padding-right: 18px;
+  }
+}
