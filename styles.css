@@ -1,3 +1,52 @@
+/* ===================== 書体（セルフホスト） =====================
+   Google Fonts の配信は、日本語をユニコード範囲で100個以上に
+   分割するため、3書体5ウエイトで 733KB / 73ファイル 落ちてきていた。
+   ページで実際に使う文字は214字しかないので、その範囲へ
+   サブセットして自前で置く。かな全種とASCIIは保険で含めてある。
+
+     15.7MB（元TTF 5本） → 190KB（woff2 5本）
+
+   3書体とも SIL Open Font License 1.1。セルフホスト・改変とも許諾。
+   文言に新しい漢字を足したときは、必ず流し直すこと:
+     python3 tools/build-fonts.py <元TTFのディレクトリ>
+   忘れるとその字だけ別書体に化ける。 */
+
+@font-face {
+  font-family: "Zen Kaku Gothic New";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("./assets/font/zkgn-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Zen Kaku Gothic New";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./assets/font/zkgn-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Zen Kaku Gothic New";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("./assets/font/zkgn-900.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Mochiy Pop One";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/font/mochiy-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Zen Kurenaido";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/font/kurenaido-400.woff2") format("woff2");
+}
+
 /* =========================================================
    ASOBIBAR Y2K NIGHT
    Digital nostalgia: violet / cyan / magenta / chrome / ivory

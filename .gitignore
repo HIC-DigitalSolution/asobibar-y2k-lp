@@ -30,3 +30,4 @@ assets/*
 !assets/font/
 !assets/font/*
 !assets/onemore-sticker.webp
+tools/.fontsrc/

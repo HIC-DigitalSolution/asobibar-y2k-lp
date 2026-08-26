@@ -21,13 +21,12 @@
 
     <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
     <link rel="preload" as="image" href="./assets/hero-collage-typography-v2.jpg" fetchpriority="high" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&amp;family=Zen+Kaku+Gothic+New:wght@500;700;900&amp;family=Zen+Kurenaido&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./styles.css?v=226" />
+
+    <!-- 本文と見出しは最初の画面で必ず要るので先に取る -->
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
+    <link rel="stylesheet" href="./styles.css?v=227" />
     <script src="./script.js?v=54" defer></script>
   </head>
 
