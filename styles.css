@@ -3999,11 +3999,13 @@ a { color: inherit; }
    画面幅で変わるので当たらない。文字ブロック自身に地を敷く。 */
 .memory-photo::after {
   /* 一様な覆い。位置によるムラを作らない */
+  /* 縁取りが可読性を担うようになったので、白文字のために
+     濃くしていた分を戻す。一様であることは保つ */
   background: linear-gradient(
     180deg,
-    rgba(7, 8, 10, 0.54),
-    rgba(7, 8, 10, 0.56) 45%,
-    rgba(7, 8, 10, 0.82)
+    rgba(7, 8, 10, 0.38),
+    rgba(7, 8, 10, 0.4) 45%,
+    rgba(7, 8, 10, 0.72)
   );
 }
 
@@ -4310,4 +4312,47 @@ a { color: inherit; }
 
 @media (prefers-reduced-motion: no-preference) {
   .wall__track { animation: wall-flow 64s linear infinite; }
+}
+
+/* ===================== 見出しのジャケット加工（案3） =====================
+   白抜き／マゼンタのフチ／シアンの版ズレ。
+   掛けるのは 02・04・07 の全面写真3つだけ。あそこが感情の山で、
+   紙面の4つ（01・03・05・06）は情報を読ませる面なので変えない。
+   7つ全部に掛けると山が消え、読みにくさの指摘も再発する。
+
+   実装は擬似要素の複製ではなく、字そのものへ縁取りと影を当てる。
+   02・04 の見出しは JS が行マスク（.ln > i）に割っているので、
+   attr() の複製だと行が再現できず、リビールとも噛み合わない。
+   -webkit-text-stroke + paint-order なら行マスクのまま効く。
+   text-shadow は字の後ろに出るので、そのまま版ズレになる。 */
+
+.scene--karaoke .scene-title,
+.scene--new-memory .scene-title,
+.memory-copy .scene-title,
+.final-night__content h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: #fffdf7;
+  -webkit-text-stroke: 9px var(--magenta);
+  paint-order: stroke fill;
+  text-shadow:
+    -3px -3px 0 rgba(0, 168, 204, 0.55),
+    0 5px 0 rgba(74, 4, 44, 0.5);
+  /* 丸ゴシックは字面が大きいので、ゴシック900より一段落とす */
+  font-size: clamp(1.6rem, 3.2vw, 2.75rem);
+  letter-spacing: 0.012em;
+  line-height: 1.36;
+}
+
+@media (max-width: 767px) {
+  .scene--karaoke .scene-title,
+  .scene--new-memory .scene-title,
+  .memory-copy .scene-title,
+  .final-night__content h2 {
+    /* 細い画面では9pxのフチが字を潰す */
+    -webkit-text-stroke-width: 6px;
+    text-shadow:
+      -2px -2px 0 rgba(0, 168, 204, 0.55),
+      0 3px 0 rgba(74, 4, 44, 0.5);
+  }
 }
