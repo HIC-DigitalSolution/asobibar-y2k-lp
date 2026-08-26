@@ -4762,6 +4762,18 @@ body { padding-bottom: 0; }
 .final-night__content h2 {
   font-family: var(--font-main);
   font-weight: 900;
+  width: fit-content;
+  padding: 0.1em 0.24em 0.16em;
+  background: rgba(251, 247, 238, 0.94);
+  color: var(--print-ink);
+  -webkit-text-stroke: 0;
+  paint-order: normal;
+  text-shadow: none;
   letter-spacing: -0.045em;
   line-height: 1.28;
+}
+
+.scene--new-memory .scene-title,
+.memory-copy .scene-title {
+  margin-inline: auto;
 }
