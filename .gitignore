@@ -31,3 +31,6 @@ assets/*
 !assets/font/*
 !assets/onemore-sticker.webp
 tools/.fontsrc/
+.vercel
+.env*
+.vscode/

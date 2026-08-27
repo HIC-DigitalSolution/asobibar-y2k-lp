@@ -902,6 +902,458 @@ a { color: inherit; }
   color: #a21563;
   background: rgba(255, 255, 255, 0.42);
 }
+/* ===================== HOW TO ASOBIBAR =====================
+   公式サイトの内容を、平成ティーン誌の綴じ込み攻略特集として再構成。
+   EVENTの写真ウォールを導入に使うため、ここでは写真帯を重複させない。 */
+
+.howto-section {
+  --howto-yellow: #ffd233;
+  position: relative;
+  isolation: isolate;
+  padding: clamp(40px, 5vw, 72px) var(--gutter) clamp(44px, 5vw, 72px);
+  color: var(--print-ink);
+  overflow: clip;
+  background:
+    radial-gradient(circle at 10% 13%, rgba(255, 74, 148, 0.23), transparent 26%),
+    radial-gradient(circle at 89% 25%, rgba(86, 216, 232, 0.31), transparent 31%),
+    radial-gradient(circle at 18% 84%, rgba(255, 210, 51, 0.2), transparent 29%),
+    #f7efe4;
+}
+
+.howto-guide {
+  position: relative;
+  isolation: isolate;
+  width: min(1220px, 100%);
+  margin: 0 auto;
+  background-color: var(--paper);
+  background-image:
+    var(--grain-fine),
+    radial-gradient(circle, rgba(35, 24, 21, 0.075) 0.65px, transparent 0.8px),
+    linear-gradient(rgba(35, 24, 21, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(35, 24, 21, 0.04) 1px, transparent 1px);
+  background-size: auto, 5px 5px, 32px 32px, 32px 32px;
+  box-shadow: 0 3px 3px rgba(35, 24, 21, 0.2), 0 28px 70px rgba(35, 24, 21, 0.18);
+}
+
+.howto-guide::before,
+.howto-guide::after {
+  position: absolute;
+  left: 0;
+  z-index: 12;
+  width: 100%;
+  height: 12px;
+  background: var(--paper-fiber);
+  clip-path: polygon(0 35%, 3% 70%, 6% 30%, 10% 74%, 15% 36%, 20% 66%, 26% 29%, 31% 73%, 37% 37%, 44% 68%, 50% 31%, 57% 74%, 64% 35%, 71% 69%, 78% 28%, 84% 72%, 91% 34%, 96% 67%, 100% 38%, 100% 100%, 0 100%);
+  content: "";
+}
+
+.howto-guide::before { top: -7px; transform: rotate(180deg); }
+.howto-guide::after { bottom: -7px; }
+
+.howto-head {
+  position: relative;
+  min-height: 430px;
+  padding: clamp(40px, 4.5vw, 60px) clamp(24px, 6vw, 78px) clamp(40px, 4.5vw, 56px);
+  overflow: hidden;
+  border-bottom: 2px solid var(--print-ink);
+}
+
+.howto-head__tape {
+  position: absolute;
+  top: 32px;
+  right: 8%;
+  width: 126px;
+  height: 31px;
+  background: rgba(86, 216, 232, 0.54);
+  mix-blend-mode: multiply;
+  transform: rotate(6deg);
+}
+
+.howto-kicker {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 22px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+}
+
+.howto-kicker b { color: var(--magenta); font-size: 15px; }
+.howto-kicker i { width: 48px; height: 1px; background: var(--print-ink); }
+.howto-kicker span { color: var(--print-sub); }
+
+.howto-title {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0;
+  color: var(--print-ink);
+  font-family: var(--font-main);
+  font-size: clamp(4rem, 9.4vw, 8rem);
+  font-weight: 900;
+  line-height: 0.8;
+  letter-spacing: -0.085em;
+}
+
+.howto-title span { display: block; }
+.howto-title em {
+  display: inline-block;
+  color: var(--magenta-bright);
+  font-style: normal;
+  text-shadow: -3px 3px 0 rgba(86, 216, 232, 0.64);
+  transform: translateX(0.14em) rotate(-1.5deg);
+}
+
+.howto-intro {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
+  align-items: end;
+  gap: 36px;
+  margin-top: clamp(28px, 3.5vw, 42px);
+}
+
+.howto-intro h3 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2.55rem);
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: -0.045em;
+}
+
+.howto-intro p {
+  margin: 0;
+  color: var(--print-sub);
+  font-size: clamp(13px, 1.2vw, 15px);
+  font-weight: 700;
+  line-height: 1.9;
+}
+
+.howto-index {
+  position: sticky;
+  top: 66px;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 2px solid var(--print-ink);
+  background: rgba(251, 247, 238, 0.94);
+  backdrop-filter: blur(8px);
+}
+
+.howto-index button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 58px;
+  padding: 10px clamp(10px, 2vw, 22px);
+  border: 0;
+  border-right: 1px solid rgba(35, 24, 21, 0.25);
+  color: var(--print-ink);
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+}
+
+.howto-index button:last-child { border-right: 0; }
+.howto-index button[aria-current="true"] {
+  color: #fff;
+  background:
+    repeating-linear-gradient(112deg, transparent 0 11px, rgba(255, 255, 255, 0.1) 11px 13px),
+    var(--magenta);
+}
+.howto-index b { font-size: clamp(1.15rem, 2vw, 1.6rem); font-weight: 900; }
+.howto-index span { overflow: hidden; font-size: 10px; font-weight: 900; letter-spacing: 0.12em; text-overflow: ellipsis; white-space: nowrap; }
+
+.howto-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(34px, 6vw, 82px);
+  min-height: min(680px, 76svh);
+  padding: clamp(48px, 5vw, 70px) clamp(24px, 6vw, 78px);
+  overflow: hidden;
+  border-bottom: 1px solid rgba(35, 24, 21, 0.28);
+  scroll-margin-top: 124px;
+}
+
+.howto-step::after {
+  position: absolute;
+  top: 12%;
+  right: -16%;
+  z-index: 0;
+  width: 64%;
+  height: 28%;
+  background: linear-gradient(90deg, rgba(86, 216, 232, 0.16), rgba(255, 74, 148, 0.1));
+  mix-blend-mode: multiply;
+  transform: rotate(-7deg);
+  content: "";
+}
+
+.howto-step:nth-of-type(even)::after {
+  top: auto;
+  right: auto;
+  bottom: 10%;
+  left: -18%;
+  background: linear-gradient(90deg, rgba(255, 210, 51, 0.13), rgba(86, 216, 232, 0.15));
+  transform: rotate(6deg);
+}
+
+.howto-step:nth-of-type(even) .howto-copy { order: 2; }
+.howto-step:nth-of-type(even) .howto-visual { order: 1; }
+
+.howto-copy { position: relative; z-index: 3; }
+.howto-no {
+  position: absolute;
+  top: -0.6em;
+  left: -0.12em;
+  z-index: -1;
+  color: rgba(86, 216, 232, 0.27);
+  font-size: clamp(7rem, 18vw, 14rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.09em;
+}
+
+.howto-ruby {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 13px;
+  color: var(--magenta);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.howto-ruby::before { width: 30px; height: 3px; background: currentColor; content: ""; }
+
+.howto-copy h3 {
+  margin: 0;
+  font-family: var(--font-main);
+  font-size: clamp(2.4rem, 5.2vw, 4.9rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.065em;
+  text-shadow: 2px 2px 0 rgba(86, 216, 232, 0.46);
+}
+
+.howto-copy h3 small {
+  display: block;
+  margin-top: 12px;
+  color: var(--print-sub);
+  font-size: clamp(12px, 1.1vw, 15px);
+  letter-spacing: 0.12em;
+  text-shadow: none;
+}
+
+.howto-copy > p:last-child,
+.howto-copy > p:nth-last-child(2) {
+  max-width: 37em;
+  margin: clamp(22px, 2.6vw, 34px) 0 0;
+  font-size: clamp(14px, 1.35vw, 17px);
+  font-weight: 700;
+  line-height: 2;
+}
+
+.howto-copy mark {
+  padding: 0 0.14em;
+  color: inherit;
+  background: linear-gradient(transparent 58%, rgba(255, 210, 51, 0.78) 58%);
+}
+
+.howto-visual { position: relative; z-index: 2; min-height: 450px; }
+.howto-photo {
+  position: absolute;
+  z-index: 3;
+  margin: 0;
+  padding: clamp(7px, 1vw, 12px) clamp(7px, 1vw, 12px) clamp(27px, 3vw, 42px);
+  overflow: hidden;
+  background: var(--paper-photo);
+  box-shadow: var(--shadow-photo);
+}
+
+.howto-photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(1.12) contrast(1.05); }
+.howto-photo figcaption {
+  position: absolute;
+  right: 12px;
+  bottom: 9px;
+  color: var(--print-sub);
+  font-family: var(--font-hand);
+  font-size: clamp(11px, 1.1vw, 14px);
+}
+
+.howto-photo::after {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  bottom: 38px;
+  left: 10px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(108deg, transparent 34%, rgba(255, 255, 255, 0.42) 48%, transparent 62%);
+  opacity: 0;
+  transform: translateX(-130%);
+  transition: transform 900ms var(--ease-out), opacity 240ms ease;
+  content: "";
+}
+
+.howto-photo.is-in::after { opacity: 0.58; transform: translateX(130%); }
+
+.howto-band-photo {
+  top: 6%;
+  left: 3%;
+  width: 88%;
+  height: 78%;
+  transform: rotate(2.2deg);
+}
+
+/* 色帯は写真を隠さず、写真の背面から端だけ見せる。 */
+.howto-band {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 14px;
+  color: rgba(35, 24, 21, 0.68);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: transform 700ms var(--ease-out), opacity 500ms ease;
+}
+
+.howto-band--1 { top: 12%; right: -2%; width: 72%; background: rgba(255, 74, 148, 0.68); transform: rotate(-7deg) translateX(64px); }
+.howto-band--2 { top: 37%; left: -6%; width: 76%; background: rgba(86, 216, 232, 0.72); transform: rotate(5deg) translateX(-64px); }
+.howto-band--3 { right: 0; bottom: 12%; width: 66%; background: rgba(255, 210, 51, 0.7); transform: rotate(-3deg) translateX(48px); }
+.howto-step.is-active .howto-band { opacity: 1; }
+.howto-step.is-active .howto-band--1 { transform: rotate(-7deg) translateX(0); }
+.howto-step.is-active .howto-band--2 { transform: rotate(5deg) translateX(0); }
+.howto-step.is-active .howto-band--3 { transform: rotate(-3deg) translateX(0); }
+
+.howto-amusement-photo { top: 7%; left: 0; width: 92%; height: 78%; transform: rotate(-2.6deg); }
+.howto-amusement-photo img { object-position: 66% 50%; }
+.howto-contact {
+  position: absolute;
+  right: -3%;
+  bottom: 1%;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: repeat(2, 92px);
+  gap: 7px;
+  padding: 8px 8px 24px;
+  background: var(--paper-photo);
+  box-shadow: var(--shadow-photo);
+  transform: rotate(4deg);
+}
+.howto-contact img { width: 92px; aspect-ratio: 1; object-fit: cover; }
+
+.howto-food { min-height: 490px; }
+.howto-food__photo--1 { top: 4%; left: 1%; width: 58%; height: 62%; transform: rotate(-5deg); }
+.howto-food__photo--2 { top: 13%; right: 0; z-index: 4; width: 48%; height: 60%; transform: rotate(4deg); }
+.howto-ticket {
+  position: absolute;
+  left: 16%;
+  bottom: 1%;
+  z-index: 5;
+  width: 78%;
+  padding: clamp(16px, 2vw, 24px);
+  border-top: 4px solid var(--magenta);
+  border-bottom: 2px dashed rgba(35, 24, 21, 0.45);
+  background: var(--howto-yellow);
+  box-shadow: 5px 5px 0 rgba(86, 216, 232, 0.5), 0 14px 24px rgba(35, 24, 21, 0.16);
+  transform: rotate(-1.5deg);
+}
+.howto-ticket b { display: block; font-size: clamp(1rem, 1.8vw, 1.35rem); font-weight: 900; }
+.howto-ticket small { display: block; margin-top: 5px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; }
+
+.howto-amusement-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.howto-amusement-list li {
+  padding: 5px 9px 6px;
+  border: 1px solid rgba(35, 24, 21, 0.35);
+  font-size: 10px;
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.motion-ready [data-howto-reveal] {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity 650ms var(--ease-out), transform 850ms var(--ease-out), clip-path 850ms var(--ease-out);
+}
+.motion-ready .howto-photo[data-howto-reveal] {
+  clip-path: inset(8% 10% 10%);
+  transform: translateY(42px) rotate(var(--howto-rot, 0deg)) scale(1.04);
+}
+.motion-ready [data-howto-reveal].is-in { opacity: 1; transform: translateY(0); }
+.motion-ready .howto-photo[data-howto-reveal].is-in { clip-path: inset(0); transform: rotate(var(--howto-rot, 0deg)) scale(1); }
+.howto-band-photo { --howto-rot: 2.2deg; }
+.howto-amusement-photo { --howto-rot: -2.6deg; }
+.howto-food__photo--1 { --howto-rot: -5deg; }
+.howto-food__photo--2 { --howto-rot: 4deg; }
+
+@media (max-width: 767px) {
+  .price-zone { overflow: clip; }
+  .howto-section { padding: 24px 0 38px; }
+  .howto-guide { width: 100%; box-shadow: none; }
+  .howto-head { min-height: 0; padding: 40px 18px 44px; }
+  .howto-head__tape { top: 24px; right: 3%; width: 88px; height: 24px; }
+  .howto-kicker { margin-bottom: 20px; }
+  .howto-title { font-size: clamp(3rem, 14vw, 4rem); line-height: 0.86; }
+  .howto-intro { grid-template-columns: 1fr; gap: 16px; margin-top: 32px; }
+  .howto-intro p { max-width: 31em; }
+  .howto-index { top: 58px; }
+  .howto-index button { grid-template-columns: 1fr; gap: 0; min-height: 54px; padding: 7px 8px; text-align: center; }
+  .howto-index b { font-size: 1rem; }
+  .howto-index span { font-size: 8px; letter-spacing: 0.08em; }
+  .howto-step,
+  .howto-step:nth-of-type(even) {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    min-height: 0;
+    padding: 60px 18px 54px;
+    scroll-margin-top: 112px;
+  }
+  .howto-step:nth-of-type(even) .howto-copy,
+  .howto-step:nth-of-type(even) .howto-visual { order: initial; }
+  .howto-copy h3 { font-size: clamp(2.35rem, 12.5vw, 3.25rem); }
+  .howto-no { top: -0.55em; font-size: clamp(6.8rem, 40vw, 9rem); }
+  .howto-copy > p:last-child,
+  .howto-copy > p:nth-last-child(2) { margin-top: 22px; font-size: 14px; line-height: 1.9; }
+  .howto-visual { min-height: 350px; }
+  .howto-band-photo { left: 7%; width: 86%; height: 75%; }
+  .howto-band { height: 29px; font-size: 8px; }
+  .howto-band--1 { right: 0; }
+  .howto-band--2 { left: -2%; }
+  .howto-amusement-photo { left: 5%; width: 88%; height: 73%; }
+  .howto-contact { right: 1%; grid-template-columns: repeat(2, 70px); padding: 6px 6px 18px; }
+  .howto-contact img { width: 70px; }
+  .howto-food { min-height: 410px; }
+  .howto-food__photo--1 { width: 61%; height: 58%; }
+  .howto-food__photo--2 { width: 51%; height: 58%; }
+  .howto-ticket { left: 8%; width: 88%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-howto-reveal],
+  .howto-photo,
+  .howto-band { opacity: 1 !important; clip-path: none !important; transform: none !important; transition: none !important; }
+}
+
 
 /* ===================== FINAL CTA ===================== */
 
@@ -4911,3 +5363,9 @@ body { padding-bottom: 0; }
 /* CTAを外したので、06の情報リストの下に余白を足して
    紙のちぎれ口との間を持たせる */
 .event-sheet .event-list { margin-bottom: clamp(6px, 1vw, 14px); }
+
+/* SP：PRICEのシールを8pxだけ画面外へ出す既存指定が、
+   ページ全体の横スクロールを作っていた。セクション内でだけ切る。 */
+@media (max-width: 767px) {
+  .info-zone .price-zone { overflow: clip; }
+}

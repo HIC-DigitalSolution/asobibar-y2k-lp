@@ -390,6 +390,82 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
   );
 })();
 
+/* ---------- HOW TO ASOBIBAR ----------
+   3つの案内を同じRevealで並べず、目次の選択状態・写真・本文を
+   それぞれのスクロール位置に合わせる。操作はタップとスクロールだけ。 */
+(() => {
+  const steps = [...document.querySelectorAll("[data-howto-step]")];
+  const buttons = [...document.querySelectorAll("[data-howto-jump]")];
+  const items = [...document.querySelectorAll("[data-howto-reveal]")];
+  if (!steps.length) return;
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      document.getElementById(button.dataset.howtoJump)?.scrollIntoView({
+        behavior: reduceMotion ? "auto" : "smooth",
+        block: "start",
+      });
+    });
+  });
+
+  const activate = (active) => {
+    steps.forEach((step) => step.classList.toggle("is-active", step === active));
+    buttons.forEach((button) => {
+      button.setAttribute("aria-current", String(button.dataset.howtoJump === active.id));
+    });
+  };
+
+  const updateActive = () => {
+    const targetY = window.innerHeight * 0.48;
+    let active = steps[0];
+    let distance = Infinity;
+    steps.forEach((step) => {
+      const r = step.getBoundingClientRect();
+      const d = Math.abs((r.top + r.bottom) / 2 - targetY);
+      if (d < distance) {
+        distance = d;
+        active = step;
+      }
+    });
+    activate(active);
+  };
+
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    items.forEach((el) => el.classList.add("is-in"));
+    activate(steps[0]);
+    return;
+  }
+
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        const passed = entry.rootBounds && entry.boundingClientRect.bottom < entry.rootBounds.top;
+        if (!entry.isIntersecting && !passed) return;
+        entry.target.classList.add("is-in");
+        observer.unobserve(entry.target);
+      });
+    },
+    { rootMargin: "0px 0px -8%", threshold: 0.16 },
+  );
+  items.forEach((el) => revealObserver.observe(el));
+
+  let ticking = false;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        updateActive();
+        ticking = false;
+      });
+    },
+    { passive: true },
+  );
+  window.addEventListener("resize", updateActive, { passive: true });
+  updateActive();
+})();
+
 /* ---------- 固定CTAの出し入れ ----------
    隠す条件は2つ。
    - FV内の予約ボタンが見えている（ロード直後に同じボタンが2つ並ぶ）
