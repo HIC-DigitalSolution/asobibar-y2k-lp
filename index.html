@@ -27,7 +27,7 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=321" />
+    <link rel="stylesheet" href="./styles.css?v=322" />
     <script src="./script.js?v=58" defer></script>
   </head>
 
@@ -102,6 +102,13 @@
                  JSのフック（data-request-player / data-deck-play /
                  data-deck-time / data-deck-mode）は従来のまま使う。 -->
             <div class="mdplayer" data-request-player aria-label="2000年代ソングのリクエスト受付中">
+              <!-- 製品図の作法。左上に小さく仕様を置くと「図版」に見える。
+                   実在の型番は使わない -->
+              <p class="mdplayer__spec" aria-hidden="true">
+                <b>PORTABLE PLAYER</b>
+                <b>HDD 20GB</b>
+                <b>2000s EDITION</b>
+              </p>
               <svg class="mdplayer__cable" viewBox="0 0 340 336" preserveAspectRatio="xMidYMid meet"
                    aria-hidden="true" focusable="false">
                 <!-- 端子から出て右へ回り、下を通って左のイヤホンへ戻る一本のループ -->

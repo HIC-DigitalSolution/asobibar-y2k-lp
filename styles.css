@@ -6355,3 +6355,48 @@ body { padding-bottom: 0; }
   .mdplayer { width: 100%; padding-left: 34px; }
   .mdplayer__body { width: min(184px, 58%); margin-right: 6%; }
 }
+
+/* ===================== プレーヤーを製品図に寄せる =====================
+   参考図は「左上に小さな仕様表記／大きな本体／フラットな面」で
+   構成されている。陰影を浅くして、図版としての読みを強める。 */
+
+.mdplayer { padding-top: 52px; }
+
+.mdplayer__spec {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  color: var(--print-ink);
+  font-family: var(--font-main);
+}
+.mdplayer__spec b {
+  font-size: 8.5px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 1.1;
+}
+
+/* 陰影を浅くしてベクター画らしくする */
+.mdplayer__body {
+  background: linear-gradient(100deg, #eff3f9 0%, #d5dde9 30%, #eef2f8 56%, #cad4e2 84%, #e9eef5 100%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -1px 2px rgba(60, 72, 92, 0.18),
+    0 10px 20px rgba(37, 25, 63, 0.2);
+}
+.mdplayer__key {
+  background: #c4cedd;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+.mdplayer__dir {
+  background: #bdc8d8;
+  box-shadow: none;
+}
+.mdplayer__play {
+  background: #cfd9e7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
