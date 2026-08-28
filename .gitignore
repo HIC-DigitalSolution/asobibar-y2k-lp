@@ -19,10 +19,21 @@ assets/*
 !assets/fv-obj-phone.png
 !assets/gallery-y2k-v2.jpg
 !assets/hero-collage-typography-v2.jpg
+!assets/hero-collage-sp.jpg
 
 # エディタ設定
 .claude/
 !assets/play-together-sticker.webp
+!assets/play-darts.jpg
+!assets/memory-cheers.jpg
+!assets/purikura-01.jpg
+!assets/purikura-02.jpg
+!assets/purikura-03.jpg
+!assets/purikura-04.jpg
+!assets/karaoke-crowd.jpg
+!assets/karaoke-crowd-v2.jpg
+!assets/request-conversation.jpg
+!assets/howto-color-band.jpg
 !assets/hero-group.jpg
 !assets/date-sticker.webp
 !assets/wall/
@@ -34,3 +45,8 @@ tools/.fontsrc/
 .vercel
 .env*
 .vscode/
+!assets/DSC03301.jpg
+!assets/DSC04000.jpg
+!assets/chrome-orbit.png
+!assets/karaoke-scene.mp4
+!assets/karaoke-scene-poster.jpg

@@ -20,14 +20,15 @@
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
-    <link rel="preload" as="image" href="./assets/hero-collage-typography-v2.jpg" fetchpriority="high" />
+    <link rel="preload" as="image" href="./assets/hero-collage-sp.jpg" media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="./assets/hero-collage-typography-v2.jpg" media="(min-width: 768px)" fetchpriority="high" />
 
     <!-- 本文と見出しは最初の画面で必ず要るので先に取る -->
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=260" />
-    <script src="./script.js?v=57" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=321" />
+    <script src="./script.js?v=58" defer></script>
   </head>
 
   <body>
@@ -39,17 +40,18 @@
         <span class="bar__tag">Y2K NIGHT</span>
       </a>
       <!-- 誌面のノンブル。スクロールでページ番号が進む -->
-      <p class="bar__nombre" aria-hidden="true">P.<b data-nombre>01</b></p>
+      <p class="bar__nombre" aria-hidden="true">P.<b data-nombre>01</b><span>/P.05</span></p>
     </header>
 
     <main id="main">
       <!-- ==================== 表紙 ====================
            2000年代の記憶をコラージュした一枚絵にタイトルを統合。
            見出しと説明はアクセシビリティのためHTMLにも保持する。 -->
-      <section class="cover cover--keyvisual" id="top" data-theme="cover" data-page="00" data-scene-motion="hero" aria-labelledby="cover-title">
+      <section class="cover cover--keyvisual" id="top" data-theme="cover" data-page="01" data-scene-motion="hero" aria-labelledby="cover-title">
         <div class="cover__stage">
           <div class="cover__visual">
             <picture class="cover__keyvisual" aria-hidden="true">
+              <source media="(max-width: 767px)" srcset="./assets/hero-collage-sp.jpg" />
               <img
                 src="./assets/hero-collage-typography-v2.jpg"
                 alt=""
@@ -60,23 +62,17 @@
               />
             </picture>
 
-            <div class="cover__core visually-hidden">
+            <div class="cover__core">
               <p class="cover__eyebrow"><span>Y2K NIGHT 2026</span><span>2000s REPLAY</span></p>
               <h1 class="cover__title" id="cover-title">
                 <span class="cover__title-y2k">Y2K</span>
-                <span class="cover__title-ja">を無限リピート</span>
+                <span class="cover__title-ja">を無限リピート！</span>
               </h1>
               <p class="cover__lead">あの頃の青春、今夜再生。</p>
             </div>
           </div>
 
           <div class="cover__info">
-            <div class="cover__request" aria-label="2000年代ソング リクエスト受付中">
-              <span>2000年代ソング</span>
-              <strong>リクエスト受付中</strong>
-              <small>2000年代に聴いていた曲をリクエストできます。</small>
-            </div>
-
             <a class="cta cta--metal" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
               <span data-reserve-label>公式HPから予約する</span><i aria-hidden="true">›</i>
             </a>
@@ -102,24 +98,53 @@
               2000年代の曲をリクエスト。イントロが流れた瞬間の「これ知ってる！」から、今夜の会話が始まります。
             </p>
 
-            <div class="replay-deck" data-request-player aria-label="2000年代ソングのリクエスト受付中">
-              <div class="replay-deck__top">
-                <b data-deck-mode>REQUEST MODE</b>
-              </div>
-              <div class="replay-deck__track">
-                <button
-                  class="replay-deck__play"
-                  type="button"
-                  data-deck-play
-                  aria-label="再生デモを動かす（音は出ません）"
-                >
-                  <span aria-hidden="true">▶</span>
-                </button>
-                <p><small>TRACK</small><strong>2000s SONG REQUEST</strong></p>
-              </div>
-              <div class="replay-deck__bar" aria-hidden="true"><i></i></div>
-              <div class="replay-deck__meta" aria-hidden="true">
-                <span data-deck-time>MEMORY 00:00</span><span>REPLAY 03:45</span>
+            <!-- 携帯プレーヤー。ブランドマークは入れない（商標）。
+                 JSのフック（data-request-player / data-deck-play /
+                 data-deck-time / data-deck-mode）は従来のまま使う。 -->
+            <div class="mdplayer" data-request-player aria-label="2000年代ソングのリクエスト受付中">
+              <svg class="mdplayer__cable" viewBox="0 0 340 336" preserveAspectRatio="xMidYMid meet"
+                   aria-hidden="true" focusable="false">
+                <!-- 端子から出て右へ回り、下を通って左のイヤホンへ戻る一本のループ -->
+                <path class="mdplayer__wire"
+                      d="M266 6 C302 6 330 18 330 50 L330 286 C330 312 314 322 288 322 L56 322 C30 322 16 310 16 286 L16 152" />
+                <path class="mdplayer__wire" d="M16 152 C16 130 26 122 40 118" />
+                <path class="mdplayer__wire" d="M16 152 C16 138 12 128 6 122" />
+                <g class="mdplayer__bud">
+                  <rect x="30" y="86" width="19" height="34" rx="9.5" transform="rotate(-8 39 103)" />
+                  <rect x="-4" y="92" width="19" height="34" rx="9.5" transform="rotate(6 5 109)" />
+                </g>
+              </svg>
+
+              <div class="mdplayer__body">
+                <span class="mdplayer__jack" aria-hidden="true"></span>
+                <span class="mdplayer__hold" aria-hidden="true"></span>
+
+                <div class="mdplayer__screen">
+                  <b data-deck-mode>REQUEST MODE</b>
+                  <p><small>TRACK</small><strong>2000s SONG REQUEST</strong></p>
+                  <div class="mdplayer__bar" aria-hidden="true"><i></i></div>
+                  <div class="mdplayer__meta" aria-hidden="true">
+                    <span data-deck-time>MEMORY 00:00</span><span>REPLAY 03:45</span>
+                  </div>
+                </div>
+
+                <div class="mdplayer__keys" aria-hidden="true">
+                  <span class="mdplayer__key mdplayer__key--vu">VOL+</span>
+                  <span class="mdplayer__key mdplayer__key--menu">SEARCH<br />MENU</span>
+                  <span class="mdplayer__key mdplayer__key--vd">VOL−</span>
+                  <span class="mdplayer__key mdplayer__key--stop"></span>
+                </div>
+
+                <div class="mdplayer__pad">
+                  <span class="mdplayer__dir mdplayer__dir--up" aria-hidden="true"></span>
+                  <span class="mdplayer__dir mdplayer__dir--left" aria-hidden="true"></span>
+                  <span class="mdplayer__dir mdplayer__dir--right" aria-hidden="true"></span>
+                  <span class="mdplayer__dir mdplayer__dir--down" aria-hidden="true"></span>
+                  <button class="mdplayer__play" type="button" data-deck-play
+                          aria-label="再生デモを動かす（音は出ません）">
+                    <span aria-hidden="true">▶</span>
+                  </button>
+                </div>
               </div>
             </div>
             </div>
@@ -127,14 +152,35 @@
           </div>
 
           <figure class="request-photo scene-photo" data-reveal="media">
+            <span class="request-photo__holo" aria-hidden="true"></span>
+            <!-- 奥にもう1枚。アルバムに複数枚挟んだ体にして
+                 「1枚だけ」の寂しさを解く。角だけ見える。 -->
+            <span class="request-photo__back" aria-hidden="true">
+              <img src="./assets/karaoke-crowd.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" />
+            </span>
+            <span class="request-photo__chrome" aria-hidden="true">
+              <b>request_photo.jpg</b>
+              <span>
+                <i>−</i>
+                <i>□</i>
+                <i>×</i>
+              </span>
+            </span>
+            <span class="request-chrome request-chrome--orbit" aria-hidden="true">
+              <img src="./assets/chrome-orbit.png" alt="" width="512" height="341" loading="lazy" decoding="async" />
+            </span>
             <img
-              src="./assets/hero-group.jpg"
-              alt="懐かしい曲で盛り上がり、笑い合う人たち"
+              src="./assets/request-conversation.jpg"
+              alt="店内で会話を楽しむ男女"
               width="1800"
-              height="1200"
+              height="1212"
               loading="eager"
+              decoding="async"
             />
-            <figcaption>“これ知ってる！”が、今夜の合図。</figcaption>
+            <!-- 窓枠にまたがるシール。04で使っている型をそのまま流用する -->
+            <span class="seal seal--heart request-seal request-seal--heart" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5 3.8 12.6a5 5 0 0 1 7.1-7L12 6.7l1.1-1.1a5 5 0 0 1 7.1 7Z"/></svg>
+            </span>
           </figure>
         </div>
       </section>
@@ -143,14 +189,29 @@
       <section class="scene scene--karaoke" id="karaoke" data-theme="karaoke" data-page="02" data-scene-motion="karaoke" aria-labelledby="karaoke-title">
         <div class="scene__pin">
           <figure class="karaoke-photo scene-photo" data-reveal="media">
-          <img
-            src="./assets/experience-karaoke.jpg"
-            alt="懐かしい曲を一緒に歌いながら笑い合う人たち"
-            width="1800"
-            height="1200"
-            loading="lazy"
-          />
+          <video
+            src="./assets/karaoke-scene.mp4"
+            poster="./assets/karaoke-scene-poster.jpg"
+            muted
+            loop
+            autoplay
+            playsinline
+            preload="metadata"
+            data-scene-video
+            aria-hidden="true"
+          ></video>
           </figure>
+          <div class="y2k-sticker y2k-sticker--karaoke" aria-hidden="true">
+            <div class="y2k-sticker__surface">
+              <img
+                src="./assets/play-together-sticker.webp"
+                alt=""
+                width="640"
+                height="469"
+                decoding="async"
+              />
+            </div>
+          </div>
           <div class="karaoke-copy">
             <p class="scene-label"><b>02</b><i aria-hidden="true"></i><span>歌う</span><em>KARAOKE &amp; TALK</em></p>
             <h2 class="scene-title" id="karaoke-title">同じサビで笑えば、<br />会話はもう始まっている。</h2>
@@ -159,141 +220,17 @@
         </div>
       </section>
 
-      <!-- ==================== SCENE 03 / PLAY TOGETHER ==================== -->
-      <section class="scene scene--play" id="play" data-theme="play" data-page="03" data-scene-motion="play" aria-labelledby="play-title">
-        <div class="y2k-sticker y2k-sticker--play" data-reveal="sticker" aria-hidden="true">
-          <div class="y2k-sticker__surface">
-            <img
-              src="./assets/play-together-sticker.webp"
-              alt=""
-              width="640"
-              height="469"
-              decoding="async"
-            />
-          </div>
-        </div>
-        <div class="play-layout">
-          <div class="play-copy sheet sheet--torn-top">
-            <span class="sheet__fiber" aria-hidden="true"></span>
-            <div class="sheet__face">
-            <p class="scene-label"><b>03</b><i aria-hidden="true"></i><span>遊ぶ</span><em>PLAY TOGETHER</em></p>
-            <h2 class="paper-h" id="play-title">遊ぶほど、自然に距離が縮まる。</h2>
-            <p class="scene-text">
-              ダーツやビリヤードなど、言葉だけに頼らない遊びがあるから、初対面でも同じ瞬間に笑えます。
-            </p>
-            </div>
-            <span class="tape tape--c tape--p1" aria-hidden="true"></span>
-          </div>
-          <figure class="play-photo scene-photo" data-reveal="media">
-            <img
-              src="./assets/experience-game.jpg"
-              alt="ダーツをきっかけに一緒に盛り上がる人たち"
-              width="1800"
-              height="1200"
-              loading="lazy"
-            />
-          </figure>
-        </div>
-      </section>
-
-      <!-- ==================== SCENE 04 / NEW MEMORY ==================== -->
-      <section class="scene scene--new-memory" id="memory" data-theme="memory" data-page="04" data-scene-motion="memory" aria-labelledby="memory-title">
-        <div class="scene__pin">
-          <figure class="memory-photo scene-photo">
-          <img
-            src="./assets/experience-cheers.jpg"
-            alt="グラスを合わせ、笑顔で乾杯する人たち"
-            width="1800"
-            height="1200"
-            loading="lazy"
-          />
-          </figure>
-          <!-- 画面外から流れるプリクラ帯と、写真へ貼った小さなシール。 -->
-          <div class="album" aria-hidden="true">
-            <div class="purikura purikura--l">
-              <div class="purikura__track">
-                <div class="purikura__set">
-                  <span class="purikura__cell"><img src="./assets/experience-karaoke.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-game.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/gallery-y2k-v2.jpg" alt="" width="1672" height="941" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-music.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/final-night.jpg" alt="" width="1920" height="1080" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-cheers.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                </div>
-                <div class="purikura__set" aria-hidden="true">
-                  <span class="purikura__cell"><img src="./assets/experience-karaoke.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-game.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/gallery-y2k-v2.jpg" alt="" width="1672" height="941" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-music.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/final-night.jpg" alt="" width="1920" height="1080" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-cheers.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                </div>
-                <div class="purikura__set" aria-hidden="true">
-                  <span class="purikura__cell"><img src="./assets/experience-karaoke.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-game.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/gallery-y2k-v2.jpg" alt="" width="1672" height="941" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-music.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/final-night.jpg" alt="" width="1920" height="1080" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-cheers.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                </div>
-              </div>
-            </div>
-            <div class="purikura purikura--r">
-              <div class="purikura__track">
-                <div class="purikura__set">
-                  <span class="purikura__cell"><img src="./assets/experience-karaoke.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-game.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/gallery-y2k-v2.jpg" alt="" width="1672" height="941" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-music.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/final-night.jpg" alt="" width="1920" height="1080" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-cheers.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                </div>
-                <div class="purikura__set" aria-hidden="true">
-                  <span class="purikura__cell"><img src="./assets/experience-karaoke.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-game.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/gallery-y2k-v2.jpg" alt="" width="1672" height="941" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-music.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/final-night.jpg" alt="" width="1920" height="1080" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-cheers.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                </div>
-                <div class="purikura__set" aria-hidden="true">
-                  <span class="purikura__cell"><img src="./assets/experience-karaoke.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-game.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/gallery-y2k-v2.jpg" alt="" width="1672" height="941" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-music.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/final-night.jpg" alt="" width="1920" height="1080" loading="lazy" decoding="async" /></span>
-                  <span class="purikura__cell"><img src="./assets/experience-cheers.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" /></span>
-                </div>
-              </div>
-            </div>
-            <div class="album__ink">
-              <span class="seal seal--date"><img src="./assets/date-sticker.webp" alt="" width="640" height="177" loading="lazy" decoding="async" /></span>
-              <span class="seal seal--heart">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5 3.8 12.6a5 5 0 0 1 7.1-7L12 6.7l1.1-1.1a5 5 0 0 1 7.1 7Z"/></svg>
-              </span>
-              <span class="seal seal--star"></span>
-              <span class="seal seal--kira"></span>
-            </div>
-          </div>
-
-          <div class="memory-copy">
-            <p class="scene-label"><b>04</b><i aria-hidden="true"></i><span>思い出</span><em>NEW MEMORY</em></p>
-            <h2 class="scene-title" id="memory-title">今夜が、<br />次の“あの頃”になる。</h2>
-          </div>
-        </div>
-      </section>
-
       <!-- ==================== PRICE ==================== -->
       <!-- 05と06は地を共有する。別々に背景を持たせると
            境界で色が繋がらず、水色の帯として分かれて見えた。 -->
       <div class="info-zone">
-      <section class="information-section price-zone" id="price" data-theme="price" data-page="05" data-scene-motion="price" aria-labelledby="price-title">
+      <section class="information-section price-zone" id="price" data-theme="price" data-page="03" data-scene-motion="price" aria-labelledby="price-title">
         <div class="price-zone__in">
 
           <div class="price-copy sheet sheet--torn-bottom">
             <span class="sheet__fiber" aria-hidden="true"></span>
             <div class="sheet__face">
-              <p class="scene-label"><b>05</b><i aria-hidden="true"></i><span>料金</span><em>PRICE</em></p>
+              <p class="scene-label"><b>03</b><i aria-hidden="true"></i><span>料金</span><em>PRICE</em></p>
 
               <h2 class="paper-h" id="price-title">100分プラン誕生！</h2>
 
@@ -331,12 +268,12 @@
       </section>
 
       <!-- ==================== EVENT INFORMATION ==================== -->
-      <section class="information-section event-zone" id="event" data-theme="event" data-page="06" data-scene-motion="event" aria-labelledby="event-title">
+      <section class="information-section event-zone" id="event" data-theme="event" data-page="04" data-scene-motion="event" aria-labelledby="event-title">
         <div class="event-zone__in">
           <div class="sheet sheet--torn-bottom event-sheet">
             <span class="sheet__fiber" aria-hidden="true"></span>
             <div class="sheet__face">
-              <p class="scene-label"><b>06</b><i aria-hidden="true"></i><span>開催情報</span><em>EVENT INFORMATION</em></p>
+              <p class="scene-label"><b>04</b><i aria-hidden="true"></i><span>開催情報</span><em>EVENT INFORMATION</em></p>
 
               <h2 class="paper-h" id="event-title">9月まるっと開催</h2>
 
@@ -382,7 +319,7 @@
                 <span class="wall__cell"><img src="./assets/wall/darts.webp" alt="" width="420" height="420" loading="lazy" decoding="async" /></span>
                 <span class="wall__cell wall__cell--you"><b aria-hidden="true">次は、<br />あなたの夜。</b></span>
                 <span class="wall__cell"><img src="./assets/wall/waffle.webp" alt="" width="420" height="420" loading="lazy" decoding="async" /></span>
-                <span class="wall__cell"><img src="./assets/wall/hifive.webp" alt="" width="420" height="420" loading="lazy" decoding="async" /></span>
+                <span class="wall__cell"><img src="./assets/DSC04000.jpg" alt="" width="420" height="420" loading="lazy" decoding="async" /></span>
                 <span class="wall__cell"><img src="./assets/wall/discman.webp" alt="" width="420" height="420" loading="lazy" decoding="async" /></span>
                 <span class="wall__cell"><img src="./assets/wall/cheers.webp" alt="" width="420" height="420" loading="lazy" decoding="async" /></span>
                 <span class="wall__cell"><img src="./assets/wall/takoyaki.webp" alt="" width="420" height="420" loading="lazy" decoding="async" /></span>
@@ -425,7 +362,7 @@
               <span class="howto-band howto-band--2">COLOR BAND</span>
               <span class="howto-band howto-band--3">COLOR BAND</span>
               <figure class="howto-photo howto-band-photo" data-howto-reveal>
-                <img src="./assets/experience-music.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" />
+                <img src="./assets/ChatGPT Image 2026年8月28日 14_18_31.png" alt="" width="1800" height="1202" loading="lazy" decoding="async" />
                 <figcaption>気分に合わせて、今夜を選ぶ。</figcaption>
               </figure>
             </div>
@@ -443,11 +380,11 @@
             </div>
             <div class="howto-visual" aria-hidden="true">
               <figure class="howto-photo howto-amusement-photo" data-howto-reveal>
-                <img src="./assets/experience-game.jpg" alt="" width="1800" height="1200" loading="lazy" decoding="async" />
+                <img src="./assets/ビリヤード.png" alt="" width="1800" height="1200" loading="lazy" decoding="async" />
                 <figcaption>遊びから、会話へ。</figcaption>
               </figure>
               <div class="howto-contact" data-howto-reveal>
-                <img src="./assets/wall/darts.webp" alt="" width="420" height="420" loading="lazy" decoding="async" />
+                <img src="./assets/トランプ.png" alt="" width="420" height="420" loading="lazy" decoding="async" />
                 <img src="./assets/wall/hifive.webp" alt="" width="420" height="420" loading="lazy" decoding="async" />
               </div>
             </div>
@@ -466,7 +403,7 @@
                 <figcaption>SWEETS</figcaption>
               </figure>
               <figure class="howto-photo howto-food__photo howto-food__photo--2" data-howto-reveal>
-                <img src="./assets/wall/soda.webp" alt="" width="420" height="420" loading="lazy" decoding="async" />
+                <img src="./assets/food.jpg" alt="" width="420" height="420" loading="lazy" decoding="async" />
                 <figcaption>DRINK</figcaption>
               </figure>
               <div class="howto-ticket" data-howto-reveal>
@@ -478,7 +415,7 @@
         </div>
       </section>
       <!-- ==================== FINAL CTA ==================== -->
-      <section class="final-night" id="reserve" data-theme="reserve" data-page="07" data-scene-motion="final" aria-labelledby="last-title">
+      <section class="final-night" id="reserve" data-theme="reserve" data-page="05" data-scene-motion="final" aria-labelledby="last-title">
         <div class="scene__pin">
           <figure class="final-night__photo">
           <img
@@ -490,7 +427,7 @@
           />
           </figure>
           <div class="final-night__content">
-          <p class="scene-label"><b>07</b><i aria-hidden="true"></i><span>予約</span><em>RESERVE</em></p>
+          <p class="scene-label"><b>05</b><i aria-hidden="true"></i><span>予約</span><em>RESERVE</em></p>
           <h2 id="last-title">懐かしいだけで終わらない。<br />今夜を、<br class="sp-br" />新しい思い出に。</h2>
           <p>あの頃の曲から始まる、大人のY2Kナイトへ。</p>
             <a class="cta cta--final" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
@@ -507,7 +444,7 @@
         <span class="bar__tag">Y2K NIGHT</span>
       </a>
       <nav aria-label="フッターナビゲーション">
-        <a href="#experience">曲リクエスト</a><a href="#karaoke">歌う</a><a href="#play">遊ぶ</a><a href="#price">料金</a><a href="#event">開催情報</a><a href="#howto">楽しみ方</a><a href="#reserve">予約</a>
+        <a href="#experience">曲リクエスト</a><a href="#karaoke">歌う</a><a href="#price">料金</a><a href="#event">開催情報</a><a href="#howto">楽しみ方</a><a href="#reserve">予約</a>
       </nav>
       <small>© ASOBIBAR Y2K NIGHT</small>
     </footer>

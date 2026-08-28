@@ -191,6 +191,8 @@ a { color: inherit; }
 }
 
 .bar__nombre {
+  display: flex;
+  align-items: baseline;
   margin: 0;
   color: #cbd6d9;
   font-size: 11px;
@@ -201,6 +203,12 @@ a { color: inherit; }
 .bar__nombre b {
   color: #ff78b3;
   font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.bar__nombre span {
+  color: #cbd6d9;
+  font-size: 11px;
   font-variant-numeric: tabular-nums;
 }
 
@@ -252,6 +260,20 @@ a { color: inherit; }
   height: 100%;
   object-fit: cover;
   object-position: 50% 50%;
+}
+
+/* PC画像にはタイトルが焼き込まれているため、HTML見出しは
+   読み上げ可能なまま視覚的に隠す。SP画像だけ中央へ表示する。 */
+.cover__core {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .cover__info {
@@ -404,7 +426,9 @@ a { color: inherit; }
 }
 
 .scene-photo { position: relative; margin: 0; overflow: hidden; }
-.scene-photo img { width: 100%; height: 100%; object-fit: cover; }
+.scene-photo img,
+.scene-photo video { width: 100%; height: 100%; object-fit: cover; }
+.scene-photo video { display: block; }
 
 /* ===================== 01 SONG REQUEST ===================== */
 
@@ -628,7 +652,7 @@ a { color: inherit; }
 }
 
 .karaoke-photo { position: absolute; inset: 0; }
-.karaoke-photo img { object-position: 48% 50%; }
+.karaoke-photo :is(img, video) { object-position: 48% 50%; }
 
 .karaoke-photo::after {
   position: absolute;
@@ -1242,18 +1266,22 @@ a { color: inherit; }
 .howto-amusement-photo img { object-position: 66% 50%; }
 .howto-contact {
   position: absolute;
-  right: -3%;
+  right: -1%;
   bottom: 1%;
   z-index: 4;
   display: grid;
-  grid-template-columns: repeat(2, 92px);
-  gap: 7px;
-  padding: 8px 8px 24px;
+  grid-template-columns: repeat(2, clamp(112px, 9vw, 124px));
+  gap: 9px;
+  padding: 9px 9px 27px;
   background: var(--paper-photo);
   box-shadow: var(--shadow-photo);
   transform: rotate(4deg);
 }
-.howto-contact img { width: 92px; aspect-ratio: 1; object-fit: cover; }
+.howto-contact img {
+  width: clamp(112px, 9vw, 124px);
+  aspect-ratio: 1;
+  object-fit: cover;
+}
 
 .howto-food { min-height: 490px; }
 .howto-food__photo--1 { top: 4%; left: 1%; width: 58%; height: 62%; transform: rotate(-5deg); }
@@ -1340,8 +1368,13 @@ a { color: inherit; }
   .howto-band--1 { right: 0; }
   .howto-band--2 { left: -2%; }
   .howto-amusement-photo { left: 5%; width: 88%; height: 73%; }
-  .howto-contact { right: 1%; grid-template-columns: repeat(2, 70px); padding: 6px 6px 18px; }
-  .howto-contact img { width: 70px; }
+  .howto-contact {
+    right: 0;
+    grid-template-columns: repeat(2, clamp(82px, 23vw, 90px));
+    gap: 6px;
+    padding: 6px 6px 20px;
+  }
+  .howto-contact img { width: clamp(82px, 23vw, 90px); }
   .howto-food { min-height: 410px; }
   .howto-food__photo--1 { width: 61%; height: 58%; }
   .howto-food__photo--2 { width: 51%; height: 58%; }
@@ -1390,6 +1423,7 @@ a { color: inherit; }
   padding: var(--section-space) clamp(20px, 4vw, 54px);
   text-align: left;
 }
+.request-photo__chrome { display: none; }
 
 .final-night__content .scene-label,
 .final-night__content h2,
@@ -1580,7 +1614,7 @@ a { color: inherit; }
   .replay-deck__top { justify-content: flex-end; }
   .replay-deck__meta { font-size: 8.5px; letter-spacing: 0.08em; }
   .scene--karaoke { min-height: 570px; }
-  .karaoke-photo img { object-position: 52% 50%; }
+  .karaoke-photo :is(img, video) { object-position: 52% 50%; }
   .karaoke-photo::after { background: linear-gradient(180deg, rgba(7, 8, 10, 0.16), rgba(7, 8, 10, 0.28) 43%, rgba(7, 8, 10, 0.9)); }
   .karaoke-copy { align-self: end; padding-top: 160px; }
   .play-photo { min-height: 360px; }
@@ -1833,13 +1867,13 @@ a { color: inherit; }
   }
 
   .request-photo img,
-  .karaoke-photo img,
+  .karaoke-photo :is(img, video),
   .play-photo img,
   .memory-photo img,
   .final-night__photo img { transition: transform 120ms linear; }
 
   .request-photo img { transform: translate3d(0, var(--scene-y-reverse), 0) scale(1.14); }
-  .karaoke-photo img { transform: translate3d(0, var(--scene-y-soft), 0) scale(1.1); }
+  .karaoke-photo :is(img, video) { transform: translate3d(0, var(--scene-y-soft), 0) scale(1.1); }
   .play-photo img { transform: translate3d(0, var(--scene-y-reverse), 0) scale(1.14); }
   /* .motion-ready を足して侵入ルール(0,4,0)と同じ詳細度にする。
      後勝ちで追従が有効になる。これが無いと侵入側の transform:none が
@@ -1886,6 +1920,70 @@ a { color: inherit; }
   .cover__keyvisual img {
     object-fit: cover;
     object-position: 50% 50%;
+  }
+
+  .cover__core {
+    position: absolute;
+    top: 33%;
+    right: 15%;
+    left: 15%;
+    z-index: 3;
+    display: grid;
+    justify-items: center;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .cover__eyebrow { display: none; }
+
+  .cover__title {
+    display: grid;
+    justify-items: center;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .cover__title-y2k {
+    display: block;
+    color: #fff;
+    font-family: Impact, "Arial Black", var(--font-main);
+    font-size: clamp(3.6rem, 18vw, 4.8rem);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: 0.01em;
+    -webkit-text-stroke: 1px rgba(255, 111, 177, 0.9);
+    paint-order: stroke fill;
+    filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.82)) drop-shadow(0 5px 8px rgba(0, 0, 0, 0.48));
+  }
+
+  .cover__title-ja {
+    display: block;
+    margin-top: 9px;
+    color: #fff;
+    font-family: var(--font-main);
+    font-size: clamp(1.08rem, 5.2vw, 1.35rem);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.065em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.86);
+    transform: scaleX(0.9);
+  }
+
+  .cover__lead {
+    margin: 10px 0 0;
+    color: #ff91c5;
+    font-family: var(--font-main);
+    font-size: clamp(0.72rem, 3.1vw, 0.84rem);
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
   }
 
   .cover__info {
@@ -2045,7 +2143,7 @@ a { color: inherit; }
     background: linear-gradient(180deg, transparent 55%, rgba(7, 8, 10, 0.42));
   }
 
-  .karaoke-photo img { object-position: 52% 45%; }
+  .karaoke-photo :is(img, video) { object-position: 52% 45%; }
 
   .karaoke-copy {
     width: 100%;
@@ -2260,7 +2358,7 @@ a { color: inherit; }
 
 @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
   /* 写真は滞在中ずっと等速で寄る。加減速を付けると「演出」に見える */
-  .karaoke-photo img,
+  .karaoke-photo :is(img, video),
   .memory-photo img,
   .final-night__photo img {
     transform: scale(calc(1.16 - 0.16 * var(--pin, 0)));
@@ -2474,7 +2572,7 @@ a { color: inherit; }
   }
   .motion-ready .replay-deck__bar i { transform: scaleX(1); transition: none; }
   .scene__pin { transform: none; opacity: 1; }
-  .karaoke-photo img,
+  .karaoke-photo :is(img, video),
   .memory-photo img,
   .final-night__photo img { transform: none; will-change: auto; }
   .karaoke-type,
@@ -3780,9 +3878,10 @@ a { color: inherit; }
 .purikura {
   position: absolute;
   left: clamp(-74px, -4.8vw, -40px);
-  top: -12%;
-  bottom: -12%;
-  width: clamp(118px, 11.5vw, 168px);
+  /* PCではメイン写真の上下端を移動範囲にする。 */
+  top: 0;
+  bottom: 0;
+  width: clamp(160px, 14vw, 210px);
   overflow: hidden;
   transform: rotate(-6deg);
   filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.42));
@@ -3795,9 +3894,9 @@ a { color: inherit; }
 }
 @keyframes purikura-flow {
   from { transform: translate3d(0, 0, 0); }
-  /* 3組中の1組分だけ送る。次の同一組が同じ位置へ来るため、
+  /* 4組中の1組分だけ送る。次の同一組が同じ位置へ来るため、
      画面高にかかわらずループの継ぎ目が露出しない。 */
-  to { transform: translate3d(0, -33.333333%, 0); }
+  to { transform: translate3d(0, -25%, 0); }
 }
 .purikura__set {
   display: flex;
@@ -3809,12 +3908,17 @@ a { color: inherit; }
 .purikura__cell {
   display: block;
   overflow: hidden;
-  aspect-ratio: 4 / 5;
+  /* 横写真を縦長に切り抜かず、プリクラの小さな連続カットとして見せる。 */
+  aspect-ratio: 3 / 2;
   border: 5px solid var(--paper-photo);
   background: #241c18;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.34);
 }
 .purikura__cell img { width: 100%; height: 100%; object-fit: cover; }
+.purikura__cell--1 img { object-position: 34% 50%; }
+.purikura__cell--2 img { object-position: 31% 50%; }
+.purikura__cell--3 img { object-position: 30% 50%; }
+.purikura__cell--4 img { object-position: 31% 50%; }
 .purikura__cell:nth-child(1) img { object-position: 52% 42%; }
 .purikura__cell:nth-child(2) img { object-position: 60% 45%; }
 .purikura__cell:nth-child(3) img { object-position: 50% 40%; }
@@ -4482,7 +4586,8 @@ a { color: inherit; }
 /* 右は逆向きに流す。負の delay で位相をずらし、
    左右で同じコマが並ばないようにする */
 .purikura--r .purikura__track {
-  animation-direction: reverse;
+  /* 左右とも写真の下から入り、上へ抜ける。位相だけをずらす。 */
+  animation-direction: normal;
   animation-delay: -9s;
 }
 
@@ -5004,11 +5109,67 @@ a { color: inherit; }
    幅を絞って中央に置き、紙との差をつける。 */
 
 @media (max-width: 767px) {
-  .request-photo,
+  .request-photo {
+    position: relative;
+    z-index: 0;
+    isolation: isolate;
+    width: min(86%, 334px);
+    margin-inline: auto;
+    padding: 5px 5px 20px;
+    border: 1px solid rgba(35, 24, 21, 0.72);
+    background: #fffdf8;
+    box-shadow: var(--shadow-photo);
+  }
+  .request-photo::after { display: none; }
+  .request-photo__chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    height: 29px;
+    margin: 0 0 5px;
+    padding: 0 4px 0 9px;
+    border: 1px solid #3d3351;
+    background: linear-gradient(90deg, #83b9f3 0%, #b4a7ee 48%, #f07dbc 100%);
+    color: #231815;
+    font-family: var(--font-main);
+    font-size: 9px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.07em;
+  }
+  .request-photo__chrome > span {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 3px;
+  }
+  .request-photo__chrome i {
+    display: grid;
+    place-items: center;
+    width: 19px;
+    height: 19px;
+    border: 1px solid #3d3351;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 rgba(61, 51, 81, 0.2);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    line-height: 1;
+  }
+  .request-photo__chrome i:last-child {
+    background: #ff78af;
+    color: #281a2a;
+  }
+  /* inset(0)のままだとReveal完了後も外側の影が切れる。
+     負のinsetでプリントの色影まで描画範囲へ含める。
+     奥に重ねた2枚目とシールも範囲に入れる必要があるので、
+     矩形で切るのはやめて none にする。 */
+  .reveal-ready .request-photo[data-reveal].is-in { clip-path: none; }
   .play-photo {
     width: min(78%, 300px);
     margin-inline: auto;
   }
+  .scene--request .request-layout { gap: 28px; }
   /* 幅が減るぶん、高さの下限も下げる（余った箱が出ないように） */
   .request-photo { min-height: 0; }
   .play-photo { min-height: 0; }
@@ -5287,19 +5448,203 @@ body { padding-bottom: 0; }
 .scene--new-memory .scene-title,
 .memory-copy .scene-title {
   margin-inline: auto;
+  white-space: nowrap;
 }
 
-/* 04 SP：左のプリクラ帯は写真が判別できる幅まで内側へ。
-   コピーは帯の右側に専用の余白を取り、紙面見出しと重ねない。 */
+@media (max-width: 767px) {
+  .scene--new-memory .scene-title,
+  .memory-copy .scene-title {
+    font-size: clamp(1.05rem, 5vw, 1.35rem);
+    letter-spacing: -0.06em;
+  }
+}
+
+/* 04：プリクラ写真はメイン写真の下部を横切り、右から左へ流す。
+   4組の同一セットを1組分だけ送るため、継ぎ目なくループする。 */
+@keyframes purikura-flow-x {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-25%, 0, 0); }
+}
+
+.purikura--r {
+  display: none;
+}
+
+.purikura--l {
+  left: -14px;
+  right: -14px;
+  top: auto;
+  bottom: 70px;
+  width: auto;
+  height: clamp(140px, 16vh, 170px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: #0e0b0d;
+  transform: rotate(-1.2deg);
+}
+
+.purikura--l .purikura__track,
+.purikura--r .purikura__track {
+  display: flex;
+  flex-direction: row;
+  width: max-content;
+  will-change: transform;
+}
+
+.purikura--l .purikura__set,
+.purikura--r .purikura__set {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+  gap: 8px;
+  padding: 5px 4px 8px;
+}
+
+.purikura--l .purikura__cell,
+.purikura--r .purikura__cell {
+  flex: 0 0 clamp(170px, 15vw, 230px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .purikura--l .purikura__track,
+  .purikura--r .purikura__track {
+    animation: purikura-flow-x 30s linear infinite;
+  }
+
+  .purikura--r .purikura__track {
+    animation-direction: reverse;
+    animation-delay: -8s;
+  }
+}
+
+@media (min-width: 768px) {
+  /* PCでは中央写真の左右に帯幅を確保し、縦2本を対称配置する。 */
+  .scene--new-memory {
+    --puri-rail: clamp(132px, 11vw, 170px);
+  }
+
+  .scene--new-memory .memory-photo {
+    left: calc(var(--puri-rail) + 14px);
+    right: calc(var(--puri-rail) + 14px);
+    bottom: 0;
+  }
+
+  .purikura--l,
+  .purikura--r {
+    /* 上側の切れ目を画面内に置かず、ヘッダーの裏まで通す。
+       下まで延長すると3セット分の帯長を超えて空白が出るため、
+       入り口は下部CTAの直上に保つ。 */
+    top: -72px;
+    bottom: 0;
+    width: var(--puri-rail);
+    height: auto;
+    /* 動いている写真を帯の上下端で切らない。
+       セクション外だけ .scene__pin 側で隠し、連続して流れて見せる。 */
+    overflow: visible;
+    display: block;
+    background: #0e0b0d;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
+  }
+
+  .purikura--l {
+    /* 傾けた外枠が画面外で切れない位置まで内側へ入れる。 */
+    left: 12px;
+    right: auto;
+    transform: rotate(-1.6deg);
+  }
+
+  .purikura--r {
+    left: auto;
+    right: 12px;
+    transform: rotate(1.6deg);
+  }
+
+  .purikura--l .purikura__track,
+  .purikura--r .purikura__track {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .purikura--l .purikura__set,
+  .purikura--r .purikura__set {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+    padding: 5px 6px 9px;
+  }
+
+  .purikura--l .purikura__cell,
+  .purikura--r .purikura__cell {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .purikura--l .purikura__track,
+  .purikura--r .purikura__track {
+    animation: purikura-flow 28s linear infinite;
+  }
+
+  .purikura--r .purikura__track {
+    animation-delay: -9s;
+  }
+}
+
+/* SPでも同じ方向へ流す。写真とコピーの境界に置き、
+   人物の顔と見出しを避ける。 */
 @media (max-width: 767px) {
   .purikura--l {
-    left: -24px;
-    width: 96px;
+    left: -6px;
+    right: -6px;
+    top: auto;
+    bottom: 10px;
+    width: auto;
+    height: 88px;
+    overflow: hidden;
+    padding-block: 4px;
+    background: #0e0b0d;
+    transform: rotate(-1deg);
+  }
+
+  .purikura--l .purikura__track {
+    display: flex;
+    width: max-content;
+  }
+
+  .purikura--l .purikura__set {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    padding: 4px;
+  }
+
+  .purikura--l .purikura__cell {
+    flex-basis: clamp(108px, 32vw, 142px);
+    border-width: 3px;
+  }
+
+  /* 新しい乾杯写真は左端の人物がプリクラ帯に隠れやすい。
+     写真を左へ寄せ、帯の見える幅も少し抑えて3人の表情を残す。 */
+  .memory-photo img {
+    object-position: 15% 45%;
   }
 
   .scene--new-memory .memory-copy {
-    padding-left: 86px;
+    padding-top: 30px;
+    padding-bottom: 126px;
+    padding-left: 18px;
     padding-right: 18px;
+  }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .purikura--l .purikura__track {
+    animation-duration: 24s;
   }
 }
 
@@ -5311,6 +5656,12 @@ body { padding-bottom: 0; }
   background: transparent;
   color: var(--magenta-bright);
   text-shadow: 0 2px 0 rgba(7, 8, 10, 0.72);
+}
+
+/* 02：写真上の文字へ付けていた黒いシャドウを撤去。 */
+.scene--karaoke .scene-title,
+.scene--karaoke .scene-text {
+  text-shadow: none;
 }
 
 /* 03 SP：シールを写真から外し、白い紙面の右上角へ。
@@ -5368,4 +5719,639 @@ body { padding-bottom: 0; }
    ページ全体の横スクロールを作っていた。セクション内でだけ切る。 */
 @media (max-width: 767px) {
   .info-zone .price-zone { overflow: clip; }
+}
+
+/* ===================== 01 の写真まわりを埋める =====================
+   SPで下半分に要素が1つしか無く、藤色の地に写真が浮いて
+   寂しく見えていた。写真を2枚重ねにして「量」を出し、
+   窓枠にシールを掛けて密度を上げる。
+   新規素材もコピーの追加もしない。 */
+
+/* --- A) 奥にもう1枚。角だけ見せる --- */
+.request-photo { position: relative; }
+
+.request-photo__back {
+  position: absolute;
+  z-index: -1;
+  /* 横へ逃がすと、SPでは画面端(390px)で切れて帯にしか見えない。
+     下へずらして「白フチ＋写真の下辺」を広く見せる。
+     アルバムに2枚挟んだ見え方はこちらの方が伝わる。 */
+  right: 10px;
+  bottom: -46px;
+  left: 22%;
+  display: block;
+  padding: 6px 6px 8px;
+  background: var(--paper-photo);
+  box-shadow: 0 2px 3px rgba(37, 25, 63, 0.22), 0 12px 22px rgba(37, 25, 63, 0.26);
+  transform: rotate(4.2deg);
+}
+.request-photo__back img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* --- B) 窓枠に掛けるシール --- */
+/* 04の .seal--* の型を使うが、位置は01の箱基準で上書きする */
+.request-seal {
+  position: absolute;
+  z-index: 5;
+}
+.request-seal--heart {
+  right: auto;
+  bottom: auto;
+  left: -13px;
+  top: 16%;
+  width: clamp(26px, 7vw, 34px);
+  transform: rotate(-14deg);
+}
+.request-seal--star {
+  left: auto;
+  top: -15px;
+  right: 14%;
+  width: clamp(24px, 6.4vw, 32px);
+  transform: rotate(9deg);
+}
+.request-seal--kira {
+  left: auto;
+  bottom: auto;
+  right: -10px;
+  top: 52%;
+  width: clamp(18px, 4.6vw, 24px);
+}
+
+/* 既存の .seal--star / .seal--kira は狭い画面で display:none に
+   なっている。01のシールはその指定より後で上書きする。 */
+.request-seal--star,
+.request-seal--kira { display: block; }
+
+/* PCではCDと役割が重なるので、キラだけ落とす */
+@media (min-width: 880px) {
+  .request-seal--kira { display: none; }
+  /* PCは横幅に余裕があるので右下へ振る */
+  .request-photo__back { left: 46%; right: -40px; bottom: -38px; }
+}
+
+/* SPは写真の直下でセクションが終わり、2枚目が入る隙間が無かった。
+   下に余白を足して、重ねた1枚が見える場所を作る。 */
+@media (max-width: 879px) {
+  .scene--request .scene__in { padding-bottom: clamp(46px, 12vw, 68px); }
+  .request-photo__back {
+    left: 16%;
+    right: 4px;
+    bottom: -40px;
+    transform: rotate(5deg);
+  }
+}
+
+/* 01のA＋B装飾はSP専用。PCでは既存CDと競合するため隠す。
+   追加装飾の共通指定より後ろに置いて確実に上書きする。 */
+@media (min-width: 768px) {
+  .request-photo__back,
+  .request-seal,
+  .request-chrome { display: none; }
+}
+
+/* ===================== 01 / SPの左右余白を埋める =====================
+   2枚目を下へ足すだけでは横の空間量は変わらなかったため、
+   写真そのものを画面幅へ近づけ、奥写真とクロームを左右へ逃がす。
+   クロームは写真に接続する2点だけ。散らして装飾量を増やさない。 */
+
+.request-chrome { display: none; }
+.request-photo__holo { display: none; }
+
+@media (max-width: 767px) {
+  .request-photo,
+  .reveal-ready .request-photo[data-reveal].is-in {
+    left: 50%;
+    width: min(calc(100vw - 28px), 362px);
+    max-width: none;
+    margin-inline: 0;
+    translate: -50% 0;
+  }
+
+  .request-photo { padding-bottom: 5px; }
+
+  .request-photo__back {
+    display: none;
+  }
+
+  .request-photo__holo {
+    position: absolute;
+    z-index: -1;
+    top: -8px;
+    right: -12px;
+    bottom: -16px;
+    left: -12px;
+    display: block;
+    border: 1px solid rgba(255, 255, 255, 0.86);
+    background:
+      linear-gradient(118deg, transparent 8%, rgba(255, 255, 255, 0.72) 24%, transparent 37%),
+      repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0 1px, transparent 1px 7px),
+      linear-gradient(132deg, #69dce8 0%, #f3a5d1 54%, #ffe69a 100%);
+    box-shadow: 0 8px 18px rgba(37, 25, 63, 0.22);
+    transform: rotate(-2.2deg);
+  }
+
+  .request-photo > img {
+    position: relative;
+    z-index: 2;
+  }
+
+  .request-photo__chrome,
+  .request-photo figcaption {
+    position: relative;
+    z-index: 4;
+  }
+
+  .request-chrome {
+    position: absolute;
+    display: block;
+    pointer-events: none;
+  }
+
+  .request-chrome img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .request-chrome--orbit {
+    z-index: 5;
+    top: auto;
+    right: auto;
+    bottom: 18%;
+    left: -34px;
+    width: clamp(86px, 24vw, 102px);
+    transform: rotate(-6deg);
+  }
+
+  .request-seal--heart {
+    z-index: 6;
+    top: 40px;
+    right: -7px;
+    bottom: auto;
+    left: auto;
+    width: clamp(26px, 7vw, 30px);
+    transform: rotate(-12deg);
+  }
+
+  .scene--request .scene__in {
+    padding-bottom: clamp(64px, 17vw, 88px);
+  }
+}
+
+/* ===================== 03 / SPの写真を主役へ =====================
+   小さなシールを増やさず、写真の面積と1本のチェック帯で密度を作る。
+   01のホログラム台紙とは違うリズムにして、各場面の個性を分ける。 */
+
+.play-photo__check { display: none; }
+
+@media (max-width: 767px) {
+  .play-photo,
+  .reveal-ready .play-photo[data-reveal].is-in {
+    position: relative;
+    left: 50%;
+    z-index: 0;
+    isolation: isolate;
+    width: min(calc(100vw - 28px), 362px);
+    max-width: none;
+    margin-inline: 0;
+    padding-bottom: 7px;
+    overflow: visible;
+    clip-path: none;
+    translate: -50% 0;
+    rotate: -2deg;
+  }
+
+  .play-photo__check {
+    position: absolute;
+    z-index: -1;
+    top: 43%;
+    right: -22px;
+    left: -22px;
+    display: block;
+    height: clamp(64px, 19vw, 76px);
+    border: 1px solid rgba(255, 255, 255, 0.82);
+    background-color: #f39acb;
+    background-image:
+      linear-gradient(45deg, #68dce8 25%, transparent 25%),
+      linear-gradient(-45deg, #68dce8 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #68dce8 75%),
+      linear-gradient(-45deg, transparent 75%, #68dce8 75%);
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+    background-size: 20px 20px;
+    box-shadow: 0 7px 16px rgba(37, 25, 63, 0.2);
+    transform: rotate(4deg);
+  }
+
+  .play-photo > img {
+    position: relative;
+    z-index: 2;
+  }
+
+  #play .y2k-sticker--play {
+    right: 2px;
+    bottom: 20px;
+    z-index: 6;
+  }
+}
+
+/* ===================== 01 / SPを全面写真シーンへ =====================
+   02と同じく写真を背景として使い、コピーを写真上へ重ねる。
+   PLAYERは01固有の体験なので消さず、視線の終点として下部に置く。 */
+
+@media (max-width: 767px) {
+  .scene--request {
+    position: relative;
+    min-height: 700px;
+    overflow: hidden;
+    background: #0e0b0d;
+  }
+
+  .scene--request .scene__in.request-layout {
+    position: relative;
+    display: grid;
+    align-items: end;
+    min-height: 700px;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .scene--request .request-photo,
+  .reveal-ready .scene--request .request-photo[data-reveal].is-in {
+    position: absolute;
+    inset: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #0e0b0d;
+    box-shadow: none;
+    overflow: hidden;
+    clip-path: none;
+    translate: 0 0;
+    rotate: 0deg;
+    transform: none;
+  }
+
+  .scene--request .request-photo > img {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: 54% 50%;
+    transform: scale(1.02);
+  }
+
+  .scene--request .request-photo::after {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    background:
+      linear-gradient(180deg, rgba(7, 8, 10, 0.08) 0%, rgba(7, 8, 10, 0.2) 34%, rgba(7, 8, 10, 0.9) 100%),
+      linear-gradient(90deg, rgba(7, 8, 10, 0.48), transparent 72%);
+    content: "";
+  }
+
+  .scene--request :is(
+    .request-photo__holo,
+    .request-photo__back,
+    .request-photo__chrome,
+    .request-chrome,
+    .request-seal
+  ) {
+    display: none;
+  }
+
+  .scene--request .request-copy.sheet {
+    position: relative;
+    z-index: 3;
+    align-self: end;
+    width: 100%;
+    margin: 0;
+    padding: clamp(170px, 46vw, 220px) 18px clamp(58px, 15vw, 76px);
+    color: #fff;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    filter: none;
+    transform: none;
+  }
+
+  .scene--request .request-copy :is(.sheet__fiber, .tape) {
+    display: none;
+  }
+
+  .scene--request .request-copy .sheet__face {
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    clip-path: none;
+  }
+
+  .scene--request .request-copy .scene-label {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .scene--request .request-copy .scene-label :is(b, span) {
+    color: #ff4a94;
+  }
+
+  .scene--request .request-copy .paper-h {
+    max-width: 12em;
+    margin: 18px 0 0;
+    color: #ff4a94;
+    font-family: var(--font-main);
+    font-size: clamp(1.85rem, 8.8vw, 2.35rem);
+    font-weight: 900;
+    line-height: 1.18;
+    letter-spacing: -0.055em;
+    text-shadow: 0 2px 0 rgba(7, 8, 10, 0.76);
+  }
+
+  .scene--request .request-copy .scene-text {
+    max-width: 30em;
+    margin-top: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: var(--font-main);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.72;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.92);
+  }
+
+  .scene--request .replay-deck {
+    width: 100%;
+    max-width: none;
+    margin-top: 22px;
+    border-color: rgba(189, 248, 255, 0.6);
+    background: rgba(10, 9, 22, 0.9);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* ===================== 02 / 客入りが見える動画位置 =====================
+   縦動画の中央を使うと天井が大半を占めるため、焦点を下へ移す。
+   全面の暗幕は使わず、文字がある左側だけ暗さを残す。 */
+
+.scene--karaoke .karaoke-photo video {
+  object-position: 50% 66%;
+  filter: brightness(1.68) contrast(0.74) saturate(1.08);
+}
+
+.scene--karaoke .karaoke-photo::after {
+  background:
+    linear-gradient(90deg, rgba(7, 8, 10, 0.38), rgba(7, 8, 10, 0.06) 52%, transparent 72%),
+    linear-gradient(180deg, transparent 56%, rgba(7, 8, 10, 0.12));
+}
+
+@media (max-width: 767px) {
+  .scene--karaoke .karaoke-photo video {
+    object-position: 50% 70%;
+  }
+
+  .scene--karaoke .karaoke-photo::after {
+    background:
+      linear-gradient(180deg, rgba(7, 8, 10, 0.02), transparent 68%, rgba(7, 8, 10, 0.1));
+  }
+}
+
+/* ===================== 02 / PLAYシールを引き継ぐ =====================
+   03の主役だったピンクのシールだけを02へ移動する。動画の客入りと
+   左側のコピーを隠さず、スクロール視差や常時浮遊は付けない。 */
+
+.scene--karaoke .y2k-sticker--karaoke {
+  inset: clamp(76px, 7.5vw, 112px) clamp(22px, 4vw, 64px) auto auto;
+  z-index: 3;
+  width: clamp(148px, 14vw, 208px);
+  clip-path: none;
+  transform: rotate(4deg);
+  animation: none;
+}
+
+.scene--karaoke .y2k-sticker--karaoke .y2k-sticker__surface {
+  transform: none !important;
+  animation: none;
+}
+
+@media (max-width: 767px) {
+  .scene--karaoke .y2k-sticker--karaoke {
+    inset: 72px 8px auto auto;
+    width: clamp(96px, 29vw, 118px);
+    transform: rotate(5deg);
+  }
+}
+
+/* ===================== 01 携帯プレーヤー =====================
+   参考は2000年代のHDDプレーヤーの製品図。
+   ブランドマークは入れない（商標）。フラットベクターの質感で、
+   本体・画面・十字キー・イヤホンとケーブルのループで構成する。
+   JSのフックは従来のまま：--deck が進捗、data-deck-time が時間。 */
+
+.mdplayer {
+  position: relative;
+  display: block;
+  width: min(100%, 340px);
+  margin: clamp(18px, 2.4vw, 26px) 0 0;
+  padding: 0 0 26px 44px;
+}
+
+/* --- イヤホンとケーブル --- */
+.mdplayer__cable {
+  /* 枠全体を覆う。height:auto だと viewBox の比で潰れ、
+     ケーブルが本体の高さまで届かなかった */
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.mdplayer__wire {
+  fill: none;
+  stroke: #2f3238;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.mdplayer__bud { fill: #17191d; }
+
+/* --- 本体 --- */
+.mdplayer__body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(196px, 62%);
+  margin-left: auto;
+  margin-right: 12%;
+  padding: 16px 14px 18px;
+  border-radius: 10px 10px 13px 13px;
+  background:
+    linear-gradient(104deg, #f2f5fa 0%, #cfd8e6 22%, #eef2f8 48%, #c3cddd 78%, #e6ebf3 100%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -2px 4px rgba(60, 72, 92, 0.28),
+    0 3px 3px rgba(37, 25, 63, 0.2),
+    0 16px 28px rgba(37, 25, 63, 0.3);
+}
+
+/* 上端のヘッドホン端子と HOLD スイッチ */
+.mdplayer__jack {
+  position: absolute;
+  top: -7px;
+  right: 26px;
+  width: 26px;
+  height: 12px;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(180deg, #3a3f46, #23272c);
+}
+.mdplayer__hold {
+  position: absolute;
+  top: -5px;
+  left: 24px;
+  width: 34px;
+  height: 8px;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(180deg, #b9c3d2, #8e9aab);
+}
+
+/* --- 画面 --- */
+.mdplayer__screen {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 11px 11px 12px;
+  border-radius: 4px;
+  background: linear-gradient(168deg, #2b3560, #1b2245 62%, #161b38);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16), inset 0 2px 8px rgba(0, 0, 0, 0.5);
+  color: #cfe0ff;
+  font-family: var(--font-main);
+}
+.mdplayer__screen b {
+  align-self: flex-end;
+  color: #7f9ad6;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+.mdplayer__screen p { display: grid; gap: 2px; margin: 0; }
+.mdplayer__screen small {
+  color: #7f9ad6;
+  font-size: 7.5px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+}
+.mdplayer__screen strong {
+  color: #eaf1ff;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.mdplayer__bar {
+  position: relative;
+  height: 5px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+.mdplayer__bar i {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #63e6ff, #ff6cc0);
+  transform: scaleX(var(--deck, 0));
+  transform-origin: left center;
+}
+.mdplayer__meta {
+  display: flex;
+  justify-content: space-between;
+  color: #8fa6dd;
+  font-size: 7.5px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- キー --- */
+.mdplayer__keys {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+.mdplayer__key {
+  display: grid;
+  place-items: center;
+  min-height: 22px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #cdd7e6, #a9b6c9);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 1px 1px rgba(50, 60, 78, 0.3);
+  color: #5c6a80;
+  font-size: 6.5px;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+.mdplayer__key--stop::after {
+  width: 7px;
+  height: 7px;
+  background: #5c6a80;
+  content: "";
+}
+
+/* --- 十字キー --- */
+.mdplayer__pad {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 86px;
+  height: 86px;
+  margin: 2px auto 0;
+}
+.mdplayer__dir {
+  position: absolute;
+  width: 28px;
+  height: 25px;
+  background: linear-gradient(180deg, #cdd7e6, #a3b1c6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+.mdplayer__dir--up { top: 0; border-radius: 5px 5px 0 0; }
+.mdplayer__dir--down { bottom: 0; border-radius: 0 0 5px 5px; }
+.mdplayer__dir--left { left: 0; width: 25px; height: 28px; border-radius: 5px 0 0 5px; }
+.mdplayer__dir--right { right: 0; width: 25px; height: 28px; border-radius: 0 5px 5px 0; }
+
+.mdplayer__play {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: linear-gradient(180deg, #dbe3ef, #b3c0d2);
+  box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(50, 60, 78, 0.35);
+  color: #46536a;
+  font-size: 11px;
+  cursor: pointer;
+}
+.mdplayer__play:active { transform: translateY(1px); }
+
+@media (max-width: 879px) {
+  .mdplayer { width: 100%; padding-left: 34px; }
+  .mdplayer__body { width: min(184px, 58%); margin-right: 6%; }
 }

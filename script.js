@@ -42,6 +42,36 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
   });
 })();
 
+/* Section 02 video: visible時だけ再生し、reduceではposterに固定する。 */
+(() => {
+  const video = document.querySelector("[data-scene-video]");
+  if (!video) return;
+
+  const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let visible = false;
+
+  const sync = () => {
+    if (motion.matches || document.hidden || !visible) {
+      video.pause();
+      if (motion.matches) video.currentTime = 0;
+      return;
+    }
+    video.play().catch(() => {});
+  };
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      visible = entry.isIntersecting;
+      sync();
+    },
+    { rootMargin: "20% 0px", threshold: 0.01 },
+  );
+
+  observer.observe(video);
+  document.addEventListener("visibilitychange", sync);
+  motion.addEventListener?.("change", sync);
+})();
+
 /* ---------- 予約リンクと表示文言を必ず一致させる ---------- */
 (() => {
   let reservationUrl = OFFICIAL_RESERVATION_URL;
