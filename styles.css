@@ -3820,6 +3820,64 @@ a { color: inherit; }
   }
 }
 
+/* ===================== 02 / 余白・柱・シールの再整理 =====================
+   訴求軸ではない「歌う / KARAOKE & TALK」を外し、02だけを柱にする。
+   コピーは顔から離れた左下、シールは右上の余白へ固定する。 */
+
+.scene--karaoke .karaoke-copy {
+  align-self: end;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 clamp(28px, 4vw, 56px) clamp(52px, 5.5vw, 76px);
+}
+
+.scene--karaoke .scene-label--number-only {
+  gap: 12px;
+  margin-bottom: clamp(20px, 2.2vw, 28px);
+  font-size: clamp(19px, 1.8vw, 24px);
+}
+
+.scene--karaoke .scene-label--number-only b {
+  color: #ff4a94;
+  font-size: 1em;
+  letter-spacing: 0.03em;
+}
+
+.scene--karaoke .scene-label--number-only i {
+  width: clamp(34px, 4vw, 52px);
+  height: 2px;
+  background: #ff4a94;
+  opacity: 0.72;
+}
+
+.scene--karaoke .y2k-sticker--karaoke {
+  inset: clamp(18px, 2vw, 28px) clamp(12px, 2vw, 28px) auto auto;
+  width: clamp(220px, 20vw, 280px);
+  transform: rotate(4deg);
+}
+
+@media (max-width: 767px) {
+  .scene--karaoke .karaoke-copy {
+    padding: 28px 18px 54px;
+  }
+
+  .scene--karaoke .scene-label--number-only {
+    margin-bottom: 18px;
+    font-size: 18px;
+  }
+
+  .scene--karaoke .scene-label--number-only i {
+    width: 30px;
+  }
+
+  .scene--karaoke .y2k-sticker--karaoke {
+    inset: 18px 4px auto auto;
+    width: clamp(132px, 37vw, 148px);
+    transform: rotate(5deg);
+  }
+}
+
 /* 見出しの基準を1つに戻す */
 .paper-h {
   font-size: clamp(2.15rem, 5.6vw, 3.5rem);
@@ -6399,4 +6457,397 @@ body { padding-bottom: 0; }
 .mdplayer__play {
   background: #cfd9e7;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* ===================== 01 / 横型MD＋写真とコピーの分離 =====================
+   縦長プレーヤーが紙を押し広げていたため横型へ変更する。
+   写真は独立した列・段に置き、人物の顔へ文字を重ねない。 */
+
+@media (min-width: 880px) {
+  .scene--request .scene__in.request-layout {
+    grid-template-columns: minmax(0, 1.34fr) minmax(0, 0.96fr);
+    align-items: center;
+    gap: clamp(38px, 4.5vw, 62px);
+    padding-block: clamp(68px, 7vw, 96px);
+  }
+
+  .scene--request .request-copy.sheet {
+    align-self: center;
+    width: 100%;
+  }
+
+  .scene--request .request-photo,
+  .reveal-ready .scene--request .request-photo[data-reveal].is-in {
+    align-self: center;
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    transform: rotate(2deg);
+  }
+
+  .scene--request .request-photo > img {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: 50% 50%;
+  }
+}
+
+.scene--request .scene-label {
+  gap: 0.72em;
+  font-size: clamp(13px, 1.15vw, 15px);
+}
+
+.scene--request .scene-label b { font-size: 1.34em; }
+.scene--request .scene-label span { font-size: 1.08em; }
+.scene--request .scene-label em { font-size: 0.76em; }
+
+.scene--request .request-copy .paper-h {
+  max-width: 14em;
+  font-size: clamp(2.25rem, 3.7vw, 3.35rem);
+  line-height: 1.14;
+  letter-spacing: -0.045em;
+}
+
+/* 画面・補助キー・再生キーを横一列にしたMD本体。 */
+.scene--request .mdplayer {
+  width: min(100%, 570px);
+  margin-top: clamp(22px, 2.5vw, 30px);
+  padding: 40px 0 4px;
+}
+
+.scene--request .mdplayer__cable { display: none; }
+
+.scene--request .mdplayer__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 104px 78px;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin: 0;
+  padding: 16px;
+  border-radius: 11px;
+}
+
+.scene--request .mdplayer__screen {
+  min-width: 0;
+  min-height: 116px;
+  justify-content: center;
+}
+
+.scene--request .mdplayer__keys {
+  grid-template-columns: 1fr 1fr;
+  align-content: center;
+}
+
+.scene--request .mdplayer__key { min-height: 31px; }
+
+.scene--request .mdplayer__pad {
+  width: 72px;
+  height: 72px;
+  margin: 0;
+}
+
+.scene--request .mdplayer__play {
+  width: 34px;
+  height: 34px;
+}
+
+/* SPも写真を上、コピーを下へ分離する。 */
+@media (max-width: 767px) {
+  .scene--request {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .scene--request .scene__in.request-layout {
+    display: grid;
+    grid-template-rows: auto auto;
+    min-height: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .scene--request .request-photo,
+  .reveal-ready .scene--request .request-photo[data-reveal].is-in {
+    position: relative;
+    inset: auto;
+    grid-row: 1;
+    width: 100%;
+    height: clamp(260px, 76vw, 330px);
+    aspect-ratio: auto;
+    transform: none;
+  }
+
+  .scene--request .request-photo > img { object-position: 50% 45%; }
+
+  .scene--request .request-photo::after {
+    background: linear-gradient(180deg, transparent 62%, rgba(7, 8, 10, 0.16));
+  }
+
+  .scene--request .request-copy.sheet {
+    grid-row: 2;
+    align-self: auto;
+    padding: 30px 18px 54px;
+    background: #0e0b0d;
+  }
+
+  .scene--request .request-copy .scene-label {
+    margin-bottom: 18px;
+    font-size: 12.5px;
+  }
+
+  .scene--request .request-copy .paper-h {
+    max-width: 11em;
+    margin-top: 0;
+    font-size: clamp(1.9rem, 8.7vw, 2.35rem);
+  }
+
+  .scene--request .mdplayer {
+    width: 100%;
+    margin-top: 22px;
+    padding: 34px 0 0;
+  }
+
+  .scene--request .mdplayer__spec { display: none; }
+
+  .scene--request .mdplayer__body {
+    grid-template-columns: minmax(0, 1fr) 76px 62px;
+    gap: 9px;
+    padding: 11px;
+  }
+
+  .scene--request .mdplayer__screen {
+    min-height: 102px;
+    padding: 9px;
+  }
+
+  .scene--request .mdplayer__screen strong { font-size: 10px; }
+  .scene--request .mdplayer__key { min-height: 27px; font-size: 5.8px; }
+  .scene--request .mdplayer__pad { width: 58px; height: 58px; }
+  .scene--request .mdplayer__dir { scale: 0.8; }
+  .scene--request .mdplayer__play { width: 30px; height: 30px; }
+}
+
+/* ===================== 01 / 02と同じ全面写真シーン（PC） =====================
+   写真を右のカードへ閉じ込めず、セクション全面へ敷く。
+   人物の顔がある中央は空け、コピーと横型MDは下部へまとめる。 */
+
+@media (min-width: 880px) {
+  .scene--request {
+    min-height: min(94vh, 820px);
+    overflow: hidden;
+    background: #0e0b0d;
+  }
+
+  .scene--request .scene__in.request-layout {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: end;
+    width: 100%;
+    max-width: none;
+    min-height: min(94vh, 820px);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .scene--request .request-photo,
+  .reveal-ready .scene--request .request-photo[data-reveal].is-in {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: #0e0b0d;
+    box-shadow: none;
+    clip-path: none;
+    transform: none;
+  }
+
+  .scene--request .request-photo > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: cover;
+    object-position: 50% 48%;
+  }
+
+  .scene--request .request-photo::after {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+    background:
+      linear-gradient(180deg, transparent 0 42%, rgba(7, 8, 10, 0.2) 57%, rgba(7, 8, 10, 0.92) 100%),
+      linear-gradient(90deg, rgba(7, 8, 10, 0.12), transparent 58%);
+    content: "";
+  }
+
+  .scene--request .request-copy.sheet {
+    position: relative;
+    z-index: 3;
+    align-self: end;
+    width: min(var(--content-max), 100%);
+    margin-inline: auto;
+    padding: clamp(340px, 40vh, 420px) var(--pad-x) clamp(54px, 6vw, 78px);
+    color: #fff;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    filter: none;
+    transform: none;
+  }
+
+  .scene--request .request-copy :is(.sheet__fiber, .tape) { display: none; }
+
+  .scene--request .request-copy .sheet__face {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(430px, 1.1fr);
+    grid-template-rows: auto auto auto;
+    align-items: end;
+    column-gap: clamp(34px, 4vw, 60px);
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    clip-path: none;
+  }
+
+  .scene--request .request-copy .scene-label {
+    grid-column: 1;
+    grid-row: 1;
+    margin-bottom: 16px;
+    padding: 0;
+    border: 0;
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .scene--request .request-copy .scene-label b,
+  .scene--request .request-copy .scene-label span { color: #ff4a94; }
+
+  .scene--request .request-copy .paper-h {
+    grid-column: 1;
+    grid-row: 2;
+    max-width: 11em;
+    margin: 0;
+    color: #ff4a94;
+    font-size: clamp(2.25rem, 3.8vw, 3.35rem);
+    text-shadow: 0 2px 0 rgba(7, 8, 10, 0.72);
+  }
+
+  .scene--request .request-copy .scene-text {
+    grid-column: 1;
+    grid-row: 3;
+    max-width: 32em;
+    margin-top: 16px;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+  }
+
+  .scene--request .mdplayer {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    align-self: end;
+    width: 100%;
+    max-width: 570px;
+    margin: 0;
+  }
+
+  .scene--request .mdplayer__spec { color: rgba(255, 255, 255, 0.78); }
+
+  .scene--request .obj--disc {
+    z-index: 4;
+    top: 12%;
+    right: -2%;
+  }
+}
+
+/* ===================== 02 / 最終配置 ===================== */
+.scene--karaoke .karaoke-copy {
+  align-self: end;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 clamp(28px, 4vw, 56px) clamp(52px, 5.5vw, 76px);
+}
+
+.scene--karaoke .scene-label--number-only {
+  gap: 12px;
+  margin-bottom: clamp(20px, 2.2vw, 28px);
+  font-size: clamp(19px, 1.8vw, 24px);
+}
+
+.scene--karaoke .scene-label--number-only b {
+  color: #ff4a94;
+  font-size: 1em;
+  letter-spacing: 0.03em;
+}
+
+.scene--karaoke .scene-label--number-only i {
+  width: clamp(34px, 4vw, 52px);
+  height: 2px;
+  background: #ff4a94;
+  opacity: 0.72;
+}
+
+.scene--karaoke .y2k-sticker--karaoke {
+  inset: clamp(18px, 2vw, 28px) clamp(12px, 2vw, 28px) auto auto;
+  width: clamp(220px, 20vw, 280px);
+  transform: rotate(4deg);
+}
+
+@media (max-width: 767px) {
+  .scene--karaoke .karaoke-copy { padding: 28px 18px 54px; }
+
+  .scene--karaoke .scene-label--number-only {
+    margin-bottom: 18px;
+    font-size: 18px;
+  }
+
+  .scene--karaoke .scene-label--number-only i { width: 30px; }
+
+  .scene--karaoke .y2k-sticker--karaoke {
+    inset: 18px 4px auto auto;
+    width: clamp(132px, 37vw, 148px);
+    transform: rotate(5deg);
+  }
+}
+
+/* ===================== 03 料金：白い箱をやめる =====================
+   クリームの紙(#fbf7ee)の上に rgba(255,255,255,.62) の箱を
+   置いていたため、Webの部品を貼り付けたように見えていた。
+   紙面の表組みの作法に戻す：地は紙のまま、罫で仕切る。
+   エリア名のマゼンタのタブは「見出しの札」として残す。 */
+
+.price-copy .plan-prices > div {
+  padding: 10px 0 12px;
+  border: 0;
+  border-top: 1px solid rgba(35, 24, 21, 0.24);
+  border-bottom: 2.5px solid var(--print-ink);
+  background: none;
+  box-shadow: none;
+}
+/* 角の色帯も箱ありきの飾りだったので落とす */
+.price-copy .plan-prices > div::before { display: none; }
+
+.price-copy .plan-prices dt {
+  align-self: flex-start;
+  margin-bottom: 2px;
+}
+
+/* 数字は紙に直接刷った体にする */
+.price-copy .plan-prices dd {
+  color: var(--print-ink);
+  letter-spacing: -0.03em;
 }
