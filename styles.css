@@ -1953,11 +1953,15 @@ a { color: inherit; }
   .cover__title-y2k {
     display: block;
     color: #fff;
-    font-family: Impact, "Arial Black", var(--font-main);
-    font-size: clamp(3.6rem, 18vw, 4.8rem);
+    /* Impact は読み込んでいないOS依存の書体で、PCの焼き込み文字
+       （Zen Kaku Gothic New 系の太ゴシック）と全く別物になっていた。
+       同じ書体に揃え、横を少し詰めて焼き込み側の字幅に寄せる。 */
+    font-family: var(--font-main);
+    font-size: clamp(3.4rem, 17vw, 4.6rem);
     font-weight: 900;
-    line-height: 0.9;
-    letter-spacing: 0.01em;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    transform: scaleX(0.94);
     -webkit-text-stroke: 1px rgba(255, 111, 177, 0.9);
     paint-order: stroke fill;
     filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.82)) drop-shadow(0 5px 8px rgba(0, 0, 0, 0.48));
@@ -3817,6 +3821,627 @@ a { color: inherit; }
   .request-layout,
   .play-layout {
     grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  }
+}
+
+/* 768〜879pxの02はコピーが写真上に残る。最終段で明色を保証する。 */
+@media (min-width: 768px) and (max-width: 879px) {
+  .scene--karaoke .scene-label--number-only {
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .scene--karaoke .scene-label--number-only b,
+  .scene--karaoke .scene-title {
+    color: #ff4a94;
+  }
+
+  .scene--karaoke .scene-title {
+    text-shadow: 0 3px 18px rgba(0, 0, 0, 0.68);
+  }
+
+  .scene--karaoke .scene-text {
+    color: rgba(255, 255, 255, 0.92);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.68);
+  }
+}
+
+/* 01の最終構図：見出し群は写真内、MDは写真の次段。
+   既存の旧レイアウト指定より後ろで確定させる。 */
+.scene--request .request-photo-copy {
+  position: absolute !important;
+  inset: auto auto 0 0;
+  right: auto !important;
+  bottom: clamp(64px, 6vw, 78px) !important;
+  z-index: 5;
+  font-family: var(--font-main) !important;
+}
+
+.scene--request .request-photo-copy :is(.scene-label, .paper-h, .scene-text) {
+  font-family: var(--font-main);
+}
+
+.scene--request .request-photo-copy .paper-h { font-weight: 900; }
+.scene--request .request-photo-copy .scene-text { font-weight: 700; }
+
+@media (min-width: 880px) {
+  .scene--request .request-copy .sheet__face {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+
+  .scene--request .request-copy .md {
+    width: min(48%, 560px);
+    pointer-events: auto;
+  }
+}
+
+@media (max-width: 879px) {
+  .scene--request {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .scene--request .scene__in.request-layout {
+    display: grid;
+    grid-template-rows: auto auto;
+    min-height: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .scene--request .request-photo,
+  .reveal-ready .scene--request .request-photo[data-reveal].is-in {
+    position: relative;
+    inset: auto;
+    grid-row: 1;
+    width: 100%;
+    max-width: none;
+    height: clamp(430px, 112vw, 560px);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    clip-path: none;
+    overflow: hidden;
+    transform: none;
+  }
+
+  .scene--request .request-photo > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: cover;
+    object-position: 52% 48%;
+    transform: none;
+  }
+
+  .scene--request .request-photo::after {
+    background:
+      linear-gradient(180deg, transparent 34%, rgba(10, 7, 14, 0.1) 48%, rgba(10, 7, 14, 0.9) 100%),
+      linear-gradient(90deg, rgba(10, 7, 14, 0.34), transparent 78%);
+  }
+
+  .scene--request .request-photo-copy {
+    position: absolute !important;
+    inset: auto 0 0;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100%;
+    padding: 0 18px 26px;
+  }
+
+  .scene--request .request-copy.sheet {
+    position: relative;
+    z-index: 3;
+    grid-row: 2;
+    width: 100%;
+    margin: 0;
+    padding: 22px 18px 54px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    filter: none;
+    transform: none;
+  }
+
+  .scene--request .request-copy .sheet__face {
+    display: block;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    clip-path: none;
+    transform: none;
+  }
+
+  .scene--request .request-copy .md { margin: 0 auto; }
+}
+
+/* ===================== 01 / SONG PET =====================
+   MDの代わりに、平成初期の携帯育成ゲームを思わせる曲リクエスト端末。
+   固有ロゴや商品形状は使わず、卵形・モノクロ液晶・3ボタンだけを引用する。 */
+
+.tama {
+  position: relative;
+  width: clamp(230px, 22vw, 306px);
+  aspect-ratio: 0.82;
+  margin: 0;
+  isolation: isolate;
+  filter: drop-shadow(0 18px 20px rgba(8, 4, 18, 0.38));
+  transform: rotate(4deg);
+  pointer-events: auto;
+}
+
+.tama__ring {
+  position: absolute;
+  z-index: 0;
+  top: -38px;
+  right: 30px;
+  width: 54px;
+  height: 54px;
+  border: 8px solid #b9c3d0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow:
+    inset 2px 2px 2px rgba(255, 255, 255, 0.85),
+    2px 3px 5px rgba(7, 4, 16, 0.38);
+}
+
+.tama__chain {
+  position: absolute;
+  z-index: 1;
+  top: -4px;
+  right: 45px;
+  display: grid;
+  gap: 1px;
+}
+
+.tama__chain i {
+  display: block;
+  width: 12px;
+  height: 18px;
+  border: 3px solid #aeb9c7;
+  border-radius: 50%;
+  transform: rotate(18deg);
+}
+
+.tama__body {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 34px 34px;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.88);
+  border-radius: 48% 48% 45% 45% / 54% 54% 46% 46%;
+  background:
+    radial-gradient(circle at 26% 17%, rgba(255,255,255,.92) 0 3%, transparent 4%),
+    radial-gradient(circle at 73% 24%, rgba(255,255,255,.62), transparent 19%),
+    linear-gradient(132deg, rgba(255,255,255,.38), transparent 28% 68%, rgba(255,255,255,.25)),
+    conic-gradient(from 220deg at 48% 54%, #f590c6, #f9b4d7, #8ee2e3, #c7b6f4, #ff9fc9, #f590c6);
+  box-shadow:
+    inset 0 0 0 5px rgba(203, 49, 126, 0.24),
+    inset 0 -18px 30px rgba(117, 30, 91, 0.2),
+    inset 0 12px 18px rgba(255, 255, 255, 0.35);
+}
+
+.tama__shine {
+  position: absolute;
+  top: 24px;
+  left: 28px;
+  width: 56px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.68);
+  filter: blur(1px);
+  transform: rotate(-28deg);
+}
+
+.tama__brand {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 10px;
+  color: #8c275f;
+  font-family: var(--font-main);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.tama__screen {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  width: 100%;
+  min-height: 148px;
+  padding: 10px 11px 11px;
+  border: 5px solid #d5dae1;
+  border-radius: 14px;
+  background:
+    repeating-linear-gradient(0deg, rgba(40, 53, 27, 0.045) 0 1px, transparent 1px 3px),
+    linear-gradient(155deg, #d7e2a5, #aebf77);
+  box-shadow:
+    inset 0 0 0 2px rgba(64, 74, 48, 0.5),
+    inset 0 3px 7px rgba(37, 48, 26, 0.28),
+    0 2px 0 rgba(255, 255, 255, 0.48);
+  color: #28351c;
+  font-family: var(--font-main);
+}
+
+.tama__screen-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.tama__status { letter-spacing: 0.09em; }
+.tama.is-mode-on .tama__status { animation: tamaBlink 0.7s steps(1, end) infinite; }
+
+@keyframes tamaBlink { 50% { opacity: 0.28; } }
+
+.tama__pet {
+  align-self: center;
+  justify-self: center;
+  width: 72px;
+  height: 54px;
+  margin-top: 4px;
+  fill: #344326;
+  shape-rendering: crispEdges;
+}
+
+.tama__pet-cut { fill: #bdcc87; }
+
+.tama__screen strong {
+  overflow: hidden;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.tama__bar {
+  position: relative;
+  height: 6px;
+  margin-top: 5px;
+  background: repeating-linear-gradient(90deg, rgba(48, 62, 33, 0.2) 0 5px, transparent 5px 7px);
+}
+
+.tama__bar i {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, #344326 0 5px, transparent 5px 7px);
+  clip-path: inset(0 calc((1 - var(--deck, 0)) * 100%) 0 0);
+}
+
+.tama__keys {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  gap: 19px;
+  margin-top: 17px;
+}
+
+.tama__keys button {
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  padding: 0;
+  border: 2px solid rgba(142, 43, 101, 0.38);
+  border-radius: 50%;
+  background: linear-gradient(180deg, #fff2f8, #e78aba);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.72),
+    0 3px 0 rgba(133, 40, 93, 0.38);
+  color: #7e2455;
+  font-size: 8px;
+  cursor: pointer;
+}
+
+.tama__keys button:active {
+  translate: 0 2px;
+  box-shadow: inset 0 1px 2px rgba(112, 31, 80, 0.25), 0 1px 0 rgba(133, 40, 93, 0.34);
+}
+
+.tama__body > small {
+  position: relative;
+  z-index: 3;
+  margin-top: 16px;
+  color: rgba(102, 29, 75, 0.76);
+  font-family: var(--font-main);
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+
+.tama__charm {
+  position: absolute;
+  z-index: 4;
+  right: -16px;
+  bottom: 34px;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(255, 255, 255, 0.82);
+  border-radius: 50%;
+  background: conic-gradient(#76dbe5, #f59ccb, #ffe48f, #9d91ed, #76dbe5);
+  box-shadow: 0 5px 10px rgba(8, 4, 18, 0.28);
+  color: #fff;
+  font-family: var(--font-main);
+  font-size: 22px;
+  font-weight: 900;
+  text-shadow: 0 1px 2px rgba(71, 22, 60, 0.48);
+  transform: rotate(-9deg);
+}
+
+@media (min-width: 880px) {
+  .scene--request .request-copy .tama {
+    width: clamp(244px, 22vw, 306px);
+    margin-right: 0;
+    translate: 0 -30px;
+    transform: rotate(4deg);
+  }
+}
+
+@media (max-width: 879px) {
+  .scene--request .request-copy .tama {
+    width: clamp(218px, 64vw, 270px);
+    margin: 12px auto 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tama.is-mode-on .tama__status { animation: none; }
+}
+
+/* ===================== 01 / コピーを写真上へ =====================
+   見出し・説明は写真の一部として読ませ、MDだけを次の段へ残す。
+   SPで写真を極端な縦長全面背景にすると人物が切れるため、写真は
+   十分な高さを確保した横長のまま使い、下端の暗幕上に文字を置く。 */
+
+.scene--request .request-photo-copy {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  bottom: 0;
+  display: block;
+  width: min(58%, 690px);
+  margin: 0;
+  padding: 0 0 clamp(48px, 5.5vw, 76px) var(--pad-x);
+  color: #fff;
+  text-align: left;
+  pointer-events: none;
+}
+
+.scene--request .request-photo-copy .scene-label {
+  margin: 0 0 clamp(14px, 1.5vw, 20px);
+  padding: 0;
+  border: 0;
+  color: rgba(255, 255, 255, 0.84);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.82);
+}
+
+.scene--request .request-photo-copy .scene-label :is(b, span) { color: #ff4a94; }
+
+.scene--request .request-photo-copy .paper-h {
+  max-width: 11em;
+  margin: 0;
+  color: #ff4a94;
+  font-size: clamp(2.25rem, 3.8vw, 3.35rem);
+  line-height: 1.14;
+  letter-spacing: -0.045em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.76);
+}
+
+.scene--request .request-photo-copy .scene-text {
+  max-width: 32em;
+  margin: 16px 0 0;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: clamp(15px, 1.3vw, 17px);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.92);
+}
+
+@media (min-width: 880px) {
+  /* 旧コピー枠にはMDだけが残る。写真上の文章と左右で競合させない。 */
+  .scene--request .request-copy.sheet { pointer-events: none; }
+
+  .scene--request .request-copy .sheet__face {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+
+  .scene--request .request-copy .md {
+    width: min(48%, 560px);
+    pointer-events: auto;
+  }
+}
+
+@media (max-width: 879px) {
+  .scene--request {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .scene--request .scene__in.request-layout {
+    display: grid;
+    grid-template-rows: auto auto;
+    min-height: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .scene--request .request-photo,
+  .reveal-ready .scene--request .request-photo[data-reveal].is-in {
+    position: relative;
+    inset: auto;
+    grid-row: 1;
+    width: 100%;
+    max-width: none;
+    height: clamp(430px, 112vw, 560px);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: #0e0b0d;
+    box-shadow: none;
+    clip-path: none;
+    overflow: hidden;
+    transform: none;
+  }
+
+  .scene--request .request-photo > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: 52% 48%;
+    transform: none;
+  }
+
+  .scene--request .request-photo::after {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+    background:
+      linear-gradient(180deg, transparent 34%, rgba(10, 7, 14, 0.1) 48%, rgba(10, 7, 14, 0.9) 100%),
+      linear-gradient(90deg, rgba(10, 7, 14, 0.34), transparent 78%);
+    content: "";
+  }
+
+  .scene--request .request-photo-copy {
+    width: 100%;
+    padding: 0 18px 26px;
+  }
+
+  .scene--request .request-photo-copy .scene-label {
+    margin-bottom: 13px;
+    color: rgba(255, 255, 255, 0.84);
+    font-size: 13px;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.88);
+  }
+
+  .scene--request .request-photo-copy .paper-h {
+    max-width: 10.5em;
+    color: #ff4a94;
+    font-size: clamp(1.85rem, 8.2vw, 2.3rem);
+    text-shadow: 0 2px 7px rgba(0, 0, 0, 0.78);
+  }
+
+  .scene--request .request-photo-copy .scene-text {
+    margin-top: 12px;
+    color: rgba(255, 255, 255, 0.94);
+    font-size: 15px;
+    line-height: 1.75;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.94);
+  }
+
+  .scene--request .request-copy.sheet {
+    position: relative;
+    z-index: 3;
+    grid-row: 2;
+    width: 100%;
+    margin: 0;
+    padding: 22px 18px 54px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    filter: none;
+    transform: none;
+  }
+
+  .scene--request .request-copy :is(.sheet__fiber, .tape) { display: none; }
+
+  .scene--request .request-copy .sheet__face {
+    display: block;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    clip-path: none;
+    transform: none;
+  }
+
+  .scene--request .request-copy .md { margin: 0 auto; }
+}
+
+/* ===================== 01〜03 共通背景 =====================
+   各セクションで同じグラデーションを描き直すと、境界ごとに
+   開始色が戻って帯に見える。ラッパーへ1枚だけ敷いて連続させる。 */
+
+.experience-zone {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 13% 6%, rgba(255, 244, 235, 0.6), transparent 26%),
+    radial-gradient(circle at 88% 42%, rgba(255, 225, 240, 0.72), transparent 30%),
+    radial-gradient(circle at 20% 88%, rgba(231, 218, 255, 0.66), transparent 28%),
+    linear-gradient(168deg, #c9bdf0 0%, #cdb6e4 46%, #e8a9c9 100%);
+}
+
+.experience-zone::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(135deg, rgba(0, 0, 0, 0.86), transparent 78%);
+  content: "";
+}
+
+.experience-zone > * {
+  position: relative;
+  z-index: 1;
+}
+
+.experience-zone > .scene--request,
+.experience-zone > .scene--karaoke,
+.experience-zone > .info-zone {
+  background: transparent;
+}
+
+.experience-zone > .info-zone::before {
+  display: none;
+}
+
+/* 768〜879pxでは02の文字はまだ写真上に載るため、明色へ戻す。 */
+@media (min-width: 768px) and (max-width: 879px) {
+  .scene--karaoke .scene-label--number-only {
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .scene--karaoke .scene-label--number-only b,
+  .scene--karaoke .scene-title {
+    color: #ff4a94;
+  }
+
+  .scene--karaoke .scene-title {
+    text-shadow: 0 3px 18px rgba(0, 0, 0, 0.68);
+  }
+
+  .scene--karaoke .scene-text {
+    color: rgba(255, 255, 255, 0.92);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.68);
   }
 }
 
@@ -6850,4 +7475,909 @@ body { padding-bottom: 0; }
 .price-copy .plan-prices dd {
   color: var(--print-ink);
   letter-spacing: -0.03em;
+}
+
+/* ===================== 01 ポータブルMD =====================
+   前案はHDDプレーヤー型（縦長バー＋大画面）で、iPod以降の
+   記号になっていた。MDディスクは72mm角なので、本体は平たい
+   正方形になる。当時の作法どおり、曲名と時間は本体ではなく
+   有線リモコンの液晶に出す。
+   ブランドマークは入れない（商標）。 */
+
+.md {
+  position: relative;
+  display: block;
+  width: min(100%, 340px);
+  margin: clamp(16px, 2.2vw, 24px) 0 0;
+  padding: 46px 0 18px;
+  aspect-ratio: 340 / 300;
+}
+
+.md__spec {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  color: var(--print-ink);
+  font-family: var(--font-main);
+}
+.md__spec b { font-size: 8px; font-weight: 900; letter-spacing: 0.14em; line-height: 1.1; }
+
+/* --- ケーブルとイヤホン --- */
+.md__cable {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.md__wire { fill: none; stroke: #2f3238; stroke-width: 3.4; stroke-linecap: round; }
+.md__bud { fill: #17191d; }
+
+/* --- 本体。MDディスクに合わせた平たい正方形 --- */
+.md__deck {
+  position: absolute;
+  top: 46px;
+  right: 0;
+  z-index: 2;
+  width: 156px;
+  aspect-ratio: 80 / 74;
+  border-radius: 7px;
+  background:
+    linear-gradient(128deg, #eef2f7 0%, #c9d3e0 26%, #e8edf4 52%, #b9c5d5 80%, #dfe6ee 100%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -1px 2px rgba(60, 72, 92, 0.22),
+    0 8px 16px rgba(37, 25, 63, 0.24);
+}
+
+/* 蓋のシーム。MDは上面がまるごと蓋 */
+.md__lid {
+  position: absolute;
+  inset: 7px 7px 15px;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.75),
+    0 0 0 1px rgba(84, 96, 116, 0.35);
+}
+/* ヒンジ側（奥）の帯 */
+.md__hinge {
+  position: absolute;
+  top: 11px;
+  left: 18%;
+  width: 64%;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(84, 96, 116, 0.3);
+}
+/* ヘッドホン端子 */
+.md__jack {
+  position: absolute;
+  right: 16px;
+  bottom: -6px;
+  width: 22px;
+  height: 10px;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(180deg, #3a3f46, #23272c);
+}
+/* OPEN スライダー */
+.md__open {
+  position: absolute;
+  left: 10px;
+  bottom: 4px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 9px;
+  border-radius: 2px;
+  background: #aab6c6;
+  color: #4d596c;
+  font-family: var(--font-main);
+  font-size: 5.5px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+/* ジョグダイヤル */
+.md__jog {
+  position: absolute;
+  right: 14px;
+  bottom: 20px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: conic-gradient(from 210deg, #d7dfea, #aeb9c9, #e4eaf1, #b6c1d0, #d7dfea);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7), 0 1px 2px rgba(50, 60, 78, 0.3);
+}
+.md__jog i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #9aa7b8;
+}
+/* ネジ。物としての手掛かり */
+.md__screw {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(84, 96, 116, 0.45);
+}
+.md__screw--a { left: 9px; top: 9px; }
+.md__screw--b { right: 9px; top: 9px; }
+
+/* --- 有線リモコン --- */
+.md__remote {
+  position: absolute;
+  left: 6%;
+  bottom: 26px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 104px;
+  padding: 9px 8px 11px;
+  border-radius: 6px;
+  background: linear-gradient(120deg, #e9eef5, #c2ccda 46%, #dfe6ee);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 6px 12px rgba(37, 25, 63, 0.26);
+}
+/* 上端の回転カラー（早送り／巻き戻し） */
+.md__collar {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 34px;
+  height: 12px;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(180deg, #cfd8e4, #9fabbb);
+  transform: translateX(-50%);
+}
+/* 裏のクリップ */
+.md__clip {
+  position: absolute;
+  right: -5px;
+  top: 26%;
+  width: 5px;
+  height: 34px;
+  border-radius: 0 3px 3px 0;
+  background: #9fabbb;
+}
+
+/* --- リモコンの液晶。当時どおりモノクロ --- */
+.md__lcd {
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  padding: 6px 6px 7px;
+  border-radius: 2px;
+  /* 黄緑のバックライト。ドット感を薄く重ねる */
+  background:
+    repeating-linear-gradient(90deg, rgba(60, 74, 30, 0.09) 0 1px, transparent 1px 2px),
+    linear-gradient(170deg, #cfd98a, #b9c672);
+  box-shadow: inset 0 0 0 1px rgba(70, 84, 40, 0.5), inset 0 1px 3px rgba(50, 62, 26, 0.35);
+  color: #2c3a12;
+  font-family: var(--font-main);
+}
+.md__lcd b {
+  justify-self: end;
+  font-size: 5.5px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+.md__lcd p {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 3px;
+  margin: 0;
+}
+.md__lcd small { font-size: 5.5px; font-weight: 900; letter-spacing: 0.06em; }
+.md__lcd strong {
+  overflow: hidden;
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* 進捗はセグメント。当時の液晶は滑らかに伸びない */
+.md__bar {
+  position: relative;
+  height: 4px;
+  background: repeating-linear-gradient(90deg, rgba(54, 68, 26, 0.22) 0 4px, transparent 4px 6px);
+}
+.md__bar i {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, #2c3a12 0 4px, transparent 4px 6px);
+  /* scaleX だと升目まで伸びるので、切り出しで進める */
+  clip-path: inset(0 calc((1 - var(--deck, 0)) * 100%) 0 0);
+}
+.md__meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 5.5px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.md__play {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #dbe3ef, #adbaca);
+  box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(50, 60, 78, 0.32);
+  color: #46536a;
+  font-size: 9px;
+  cursor: pointer;
+}
+.md__play:active { transform: translateY(1px); }
+
+@media (max-width: 879px) {
+  .md { width: 100%; }
+  .md__deck { width: 44%; }
+  .md__remote { width: 30%; min-width: 92px; }
+}
+
+/* ===================== 03 料金：右に写真を立てる =====================
+   実測では 1440px の画面に紙632pxが1枚だけで、左右に約400pxずつ、
+   上下に96pxずつの空きがあった。01と同じ二段構えにして幅を使う。
+   PLAY TOGETHER と NEW MEMORY を削ったぶん、ページ全体で
+   写真の登場が減っているので、その補填も兼ねる。 */
+
+@media (min-width: 880px) {
+  .price-zone__in {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr);
+    align-items: center;
+    gap: clamp(28px, 4vw, 66px);
+    max-width: min(var(--content-max), 100%);
+  }
+  .price-copy { width: auto; }
+
+  .price-photo {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    padding: 9px 9px 12px;
+    background: var(--paper-photo);
+    box-shadow:
+      0 2px 3px rgba(37, 25, 63, 0.22),
+      0 16px 30px rgba(37, 25, 63, 0.28);
+    transform: rotate(2.2deg);
+  }
+  .price-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .price-photo figcaption {
+    padding-top: 7px;
+    color: var(--print-accent);
+    font-family: var(--font-hand);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  /* シールは紙と写真の継ぎ目へ */
+  .price-foil { right: auto; left: 54%; }
+}
+
+/* SPは縦積み。写真は幅を抑える */
+@media (max-width: 879px) {
+  .price-photo {
+    width: min(78%, 300px);
+    margin: 22px auto 0;
+    padding: 7px 7px 10px;
+    background: var(--paper-photo);
+    box-shadow: 0 2px 3px rgba(37, 25, 63, 0.22), 0 12px 22px rgba(37, 25, 63, 0.26);
+    transform: rotate(-2.4deg);
+  }
+  .price-photo img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+  .price-photo figcaption {
+    padding-top: 6px;
+    color: var(--print-accent);
+    font-family: var(--font-hand);
+    font-size: 12px;
+    text-align: center;
+  }
+}
+
+/* MDの仕様表記は写真の上に載るので、暗いインクだと読めない */
+.md__spec b { color: rgba(255, 255, 255, 0.86); }
+.md__spec { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); }
+
+/* ===================== MDを写真の上で「物」にする =====================
+   紙面向けに組んだ明るい銀のままだと、暗い写真の上では
+   白い板にしか見えず、蓋のシームもジョグも沈んでいた。
+   当時のMDに多かった濃色の金属に寄せ、面と面の境を立てる。 */
+
+.md__deck {
+  background:
+    linear-gradient(128deg, #9aa6b6 0%, #5f6b7c 24%, #8a95a5 48%, #4d5867 78%, #7d8899 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 2px rgba(12, 18, 28, 0.5),
+    0 10px 20px rgba(10, 6, 20, 0.5);
+}
+
+/* 蓋。一段明るい面にして、周囲に落ちる影で段差を作る */
+.md__lid {
+  inset: 8px 8px 17px;
+  border-radius: 4px;
+  background: linear-gradient(140deg, #aab5c4, #77839400 42%, #98a3b2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.28),
+    0 -1px 0 rgba(12, 18, 28, 0.45);
+}
+.md__hinge { background: rgba(16, 22, 32, 0.5); height: 2.5px; }
+
+.md__open {
+  background: #39424f;
+  color: rgba(255, 255, 255, 0.8);
+}
+.md__jog {
+  right: 13px;
+  bottom: 18px;
+  width: 34px;
+  height: 34px;
+  background: conic-gradient(from 210deg, #b3bdcb, #6b7787, #c3ccd8, #5d6879, #b3bdcb);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45), 0 2px 3px rgba(10, 6, 20, 0.45);
+}
+.md__jog i { background: #3f4956; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+.md__screw { background: rgba(14, 20, 30, 0.55); }
+.md__jack { background: linear-gradient(180deg, #232830, #14181e); }
+
+/* リモコンも本体に合わせて一段落とす */
+.md__remote {
+  background: linear-gradient(120deg, #b6c1cf, #7d8998 46%, #a7b2c0);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 8px 14px rgba(10, 6, 20, 0.45);
+}
+.md__collar { background: linear-gradient(180deg, #aab5c3, #6f7a89); }
+.md__clip { background: #6f7a89; }
+.md__play {
+  background: linear-gradient(180deg, #c6d0dc, #8b96a6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 2px rgba(10, 6, 20, 0.4);
+  color: #2b3340;
+}
+
+/* ケーブルは暗い写真だと沈むので、わずかに明るく */
+.md__wire { stroke: #1b1f26; stroke-width: 3.6; }
+
+/* 右カラムの上端に置くと人物の顔に重なる。
+   卓の高さまで下げて、物が置かれているように見せる。 */
+@media (min-width: 880px) {
+  .md { align-self: end; margin-top: clamp(90px, 12vw, 150px); }
+}
+
+/* ===================== 01 / MD 最終配置 =====================
+   HTMLを正方形MD＋有線リモコンへ変更したあとも、01のグリッドだけ
+   旧 .mdplayer を参照していたため、MDが独立した行を作って全体が崩れていた。
+   本体は当時の72mmメディアに近い正方形のまま、リモコンと横に並べる。 */
+
+.scene--request .md {
+  position: relative;
+  display: block;
+  width: min(100%, 560px);
+  height: 230px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  aspect-ratio: auto;
+  isolation: isolate;
+}
+
+.scene--request .md__spec {
+  top: 8px;
+  left: 0;
+  z-index: 3;
+  gap: 2px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.72);
+}
+
+.scene--request .md__spec b {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 8px;
+  letter-spacing: 0.13em;
+}
+
+.scene--request .md__cable {
+  z-index: 0;
+  overflow: visible;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.16));
+}
+
+.scene--request .md__wire {
+  stroke: #20242b;
+  stroke-width: 4;
+}
+
+.scene--request .md__deck {
+  top: 22px;
+  right: 2px;
+  z-index: 2;
+  width: 196px;
+  aspect-ratio: 80 / 74;
+  border: 1px solid rgba(246, 249, 253, 0.5);
+  border-radius: 10px;
+  background:
+    linear-gradient(90deg, transparent 0 48%, rgba(255, 255, 255, 0.16) 49% 51%, transparent 52%),
+    linear-gradient(132deg, #d8dee7 0%, #8c98a8 22%, #c6cfda 46%, #697585 74%, #aeb8c5 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.84),
+    inset 0 -2px 3px rgba(23, 30, 40, 0.38),
+    0 14px 24px rgba(7, 4, 16, 0.48);
+}
+
+.scene--request .md__lid {
+  inset: 11px 11px 22px;
+  overflow: hidden;
+  border: 1px solid rgba(32, 40, 52, 0.44);
+  border-radius: 6px;
+  background:
+    linear-gradient(145deg, rgba(237, 243, 249, 0.74), rgba(105, 119, 137, 0.62)),
+    #8f9bab;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 1px 0 rgba(255, 255, 255, 0.22),
+    0 2px 5px rgba(18, 24, 34, 0.28);
+}
+
+/* 透明窓から見えるMDディスク。大画面UIではなく「物」の記号にする。 */
+.scene--request .md__lid::before {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: 108px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #222a35 0 7%, #d5dce5 7.5% 15%, transparent 15.5%),
+    conic-gradient(from 20deg, #c6e9f2, #f2bed8, #f3e4a8, #9de2dd, #c8c3ef, #c6e9f2);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72), 0 1px 4px rgba(17, 23, 32, 0.3);
+  content: "";
+  opacity: 0.8;
+  transform: translate(-50%, -50%);
+}
+
+.scene--request .md__lid::after {
+  position: absolute;
+  left: 14px;
+  bottom: 10px;
+  color: rgba(31, 39, 52, 0.74);
+  font-family: var(--font-main);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  content: "MINI DISC";
+}
+
+.scene--request .md__hinge {
+  top: 15px;
+  left: 22%;
+  z-index: 3;
+  width: 56%;
+  background: rgba(29, 37, 49, 0.42);
+}
+
+.scene--request .md__open {
+  left: 12px;
+  bottom: 6px;
+  width: 48px;
+  height: 10px;
+  background: #46515f;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.scene--request .md__jog {
+  right: 15px;
+  bottom: 24px;
+  z-index: 4;
+  width: 38px;
+  height: 38px;
+}
+
+.scene--request .md__remote {
+  left: 0;
+  top: 88px;
+  bottom: auto;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 42px;
+  align-items: center;
+  gap: 10px;
+  width: 300px;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid rgba(242, 246, 251, 0.5);
+  border-radius: 9px;
+  background: linear-gradient(118deg, #c6ced9, #788493 48%, #aab5c2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    0 10px 18px rgba(7, 4, 16, 0.46);
+}
+
+.scene--request .md__remote::after {
+  position: absolute;
+  left: 13px;
+  bottom: -13px;
+  color: rgba(255, 255, 255, 0.62);
+  font-family: var(--font-main);
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  content: "HOLD   DISPLAY   VOL";
+}
+
+.scene--request .md__collar {
+  top: -6px;
+  left: 34px;
+  width: 52px;
+  height: 10px;
+  transform: none;
+}
+
+.scene--request .md__clip {
+  right: 16px;
+  top: -5px;
+  width: 54px;
+  height: 5px;
+  border-radius: 3px 3px 0 0;
+}
+
+.scene--request .md__lcd {
+  gap: 4px;
+  min-width: 0;
+  padding: 7px 9px 8px;
+}
+
+.scene--request .md__lcd b,
+.scene--request .md__lcd small,
+.scene--request .md__meta { font-size: 6px; }
+
+.scene--request .md__lcd strong {
+  font-size: 9px;
+  letter-spacing: 0.015em;
+}
+
+.scene--request .md__bar { height: 5px; }
+
+.scene--request .md__play {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+}
+
+@media (min-width: 880px) {
+  .scene--request .request-copy .sheet__face {
+    transform: translateY(-40px);
+  }
+
+  .scene--request .md {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    align-self: end;
+    justify-self: end;
+    margin: 0;
+  }
+}
+
+@media (max-width: 879px) {
+  .scene--request .md {
+    width: min(100%, 360px);
+    height: 176px;
+    margin: 22px auto 0;
+  }
+
+  .scene--request .md__spec,
+  .scene--request .md__cable { display: none; }
+
+  .scene--request .md__deck {
+    top: 2px;
+    right: 0;
+    width: 136px;
+    border-radius: 8px;
+  }
+
+  .scene--request .md__lid { inset: 8px 8px 17px; }
+  .scene--request .md__lid::before { width: 74px; }
+  .scene--request .md__lid::after { left: 9px; bottom: 7px; font-size: 6px; }
+  .scene--request .md__hinge { top: 11px; }
+  .scene--request .md__open { left: 8px; bottom: 4px; width: 36px; height: 8px; }
+  .scene--request .md__jog { right: 10px; bottom: 18px; width: 29px; height: 29px; }
+
+  .scene--request .md__remote {
+    left: 0;
+    top: 76px;
+    grid-template-columns: minmax(0, 1fr) 34px;
+    gap: 7px;
+    width: 220px;
+    padding: 9px;
+    border-radius: 7px;
+  }
+
+  .scene--request .md__remote::after { left: 10px; bottom: -11px; font-size: 5px; }
+  .scene--request .md__collar { left: 24px; width: 42px; }
+  .scene--request .md__lcd { padding: 6px 7px; }
+  .scene--request .md__lcd b,
+  .scene--request .md__lcd small,
+  .scene--request .md__meta { font-size: 5px; }
+  .scene--request .md__lcd strong { font-size: 7px; }
+  .scene--request .md__play { width: 32px; height: 32px; font-size: 9px; }
+}
+
+@media (max-width: 380px) {
+  .scene--request .md { height: 164px; }
+  .scene--request .md__deck { width: 124px; }
+  .scene--request .md__remote { top: 70px; width: 204px; }
+}
+
+/* ===================== 01 / 02 を03と同じ地へ =====================
+   SPでは写真とコピーが上下に分かれるため、コピー側にだけ黒い面が
+   残っていた。03（.info-zone）と同じ藤〜桃の地とグリッドを使う。 */
+
+.scene--request,
+.scene--karaoke {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    radial-gradient(circle at 13% 6%, rgba(255, 244, 235, 0.6), transparent 26%),
+    radial-gradient(circle at 88% 42%, rgba(255, 225, 240, 0.72), transparent 30%),
+    radial-gradient(circle at 20% 88%, rgba(231, 218, 255, 0.66), transparent 28%),
+    linear-gradient(168deg, #c9bdf0 0%, #cdb6e4 46%, #e8a9c9 100%);
+  background-size: 34px 34px, 34px 34px, auto, auto, auto, auto;
+}
+
+.scene--request .request-photo { background: transparent; }
+
+/* PCは写真の上に文字を置くため、写真内だけに浅い陰影を残す。 */
+.scene--request .request-photo::after {
+  background:
+    linear-gradient(180deg, transparent 0 43%, rgba(50, 37, 61, 0.1) 57%, rgba(50, 37, 61, 0.8) 100%),
+    linear-gradient(90deg, rgba(45, 33, 56, 0.18), transparent 60%);
+}
+
+.scene--karaoke .karaoke-photo::after {
+  background:
+    linear-gradient(90deg, rgba(46, 34, 58, 0.55), rgba(46, 34, 58, 0.12) 50%, transparent 74%),
+    linear-gradient(180deg, transparent 48%, rgba(52, 37, 61, 0.6));
+}
+
+@media (max-width: 879px) {
+  /* SPはコピーが写真外へ出るので、写真の暗幕はほぼ不要。 */
+  .scene--request .request-copy.sheet {
+    background: transparent;
+  }
+
+  .scene--request .request-photo::after {
+    background: linear-gradient(180deg, transparent 76%, rgba(55, 41, 67, 0.18));
+  }
+
+  .scene--karaoke .karaoke-photo::after {
+    background: linear-gradient(180deg, transparent 72%, rgba(55, 41, 67, 0.2));
+  }
+
+  .scene--request .request-copy .scene-label,
+  .scene--karaoke .scene-label--number-only {
+    color: var(--print-sub);
+    text-shadow: none;
+  }
+
+  .scene--request .request-copy .scene-label b,
+  .scene--request .request-copy .scene-label span,
+  .scene--karaoke .scene-label--number-only b {
+    color: var(--print-accent);
+  }
+
+  .scene--request .request-copy .paper-h,
+  .scene--karaoke .scene-title {
+    color: var(--print-accent);
+    text-shadow: none;
+  }
+
+  .scene--request .request-copy .scene-text,
+  .scene--karaoke .scene-text {
+    color: var(--print-ink);
+    text-shadow: none;
+  }
+}
+
+/* 768〜879pxの02はコピーが写真上に残る。後段のSP色指定より優先する。 */
+@media (min-width: 768px) and (max-width: 879px) {
+  .scene--karaoke .scene-label--number-only {
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .scene--karaoke .scene-label--number-only b,
+  .scene--karaoke .scene-title {
+    color: #ff4a94;
+  }
+
+  .scene--karaoke .scene-title {
+    text-shadow: 0 3px 18px rgba(0, 0, 0, 0.68);
+  }
+
+  .scene--karaoke .scene-text {
+    color: rgba(255, 255, 255, 0.92);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.68);
+  }
+}
+
+/* 01の最終構図：見出し群は写真内、MDは写真の次段。 */
+.scene--request .request-photo-copy {
+  position: absolute;
+  inset: auto auto 0 0;
+  z-index: 5;
+}
+
+@media (min-width: 880px) {
+  .scene--request .request-copy .sheet__face {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+
+  .scene--request .request-copy .md {
+    width: min(48%, 560px);
+    pointer-events: auto;
+  }
+}
+
+@media (max-width: 879px) {
+  .scene--request {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .scene--request .scene__in.request-layout {
+    display: grid;
+    grid-template-rows: auto auto;
+    min-height: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .scene--request .request-photo,
+  .reveal-ready .scene--request .request-photo[data-reveal].is-in {
+    position: relative;
+    inset: auto;
+    grid-row: 1;
+    width: 100%;
+    max-width: none;
+    height: clamp(430px, 112vw, 560px);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    clip-path: none;
+    overflow: hidden;
+    transform: none;
+  }
+
+  .scene--request .request-photo > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: cover;
+    object-position: 52% 48%;
+    transform: none;
+  }
+
+  .scene--request .request-photo::after {
+    background:
+      linear-gradient(180deg, transparent 34%, rgba(10, 7, 14, 0.1) 48%, rgba(10, 7, 14, 0.9) 100%),
+      linear-gradient(90deg, rgba(10, 7, 14, 0.34), transparent 78%);
+  }
+
+  .scene--request .request-photo-copy {
+    position: absolute;
+    inset: auto 0 0;
+    width: 100%;
+    padding: 0 18px 26px;
+  }
+
+  .scene--request .request-copy.sheet {
+    position: relative;
+    z-index: 3;
+    grid-row: 2;
+    width: 100%;
+    margin: 0;
+    padding: 22px 18px 54px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    filter: none;
+    transform: none;
+  }
+
+  .scene--request .request-copy .sheet__face {
+    display: block;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    clip-path: none;
+    transform: none;
+  }
+
+  .scene--request .request-copy .md { margin: 0 auto; }
+}
+
+/* ===================== 02：動画の下に文字を置く =====================
+   PCでは .karaoke-photo が position:absolute で全面に敷かれ、
+   コピーがその上に重なっていた（SPだけ縦積み）。
+   PCもSPと同じ構造にして、動画を高くし、文字はその下へ。 */
+
+@media (min-width: 768px) {
+  .scene--karaoke .scene__pin {
+    display: grid;
+    grid-template-rows: auto auto;
+    align-items: start;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .karaoke-photo {
+    position: relative;
+    inset: auto;
+    /* aspect-ratio + max-height だと幅まで縮んで左右に余白が出る。
+       幅は全幅のまま、高さだけ決めて object-fit: cover で切る。 */
+    width: 100%;
+    height: min(76svh, 700px);
+    aspect-ratio: auto;
+    overflow: hidden;
+  }
+  .karaoke-photo :is(img, video) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* 重ねる前提の覆いは、下に敷く構図では要らない。
+     下辺だけ軽く落として文字への渡りを作る */
+  .karaoke-photo::after {
+    background: linear-gradient(180deg, transparent 62%, rgba(7, 8, 10, 0.55));
+  }
+
+  .karaoke-copy {
+    padding-top: clamp(26px, 3.4vw, 46px);
+    padding-bottom: clamp(30px, 4vw, 56px);
+  }
+}
+
+/* 動画の上に重ねる前提で白にしていた文字が、下に置いた途端に
+   明るい地へ乗って読めなくなった。地に合わせて墨に戻す。
+   見出しのマゼンタは地の上でも十分なコントラストがあるので残す。 */
+@media (min-width: 768px) {
+  .scene--karaoke .karaoke-copy .scene-text {
+    color: var(--print-ink);
+    text-shadow: none;
+  }
+  .scene--karaoke .karaoke-copy .scene-label {
+    color: var(--print-sub);
+    text-shadow: none;
+  }
+  .scene--karaoke .scene-title { text-shadow: none; }
+
+  /* シールが動画の上端で切れていたので、内側へ下げる */
+  .y2k-sticker--karaoke { top: clamp(24px, 4vw, 64px); }
 }

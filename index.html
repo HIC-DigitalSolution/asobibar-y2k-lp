@@ -27,7 +27,7 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=329" />
+    <link rel="stylesheet" href="./styles.css?v=354" />
     <script src="./script.js?v=58" defer></script>
   </head>
 
@@ -51,9 +51,9 @@
         <div class="cover__stage">
           <div class="cover__visual">
             <picture class="cover__keyvisual" aria-hidden="true">
-              <source media="(max-width: 767px)" srcset="./assets/hero-collage-sp.jpg" />
+              <source media="(max-width: 767px)" srcset="./assets/hero-collage-sp-no-disc.jpg" />
               <img
-                src="./assets/hero-collage-typography-v2.jpg"
+                src="./assets/hero-collage-typography-no-disc.jpg"
                 alt=""
                 width="1536"
                 height="1024"
@@ -80,79 +80,44 @@
         </div>
       </section>
 
+      <div class="experience-zone">
       <!-- ==================== SCENE 01 / SONG REQUEST ==================== -->
       <section class="scene scene--request" id="experience" data-theme="request" data-page="01" data-scene-motion="request" aria-labelledby="request-title">
         <div class="scene__in request-layout">
-          <!-- CD-R。pinで貼り付く .scene__in の中に置く。
-               セクション直下だと pin 中に画面外へ流れて、
-               回転と退場が見えなかった。 -->
-          <div class="obj obj--disc" aria-hidden="true">
-            <span><img src="./assets/fv-obj-disc.png" alt="" width="520" height="520" loading="lazy" decoding="async" /></span>
-          </div>
           <div class="request-copy sheet sheet--torn-bottom">
             <span class="sheet__fiber" aria-hidden="true"></span>
             <div class="sheet__face">
-            <p class="scene-label"><b>01</b><i aria-hidden="true"></i><span>曲リクエスト</span><em>SONG REQUEST</em></p>
-            <h2 class="paper-h" id="request-title">あの頃の青春を、<br />ASOBIBARで</h2>
-            <p class="scene-text">
-              2000年代の曲をリクエスト。イントロが流れた瞬間の<br />「これ知ってる！」から、今夜の会話が始まります。
-            </p>
-
-            <!-- 携帯プレーヤー。ブランドマークは入れない（商標）。
-                 JSのフック（data-request-player / data-deck-play /
-                 data-deck-time / data-deck-mode）は従来のまま使う。 -->
-            <div class="mdplayer" data-request-player aria-label="2000年代ソングのリクエスト受付中">
-              <!-- 製品図の作法。左上に小さく仕様を置くと「図版」に見える。
-                   実在の型番は使わない -->
-              <p class="mdplayer__spec" aria-hidden="true">
-                <b>PORTABLE MD PLAYER</b>
-                <b>MDLP MODE</b>
-                <b>2000s EDITION</b>
-              </p>
-              <svg class="mdplayer__cable" viewBox="0 0 340 336" preserveAspectRatio="xMidYMid meet"
-                   aria-hidden="true" focusable="false">
-                <!-- 端子から出て右へ回り、下を通って左のイヤホンへ戻る一本のループ -->
-                <path class="mdplayer__wire"
-                      d="M266 6 C302 6 330 18 330 50 L330 286 C330 312 314 322 288 322 L56 322 C30 322 16 310 16 286 L16 152" />
-                <path class="mdplayer__wire" d="M16 152 C16 130 26 122 40 118" />
-                <path class="mdplayer__wire" d="M16 152 C16 138 12 128 6 122" />
-                <g class="mdplayer__bud">
-                  <rect x="30" y="86" width="19" height="34" rx="9.5" transform="rotate(-8 39 103)" />
-                  <rect x="-4" y="92" width="19" height="34" rx="9.5" transform="rotate(6 5 109)" />
-                </g>
-              </svg>
-
-              <div class="mdplayer__body">
-                <span class="mdplayer__jack" aria-hidden="true"></span>
-                <span class="mdplayer__hold" aria-hidden="true"></span>
-
-                <div class="mdplayer__screen">
-                  <b data-deck-mode>REQUEST MODE</b>
-                  <p><small>TRACK</small><strong>2000s SONG REQUEST</strong></p>
-                  <div class="mdplayer__bar" aria-hidden="true"><i></i></div>
-                  <div class="mdplayer__meta" aria-hidden="true">
-                    <span data-deck-time>MEMORY 00:00</span><span>REPLAY 03:45</span>
+            <!-- たまごっち風の曲リクエスト端末。固有の商品形状やロゴは使わず、
+                 平成初期の携帯育成ゲームの文脈だけを取り入れる。 -->
+            <div class="tama" data-request-player aria-label="2000年代ソングのリクエスト受付中">
+              <span class="tama__ring" aria-hidden="true"></span>
+              <span class="tama__chain" aria-hidden="true"><i></i><i></i><i></i></span>
+              <div class="tama__body">
+                <span class="tama__shine" aria-hidden="true"></span>
+                <p class="tama__brand" aria-hidden="true">SONG PET</p>
+                <div class="tama__screen">
+                  <div class="tama__screen-top">
+                    <b class="tama__status" data-deck-mode>REQ MODE</b>
+                    <span data-deck-time>MEMORY 00:00</span>
                   </div>
+                  <svg class="tama__pet" viewBox="0 0 64 48" aria-hidden="true">
+                    <path d="M22 8h20v4h6v4h4v20h-4v4H16v-4h-4V16h4v-4h6Z" />
+                    <path class="tama__pet-cut" d="M24 20h4v4h-4zm12 0h4v4h-4zm-8 10h8v4h-8z" />
+                    <path d="M18 4h8v4h-8zm20 0h8v4h-8z" />
+                  </svg>
+                  <strong>2000s SONG</strong>
+                  <div class="tama__bar" aria-hidden="true"><i></i></div>
                 </div>
-
-                <div class="mdplayer__keys" aria-hidden="true">
-                  <span class="mdplayer__key mdplayer__key--vu">VOL+</span>
-                  <span class="mdplayer__key mdplayer__key--menu">SEARCH<br />MENU</span>
-                  <span class="mdplayer__key mdplayer__key--vd">VOL−</span>
-                  <span class="mdplayer__key mdplayer__key--stop"></span>
-                </div>
-
-                <div class="mdplayer__pad">
-                  <span class="mdplayer__dir mdplayer__dir--up" aria-hidden="true"></span>
-                  <span class="mdplayer__dir mdplayer__dir--left" aria-hidden="true"></span>
-                  <span class="mdplayer__dir mdplayer__dir--right" aria-hidden="true"></span>
-                  <span class="mdplayer__dir mdplayer__dir--down" aria-hidden="true"></span>
-                  <button class="mdplayer__play" type="button" data-deck-play
-                          aria-label="再生デモを動かす（音は出ません）">
-                    <span aria-hidden="true">▶</span>
+                <div class="tama__keys">
+                  <button type="button" aria-label="前の曲へ"><span aria-hidden="true">◀</span></button>
+                  <button class="tama__play" type="button" data-deck-play aria-label="再生デモを動かす（音は出ません）">
+                    <span aria-hidden="true">●</span>
                   </button>
+                  <button type="button" aria-label="次の曲へ"><span aria-hidden="true">▶</span></button>
                 </div>
+                <small aria-hidden="true">REQUEST MUSIC MEMORY</small>
               </div>
+              <span class="tama__charm" aria-hidden="true">♪</span>
             </div>
             </div>
             <span class="tape tape--y tape--r1" aria-hidden="true"></span>
@@ -188,6 +153,13 @@
             <span class="seal seal--heart request-seal request-seal--heart" aria-hidden="true">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5 3.8 12.6a5 5 0 0 1 7.1-7L12 6.7l1.1-1.1a5 5 0 0 1 7.1 7Z"/></svg>
             </span>
+            <figcaption class="request-photo-copy">
+              <p class="scene-label"><b>01</b><i aria-hidden="true"></i><span>曲リクエスト</span><em>SONG REQUEST</em></p>
+              <h2 class="paper-h" id="request-title">あの頃の青春を、<br />ASOBIBARで</h2>
+              <p class="scene-text">
+                2000年代の曲をリクエスト。イントロが流れた瞬間の<br />「これ知ってる！」から、今夜の会話が始まります。
+              </p>
+            </figcaption>
           </figure>
         </div>
       </section>
@@ -267,6 +239,12 @@
             <span class="tape tape--y tape--a1" aria-hidden="true"></span>
           </div>
 
+          <figure class="price-photo scene-photo" data-reveal="media">
+            <img src="./assets/memory-cheers.jpg" alt="グラスを合わせて笑い合う人たち"
+                 width="1800" height="1202" loading="lazy" decoding="async" />
+            <figcaption>100分、まるごと自由。</figcaption>
+          </figure>
+
           <span class="foil price-foil" aria-hidden="true">
             <img src="./assets/onemore-sticker.webp" alt="" width="560" height="418" loading="lazy" decoding="async" />
           </span>
@@ -336,6 +314,7 @@
           </div>
         </div>
       </section>
+      </div>
       </div>
 
       <!-- ==================== HOW TO ASOBIBAR ==================== -->
