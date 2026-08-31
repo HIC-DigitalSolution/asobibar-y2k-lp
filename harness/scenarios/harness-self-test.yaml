@@ -1,0 +1,24 @@
+name: harness-self-test-scenario
+summary: When the harness itself changes, prove the engine still works and every definition still loads.
+stage: pre-commit
+
+# The harness runs on every commit and executes whatever its YAML says, so a broken or
+# malicious edit to it is the most expensive change in the repo. It is checked first, and
+# it is checked by itself.
+match:
+  paths:
+    - ^scripts/harness/
+    - ^harness/
+    - ^\.githooks/
+
+requires:
+  - type: command
+    command: node
+    hint: node is required to run the harness.
+
+steps:
+  - name: harness unit tests
+    run: node --test scripts/harness/lib/*.test.mjs
+
+  - name: every contract and scenario still loads
+    run: node scripts/harness/harness-check.mjs --staged > /dev/null && node scripts/harness/harness-run.mjs --stage pre-push --dry-run > /dev/null

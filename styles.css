@@ -218,7 +218,7 @@ a { color: inherit; }
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: #281541;
+  background: #0e0b0d;
 }
 
 .cover__stage {
@@ -226,7 +226,7 @@ a { color: inherit; }
   width: 100%;
   margin-inline: auto;
   overflow: hidden;
-  background: #281541;
+  background: #0e0b0d;
 }
 
 .cover__visual {
@@ -4207,6 +4207,7 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .tama.is-mode-on .tama__status { animation: none; }
 }
+
 
 /* ===================== 01 / コピーを写真上へ =====================
    見出し・説明は写真の一部として読ませ、MDだけを次の段へ残す。
@@ -8380,4 +8381,1269 @@ body { padding-bottom: 0; }
 
   /* シールが動画の上端で切れていたので、内側へ下げる */
   .y2k-sticker--karaoke { top: clamp(24px, 4vw, 64px); }
+}
+
+/* FVはPC/SPとも文字焼き込み済みの同一画像を使う。
+   SPだけ表示していたHTML見出しは読み上げ用に戻し、二重表示を防ぐ。 */
+@media (max-width: 767px) {
+  .cover__core {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* ===================== 02 / SPは01と同じ「写真の中で読む」構図 =====================
+   動画そのものを縦に変形せず、表示する窓だけを下へ延長する。
+   object-fit: cover で比率を保ち、延長した下端へコピーを重ねる。 */
+@media (max-width: 767px) {
+  .scene--karaoke {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .scene--karaoke .scene__pin {
+    position: relative;
+    display: grid;
+    align-items: end;
+    min-height: clamp(660px, 172vw, 760px);
+    overflow: hidden;
+  }
+
+  .scene--karaoke .karaoke-photo,
+  .reveal-ready .scene--karaoke .karaoke-photo[data-reveal].is-in {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    transform: none;
+  }
+
+  .scene--karaoke .karaoke-photo :is(img, video) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 62%;
+    transform: none;
+  }
+
+  .scene--karaoke .karaoke-photo::after {
+    background: linear-gradient(
+      180deg,
+      rgba(7, 8, 10, 0.02) 0%,
+      rgba(7, 8, 10, 0.05) 44%,
+      rgba(7, 8, 10, 0.5) 66%,
+      rgba(7, 8, 10, 0.94) 100%
+    );
+  }
+
+  .scene--karaoke .karaoke-copy {
+    position: relative;
+    z-index: 3;
+    align-self: end;
+    width: 100%;
+    margin: 0;
+    padding: 0 18px clamp(38px, 10vw, 52px);
+    font-family: var(--font-main);
+  }
+
+  .scene--karaoke .scene-label--number-only {
+    margin-bottom: 14px;
+    color: rgba(255, 255, 255, 0.86);
+    font-family: var(--font-main);
+    font-size: 18px;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.72);
+  }
+
+  .scene--karaoke .scene-title {
+    max-width: 10.5em;
+    color: #ff4a94;
+    font-family: var(--font-main);
+    font-size: clamp(1.9rem, 8.2vw, 2.35rem);
+    line-height: 1.18;
+    letter-spacing: -0.045em;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.78);
+  }
+
+  .scene--karaoke .scene-text {
+    max-width: 28em;
+    margin-top: 14px;
+    color: rgba(255, 255, 255, 0.94);
+    font-family: var(--font-main);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.72;
+    text-shadow: 0 1px 7px rgba(0, 0, 0, 0.86);
+  }
+}
+
+/* ===================== 予約CTA / ローズ面＋クローム外周 =====================
+   暗いマゼンタは使わず、FVのピンク文字と同系の明るいローズへ。
+   クロームは主面にせず、外周と独立した矢印だけに限定する。 */
+.cta {
+  position: relative;
+  isolation: isolate;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 66px;
+  padding: 7px 9px 7px 22px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  color: #fff;
+  background:
+    linear-gradient(115deg, #ff72b2 0%, #fa4f99 43%, #ef3e86 100%) padding-box,
+    linear-gradient(112deg, #6b7078 0%, #fff 16%, #8d949e 34%, #f9fcff 51%, #777e88 70%, #e9edf2 86%, #626872 100%) border-box;
+  box-shadow:
+    0 3px 0 #a92862,
+    0 12px 24px rgba(64, 20, 45, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+  font-family: var(--font-main);
+  font-size: clamp(15px, 1.15vw, 16px);
+  font-weight: 900;
+  letter-spacing: 0.015em;
+  text-shadow: 0 1px 2px rgba(101, 18, 58, 0.34);
+  transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out), filter 180ms ease;
+}
+
+.cta__copy {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  flex: 1 1 auto;
+  gap: 1px;
+  justify-items: center;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.cta__copy small {
+  color: #ffe7f2;
+  font-family: var(--font-main);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+}
+
+.cta__copy > span {
+  font-size: inherit;
+  white-space: nowrap;
+}
+
+.cta i {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  flex: 0 0 38px;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.94);
+  border-radius: 50%;
+  color: #5e3146;
+  background: linear-gradient(135deg, #fff 0%, #aeb5bf 30%, #fbfdff 52%, #878e98 75%, #eef2f5 100%);
+  box-shadow: 0 2px 0 rgba(94, 31, 62, 0.3), inset 0 1px 0 #fff;
+  font-size: 21px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.78);
+}
+
+.cta::after {
+  position: absolute;
+  z-index: 1;
+  top: -35%;
+  left: -42%;
+  width: 24%;
+  height: 170%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.34), transparent);
+  content: "";
+  pointer-events: none;
+  transform: skewX(-18deg);
+}
+
+/* 読み込み後、最初に見えているFVのCTAだけを一度光らせる。 */
+.motion-ready .cover.is-scene-in .cta::after {
+  animation: cta-once-shine 720ms 1.15s var(--ease-out) 1 both;
+}
+
+@keyframes cta-once-shine {
+  from { left: -42%; }
+  to { left: 122%; }
+}
+
+.cta:active,
+.motion-ready .cover.is-scene-in .cover__info > .cta:active,
+.motion-ready .final-night.is-scene-in .final-night__content .cta:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 1px 0 #a92862,
+    0 7px 15px rgba(64, 20, 45, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.38);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cta:hover,
+  .motion-ready .cover.is-scene-in .cover__info > .cta:hover,
+  .motion-ready .final-night.is-scene-in .final-night__content .cta:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.035) saturate(1.03);
+    box-shadow:
+      0 4px 0 #a92862,
+      0 15px 28px rgba(64, 20, 45, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.46);
+  }
+}
+
+.cta--bar {
+  min-height: 58px;
+  font-size: clamp(15px, 1.15vw, 16px);
+}
+
+@media (max-width: 767px) {
+  .cover__info > .cta,
+  .cta--final,
+  .cta--bar {
+    min-height: 62px;
+    padding: 6px 7px 6px 18px;
+    font-size: 15px;
+  }
+
+  .cta i {
+    flex-basis: 36px;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-ready .cover.is-scene-in .cta::after { animation: none; }
+}
+
+/* ===================== 03 PRICE / 写真の上に情報を置く =====================
+   01・02と同じく写真をセクション面として扱う。料金カードへ戻さず、
+   写真下部の暗い階調だけで数字の可読性を確保する。 */
+.price-zone {
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: #171118;
+}
+
+/* 02の動画シーンから03の料金シーンへ、ひと呼吸だけ地を見せる。 */
+.info-zone .price-zone {
+  margin-top: clamp(28px, 4vw, 52px);
+}
+
+.price-zone::before { display: none; }
+
+.price-zone__in {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: end;
+  gap: 0;
+  width: 100%;
+  max-width: none;
+  min-height: clamp(660px, 58vw, 780px);
+  margin: 0;
+  overflow: hidden;
+}
+
+.price-zone .price-photo,
+.reveal-ready .price-zone .price-photo[data-reveal].is-in {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #171118;
+  box-shadow: none;
+  transform: none;
+}
+
+.price-zone .price-photo::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(16, 10, 17, 0.76) 0%, rgba(16, 10, 17, 0.46) 48%, rgba(16, 10, 17, 0.06) 82%),
+    linear-gradient(180deg, rgba(16, 10, 17, 0.04) 18%, rgba(16, 10, 17, 0.28) 50%, rgba(16, 10, 17, 0.92) 100%);
+  content: "";
+}
+
+.price-zone .price-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+  object-position: 50% 48%;
+  transform: none;
+}
+
+.price-zone .price-photo figcaption { display: none; }
+
+.price-zone .price-copy {
+  position: relative;
+  z-index: 2;
+  align-self: end;
+  width: min(680px, 58%);
+  margin: 0;
+  padding: clamp(52px, 6vw, 84px) 0 clamp(90px, 7vw, 110px) var(--pad-x);
+  color: #fff;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.price-zone .price-copy > .sheet__fiber,
+.price-zone .price-copy > .tape { display: none; }
+
+.price-zone .price-copy .sheet__face {
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  box-shadow: none;
+  clip-path: none;
+}
+
+.price-zone .scene-label {
+  margin-bottom: clamp(14px, 1.7vw, 22px);
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.68);
+}
+
+.price-zone .scene-label b,
+.price-zone .scene-label span { color: #ff5ca4; }
+.price-zone .scene-label i { background: #ff5ca4; }
+.price-zone .scene-label em { color: rgba(255, 255, 255, 0.62); }
+
+.price-zone .price-copy .paper-h {
+  max-width: none;
+  color: #ff5ca4;
+  font-family: var(--font-main);
+  font-size: clamp(2.35rem, 4.4vw, 4rem);
+  line-height: 1.14;
+  letter-spacing: -0.05em;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.72);
+}
+
+.price-zone .price-main { margin-top: clamp(18px, 2vw, 26px); }
+
+.price-zone .price-info {
+  gap: clamp(12px, 1.4vw, 18px);
+  padding: 0;
+}
+
+.price-zone .lead-ami {
+  color: rgba(255, 255, 255, 0.96);
+  border-left-color: #ff5ca4;
+  background: rgba(10, 7, 12, 0.26);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.72);
+}
+
+.price-zone .price-copy .plan-prices {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.8vw, 22px);
+}
+
+.price-zone .price-copy .plan-prices > div {
+  padding: 10px 0 12px;
+  border-top-color: rgba(255, 255, 255, 0.34);
+  border-bottom-color: rgba(255, 255, 255, 0.92);
+}
+
+.price-zone .price-copy .plan-prices dt {
+  padding: 2px 8px 3px;
+  color: #fff;
+  background: #f23f8b;
+}
+
+.price-zone .price-copy .plan-prices dd {
+  color: #fff;
+  font-size: clamp(2.25rem, 3.7vw, 3.35rem);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.72);
+}
+
+.price-zone .paper-note {
+  color: rgba(255, 255, 255, 0.76);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.78);
+}
+
+.price-zone .ink-button {
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  color: #fff;
+  background: rgba(242, 63, 139, 0.94);
+  box-shadow: 0 3px 0 rgba(116, 23, 66, 0.86), 0 8px 18px rgba(0, 0, 0, 0.24);
+}
+
+.price-zone .ink-button i { color: #fff; }
+
+.price-zone .price-foil {
+  z-index: 3;
+  top: clamp(18px, 3vw, 38px);
+  right: clamp(10px, 3vw, 42px);
+  left: auto;
+}
+
+@media (max-width: 767px) {
+  .price-zone__in {
+    min-height: clamp(750px, 182vw, 820px);
+  }
+
+  .price-zone .price-photo img {
+    object-position: 47% 50%;
+  }
+
+  .price-zone .price-photo::after {
+    background: linear-gradient(
+      180deg,
+      rgba(13, 8, 14, 0.03) 0%,
+      rgba(13, 8, 14, 0.12) 28%,
+      rgba(13, 8, 14, 0.62) 50%,
+      rgba(13, 8, 14, 0.96) 100%
+    );
+  }
+
+  .price-zone .price-copy {
+    width: 100%;
+    padding: 0 18px calc(150px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .price-zone .scene-label {
+    margin-bottom: 13px;
+    font-size: 14px;
+  }
+
+  .price-zone .price-copy .paper-h {
+    font-size: clamp(2rem, 9vw, 2.45rem);
+  }
+
+  .price-zone .price-main { margin-top: 16px; }
+  .price-zone .price-info { gap: 11px; }
+
+  .price-zone .lead-ami {
+    padding: 10px 11px;
+    font-size: 13px;
+  }
+
+  .price-zone .price-copy .plan-prices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .price-zone .price-copy .plan-prices dd {
+    font-size: clamp(2rem, 10vw, 2.55rem);
+  }
+
+  .price-zone .paper-note {
+    font-size: 11px;
+    line-height: 1.65;
+  }
+
+  .price-zone .ink-button {
+    padding: 10px 14px 11px;
+    font-size: 12px;
+  }
+
+  .price-zone .price-foil {
+    top: 14px;
+    right: 5px;
+    width: clamp(102px, 29vw, 126px);
+    transform: rotate(6deg);
+  }
+}
+
+/* ===================== 95点調整 / 02・HOW TO・FINAL =====================
+   02はPCでも動画内コピーへ統一。HOW TOは情報量を落とさず縦量だけを
+   約22%圧縮し、EVENTからFINALまでを一続きの誌面として読む。 */
+
+/* 02：PCもSPと同じく、映像をシーン面としてコピーを内包する。 */
+@media (min-width: 768px) {
+  .scene--karaoke {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .scene--karaoke .scene__pin {
+    position: relative;
+    display: grid;
+    grid-template-rows: 1fr;
+    align-items: end;
+    min-height: clamp(680px, 76svh, 760px);
+    overflow: hidden;
+  }
+
+  .scene--karaoke .karaoke-photo,
+  .reveal-ready .scene--karaoke .karaoke-photo[data-reveal].is-in {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    transform: none;
+  }
+
+  .scene--karaoke .karaoke-photo :is(img, video) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 66%;
+    transform: none;
+  }
+
+  .scene--karaoke .karaoke-photo::after {
+    background:
+      linear-gradient(90deg, rgba(8, 8, 12, 0.55) 0%, rgba(8, 8, 12, 0.18) 48%, transparent 76%),
+      linear-gradient(180deg, transparent 38%, rgba(8, 8, 12, 0.16) 58%, rgba(8, 8, 12, 0.84) 100%);
+  }
+
+  .scene--karaoke .karaoke-copy {
+    position: relative;
+    z-index: 3;
+    align-self: end;
+    width: min(820px, 70%);
+    margin: 0;
+    padding: clamp(300px, 34vh, 360px) 0 clamp(92px, 8vw, 118px) var(--pad-x);
+    color: #fff;
+    font-family: var(--font-main);
+  }
+
+  .scene--karaoke .karaoke-copy .scene-label {
+    margin-bottom: clamp(14px, 1.5vw, 20px);
+    color: rgba(255, 255, 255, 0.86);
+    font-size: clamp(16px, 1.4vw, 19px);
+    text-shadow: 0 1px 7px rgba(0, 0, 0, 0.78);
+  }
+
+  .scene--karaoke .karaoke-copy .scene-label b { color: #ff4a94; }
+
+  .scene--karaoke .scene-title {
+    width: auto;
+    max-width: 13em;
+    padding: 0;
+    color: #ff4a94;
+    background: transparent;
+    font-family: var(--font-main);
+    font-size: clamp(2.45rem, 4.2vw, 3.7rem);
+    line-height: 1.16;
+    text-shadow: 0 3px 18px rgba(0, 0, 0, 0.78);
+  }
+
+  .scene--karaoke .karaoke-copy .scene-text {
+    max-width: 34em;
+    margin-top: 16px;
+    color: rgba(255, 255, 255, 0.94);
+    font-size: clamp(14px, 1.3vw, 17px);
+    font-weight: 700;
+    line-height: 1.78;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.82);
+  }
+
+  /* 02は右上。03は左上に振って、同じシール構図の反復を避ける。 */
+  .scene--karaoke .y2k-sticker--karaoke {
+    inset: clamp(26px, 3vw, 46px) clamp(22px, 3.5vw, 56px) auto auto;
+    width: clamp(164px, 15vw, 220px);
+    transform: rotate(5deg);
+  }
+}
+
+/* 03のシールは左上。文字群から距離を取り、写真の空きを使う。 */
+.price-zone .price-foil {
+  top: clamp(18px, 3vw, 38px);
+  right: auto;
+  left: clamp(10px, 3vw, 42px);
+  transform: rotate(-7deg);
+}
+
+/* HOW TO：ヘッドと3ステップを均等に詰め、総尺を約4分の3へ。 */
+.howto-section {
+  margin-top: -1px;
+  padding: clamp(14px, 1.6vw, 20px) var(--gutter) 0;
+}
+
+/* EVENTの写真帯とHOW TOの紙面の間に残っていた広い桃色の踊り場を縮める。 */
+.info-zone .event-zone .wall {
+  padding-bottom: clamp(12px, 1.4vw, 18px);
+}
+
+.info-zone .event-zone {
+  padding-bottom: clamp(14px, 1.8vw, 22px);
+}
+
+.howto-guide { margin-bottom: 0; }
+
+.howto-head {
+  min-height: 340px;
+  padding: clamp(30px, 3.5vw, 42px) clamp(24px, 6vw, 78px) clamp(28px, 3vw, 38px);
+}
+
+.howto-kicker { margin-bottom: 14px; }
+.howto-intro { gap: 28px; margin-top: clamp(20px, 2.2vw, 28px); }
+.howto-intro p { line-height: 1.72; }
+
+.howto-step {
+  gap: clamp(30px, 4vw, 54px);
+  min-height: 500px;
+  padding: clamp(32px, 3.4vw, 44px) clamp(24px, 6vw, 78px);
+}
+
+.howto-copy > p:last-child,
+.howto-copy > p:nth-last-child(2) {
+  margin-top: clamp(16px, 1.8vw, 22px);
+  line-height: 1.78;
+}
+
+.howto-amusement-list { margin-top: 15px; }
+.howto-visual { min-height: 350px; }
+.howto-food { min-height: 370px; }
+
+/* FINAL：白い見出し箱を外し、写真と同じレイヤーで読ませる。 */
+.final-night {
+  margin-top: 0;
+}
+
+.final-night__content h2 {
+  width: auto;
+  max-width: 14em;
+  padding: 0;
+  color: #fff;
+  background: transparent;
+  font-family: var(--font-main);
+  font-size: clamp(2.35rem, 5vw, 4.35rem);
+  font-weight: 900;
+  line-height: 1.16;
+  letter-spacing: -0.055em;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.78);
+}
+
+.final-night__content > p {
+  max-width: 32em;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(15px, 1.3vw, 17px);
+  font-weight: 700;
+  line-height: 1.75;
+  text-shadow: 0 2px 9px rgba(0, 0, 0, 0.78);
+}
+
+/* 予約CTA：静的な紙粒だけを重ねる。動く光は従来の一度きりに限定。 */
+.cta::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: var(--grain-fine);
+  background-size: 124px 124px;
+  mix-blend-mode: soft-light;
+  opacity: 0.09;
+  content: "";
+}
+
+@media (max-width: 767px) {
+  .price-zone .price-foil {
+    top: 14px;
+    right: auto;
+    left: 5px;
+    transform: rotate(-7deg);
+  }
+
+  .howto-section { padding: 10px 0 0; }
+  .info-zone .event-zone { padding-bottom: 12px; }
+  .howto-head { padding: 28px 18px 30px; }
+  .howto-head__tape { top: 18px; }
+  .howto-kicker { margin-bottom: 14px; }
+  .howto-intro { gap: 12px; margin-top: 22px; }
+  .howto-intro p { line-height: 1.68; }
+
+  .howto-step,
+  .howto-step:nth-of-type(even) {
+    gap: 18px;
+    padding: 36px 18px 32px;
+  }
+
+  .howto-copy h3 small { margin-top: 8px; }
+  .howto-copy > p:last-child,
+  .howto-copy > p:nth-last-child(2) {
+    margin-top: 15px;
+    font-size: 13.5px;
+    line-height: 1.72;
+  }
+
+  .howto-amusement-list { margin-top: 12px; }
+  .howto-visual { min-height: 260px; }
+  .howto-food { min-height: 310px; }
+
+  .howto-contact {
+    grid-template-columns: repeat(2, clamp(76px, 21vw, 84px));
+  }
+
+  .howto-contact img { width: clamp(76px, 21vw, 84px); }
+
+  .final-night__content h2 {
+    max-width: 100%;
+    font-size: clamp(2rem, 9vw, 2.55rem);
+  }
+
+  .final-night__content > p {
+    font-size: 15px;
+    line-height: 1.72;
+  }
+
+  /* 固定予約バーの上で本文2行目まで読み切れる位置を確保する。 */
+  .scene--karaoke .karaoke-copy {
+    padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* PC / 01→02：写真シーンが連続して詰まって見えないよう、
+   共通の藤〜桃背景を見せる誌面上の「間」を作る。SPは現状維持。 */
+@media (min-width: 880px) {
+  .experience-zone > .scene--karaoke {
+    margin-top: clamp(64px, 6vw, 88px);
+  }
+}
+
+/* FV→01：表紙の直後に余韻を作り、次の体験シーンへ切り替える。 */
+.experience-zone {
+  padding-top: clamp(36px, 7vw, 88px);
+}
+
+@media (max-width: 767px) {
+  .experience-zone {
+    padding-top: clamp(30px, 9vw, 42px);
+  }
+}
+
+/* ===================== 01 / 写真・コピー・端末を分離 =====================
+   写真の中で説明を読ませず、写真の下へ紙面を少し重ねる。
+   SONG PETを紙面の独立レイヤーに置き、操作するシーンとして見せる。 */
+.scene--request {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+  background: transparent;
+}
+
+.scene--request .scene__in.request-layout {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  align-items: start;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  padding: 0 var(--pad-x) clamp(74px, 8vw, 112px);
+  overflow: visible;
+}
+
+.scene--request .request-photo,
+.reveal-ready .scene--request .request-photo[data-reveal].is-in {
+  position: relative;
+  inset: auto;
+  z-index: 1;
+  grid-column: 1;
+  grid-row: 1;
+  display: block;
+  width: 100%;
+  max-width: min(1480px, 100%);
+  height: clamp(470px, 48vw, 690px);
+  margin: 0 auto;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: #171118;
+  box-shadow: var(--shadow-photo);
+  clip-path: none;
+  translate: 0 0;
+  rotate: 0deg;
+  transform: none;
+}
+
+.scene--request .request-photo > img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+  object-fit: cover;
+  object-position: 50% 48%;
+  transform: none;
+}
+
+.scene--request .request-photo::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  background: linear-gradient(180deg, transparent 64%, rgba(17, 10, 18, 0.22) 100%);
+  content: "";
+  pointer-events: none;
+}
+
+.scene--request .request-copy.sheet {
+  position: relative;
+  z-index: 4;
+  grid-column: 1;
+  grid-row: 2;
+  width: min(1120px, calc(100% - clamp(22px, 5vw, 76px)));
+  margin: clamp(-78px, -5vw, -54px) auto 0;
+  padding: 0;
+  border: 0;
+  color: var(--print-ink);
+  background: transparent;
+  box-shadow: none;
+  filter: none;
+  transform: rotate(-0.35deg);
+  pointer-events: auto;
+}
+
+.scene--request .request-copy > .sheet__fiber {
+  display: block;
+  z-index: 0;
+}
+
+.scene--request .request-copy > .tape {
+  display: block;
+  z-index: 5;
+}
+
+.scene--request .request-copy .sheet__face {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(270px, 0.85fr);
+  grid-template-rows: auto;
+  align-items: center;
+  gap: clamp(34px, 5vw, 76px);
+  padding: clamp(34px, 4vw, 54px) clamp(34px, 5vw, 70px);
+  color: var(--print-ink);
+  background:
+    linear-gradient(rgba(251, 247, 238, 0.97), rgba(251, 247, 238, 0.97)),
+    var(--grain-fine);
+  box-shadow: var(--shadow-paper);
+  clip-path: polygon(0 0, 100% 0, 100% 96%, 97% 97.4%, 92% 96.4%, 87% 98%, 80% 96.7%, 73% 98.2%, 65% 96.5%, 58% 98%, 50% 96.7%, 42% 98.1%, 34% 96.5%, 27% 98%, 19% 96.6%, 12% 98.1%, 5% 96.8%, 0 98%);
+}
+
+.scene--request .request-copy__text {
+  min-width: 0;
+}
+
+.scene--request .request-copy__text .scene-label {
+  margin: 0 0 clamp(16px, 1.8vw, 24px);
+  padding: 0;
+  color: var(--print-sub);
+  text-shadow: none;
+}
+
+.scene--request .request-copy__text .scene-label :is(b, span) { color: var(--print-accent); }
+.scene--request .request-copy__text .scene-label i { background: var(--print-accent); }
+
+.scene--request .request-copy__text .paper-h {
+  max-width: 12em;
+  margin: 0;
+  color: var(--print-accent);
+  font-family: var(--font-main);
+  font-size: clamp(2.15rem, 3.7vw, 3.45rem);
+  font-weight: 900;
+  line-height: 1.14;
+  letter-spacing: -0.055em;
+  text-shadow: none;
+}
+
+.scene--request .request-copy__text .scene-text {
+  max-width: 34em;
+  margin-top: clamp(16px, 1.7vw, 22px);
+  color: var(--print-ink);
+  font-family: var(--font-main);
+  font-size: clamp(14px, 1.2vw, 16px);
+  font-weight: 700;
+  line-height: 1.8;
+  text-shadow: none;
+}
+
+.scene--request .request-copy .tama {
+  align-self: center;
+  justify-self: center;
+  width: clamp(248px, 22vw, 318px);
+  margin: 0;
+  translate: 0 0;
+  transform: rotate(3deg);
+}
+
+@media (max-width: 879px) {
+  .scene--request {
+    min-height: 0;
+    overflow: visible;
+    background: transparent;
+  }
+
+  .scene--request .scene__in.request-layout {
+    display: grid;
+    grid-template-rows: auto auto;
+    min-height: 0;
+    padding: 0 12px clamp(78px, 20vw, 104px);
+    overflow: visible;
+  }
+
+  .scene--request .request-photo,
+  .reveal-ready .scene--request .request-photo[data-reveal].is-in {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: clamp(390px, 108vw, 520px);
+    margin: 0;
+    overflow: hidden;
+    background: #171118;
+    box-shadow: var(--shadow-photo);
+  }
+
+  .scene--request .request-photo > img {
+    object-position: 55% 50%;
+    transform: none;
+  }
+
+  .scene--request .request-photo::after {
+    background: linear-gradient(180deg, transparent 74%, rgba(17, 10, 18, 0.18) 100%);
+  }
+
+  .scene--request .request-copy.sheet {
+    width: calc(100% - 12px);
+    margin: -28px auto 0;
+    color: var(--print-ink);
+    transform: rotate(-0.35deg);
+  }
+
+  .scene--request .request-copy .sheet__face {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 28px 20px 42px;
+    background:
+      linear-gradient(rgba(251, 247, 238, 0.98), rgba(251, 247, 238, 0.98)),
+      var(--grain-fine);
+  }
+
+  .scene--request .request-copy__text .scene-label {
+    margin-bottom: 14px;
+    color: var(--print-sub);
+    font-size: 14px;
+  }
+
+  .scene--request .request-copy__text .paper-h {
+    max-width: 11em;
+    color: var(--print-accent);
+    font-size: clamp(2rem, 9.4vw, 2.55rem);
+    text-shadow: none;
+  }
+
+  .scene--request .request-copy__text .scene-text {
+    margin-top: 14px;
+    color: var(--print-ink);
+    font-size: 14px;
+    line-height: 1.72;
+    text-shadow: none;
+  }
+
+  .scene--request .request-copy__text .scene-text br { display: none; }
+
+  .scene--request .request-copy .tama {
+    width: clamp(230px, 68vw, 286px);
+    margin: 0 auto;
+    translate: 0 0;
+  }
+
+  .scene--request :is(.request-photo__back, .request-photo__chrome, .request-chrome, .request-seal) {
+    display: none;
+  }
+}
+
+/* ===================== 03 / タイトルは写真、料金は紙面 =====================
+   感情的な写真タイトルと、比較して読む料金情報を別の面にする。 */
+.price-zone {
+  min-height: 0;
+  padding: 0 0 clamp(78px, 8vw, 112px);
+  overflow: visible;
+  background: transparent;
+}
+
+.price-zone__in {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  align-items: start;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  margin: 0;
+  overflow: visible;
+}
+
+.price-zone .price-photo,
+.reveal-ready .price-zone .price-photo[data-reveal].is-in {
+  position: relative;
+  inset: auto;
+  z-index: 0;
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+  height: clamp(500px, 46vw, 680px);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #171118;
+  box-shadow: none;
+  transform: none;
+}
+
+.price-zone .price-photo::after {
+  background:
+    linear-gradient(90deg, rgba(13, 8, 14, 0.5) 0%, rgba(13, 8, 14, 0.13) 54%, transparent 82%),
+    linear-gradient(180deg, transparent 48%, rgba(13, 8, 14, 0.64) 100%);
+}
+
+.price-zone .price-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 48%;
+}
+
+.price-title-overlay {
+  position: relative;
+  z-index: 2;
+  grid-column: 1;
+  grid-row: 1;
+  align-self: end;
+  width: min(1100px, calc(100% - (2 * var(--pad-x))));
+  margin: 0 auto;
+  padding: 0 0 clamp(88px, 8vw, 116px);
+  color: #fff;
+  pointer-events: none;
+}
+
+.price-title-overlay .scene-label {
+  margin-bottom: clamp(14px, 1.6vw, 20px);
+  color: rgba(255, 255, 255, 0.84);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.72);
+}
+
+.price-title-overlay .paper-h {
+  max-width: 12em;
+  margin: 0;
+  color: #ff5ca4;
+  font-family: var(--font-main);
+  font-size: clamp(2.55rem, 5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.06em;
+  text-shadow: 0 3px 16px rgba(0, 0, 0, 0.72);
+}
+
+.price-panel.sheet {
+  position: relative;
+  z-index: 4;
+  grid-column: 1;
+  grid-row: 2;
+  width: min(1080px, calc(100% - (2 * var(--pad-x))));
+  margin: clamp(-62px, -4vw, -42px) auto 0;
+  padding: 0;
+  color: var(--print-ink);
+  background: transparent;
+  box-shadow: none;
+  filter: none;
+  transform: rotate(0.25deg);
+}
+
+.price-panel > .sheet__fiber,
+.price-panel > .tape { display: block; }
+
+.price-panel .sheet__face {
+  padding: clamp(30px, 3.4vw, 46px) clamp(28px, 4vw, 56px) clamp(38px, 4vw, 54px);
+  color: var(--print-ink);
+  background:
+    linear-gradient(rgba(251, 247, 238, 0.95), rgba(251, 247, 238, 0.97)),
+    var(--grain-fine);
+  box-shadow: var(--shadow-paper);
+  clip-path: polygon(0 0, 100% 0, 100% 96%, 96% 98%, 91% 96.5%, 85% 98.2%, 78% 96.6%, 71% 98%, 64% 96.6%, 57% 98.1%, 50% 96.5%, 43% 98%, 36% 96.6%, 29% 98%, 22% 96.5%, 15% 98.2%, 8% 96.7%, 0 98%);
+}
+
+.price-panel .price-main { margin: 0; }
+
+.price-panel .price-info {
+  display: grid;
+  gap: clamp(16px, 2vw, 24px);
+  padding: 0;
+}
+
+.price-panel .lead-ami {
+  margin: 0;
+  padding: 0 0 0 14px;
+  border-left: 5px solid var(--print-accent);
+  color: var(--print-ink);
+  background: transparent;
+  font-size: clamp(15px, 1.35vw, 18px);
+  text-shadow: none;
+}
+
+.price-panel .plan-prices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 38px);
+  margin: 0;
+}
+
+.price-panel .plan-prices > div {
+  padding: 14px 0 15px;
+  border-top: 1px solid rgba(35, 24, 21, 0.3);
+  border-bottom: 2px solid var(--print-ink);
+}
+
+.price-panel .plan-prices dt {
+  display: inline-block;
+  padding: 3px 12px 4px;
+  color: #fff;
+  background: var(--print-accent);
+  font-size: clamp(13px, 1vw, 15px);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.price-panel .plan-prices dd {
+  margin-top: 8px;
+  color: var(--print-ink);
+  font-family: var(--font-main);
+  font-size: clamp(2.7rem, 5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.065em;
+  text-shadow: none;
+}
+
+.price-panel .plan-prices dd small {
+  margin-left: 0.2em;
+  font-size: 0.3em;
+  letter-spacing: 0;
+}
+
+.price-panel .paper-note {
+  margin: 0;
+  color: var(--print-sub);
+  font-size: 12px;
+  line-height: 1.65;
+  text-shadow: none;
+}
+
+.price-panel .ink-button {
+  justify-self: start;
+  color: #fff;
+  background: #f14c93;
+}
+
+@media (max-width: 767px) {
+  .price-zone {
+    padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .price-zone__in {
+    min-height: 0;
+  }
+
+  .price-zone .price-photo,
+  .reveal-ready .price-zone .price-photo[data-reveal].is-in {
+    height: clamp(410px, 112vw, 520px);
+  }
+
+  .price-zone .price-photo img { object-position: 49% 50%; }
+
+  .price-zone .price-photo::after {
+    background: linear-gradient(180deg, transparent 46%, rgba(13, 8, 14, 0.68) 100%);
+  }
+
+  .price-title-overlay {
+    width: calc(100% - 36px);
+    padding-bottom: 68px;
+  }
+
+  .price-title-overlay .scene-label {
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+
+  .price-title-overlay .paper-h {
+    font-size: clamp(2.15rem, 10.4vw, 2.85rem);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.76);
+  }
+
+  .price-panel.sheet {
+    width: calc(100% - 24px);
+    margin-top: -34px;
+    transform: rotate(0.2deg);
+  }
+
+  .price-panel .sheet__face {
+    padding: 26px 18px 40px;
+  }
+
+  .price-panel .price-info { gap: 15px; }
+
+  .price-panel .lead-ami {
+    padding: 0 0 0 11px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .price-panel .plan-prices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .price-panel .plan-prices > div { padding: 10px 0 12px; }
+
+  .price-panel .plan-prices dt {
+    padding: 3px 9px 4px;
+    font-size: 12px;
+  }
+
+  .price-panel .plan-prices dd {
+    font-size: clamp(2.05rem, 10.8vw, 2.7rem);
+  }
+
+  .price-panel .paper-note { font-size: 11px; }
+
+  .price-panel .ink-button {
+    width: 100%;
+    justify-content: space-between;
+    padding: 11px 14px 12px;
+    font-size: 12px;
+  }
+
+  .price-zone .price-foil {
+    top: 14px;
+    right: auto;
+    left: 5px;
+  }
 }

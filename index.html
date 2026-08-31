@@ -20,15 +20,14 @@
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
-    <link rel="preload" as="image" href="./assets/hero-collage-sp.jpg" media="(max-width: 767px)" fetchpriority="high" />
-    <link rel="preload" as="image" href="./assets/hero-collage-typography-v2.jpg" media="(min-width: 768px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="./assets/hero-collage-typography-no-disc.jpg?v=4" fetchpriority="high" />
 
     <!-- 本文と見出しは最初の画面で必ず要るので先に取る -->
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=354" />
-    <script src="./script.js?v=58" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=369" />
+    <script src="./script.js?v=59" defer></script>
   </head>
 
   <body>
@@ -51,9 +50,9 @@
         <div class="cover__stage">
           <div class="cover__visual">
             <picture class="cover__keyvisual" aria-hidden="true">
-              <source media="(max-width: 767px)" srcset="./assets/hero-collage-sp-no-disc.jpg" />
+              <source media="(max-width: 767px)" srcset="./assets/hero-collage-typography-no-disc.jpg?v=4" />
               <img
-                src="./assets/hero-collage-typography-no-disc.jpg"
+                src="./assets/hero-collage-typography-no-disc.jpg?v=4"
                 alt=""
                 width="1536"
                 height="1024"
@@ -74,7 +73,7 @@
 
           <div class="cover__info">
             <a class="cta cta--metal" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-              <span data-reserve-label>公式HPから予約する</span><i aria-hidden="true">›</i>
+              <span class="cta__copy"><small>9月限定・席数限定</small><span data-reserve-label>Y2K NIGHTを予約する</span></span><i aria-hidden="true">→</i>
             </a>
           </div>
         </div>
@@ -87,6 +86,13 @@
           <div class="request-copy sheet sheet--torn-bottom">
             <span class="sheet__fiber" aria-hidden="true"></span>
             <div class="sheet__face">
+            <div class="request-copy__text">
+              <p class="scene-label"><b>01</b><i aria-hidden="true"></i><span>曲リクエスト</span><em>SONG REQUEST</em></p>
+              <h2 class="paper-h" id="request-title">あの頃の青春を、<br />ASOBIBARで</h2>
+              <p class="scene-text">
+                2000年代の曲をリクエスト。イントロが流れた瞬間の<br />「これ知ってる！」から、今夜の会話が始まります。
+              </p>
+            </div>
             <!-- たまごっち風の曲リクエスト端末。固有の商品形状やロゴは使わず、
                  平成初期の携帯育成ゲームの文脈だけを取り入れる。 -->
             <div class="tama" data-request-player aria-label="2000年代ソングのリクエスト受付中">
@@ -153,13 +159,6 @@
             <span class="seal seal--heart request-seal request-seal--heart" aria-hidden="true">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5 3.8 12.6a5 5 0 0 1 7.1-7L12 6.7l1.1-1.1a5 5 0 0 1 7.1 7Z"/></svg>
             </span>
-            <figcaption class="request-photo-copy">
-              <p class="scene-label"><b>01</b><i aria-hidden="true"></i><span>曲リクエスト</span><em>SONG REQUEST</em></p>
-              <h2 class="paper-h" id="request-title">あの頃の青春を、<br />ASOBIBARで</h2>
-              <p class="scene-text">
-                2000年代の曲をリクエスト。イントロが流れた瞬間の<br />「これ知ってる！」から、今夜の会話が始まります。
-              </p>
-            </figcaption>
           </figure>
         </div>
       </section>
@@ -206,13 +205,20 @@
       <section class="information-section price-zone" id="price" data-theme="price" data-page="03" data-scene-motion="price" aria-labelledby="price-title">
         <div class="price-zone__in">
 
-          <div class="price-copy sheet sheet--torn-bottom">
+          <figure class="price-photo scene-photo" data-reveal="media">
+            <img src="./assets/memory-cheers.jpg" alt="グラスを合わせて笑い合う人たち"
+                 width="1800" height="1202" loading="lazy" decoding="async" />
+            <figcaption>100分、まるごと自由。</figcaption>
+          </figure>
+
+          <div class="price-title-overlay">
+            <p class="scene-label"><b>03</b><i aria-hidden="true"></i><span>料金</span><em>PRICE</em></p>
+            <h2 class="paper-h" id="price-title">100分プラン誕生！</h2>
+          </div>
+
+          <div class="price-panel sheet sheet--torn-bottom">
             <span class="sheet__fiber" aria-hidden="true"></span>
             <div class="sheet__face">
-              <p class="scene-label"><b>03</b><i aria-hidden="true"></i><span>料金</span><em>PRICE</em></p>
-
-              <h2 class="paper-h" id="price-title">100分プラン誕生！</h2>
-
               <div class="price-main">
                 <div class="price-info">
                   <p class="lead-ami">100分間、マッチングし放題<b>＋</b>飲み放題。</p>
@@ -238,12 +244,6 @@
             </div>
             <span class="tape tape--y tape--a1" aria-hidden="true"></span>
           </div>
-
-          <figure class="price-photo scene-photo" data-reveal="media">
-            <img src="./assets/memory-cheers.jpg" alt="グラスを合わせて笑い合う人たち"
-                 width="1800" height="1202" loading="lazy" decoding="async" />
-            <figcaption>100分、まるごと自由。</figcaption>
-          </figure>
 
           <span class="foil price-foil" aria-hidden="true">
             <img src="./assets/onemore-sticker.webp" alt="" width="560" height="418" loading="lazy" decoding="async" />
@@ -417,7 +417,7 @@
           <h2 id="last-title">懐かしいだけで終わらない。<br />今夜を、<br class="sp-br" />新しい思い出に。</h2>
           <p>あの頃の曲から始まる、大人のY2Kナイトへ。</p>
             <a class="cta cta--final" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-              <span data-reserve-label>公式HPから予約する</span><i aria-hidden="true">›</i>
+              <span class="cta__copy"><small>9月限定・席数限定</small><span data-reserve-label>Y2K NIGHTを予約する</span></span><i aria-hidden="true">→</i>
             </a>
           </div>
         </div>
@@ -438,7 +438,7 @@
     <div class="ctabar" data-ctabar>
       <p class="ctabar__txt"><b>Y2Kを無限リピート！</b><span>2026.9.1〜9.30</span></p>
       <a class="cta cta--bar" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-        <span data-reserve-label>公式HPから予約する</span><i aria-hidden="true">›</i>
+        <span class="cta__copy"><small>9月限定・席数限定</small><span data-reserve-label>Y2K NIGHTを予約する</span></span><i aria-hidden="true">→</i>
       </a>
     </div>
   </body>

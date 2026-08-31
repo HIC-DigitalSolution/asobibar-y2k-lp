@@ -1,0 +1,111 @@
+name: lp-quality-contract
+summary: A landing page ships with the things that decide whether it converts and whether it is findable.
+
+# Why a landing page needs its own contract: an LP has no QA surface. There is no test
+# suite, no staging soak, and usually one reviewer looking at a design. The defects that
+# actually cost money — a missing OG image so the share preview is blank, a 4MB hero so
+# mobile LCP collapses, placeholder copy shipped to production, a localhost URL left in a
+# form action — are all invisible in a diff and all mechanically detectable.
+#
+# Tune applies_to_paths to the project before enabling. For a React/Next project the head
+# tags usually live in ONE file (app/layout.tsx, index.html, _document.tsx), not in every
+# component — point the SEO invariant at that file, not at the whole tree.
+
+invariants:
+  - id: page-has-seo-and-share-basics
+    statement: Every shipped page declares a title, a meta description, an OG title/image, and a lang attribute.
+    check:
+      type: required-content
+      applies_to_paths:
+        - ^index\.html$
+        - ^public/index\.html$
+        - ^app/layout\.(jsx|tsx)$
+        - ^src/app/layout\.(jsx|tsx)$
+      required_patterns:
+        - <title|title:
+        - name="description"|description:
+        - 'og:title'
+        - 'og:image'
+        - lang=
+      hint: 'fix: a missing og:image means every share of this LP renders a blank card. A missing lang breaks screen readers and hurts search.'
+
+  - id: images-fit-the-performance-budget
+    statement: No shipped image exceeds the size budget. An unoptimised hero is the usual cause of a collapsed mobile LCP.
+    check:
+      type: max-file-size
+      applies_to_paths:
+        - ^(public|assets|src/assets|static)/.+\.(png|jpg|jpeg|gif|webp|avif)$
+      max_kb: 400
+      hint: 'fix: export at the size actually rendered, then convert to webp/avif. If a file genuinely must be large (an OG image, a print asset), add it to exempt_paths with a reason.'
+
+  - id: no-placeholder-copy-in-production
+    statement: Placeholder and scaffold copy never reaches a shipped page.
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^(src|app|components|public)/.+\.(html|jsx|tsx|js|ts|md)$
+        - ^index\.html$
+      forbidden_patterns:
+        - Lorem ipsum
+        - lorem ipsum
+        - ダミーテキスト
+        - サンプルテキスト
+        - XXXXX
+        - 000-0000-0000
+        - example@example\.com
+      hint: 'fix: replace with the real copy. If a placeholder is deliberate for an unbuilt section, hide the section rather than shipping the placeholder.'
+
+  - id: no-local-or-staging-urls
+    statement: No shipped file points at localhost, a tunnel, or a staging host.
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^(src|app|components|public)/.+\.(html|jsx|tsx|js|ts)$
+        - ^index\.html$
+      forbidden_patterns:
+        - http://localhost
+        - https://localhost
+        - 127\.0\.0\.1
+        - ngrok\.io
+        - \.vercel\.app/api
+      hint: 'fix: use a relative path or an environment variable. A localhost form action fails silently in production — the visitor sees a spinner and leaves.'
+
+  - id: no-secrets-in-client-code
+    statement: No credential is embedded in anything the browser downloads. Everything in an LP bundle is public.
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^(src|app|components|public)/.+\.(html|jsx|tsx|js|ts)$
+        - ^index\.html$
+      forbidden_patterns:
+        - SERVICE_ROLE
+        - service_role
+        - -----BEGIN [A-Z ]*PRIVATE KEY-----
+        - sk_live_
+        - sk-[A-Za-z0-9]{20}
+        - AIza[0-9A-Za-z_-]{30}
+      hint: 'fix: move it server-side. A key in client code is published the moment the site deploys — rotate it, do not just delete the line.'
+
+  - id: images-have-alt-text
+    statement: Every img tag carries an alt attribute.
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^(src|app|components|public)/.+\.(html|jsx|tsx)$
+        - ^index\.html$
+      # Matches an <img ...> whose attributes contain no alt=.
+      forbidden_patterns:
+        - <img(?![^>]*\salt=)[^>]*>
+      hint: 'fix: add alt text, or alt="" if the image is purely decorative. An empty alt is a real answer; a missing one is not.'
+
+  - id: copy-is-approved
+    statement: The headline, offer, price and legal copy on a client LP match what the client actually approved.
+    check:
+      type: manual
+      note: no script can know what was agreed. Check the copy against the approved source before launch, and keep that source in docs/.
+
+  - id: measurement-is-wired
+    statement: Analytics, conversion tracking and the form endpoint are wired to the production destination, and were tested end to end.
+    check:
+      type: manual
+      note: an LP that does not measure conversions cannot be improved. Submit the real form once against production before calling it launched.

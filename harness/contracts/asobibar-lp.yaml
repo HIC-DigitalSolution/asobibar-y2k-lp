@@ -1,0 +1,136 @@
+name: asobibar-lp-contract
+summary: このLPで実際に事故った箇所を、機械が毎回見張る。人の記憶とレビューには頼らない。
+
+# なぜこのLP専用の契約が要るか。
+# 素のHTML/CSS/JSの1ページで、テストもステージングも無い。壊れても
+# 差分では見えず、公開してから気づく。実際にこのプロジェクトで起きた
+# 事故だけをここに書く。想像上のリスクは書かない（誰も直さないので）。
+
+inputs:
+  - index.html
+  - styles.css
+  - script.js
+outputs:
+  - 変更が公開URLで意図どおり見えること
+
+invariants:
+  # ---- 実際に404を起こした ----
+  - id: new-asset-must-be-unignored
+    statement: index.html が参照する assets/ のファイルは、すべて .gitignore の許可リストに載っている。
+    check:
+      type: manual
+      note: '追加と変更を差分から区別できないので機械判定にしない。次のコマンドが何も出さなければ通っている: for f in $(grep -oE "\./assets/[^\"?]+" index.html | sed "s|^\./||" | sort -u); do git check-ignore -q "$f" && echo "除外されている: $f"; done'
+
+  # ---- 実際に「更新が反映されない」を起こした ----
+  - id: cache-buster-must-move
+    statement: styles.css か script.js を変えたら index.html のクエリ番号も上げる。
+    check:
+      type: companion-required
+      trigger_paths:
+        - ^(styles|script)\.(css|js)$
+      companion_paths:
+        - ^index\.html$
+      hint: 'fix: index.html の styles.css?v=N / script.js?v=N を上げる。上げないと閲覧者には旧版が出続ける。'
+
+  # ---- 「紫は使わない」は何度も指示されている ----
+  - id: no-violet
+    statement: 紫は使わない。地・文字・罫のいずれにも。
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^styles\.css$
+      forbidden_patterns:
+        - '#2b1641'
+        - '#281541'
+        - '#3d2169'
+        - '#4a2b7a'
+      hint: 'fix: 温かい墨(#231815)か、地なら #0e0b0d へ。過去に地・見出し・帯で3回差し戻している。'
+
+  # ---- Impact が混入して PC/SP で別書体になった ----
+  - id: only-loaded-fonts
+    statement: 読み込んでいない書体を font-family に書かない。OS依存になり、環境ごとに別物になる。
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^styles\.css$
+      forbidden_patterns:
+        - 'font-family:\s*Impact'
+        - 'font-family:\s*"?Arial Black'
+        - 'font-family:\s*"?Helvetica'
+        - 'font-family:\s*"?ヒラギノ'
+      hint: 'fix: 使えるのは var(--font-main) / var(--font-display) / var(--font-hand) の3つだけ。セルフホストしたサブセットしか手元に無い。'
+
+  # ---- 開発サーバのURLが残ると本番で壊れる ----
+  - id: no-local-urls
+    statement: localhost や開発用URLを公開ファイルに残さない。
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^(index\.html|styles\.css|script\.js)$
+      forbidden_patterns:
+        - 'http://localhost'
+        - '127\.0\.0\.1'
+        - 'ngrok\.io'
+      hint: 'fix: 実URLに置き換える。検証用のポートは harness/ 側のスクリプトに閉じ込める。'
+
+  # ---- 店舗確認待ちの項目を推測で埋めない ----
+  - id: no-invented-store-facts
+    statement: 年齢制限・身分証確認・キャンセル規定を、店舗の回答なしに書かない。
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^index\.html$
+      forbidden_patterns:
+        - '20歳以上'
+        - '身分証'
+        - 'キャンセル料'
+        - '当日キャンセル'
+      hint: 'fix: TODO(店舗確認) のまま残す。ここは料金と違い、間違えると客とのトラブルになる。'
+
+  # ---- SEO / シェア。1ページなので壊れると全損 ----
+  - id: head-basics
+    statement: title・description・OG・lang が揃っている。
+    check:
+      type: required-content
+      applies_to_paths:
+        - ^index\.html$
+      required_patterns:
+        - '<title'
+        - 'name="description"'
+        - 'og:title'
+        - 'og:image'
+        - 'lang='
+      hint: 'fix: og:image が無いとSNSでの共有カードが真っ白になる。'
+
+  # ---- 画像の重さ。実測でFVが2.9MBだったことがある ----
+  - id: image-budget
+    statement: 公開する画像は1枚400KBまで。
+    check:
+      type: max-file-size
+      applies_to_paths:
+        - ^assets/(?!font/).+\.(png|jpg|jpeg|webp|gif)$
+      max_kb: 400
+      # FVのコラージュは全画面に敷く1枚で、落とすと文字が潰れる。
+      # ここだけ別枠にする（例外は理由とセットでのみ足すこと）。
+      exempt_paths:
+        - ^assets/hero-collage-.+\.(jpg|png)$
+      hint: 'fix: 表示サイズまで縮めてWebPへ。このプロジェクトでは 2936KB → 126KB になった例がある。'
+
+  # ---- ここから先は機械で判定できない ----
+  - id: font-subset-refresh
+    statement: 見出しや本文に新しい漢字を足したら、サブセットしたフォントを作り直す。
+    check:
+      type: manual
+      note: '新しい字が増えたかは差分からは判定できない。文言を変えたら python3 tools/build-fonts.py を流す。忘れるとその字だけ別書体に化ける。かな・ASCII・約物は保険で全部入っているので、漢字を増やしたときだけ。'
+
+  - id: no-dead-css
+    statement: HTMLから消えた部品のCSSを残さない。
+    check:
+      type: manual
+      note: '機械的な一括削除は過去にCSSを壊した（単一行ルールの本体を落とし、括弧が620/593になった）。1クラスずつ、HTMLに0件であることを確認してから消す。現在 replay-deck / md__* / mdplayer__* が該当。'
+
+  - id: design-direction
+    statement: 方向性（平成のシールとテープの誌面）から外れる要素を足さない。
+    check:
+      type: manual
+      note: '却下済み: ニューブルータリズム、真っ黒の地、CSSで描いた抽象背景、巨大タイポの復活、意味の通らない英字、大量のシール。線・影・傾きを足していいのは写真・シール・マステだけ。'

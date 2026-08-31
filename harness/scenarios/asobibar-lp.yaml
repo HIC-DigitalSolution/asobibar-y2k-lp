@@ -1,0 +1,14 @@
+name: asobibar-lp-scenario
+summary: このLPを1箇所いじってから公開するまでの順番。テストが無いぶん、確認は手順で担保する。
+stage: manual
+
+steps:
+  - AGENTS.md を読む。デザインの却下済み一覧と「触らない」の項は毎回確認する。
+  - 直す前に現状を実測する。見た目の指摘はほぼ数値で説明がつく（重なりpx、コントラスト比、容量KB）。
+  - 直す。CSSは末尾に追記するのではなく、既存ルールとの詳細度の勝ち負けを確認してから書く。
+  - node scripts/harness/harness-check.mjs を走らせ、[manual] の行を全部読む。
+  - ヘッドレスChromeでPC(1440)とSP(390)を撮り、目で見る。ペインでは確認できない。
+  - 文言に新しい漢字が増えたなら python3 tools/build-fonts.py を流す。
+  - assets/ に足したなら .gitignore の許可リストに載せる。
+  - index.html の styles.css?v=N / script.js?v=N を上げる。
+  - コミットして push。push は本番公開なので、確認が済むまでしない。

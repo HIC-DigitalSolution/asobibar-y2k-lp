@@ -1,0 +1,11 @@
+name: workflow-scenario
+summary: The order of work for a non-trivial change, from reading the contract to recording what was verified.
+stage: manual
+
+steps:
+  - Read AGENTS.md, then open only the docs the change actually touches.
+  - For a structural or broad change, create the plan first — node scripts/harness/new-plan.mjs task <slug> --title "<title>".
+  - Fill Goal, Scope, Constraints, Acceptance and Verification before writing code, not after.
+  - Implement, then run node scripts/harness/harness-check.mjs and the checks the plan named.
+  - Read every "manual" line the harness prints. Those are the rules no script can verify — they are your checklist, not decoration.
+  - Record the actual results and the residual risk under Result, then move the plan to docs/exec-plans/completed/.

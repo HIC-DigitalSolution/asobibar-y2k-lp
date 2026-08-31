@@ -1,0 +1,21 @@
+# Copy to harness/scenarios/ to auto-format on commit. Pick ONE run: line for the stack.
+# Keep pre-commit fast — anything slow here teaches people to use --no-verify, which
+# switches off every gate at once.
+name: format-scenario
+summary: Format the files being committed.
+stage: pre-commit
+
+match:
+  paths:
+    - ^src/
+    - ^app/
+    - ^components/
+    - \.(js|jsx|ts|tsx|css|html|json|md)$
+
+requires:
+  - type: command
+    command: npx
+
+steps:
+  - name: format
+    run: npx --no-install prettier --write --ignore-unknown $(git diff --cached --name-only --diff-filter=ACMR) && git add $(git diff --cached --name-only --diff-filter=ACMR)

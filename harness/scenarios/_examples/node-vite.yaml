@@ -1,0 +1,21 @@
+# Copy to harness/scenarios/ for a Vite project (React or vanilla).
+name: build-scenario
+summary: Before pushing, prove the site still builds and the formatter is satisfied.
+stage: pre-push
+
+match:
+  paths:
+    - ^src/
+    - ^public/
+    - ^index\.html$
+    - ^package\.json$
+    - ^vite\.config\.
+
+requires:
+  - type: command
+    command: npm
+    hint: npm is not on PATH for this shell. Git GUIs often have a different PATH than your terminal.
+
+steps:
+  - name: build
+    run: npm run build

@@ -13,7 +13,7 @@
    LINE予約URLが確定したら、承認済みのHTTPS URLをここに入れる。
    --------------------------------------------------------- */
 const OFFICIAL_RESERVATION_URL = "https://asobibar.net/";
-const OFFICIAL_RESERVATION_LABEL = "公式HPから予約する";
+const OFFICIAL_RESERVATION_LABEL = "Y2K NIGHTを予約する";
 const LINE_RESERVATION_URL = "";
 const LINE_RESERVATION_LABEL = "LINEで予約する";
 

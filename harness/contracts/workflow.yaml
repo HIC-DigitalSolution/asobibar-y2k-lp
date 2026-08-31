@@ -1,0 +1,117 @@
+name: workflow-contract
+summary: Non-trivial work leaves a resumable record, and finished work records what was actually verified.
+
+# These defaults are meant to work as-is, on any stack, with no editing. "Structural"
+# lists the tooling and manifests that change how a repo behaves; "source" is matched by
+# file extension rather than by directory, so it does not assume src/ or app/ exists.
+#
+# Narrow them later if this repo is noisy — but a pattern that cannot match anything in
+# this repo is a rule nobody is enforcing, so delete rather than keep such lines.
+inputs:
+  - AGENTS.md
+  - docs/README.md
+outputs:
+  - docs/exec-plans/active/<slug>.md or docs/exec-plans/completed/<slug>.md
+
+invariants:
+  - id: exec-plan-required
+    statement: A structural change, or a broad source change, carries an exec-plan in the same diff.
+    rule: docs/exec-plans/README.md
+    check:
+      type: exec-plan-required
+      plan_paths:
+        - ^docs/exec-plans/active/(?!README\.md$)(?!.*-INDEX\.md$).+\.md$
+        - ^docs/exec-plans/completed/(?!README\.md$)(?!.*-INDEX\.md$).+\.md$
+      # Anything that changes how the repo itself behaves — including the harness that
+      # runs on every commit, so a change to its own attack surface cannot land silently.
+      structural_paths:
+        # The harness itself first: a scenario's `run:` is arbitrary shell that hooks
+        # execute without showing anyone the command, so a change to its own attack
+        # surface must never land silently.
+        - ^scripts/
+        - ^\.githooks/
+        - ^\.github/
+        - ^harness/
+        - ^\.claude/
+        - ^\.codex/
+        - ^AGENTS\.md$
+        - ^CLAUDE\.md$
+        - ^\.gitignore$
+        # Dependency manifests and lockfiles, across ecosystems. A pattern that matches
+        # nothing in a given repo simply never fires.
+        - ^package\.json$
+        - ^(package-lock\.json|yarn\.lock|pnpm-lock\.yaml|bun\.lockb)$
+        - ^(Gemfile|Gemfile\.lock)$
+        - ^(pyproject\.toml|requirements\.txt|poetry\.lock|uv\.lock)$
+        - ^(Cargo\.toml|Cargo\.lock)$
+        - ^(go\.mod|go\.sum)$
+        - ^(composer\.json|composer\.lock)$
+        - ^(pubspec\.yaml|pubspec\.lock)$
+        # Build / deploy / container configuration.
+        - ^(next|vite|nuxt|svelte|astro|tailwind|rollup|webpack|vitest|jest)\.config\.
+        - ^tsconfig.*\.json$
+        - ^(vercel|netlify|firebase)\.json$
+        - ^(Dockerfile|docker-compose\.ya?ml|Makefile)$
+      # Matched by extension, not by directory, so this works whether the code lives in
+      # src/, app/, lib/, or the repo root. Structural paths are evaluated first, so a
+      # file that is both (a script, a config) counts as structural.
+      source_paths:
+        - \.(js|mjs|cjs|jsx|ts|tsx|vue|svelte|astro)$
+        - \.(py|rb|go|rs|java|kt|swift|php|dart|cs|scala|ex|exs)$
+        - \.(css|scss|sass|less|html|htm)$
+        - \.(sql|graphql|proto)$
+      # Documentation-only work is never gated: the gate exists to produce docs, so
+      # blocking a docs edit for lacking a doc would be a loop.
+      excluded_paths:
+        - ^docs/
+        - ^README\.md$
+      source_threshold: 3
+      hint: 'fix: node scripts/harness/new-plan.mjs task <slug> --title "<title>", fill it in, then retry.'
+
+  - id: exec-plan-shape
+    statement: An exec-plan states goal, scope, constraints, acceptance and verification, and its verification names the harness check.
+    rule: docs/exec-plans/README.md
+    check:
+      type: exec-plan-sections
+      plan_paths:
+        - ^docs/exec-plans/active/(?!README\.md$)(?!.*-INDEX\.md$).+\.md$
+        - ^docs/exec-plans/completed/(?!README\.md$)(?!.*-INDEX\.md$).+\.md$
+      required_sections:
+        - headings:
+            - Goal
+            - 目的
+        - headings:
+            - Scope
+            - スコープ
+        - headings:
+            - Constraints
+            - 制約
+        - headings:
+            - Acceptance
+            - 受け入れ条件
+        - headings:
+            - Verification
+            - 検証項目
+          must_contain: harness-check
+
+  - id: verification-recorded
+    statement: A completed exec-plan has no unrun verification item and no empty result. Unverified work is not finished work.
+    check:
+      type: completed-plan-verification
+      plan_paths:
+        - ^docs/exec-plans/completed/(?!README\.md$)(?!.*-INDEX\.md$).+\.md$
+      verification_sections:
+        - headings:
+            - Verification
+            - 検証項目
+      result_sections:
+        - headings:
+            - Result
+            - 検証結果
+      hint: 'fix: if a check was not run, say so under Result with the residual risk; if it was, tick it.'
+
+  - id: knowledge-promotion
+    statement: A durable decision becomes an ADR and a hard-won bug becomes a gotcha. Conversation is not a record.
+    check:
+      type: manual
+      note: whether a finding deserves promotion is a content judgement. At review time, check docs/adr and docs/gotchas.
