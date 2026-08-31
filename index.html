@@ -26,7 +26,7 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
-  <link rel="stylesheet" href="./styles.css?v=373" />
+    <link rel="stylesheet" href="./styles.css?v=379" />
     <script src="./script.js?v=61" defer></script>
   </head>
 
@@ -50,9 +50,9 @@
         <div class="cover__stage">
           <div class="cover__visual">
             <picture class="cover__keyvisual" aria-hidden="true">
-              <source media="(max-width: 767px)" srcset="./assets/hero-collage-typography-no-disc.jpg?v=4" />
+              <source media="(max-width: 767px)" srcset="./assets/image.png"/>
               <img
-                src="./assets/hero-collage-typography-no-disc.jpg?v=4"
+                src="./assets/image.png"
                 alt=""
                 width="1536"
                 height="1024"
@@ -83,19 +83,10 @@
       <!-- ==================== SCENE 01 / SONG REQUEST ==================== -->
       <section class="scene scene--request" id="experience" data-theme="request" data-page="01" data-scene-motion="request" aria-labelledby="request-title">
         <div class="scene__in request-layout">
-          <div class="request-copy sheet sheet--torn-bottom">
-            <span class="sheet__fiber" aria-hidden="true"></span>
-            <div class="sheet__face">
-            <div class="request-copy__text">
-              <p class="scene-label"><b>01</b><i aria-hidden="true"></i><span>曲リクエスト</span><em>SONG REQUEST</em></p>
-              <h2 class="paper-h" id="request-title">あの頃の青春を、<br />ASOBIBARで</h2>
-              <p class="scene-text">
-                2000年代の曲をリクエスト。イントロが流れた瞬間の<br />「これ知ってる！」から、今夜の会話が始まります。
-              </p>
-            </div>
-            </div>
-            <span class="tape tape--y tape--r1" aria-hidden="true"></span>
-          </div>
+          <header class="request-heading">
+            <p class="scene-label"><b>01</b><i aria-hidden="true"></i><span>曲リクエスト</span><em>SONG REQUEST</em></p>
+            <h2 class="paper-h" id="request-title">あの頃の青春を、<br />ASOBIBARで</h2>
+          </header>
 
           <figure class="request-photo scene-photo" data-reveal="media">
             <span class="request-photo__holo" aria-hidden="true"></span>
@@ -128,6 +119,18 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5 3.8 12.6a5 5 0 0 1 7.1-7L12 6.7l1.1-1.1a5 5 0 0 1 7.1 7Z"/></svg>
             </span>
           </figure>
+
+          <div class="request-copy sheet sheet--torn-bottom">
+            <span class="sheet__fiber" aria-hidden="true"></span>
+            <div class="sheet__face">
+              <div class="request-copy__text">
+                <p class="scene-text">
+                  2000年代の曲をリクエスト。イントロが流れた瞬間の<br />「これ知ってる！」から、今夜の会話が始まります。
+                </p>
+              </div>
+            </div>
+            <span class="tape tape--y tape--r1" aria-hidden="true"></span>
+          </div>
         </div>
       </section>
 

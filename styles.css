@@ -132,19 +132,6 @@ body {
 img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; }
 
-.visually-hidden {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  margin: -1px !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  clip: rect(0 0 0 0) !important;
-  clip-path: inset(50%) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-}
-
 .skip { position: absolute; left: -9999px; }
 .skip:focus {
   left: 10px;
@@ -290,30 +277,6 @@ a { color: inherit; }
     linear-gradient(135deg, #48276d, #1c285a 58%, #2e153f);
 }
 
-/* 1536pxのコラージュをSPで見ると縮小率が0.25倍になり、焼き込まれた
-   注記が実効6px前後で読めない。PCは画像内の文字で足りるので
-   読み上げ専用のままにし、SPだけ実文字として起こす。 */
-.cover__request {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-}
-
-.cover__when {
-  margin: 11px 0 0;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  font-variant-numeric: tabular-nums;
-}
-
 /* ===================== CTA ===================== */
 
 .cta {
@@ -346,7 +309,7 @@ a { color: inherit; }
   line-height: 1;
 }
 
-.cover__info > .cta { width: min(100%, 420px); min-height: 56px; }
+.cover__info > .cta { width: min(100%, 420px); min-height: 70px; }
 
 .cta:active {
   transform: translateY(1px) scale(0.99);
@@ -499,135 +462,6 @@ a { color: inherit; }
   font-size: clamp(1.2rem, 4vw, 1.75rem);
 }
 
-.replay-deck {
-  position: relative;
-  overflow: hidden;
-  margin-top: 32px;
-  padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.46);
-  border-radius: 18px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.035)),
-    rgba(21, 23, 29, 0.82);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 18px 40px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(16px);
-}
-
-.replay-deck::after {
-  position: absolute;
-  inset: -70% auto -70% -45%;
-  width: 26%;
-  pointer-events: none;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transform: skewX(-18deg);
-  transition: transform 1.2s var(--ease);
-  content: "";
-}
-
-.replay-deck.is-playing::after { transform: translateX(680%) skewX(-18deg); }
-
-.replay-deck__top,
-.replay-deck__meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  color: #c5c7ce;
-  font-size: 10px;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: 0.14em;
-}
-
-.replay-deck__top b { color: var(--cyan); font-size: inherit; }
-
-.replay-deck__track {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.replay-deck__play {
-  /* span から button にしたのでUA既定を落とす。
-     見た目は小さいままだが、タップ領域は44px確保する。 */
-  position: relative;
-  display: grid;
-  place-items: center;
-  min-width: 44px;
-  min-height: 44px;
-  margin: -12px;
-  padding: 0;
-  appearance: none;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  font-family: inherit;
-  width: 20px;
-  color: var(--cyan);
-  font-size: 17px;
-  line-height: 1;
-  text-shadow: 0 0 14px rgba(86, 216, 232, 0.46);
-}
-
-.replay-deck__play:active { transform: scale(0.9); }
-.replay-deck__play:focus-visible { outline: 2px solid var(--ice-cyan); outline-offset: 0; border-radius: 6px; }
-
-.replay-deck__track p { min-width: 0; margin: 0; }
-.replay-deck__track small {
-  display: block;
-  color: var(--muted);
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: 0.18em;
-}
-
-.replay-deck__track strong {
-  display: block;
-  overflow: hidden;
-  color: var(--ivory);
-  font-size: 13px;
-  line-height: 1.35;
-  letter-spacing: 0.03em;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.replay-deck__track em {
-  color: var(--magenta-bright);
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 900;
-  white-space: nowrap;
-}
-
-.replay-deck__bar {
-  height: 6px;
-  margin: 16px 0 10px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.13) 0 8px, transparent 8px 11px);
-}
-
-.replay-deck__bar i {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background:
-    repeating-linear-gradient(90deg, transparent 0 8px, rgba(7, 8, 10, 0.75) 8px 11px),
-    linear-gradient(90deg, var(--cyan), var(--chrome-light), var(--magenta-bright));
-  transform: scaleX(0);
-  transform-origin: left;
-}
-
-/* 旧: is-playing で1回だけ0→1へ流していた。
-   スクロール量に直結させて「いま再生している」感じを作る。 */
-.motion-ready .replay-deck__bar i {
-  transform: scaleX(var(--deck, 0));
-  transition: none;
-}
-
 /* 旧: is-playing で常に scaleX(1) にしていた。詳細度が上なので
    スクロール直結の scaleX(var(--deck)) に勝ってしまい、
    バーが最初から満タンのままだった。スクラブに一本化する。 */
@@ -678,43 +512,6 @@ a { color: inherit; }
 }
 .scene--karaoke .scene-text { max-width: 31em; }
 
-/* ===================== 03 PLAY TOGETHER ===================== */
-
-.scene--play {
-  background:
-    radial-gradient(circle at 82% 18%, rgba(255, 224, 242, 0.86), transparent 29%),
-    radial-gradient(circle at 12% 80%, rgba(205, 255, 251, 0.74), transparent 33%),
-    linear-gradient(135deg, #f1a9cf, #a995eb 54%, #79d9e6);
-}
-
-.play-layout {
-  display: grid;
-  gap: 42px;
-  width: min(var(--content-max), 100%);
-  margin-inline: auto;
-  padding: var(--section-space) clamp(20px, 4vw, 54px);
-}
-
-.play-photo {
-  min-height: 470px;
-  border-radius: 0 var(--radius) var(--radius) 0;
-  box-shadow: -14px 16px 0 rgba(214, 36, 113, 0.14), 0 26px 60px rgba(52, 33, 93, 0.22);
-}
-
-.play-photo img { object-position: 58% 50%; }
-.play-photo::after {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent 58%, rgba(7, 8, 10, 0.28));
-  content: "";
-}
-
-.play-copy {
-  align-self: center;
-  /* .play-type をカラム幅基準で組むための計測元 */
-  container-type: inline-size;
-}
-
 /* ===================== PLAY TOGETHER STICKER =====================
    ブラウザ依存の疑似文字レイヤーを廃止し、表面・側面・白フチを
    1枚のSVG内で固定。縮小時も各層がずれず、文字の輪郭を保つ。 */
@@ -750,51 +547,6 @@ a { color: inherit; }
 
 .y2k-sticker::before,
 .y2k-sticker__surface::after { display: none; }
-
-.y2k-sticker--play {
-  left: calc(50% + clamp(18px, 5vw, 72px));
-  /* 上の帯（Y2K NIGHT）がセクションの上端で切れていた */
-  top: clamp(36px, 5.6vw, 78px);
-  transform: rotate(5deg);
-}
-
-
-/* 和文はラテンより字面が大きいので一段落とす */
-
-/* ===================== 04 NEW MEMORY ===================== */
-
-.scene--new-memory {
-  min-height: 680px;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  background: #0e0b0d;
-}
-
-.memory-photo { position: absolute; inset: 0; }
-.memory-photo img { object-position: 50% 50%; }
-.memory-photo::after {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(7, 8, 10, 0.32), rgba(7, 8, 10, 0.26) 42%, rgba(7, 8, 10, 0.78)),
-    radial-gradient(circle at 50% 45%, transparent 15%, rgba(7, 8, 10, 0.5) 78%);
-  content: "";
-}
-
-.memory-copy {
-  position: relative;
-  z-index: 2;
-  width: min(1050px, 100%);
-  padding: var(--section-space) clamp(20px, 4vw, 54px);
-}
-
-.memory-copy .scene-label { justify-content: center; color: rgba(255, 255, 255, 0.72); }
-.memory-copy .scene-title {
-  font-size: clamp(2.2rem, 6vw, 4.25rem);
-  line-height: 1.25;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.82);
-}
 
 /* ===================== PRICE / EVENT INFORMATION ===================== */
 
@@ -1514,14 +1266,6 @@ a { color: inherit; }
 .reveal-ready [data-reveal="copy"] { opacity: 0; transform: translateY(28px); }
 .reveal-ready [data-reveal="media"] { opacity: 0; clip-path: inset(0 0 12% 0); transform: scale(1.035); }
 .reveal-ready [data-reveal].is-in { opacity: 1; clip-path: inset(0); transform: none; }
-.reveal-ready .y2k-sticker--play[data-reveal="sticker"] {
-  opacity: 0;
-  transform: translate(14px, -8px) rotate(9deg) scale(0.86);
-}
-.reveal-ready .y2k-sticker--play[data-reveal="sticker"].is-in {
-  opacity: 1;
-  transform: rotate(5deg) scale(1);
-}
 .y2k-sticker.is-in::before { transform: translateX(760%) skewX(-18deg); }
 .sp-br { display: none; }
 
@@ -1532,7 +1276,6 @@ a { color: inherit; }
   .request-photo { min-height: 430px; }
   .scene--karaoke { min-height: min(94vh, 820px); }
   .karaoke-copy { padding-right: 22%; }
-  .scene--new-memory { min-height: min(94vh, 820px); }
   .ctabar { padding-inline: max(var(--gutter), calc((100vw - var(--content-max)) / 2)); }
 }
 
@@ -1559,7 +1302,6 @@ a { color: inherit; }
     transform: translateX(-50%);
   }
   .cover__info > .cta { width: min(100%, 310px); }
-  .cover__when { font-size: 11px; }
 }
 
 @media (min-width: 1200px) {
@@ -1575,25 +1317,8 @@ a { color: inherit; }
   }
   .request-copy { transform: translateY(18px); }
   .request-photo { min-height: 480px; transform: translateY(-16px) rotate(3deg); }
-  .play-layout {
-    grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
-    align-items: center;
-    gap: clamp(52px, 7vw, 100px);
-  }
-  .play-photo { min-height: 520px; transform: translateY(18px) rotate(-3.5deg); }
-  .play-copy {
-    padding: clamp(24px, 3vw, 38px);
-    border: 1px solid rgba(255, 255, 255, 0.54);
-    border-radius: 30px 12px 30px 12px;
-    background: rgba(255, 255, 255, 0.26);
-    box-shadow: 0 18px 34px rgba(57, 39, 91, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.52);
-    transform: translateY(-22px);
-    backdrop-filter: blur(9px);
-  }
   .reveal-ready .request-copy[data-reveal].is-in { transform: translateY(18px); }
   .reveal-ready .request-photo[data-reveal].is-in { transform: translateY(-16px) rotate(3deg); }
-  .reveal-ready .play-photo[data-reveal].is-in { transform: translateY(18px) rotate(-3.5deg); }
-  .reveal-ready .play-copy[data-reveal].is-in { transform: translateY(-22px); }
 }
 
 @media (min-width: 1200px) {
@@ -1610,20 +1335,10 @@ a { color: inherit; }
   .request-layout { gap: 36px; }
   .request-photo { min-height: 340px; }
   .request-photo img { object-position: 55% 50%; }
-  .replay-deck__top span { display: none; }
-  .replay-deck__top { justify-content: flex-end; }
-  .replay-deck__meta { font-size: 8.5px; letter-spacing: 0.08em; }
   .scene--karaoke { min-height: 570px; }
   .karaoke-photo :is(img, video) { object-position: 52% 50%; }
   .karaoke-photo::after { background: linear-gradient(180deg, rgba(7, 8, 10, 0.16), rgba(7, 8, 10, 0.28) 43%, rgba(7, 8, 10, 0.9)); }
   .karaoke-copy { align-self: end; padding-top: 160px; }
-  .play-photo { min-height: 360px; }
-  .play-layout { gap: 30px; padding-top: 10px; }
-  .play-photo img { object-position: 59% 50%; }
-  .scene--new-memory { min-height: 560px; }
-  .memory-photo img { object-position: 48% 50%; }
-  .memory-copy { align-self: end; padding-top: 190px; }
-  .memory-copy .scene-title { font-size: clamp(2rem, 9.6vw, 2.55rem); }
   .plan-prices { grid-template-columns: 1fr; }
   .plan-prices > div { padding: 16px; }
   .event-list > div { grid-template-columns: 76px minmax(0, 1fr); gap: 12px; }
@@ -1645,9 +1360,6 @@ a { color: inherit; }
   .cover__visual { height: 380px; }
   .scene-title { font-size: 1.95rem; }
   .request-photo { min-height: 320px; }
-  .replay-deck { padding: 14px; }
-  .replay-deck__track { grid-template-columns: auto minmax(0, 1fr); }
-  .replay-deck__track em { grid-column: 2; }
   .event-date { font-size: 2rem; }
 }
 
@@ -1686,7 +1398,6 @@ a { color: inherit; }
 
 .motion-ready .cover.is-scene-in .cover__info > * { opacity: 1; transform: none; }
 .motion-ready .cover.is-scene-in .cover__info > .cta { transition-delay: 420ms; }
-.motion-ready .cover.is-scene-in .cover__info > .cover__when { transition-delay: 540ms; }
 
 /* 各シーン共通のタイポ順序。wrapperのRevealとは別レイヤーで動かす */
 /* 見出しは行マスク(.ln)で出すため、ここには含めない。
@@ -1708,60 +1419,8 @@ a { color: inherit; }
 .motion-ready [data-scene-motion].is-scene-in .scene-label { transition-delay: 60ms; }
 .motion-ready [data-scene-motion].is-scene-in .scene-text { transition-delay: 300ms; }
 
-/* SONG REQUEST: PLAY → TRACK → PROGRESS → REQUEST */
-.motion-ready .replay-deck {
-  opacity: 0;
-  transform: translateY(14px) scale(0.985);
-  transition: opacity 520ms ease-out, transform 680ms var(--ease);
-}
-
-.motion-ready .scene--request.is-scene-in .replay-deck {
-  opacity: 1;
-  transform: none;
-  transition-delay: 240ms;
-}
-
-.motion-ready .replay-deck__top,
-.motion-ready .replay-deck__play,
-.motion-ready .replay-deck__track p,
-.motion-ready .replay-deck__track em,
-.motion-ready .replay-deck__meta {
-  opacity: 0;
-  transform: translateY(7px);
-  transition: opacity 360ms ease-out, transform 460ms var(--ease);
-}
-
-.motion-ready .replay-deck.is-playing .replay-deck__top,
-.motion-ready .replay-deck.is-playing .replay-deck__play,
-.motion-ready .replay-deck.is-playing .replay-deck__track p,
-.motion-ready .replay-deck.is-playing .replay-deck__track em,
-.motion-ready .replay-deck.is-playing .replay-deck__meta {
-  opacity: 1;
-  transform: none;
-}
-
-/* 旧: em 1480ms / meta 1620ms。デッキ自体の430msとJS側の360msが
-   積み上がって「受付中」が約1.8秒後に出ていた。全体を0.9秒に収める。 */
-.motion-ready .replay-deck.is-playing .replay-deck__top { transition-delay: 60ms; }
-.motion-ready .replay-deck.is-playing .replay-deck__play { transition-delay: 150ms; }
-.motion-ready .replay-deck.is-playing .replay-deck__track p { transition-delay: 240ms; }
-.motion-ready .replay-deck.is-playing .replay-deck__track em { transition-delay: 560ms; }
-.motion-ready .replay-deck.is-playing .replay-deck__meta { transition-delay: 660ms; }
-
 .motion-ready .scene--karaoke.is-scene-in .scene-title { transition-delay: 430ms; }
 .motion-ready .scene--karaoke.is-scene-in .scene-text { transition-delay: 540ms; }
-
-.motion-ready .scene--play.is-scene-in .scene-title { transition-delay: 390ms; }
-.motion-ready .scene--play.is-scene-in .scene-text { transition-delay: 500ms; }
-
-/* NEW MEMORY: 写真の余韻を先に見せてからコピーを置く */
-.motion-ready .scene--new-memory .memory-copy .scene-label,
-.motion-ready .scene--new-memory .memory-copy .scene-title {
-  transition-duration: 760ms;
-}
-
-.motion-ready .scene--new-memory.is-scene-in .memory-copy .scene-label { transition-delay: 320ms; }
-.motion-ready .scene--new-memory.is-scene-in .memory-copy .scene-title { transition-delay: 470ms; }
 
 /* PRICE: 大きな数字を主役にし、料金を同時に出さない */
 .motion-ready .plan-time strong,
@@ -1847,11 +1506,6 @@ a { color: inherit; }
   .motion-ready [data-scene-motion].is-scene-in .scene-label { transition-delay: 60ms; }
   .motion-ready [data-scene-motion].is-scene-in .scene-title { transition-delay: 120ms; }
   .motion-ready [data-scene-motion].is-scene-in .scene-text { transition-delay: 190ms; }
-
-  .motion-ready .replay-deck { transform: translateY(8px) scale(0.99); }
-  .motion-ready .scene--request.is-scene-in .replay-deck { transform: none; transition-delay: 160ms; }
-  .motion-ready .replay-deck.is-playing .replay-deck__track em { transition-delay: 420ms; }
-  .motion-ready .replay-deck.is-playing .replay-deck__meta { transition-delay: 500ms; }
   .motion-ready .scene--karaoke.is-scene-in .scene-title,
   .motion-ready .scene--play.is-scene-in .scene-title { transition-delay: 260ms; }
   .motion-ready .scene--karaoke.is-scene-in .scene-text,
@@ -1874,12 +1528,6 @@ a { color: inherit; }
 
   .request-photo img { transform: translate3d(0, var(--scene-y-reverse), 0) scale(1.14); }
   .karaoke-photo :is(img, video) { transform: translate3d(0, var(--scene-y-soft), 0) scale(1.1); }
-  .play-photo img { transform: translate3d(0, var(--scene-y-reverse), 0) scale(1.14); }
-  /* .motion-ready を足して侵入ルール(0,4,0)と同じ詳細度にする。
-     後勝ちで追従が有効になる。これが無いと侵入側の transform:none が
-     勝ち続けて、PLAY TOGETHERの背景文字だけ動かなかった。 */
-  .motion-ready .scene--play .y2k-sticker__surface { transform: translate3d(0, var(--scene-y-reverse), 0); }
-  .memory-photo img { transform: translate3d(0, var(--scene-y-soft), 0) scale(1.1); }
   .motion-ready .price-zone .y2k-sticker__surface { transform: translate3d(0, var(--scene-y-soft), 0); }
   .final-night__photo img { transform: translate3d(0, var(--scene-y-soft), 0) scale(1.1); }
 }
@@ -1994,55 +1642,12 @@ a { color: inherit; }
     padding: 16px max(16px, var(--gutter)) 20px;
   }
 
-  /* SPだけ実文字に起こす。画像内の同じ文言は小さすぎて読めない */
-  .cover__request {
-    position: static;
-    display: grid;
-    gap: 3px;
-    justify-items: center;
-    width: 100%;
-    height: auto;
-    margin: 0 0 14px;
-    padding: 12px 16px 13px;
-    overflow: visible;
-    clip-path: none;
-    white-space: normal;
-    border: 1px solid rgba(189, 248, 255, 0.5);
-    /* 角丸は 錠剤999px / 丸囲み50% / 紙2px の3系統に絞る */
-    border-radius: var(--r-paper);
-    background: linear-gradient(150deg, rgba(12, 16, 22, 0.92), rgba(28, 20, 48, 0.92));
-    text-align: center;
-  }
-
-  .cover__request span {
-    color: var(--ice-cyan);
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 0.18em;
-  }
-
-  .cover__request strong {
-    color: #fff;
-    font-size: 1.24rem;
-    font-weight: 900;
-    line-height: 1.3;
-    letter-spacing: -0.01em;
-  }
-
-  .cover__request small {
-    color: rgba(255, 255, 255, 0.74);
-    font-size: 10.5px;
-    line-height: 1.6;
-  }
-
   .cover__info > .cta {
     width: min(100%, 360px);
     min-height: 52px;
     padding-inline: 20px;
     font-size: 13px;
   }
-
-  .cover__when { margin-top: 9px; }
 
   .scene,
   .information-section,
@@ -2114,23 +1719,6 @@ a { color: inherit; }
     font-size: clamp(1rem, 5vw, 1.3rem);
   }
 
-  .replay-deck {
-    margin-top: 24px;
-    padding: 14px;
-    border-radius: 15px;
-  }
-
-  .replay-deck__track {
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 9px;
-  }
-
-  .replay-deck__track strong { font-size: 11px; }
-  .replay-deck__track em {
-    grid-column: 2;
-    justify-self: start;
-  }
-
   /* KARAOKEは全面オーバーレイを解除 */
   .scene--karaoke {
     display: block;
@@ -2157,51 +1745,6 @@ a { color: inherit; }
 
   .scene--karaoke .scene-title {
     font-size: clamp(1.8rem, 8vw, 2.2rem);
-  }
-
-  /* PLAY */
-  .play-layout {
-    gap: 28px;
-    padding-top: var(--section-space);
-  }
-
-  .play-photo {
-    min-height: 0;
-    aspect-ratio: 4 / 3;
-    border-radius: 20px;
-  }
-
-
-  /* NEW MEMORYも写真とコピーを分離 */
-  .scene--new-memory {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    text-align: left;
-  }
-
-  .memory-photo {
-    position: relative;
-    inset: auto;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-  }
-
-  .memory-photo::after {
-    background: linear-gradient(180deg, transparent 52%, rgba(7, 8, 10, 0.36));
-  }
-
-  .memory-photo img { object-position: 50% 45%; }
-
-  .memory-copy {
-    width: 100%;
-    padding: 30px 18px 46px;
-  }
-
-  .memory-copy .scene-label { justify-content: flex-start; }
-  .memory-copy .scene-title {
-    font-size: clamp(1.8rem, 8vw, 2.2rem);
-    text-shadow: none;
   }
 
   /* PRICE / EVENT */
@@ -2309,8 +1852,6 @@ a { color: inherit; }
 
 /* シーンごとの出だしのずれ */
 .scene--karaoke .scene-title { --ln-base: 300ms; }
-.scene--play .scene-title { --ln-base: 300ms; }
-.scene--new-memory .scene-title { --ln-base: 420ms; }
 .final-night__content h2 { --ln-base: 220ms; }
 
 /* ===================== シーンのpin =====================
@@ -2328,7 +1869,6 @@ a { color: inherit; }
     min-height: 0;
     height: 200vh;
   }
-  .scene--new-memory { height: 180vh; }
   /* 190vh の pin は中身が1画面で終わるため、下に810pxの
      真っ黒な空走が残っていた。1画面に戻す。 */
   .final-night { height: auto; min-height: 100svh; }
@@ -2356,7 +1896,6 @@ a { color: inherit; }
     overflow: hidden;
     align-items: end;
   }
-  .scene--new-memory .scene__pin { place-items: center; }
   .final-night .scene__pin { align-items: center; }
 }
 
@@ -2507,8 +2046,6 @@ a { color: inherit; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* ステッカーはふわふわ＋わずかに首を振る */
-  .y2k-sticker--play { animation: fuwa 7s ease-in-out infinite; }
 
   /* ゲージが息をする */
 
@@ -2530,8 +2067,6 @@ a { color: inherit; }
     transform: none;
     transition: none;
   }
-  .replay-deck::after { display: none; }
-  .replay-deck__bar i { transform: scaleX(1); transition: none; }
   .y2k-sticker::before { display: none; }
   .motion-ready [data-scene-motion] *,
   .motion-ready [data-scene-motion]::before,
@@ -2574,7 +2109,6 @@ a { color: inherit; }
     transform: none;
     transition: none;
   }
-  .motion-ready .replay-deck__bar i { transform: scaleX(1); transition: none; }
   .scene__pin { transform: none; opacity: 1; }
   .karaoke-photo :is(img, video),
   .memory-photo img,
@@ -2597,7 +2131,6 @@ a { color: inherit; }
   .scene--request::before { opacity: 1; transform: none; }
   .scene--karaoke .scene__pin,
   .final-night .scene__pin { clip-path: none; }
-  .scene--play .y2k-sticker--play { opacity: 1; }
   .price-zone::after { display: none; }
 }
 
@@ -2620,7 +2153,6 @@ a { color: inherit; }
 
 /* ちぎれ口の繊維。断面が白く毛羽立つのを、一段明るい紙を後ろに敷いて作る */
 .sheet__fiber {
-  position: absolute;
   inset: 0;
   background: var(--paper-fiber);
 }
@@ -2648,15 +2180,6 @@ a { color: inherit; }
   clip-path: polygon(0 0,100% 0,100% 98.6%,96.4% 99.5%,92.1% 98.3%,88.3% 99.4%,83.6% 98.5%,79.2% 99.6%,74.1% 98.4%,69.8% 99.3%,64.6% 98.2%,60.2% 99.5%,55.4% 98.6%,50.1% 99.4%,45.3% 98.3%,40.8% 99.6%,35.2% 98.5%,30.6% 99.3%,25.4% 98.2%,20.1% 99.5%,15.3% 98.4%,10.2% 99.4%,5.4% 98.3%,0 99.2%);
 }
 
-/* 上辺がちぎれた切れ端 */
-.sheet--torn-top .sheet__fiber {
-  clip-path: polygon(0 0.7%,5.3% 0,10.4% 1%,15.2% 0.1%,20.6% 0.9%,26.1% 0,32.3% 0.8%,38.2% 0.1%,44.4% 1%,50.2% 0,56.1% 0.7%,62.4% 0,68.2% 1%,74.3% 0.2%,80.1% 0.8%,86.2% 0,92.4% 0.9%,97.1% 0.1%,100% 0.6%,100% 100%,0 100%);
-}
-.sheet--torn-top .sheet__face {
-  clip-path: polygon(0 1.4%,5.3% 0.6%,10.4% 1.7%,15.2% 0.8%,20.6% 1.6%,26.1% 0.6%,32.3% 1.5%,38.2% 0.8%,44.4% 1.7%,50.2% 0.6%,56.1% 1.4%,62.4% 0.6%,68.2% 1.7%,74.3% 0.9%,80.1% 1.5%,86.2% 0.6%,92.4% 1.6%,97.1% 0.8%,100% 1.3%,100% 100%,0 100%);
-  padding-top: clamp(30px, 3.6vw, 40px);
-}
-
 /* 柱とノンブル。誌面の作法 */
 
 
@@ -2673,18 +2196,6 @@ a { color: inherit; }
 
 /* ふりがな。読む文字の真上だけに置く */
 .ruby { position: relative; display: inline-block; letter-spacing: -0.03em; }
-.ruby__t {
-  position: absolute;
-  left: 50%;
-  top: -0.46em;
-  transform: translateX(-50%);
-  color: var(--print-accent);
-  font-family: var(--font-mincho);
-  font-size: 0.215em;
-  font-weight: 700;
-  letter-spacing: 0.28em;
-  white-space: nowrap;
-}
 
 /* 網掛けのリード。平網ではなく実際の点。格子2枚を半ピッチずらして45度にする。
    書体は本文と同じゴシック */
@@ -2715,37 +2226,6 @@ a { color: inherit; }
   line-height: 1.9;
 }
 
-/* 破線の罫 */
-.paper-dash {
-  height: 1px;
-  background: repeating-linear-gradient(90deg, var(--print-ink) 0 5px, transparent 5px 10px);
-}
-
-/* 紙に押したスタンプ */
-.stamps { display: flex; flex-wrap: wrap; gap: 9px; margin: clamp(14px, 2vw, 18px) 0 0; padding: 0; list-style: none; }
-.stamps li {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 13px 7px;
-  border: 1.5px solid var(--print-ink);
-  border-radius: var(--r-paper);
-  background: rgba(255, 255, 255, 0.5);
-  color: var(--print-ink);
-  font-size: 12px;
-  font-weight: 900;
-}
-.stamps li:nth-child(odd) { transform: rotate(-0.9deg); }
-.stamps li:nth-child(even) { transform: rotate(0.7deg); }
-.stamps li::before {
-  flex-shrink: 0;
-  width: 11px;
-  height: 11px;
-  background: #ffd23f;
-  clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 92%, 50% 70%, 21% 92%, 32% 57%, 2% 35%, 39% 35%);
-  content: "";
-}
-
 /* マステ。multiply と粘着の筋の2つが要。どちらか欠けると色の板になる */
 .tape {
   position: absolute;
@@ -2762,51 +2242,6 @@ a { color: inherit; }
   background-image:
     repeating-linear-gradient(96deg, rgba(255, 255, 255, 0.3) 0 1px, transparent 1px 5px),
     linear-gradient(96deg, rgba(189, 248, 255, 0.84), rgba(226, 252, 255, 0.66) 46%, rgba(178, 243, 255, 0.88));
-}
-
-/* 写真は「プリント」。白フチはクリーム、影は接地＋環境の2枚 */
-.print {
-  position: relative;
-  margin: 0;
-  padding: 7px 7px 25px;
-  background: var(--paper-photo);
-  box-shadow: var(--shadow-photo);
-}
-.print img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.print figcaption {
-  margin: 7px 3px 0;
-  color: var(--print-sub);
-  font-family: var(--font-hand);
-  font-size: 14px;
-}
-/* 2000年代のプリントの色。マゼンタ寄りの転びと締まらない黒、そして粒子 */
-.print__cast {
-  position: absolute;
-  left: 7px;
-  right: 7px;
-  top: 7px;
-  bottom: 32px;
-  pointer-events: none;
-}
-.print__cast::before,
-.print__cast::after { position: absolute; inset: 0; content: ""; }
-.print__cast::before {
-  mix-blend-mode: soft-light;
-  background: linear-gradient(158deg, rgba(255, 190, 220, 0.5), rgba(255, 236, 190, 0.34) 62%, rgba(150, 190, 255, 0.3));
-}
-.print__cast::after {
-  opacity: 0.5;
-  background-color: rgba(251, 247, 238, 0.1);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='1'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.14 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* 余白の書き込み。ゲルペンの体 */
-.margin-note {
-  margin: 0;
-  color: #00a8cc;
-  font-family: var(--font-hand);
-  font-size: clamp(17px, 1.7vw, 21px);
-  line-height: 1.5;
 }
 
 /* 墨ベタのボタン */
@@ -2839,70 +2274,6 @@ a { color: inherit; }
     radial-gradient(130% 100% at 78% 96%, rgba(37, 25, 63, 0.2), transparent 58%);
 }
 
-
-/* 巨大な数字。紙の左端で断ち落とす */
-.bignum {
-  position: relative;
-  display: flex;
-  /* flex-end だと箱の底で揃うので、行送り0.72の100に対して
-     「分」が中央あたりに浮いた。ベースラインで揃える */
-  align-items: baseline;
-  justify-content: flex-start;
-  gap: clamp(14px, 2.6vw, 40px);
-  margin-top: clamp(6px, 1vw, 10px);
-  min-height: clamp(112px, 15vw, 182px);
-}
-.bignum__ghost,
-.bignum__ink {
-  font-size: clamp(6.5rem, 15vw, 12.75rem);
-  font-weight: 900;
-  letter-spacing: -0.064em;
-  line-height: 0.72;
-  font-variant-numeric: tabular-nums;
-}
-/* 幽霊とインクを同じ入れ物に入れる。flexのbaseline揃えに対して
-   絶対配置のleft/bottomを当てていたので、基準が食い違って
-   版ズレが30px近くまで開いていた */
-.bignum__stack {
-  position: relative;
-  display: inline-block;
-  margin-left: calc(-1 * clamp(20px, 3.4vw, 58px));
-  line-height: 0.72;
-}
-/* インラインのままだと line-height 0.72 で字が箱から溢れ、
-   絶対配置の基準と70px以上ずれた。両方をブロックにして
-   同じ箱を占めさせ、ずれは transform だけで作る */
-.bignum__ghost,
-.bignum__ink { display: block; }
-.bignum__ghost {
-  position: absolute;
-  left: 0;
-  top: 0;
-  transform: translate(-3px, 3px);
-  color: var(--print-misreg);
-  pointer-events: none;
-}
-.bignum__ink {
-  position: relative;
-  color: var(--magenta);
-  -webkit-text-stroke: 6px var(--print-ink);
-  paint-order: stroke fill;
-}
-.bignum__unit {
-  display: flex;
-  align-items: baseline;
-  gap: clamp(8px, 1vw, 14px);
-}
-.bignum__ja {
-  padding-bottom: 5px;
-  border-bottom: 4px double var(--magenta);
-  color: var(--print-ink);
-  font-family: var(--font-main);
-  font-size: clamp(1.9rem, 3.4vw, 2.875rem);
-  font-weight: 700;
-  line-height: 1;
-}
-
 /* 切れ端Bの中身 */
 
 /* 料金表を紙の上に置き直す。ガラスのカードだった指定を打ち消す */
@@ -2917,46 +2288,12 @@ a { color: inherit; }
     drop-shadow(0 11px 15px rgba(74, 10, 50, 0.36));
   pointer-events: none;
 }
-.foil__eyebrow {
-  display: inline-block;
-  margin-bottom: 2px;
-  padding: 3px 11px 4px;
-  border-radius: 999px;
-  background: #ff4aa2;
-  color: #fff;
-  font-size: 8.5px;
-  font-weight: 900;
-  letter-spacing: 0.16em;
-}
-.foil__word {
-  position: relative;
-  display: block;
-  color: #ff8ecb;
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 2.6vw, 2.125rem);
-  line-height: 1.24;
-  letter-spacing: 0.012em;
-  /* 白フチは親の drop-shadow が作る。膨らみは濃いマゼンタを1pxずつ */
-  text-shadow:
-    0 -1.5px 0 #ffe2f2,
-    0 1px 0 #ff6cb8, 0 2px 0 #fb4ba5, 0 3px 0 #ed2f93,
-    0 4px 0 #d81a80, 0 5px 0 #bd0f6d, 0 6px 0 #9e0759,
-    0 7px 3px rgba(74, 4, 44, 0.4);
-}
-.foil__gloss {
-  position: absolute;
-  inset: 0;
-  mix-blend-mode: screen;
-  background: linear-gradient(104deg, transparent 33%, rgba(255, 255, 255, 0.8) 45%, transparent 55%);
-}
 
 /* ---------- SP：順に積む ---------- */
 @media (max-width: 1149px) {
   /* 積む配置では最後の要素として地に浮いていた。
      台紙の右上角にまたがらせる */
   .tape--a1 { left: -18px; top: 18px; width: 92px; height: 24px; transform: rotate(-30deg); }
-  .tape--b1 { left: 26px; top: -13px; width: 96px; height: 24px; transform: rotate(-6deg); }
-  .tape--b2 { right: 14px; top: -11px; width: 78px; height: 21px; transform: rotate(5deg); }
 }
 
 /* ---------- 広い画面：紙を重ねる ----------
@@ -2974,8 +2311,6 @@ a { color: inherit; }
      .collage 基準に置くと写真の上に乗って読めなくなった */
 
   .tape--a1 { left: -26px; top: 22px; width: 118px; height: 29px; transform: rotate(-30deg); }
-  .tape--b1 { left: 34px; top: -17px; width: 124px; height: 30px; transform: rotate(-6deg); }
-  .tape--b2 { right: 18px; top: -14px; width: 100px; height: 26px; transform: rotate(5deg); }
 }
 
 /* ===================== 各セクションを紙に揃える =====================
@@ -2986,45 +2321,6 @@ a { color: inherit; }
 .request-copy .scene-text {
   max-width: 32em;
   margin: 14px 0 0;
-  color: rgba(37, 25, 63, 0.78);
-  font-family: var(--font-main);
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 2;
-}
-/* プレイヤーは「機器を切り抜いて貼った写真」として紙に載せる。
-   独立したUIとして置くと紙と喧嘩する */
-.request-copy .replay-deck {
-  margin-top: 22px;
-  padding: 7px 7px 9px;
-  border: 0;
-  border-radius: 0;
-  background: var(--paper-photo);
-  box-shadow: var(--shadow-photo);
-  transform: rotate(-1.4deg);
-}
-.request-copy .replay-deck > * { position: relative; z-index: 1; }
-.request-copy .replay-deck__top,
-.request-copy .replay-deck__track,
-.request-copy .replay-deck__bar,
-.request-copy .replay-deck__meta { padding-inline: 14px; }
-.request-copy .replay-deck__top { padding-top: 13px; }
-.request-copy .replay-deck__meta { padding-bottom: 12px; }
-.request-copy .replay-deck::after { display: none; }
-/* 盤の面。切り抜きの内側だけ暗くする */
-.request-copy .replay-deck {
-  background-image: linear-gradient(158deg, #251b40 0%, #130e24 52%, #1d1533 100%);
-  background-clip: content-box;
-  background-origin: content-box;
-}
-
-/* --- 03 PLAY TOGETHER --- */
-.play-copy.sheet { align-self: center; }
-.play-copy .sheet__face { padding-top: clamp(30px, 3.6vw, 42px); }
-.play-copy .scene-title,
-.play-copy .paper-h { color: var(--print-ink); }
-.play-copy .scene-text {
-  max-width: 30em;
   color: rgba(37, 25, 63, 0.78);
   font-family: var(--font-main);
   font-size: 13px;
@@ -3084,7 +2380,6 @@ a { color: inherit; }
 /* マステの位置 */
 .tape--e1 { left: 40px; top: -15px; width: 112px; height: 28px; transform: rotate(-5deg); }
 .tape--r1 { right: -20px; top: 30px; width: 104px; height: 27px; transform: rotate(32deg); }
-.tape--p1 { left: 26px; top: -14px; width: 108px; height: 27px; transform: rotate(-6deg); }
 
 @media (max-width: 767px) {
   .event-sheet .event-list > div { grid-template-columns: 84px minmax(0, 1fr); gap: 10px; }
@@ -3127,20 +2422,6 @@ a { color: inherit; }
   line-height: 1.3;
   text-align: left;
 }
-/* --- 03 の列の比と文字サイズ --- */
-@media (min-width: 1024px) {
-  .play-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(420px, 0.98fr);
-    gap: clamp(34px, 4vw, 58px);
-  }
-  .play-photo { min-height: 0; }
-  .play-photo img { aspect-ratio: 4 / 3; }
-}
-
-.play-copy .paper-h {
-  font-size: clamp(1.6rem, 2.5vw, 2.15rem);
-  line-height: 1.2;
-}
 /* コンテナ幅の22%だと TOGETHER が面から出て切れる */
 
 /* 狭い紙では面の余白を詰める */
@@ -3148,9 +2429,6 @@ a { color: inherit; }
 .request-copy .sheet__face {
   padding-inline: clamp(16px, 2vw, 26px);
 }
-
-/* --- 01 の紙とプレイヤー --- */
-.request-copy .replay-deck { max-width: 380px; }
 
 /* ===================== SPでの紙の調整 =====================
    1) 柱が2行に折れて丸囲みの番号と衝突していた
@@ -3170,16 +2448,11 @@ a { color: inherit; }
     font-weight: 700;
   }
 
-  .bignum { gap: 10px; }
-
   /* 見出しの下限が高すぎて「あの頃聴いていた曲を、」が
      2行に割れ、「を、」が孤立していた */
   .paper-h { font-size: clamp(1.72rem, 7.4vw, 2.1rem); }
 
   .sheet__face { padding: 22px 16px 38px; }
-  .sheet--torn-top .sheet__face { padding-top: 28px; }
-
-  .margin-note { font-size: 17px; }
   .ink-button { font-size: 11px; padding: 9px 13px 10px; }
 }
 
@@ -3235,47 +2508,9 @@ a { color: inherit; }
   background-size: 4px 4px, 140px 140px;
 }
 
-.cover__when {
-  color: var(--print-sub);
-  font-family: var(--font-mincho);
-  font-weight: 700;
-  letter-spacing: 0.2em;
-}
-
-@media (max-width: 767px) {
-  .cover__request {
-    gap: 2px;
-    padding: 0 0 4px;
-    border: 0;
-    border-radius: 0;
-    background: none;
-  }
-  .cover__request span {
-    color: var(--print-accent);
-    font-family: var(--font-mincho);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.24em;
-  }
-  .cover__request strong {
-    color: var(--print-ink);
-    font-size: 1.32rem;
-    font-weight: 900;
-    letter-spacing: -0.03em;
-  }
-  .cover__request small {
-    color: var(--print-sub);
-    font-family: var(--font-mincho);
-    font-size: 10.5px;
-    font-weight: 500;
-    line-height: 1.75;
-  }
-}
-
 @media (min-width: 900px) {
   /* PCでは画像の上に重ねるので紙の地は敷かない */
   .cover__info { padding: 0; background: none; }
-  .cover__when { color: rgba(255, 255, 255, 0.82); }
 }
 
 /* ===================== 机の上の実物 =====================
@@ -3293,19 +2528,6 @@ a { color: inherit; }
   pointer-events: none;
 }
 
-.desk__obj { position: absolute; }
-.desk__obj > span { display: block; }
-.desk__obj img {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: drop-shadow(0 14px 22px rgba(20, 8, 34, 0.5));
-}
-
-.desk__obj--star  { width: clamp(96px, 14vw, 196px); left: -4%;  top: -5%; }
-
-.desk__obj--star > span  { transform: rotate(-8deg); }
-
 /* 浮遊。周期を互いに素に近い値にして揃わないようにする */
 @keyframes desk-float-a {
   0%, 100% { transform: rotate(-8deg) translateY(0); }
@@ -3318,29 +2540,6 @@ a { color: inherit; }
 @keyframes desk-float-c {
   0%, 100% { transform: rotate(11deg) translateY(0); }
   50%      { transform: rotate(8.2deg) translateY(-9px); }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .desk__obj--star > span  { animation: desk-float-a 7.2s ease-in-out infinite; }
-}
-
-/* スクロール視差。層ごとに係数を変えて奥行きを作る */
-@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-  .desk__obj--star  { transform: translate3d(0, calc(var(--scene-progress, 0.5) * 54px), 0); }
-}
-
-/* 登場。背景→写真→オブジェクトの順に入れる */
-.motion-ready .desk__obj { opacity: 0; }
-.motion-ready .cover.is-scene-in .desk__obj {
-  opacity: 1;
-  transition: opacity 420ms var(--ease-out);
-}
-.motion-ready .cover.is-scene-in .desk__obj--star  { transition-delay: 300ms; }
-
-/* SPは点数を減らす。ガラケーは焼き込みの個体と近いので落とす */
-@media (max-width: 767px) {
-  .desk__obj--star { width: 96px; left: -6%; top: -3%; }
-  .desk__obj img { filter: drop-shadow(0 8px 14px rgba(20, 8, 34, 0.44)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3365,30 +2564,9 @@ a { color: inherit; }
   filter: drop-shadow(0 12px 20px rgba(37, 25, 63, 0.34));
 }
 
-/* 01：CD-R。スクロール量で回る */
-.obj--disc {
-  width: clamp(112px, 15vw, 214px);
-  right: -3%;
-  top: 8%;
-  transform: rotate(calc(var(--scene-progress, 0) * 210deg));
-}
-
-/* 03：クリアのガラケー */
-.obj--phone {
-  width: clamp(96px, 12.5vw, 178px);
-  left: -3%;
-  bottom: 6%;
-  transform: translate3d(0, calc(var(--scene-progress, 0.5) * -64px), 0) rotate(-14deg);
-}
-
 @keyframes obj-float-a {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-13px); }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .obj--disc > span { animation: obj-float-a 8.6s ease-in-out infinite; }
-  .obj--phone > span { animation: obj-float-a 6.4s ease-in-out 0.8s infinite; }
 }
 
 .motion-ready .obj { opacity: 0; }
@@ -3398,15 +2576,7 @@ a { color: inherit; }
 }
 
 @media (max-width: 767px) {
-  .obj--disc { width: 104px; right: -6%; top: 3%; }
-  .obj--phone { width: 92px; left: -7%; bottom: 2%; }
   .obj img { filter: drop-shadow(0 7px 12px rgba(37, 25, 63, 0.3)); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .desk__obj,
-  .desk__obj > span { animation: none; }
-  .desk__obj { opacity: 1; transform: none; }
 }
 
 /* .scene-photo の overflow:hidden が白フチの下のキャプションを
@@ -3437,7 +2607,6 @@ a { color: inherit; }
   height: auto;
   aspect-ratio: 3 / 2;
 }
-.play-photo img { aspect-ratio: 4 / 3; }
 
 /* 白フチのプリントの中で画像を scale すると、フチの外へ溢れて
    キャプションを覆う（実測 箱348px に対して描画407px）。
@@ -3449,7 +2618,6 @@ a { color: inherit; }
     transition: none;
   }
   .request-photo { transform: translate3d(0, calc(var(--scene-y-reverse, 0px) * 0.6), 0) rotate(3deg); }
-  .play-photo { transform: translate3d(0, calc(var(--scene-y, 0px) * 0.5), 0) rotate(-3.5deg); }
 }
 
 /* ===================== 指摘への対応 =====================
@@ -3537,7 +2705,7 @@ a { color: inherit; }
 .scene-label b {
   flex-shrink: 0;
   color: var(--magenta-bright);
-  font-size: 1.25em;
+  font-size: 2.5em;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
 }
@@ -3558,7 +2726,7 @@ a { color: inherit; }
   border-radius: 0;
   background: none;
   color: inherit;
-  font-size: 1.16em;
+  font-size: 2.5em;
   font-weight: 900;
   letter-spacing: 0.04em;
 }
@@ -3630,15 +2798,6 @@ a { color: inherit; }
 
 }
 
-/* ===================== 05 の指摘対応 =====================
-   1) 紙どうしの重なりが不自然 → 積む配置では重ねず、テープで留める
-   2) 水色の手書きが読めない → 紙の上はアクセント（マゼンタ）で書く
-   3) 金額が小さい → 100 との関係が立つ大きさへ
-   4) CTAのトーンが暗い → 墨ベタをやめてブランドのマゼンタに */
-
-/* --- 2) 手書きの色 --- */
-.margin-note { color: var(--print-accent); }
-
 /* --- 3) 金額 --- */
 
 /* --- 4) CTA。暗い墨ベタをやめる --- */
@@ -3676,15 +2835,6 @@ a { color: inherit; }
   place-items: initial;
 }
 
-/* 04 のコピーは pin の中で中央に置く */
-@media (min-width: 768px) {
-  .scene--new-memory .scene__pin {
-    display: grid;
-    place-items: center;
-  }
-  .memory-copy { justify-self: center; text-align: center; }
-}
-
 /* --- 06 リーダー罫 --- */
 .event-sheet .event-list > div {
   display: grid;
@@ -3718,51 +2868,6 @@ a { color: inherit; }
 
 .price-zone { position: relative; }
 
-.price-copy .plan-prices {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-  margin: 0 0 18px;
-}
-.price-copy .plan-prices > div {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 0 0 8px;
-  border: 0;
-  border-bottom: 2px solid var(--print-ink);
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
-}
-.price-copy .plan-prices dt {
-  color: var(--print-accent);
-  font-family: var(--font-main);
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-}
-.price-copy .plan-prices dd {
-  margin: 0;
-  color: var(--print-ink);
-  font-size: clamp(2.1rem, 3.4vw, 3rem);
-  font-weight: 900;
-  letter-spacing: -0.055em;
-  font-variant-numeric: tabular-nums;
-}
-.price-copy .plan-prices small {
-  display: inline-block;
-  margin-left: 0.1em;
-  font-family: var(--font-main);
-  font-size: 0.37em;
-  font-weight: 700;
-  letter-spacing: 0;
-  vertical-align: 0.1em;
-}
-
-.price-rule { margin: clamp(18px, 2.4vw, 26px) 0; }
-.price-copy .paper-note { margin-bottom: 16px; }
-
 /* 箔シールは紙の右上角にまたがらせる */
 .price-foil {
   position: absolute;
@@ -3774,7 +2879,6 @@ a { color: inherit; }
 }
 
 @media (max-width: 879px) {
-  .price-copy .plan-prices { grid-template-columns: 1fr; gap: 14px; }
   .price-foil { right: 6px; top: 14px; transform: rotate(7deg) scale(0.86); }
 }
 
@@ -3845,24 +2949,6 @@ a { color: inherit; }
   }
 }
 
-/* 01の最終構図：見出し群は写真内、MDは写真の次段。
-   既存の旧レイアウト指定より後ろで確定させる。 */
-.scene--request .request-photo-copy {
-  position: absolute !important;
-  inset: auto auto 0 0;
-  right: auto !important;
-  bottom: clamp(64px, 6vw, 78px) !important;
-  z-index: 5;
-  font-family: var(--font-main) !important;
-}
-
-.scene--request .request-photo-copy :is(.scene-label, .paper-h, .scene-text) {
-  font-family: var(--font-main);
-}
-
-.scene--request .request-photo-copy .paper-h { font-weight: 900; }
-.scene--request .request-photo-copy .scene-text { font-weight: 700; }
-
 @media (min-width: 880px) {
   .scene--request .request-copy .sheet__face {
     display: flex;
@@ -3923,15 +3009,6 @@ a { color: inherit; }
     background:
       linear-gradient(180deg, transparent 34%, rgba(10, 7, 14, 0.1) 48%, rgba(10, 7, 14, 0.9) 100%),
       linear-gradient(90deg, rgba(10, 7, 14, 0.34), transparent 78%);
-  }
-
-  .scene--request .request-photo-copy {
-    position: absolute !important;
-    inset: auto 0 0;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100%;
-    padding: 0 18px 26px;
   }
 
   .scene--request .request-copy.sheet {
@@ -4377,54 +3454,6 @@ a { color: inherit; }
   .tama.is-dancing .tama__pet { animation: none; }
 }
 
-
-/* ===================== 01 / コピーを写真上へ =====================
-   見出し・説明は写真の一部として読ませ、MDだけを次の段へ残す。
-   SPで写真を極端な縦長全面背景にすると人物が切れるため、写真は
-   十分な高さを確保した横長のまま使い、下端の暗幕上に文字を置く。 */
-
-.scene--request .request-photo-copy {
-  position: absolute;
-  z-index: 5;
-  left: 0;
-  bottom: 0;
-  display: block;
-  width: min(58%, 690px);
-  margin: 0;
-  padding: 0 0 clamp(48px, 5.5vw, 76px) var(--pad-x);
-  color: #fff;
-  text-align: left;
-  pointer-events: none;
-}
-
-.scene--request .request-photo-copy .scene-label {
-  margin: 0 0 clamp(14px, 1.5vw, 20px);
-  padding: 0;
-  border: 0;
-  color: rgba(255, 255, 255, 0.84);
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.82);
-}
-
-.scene--request .request-photo-copy .scene-label :is(b, span) { color: #ff4a94; }
-
-.scene--request .request-photo-copy .paper-h {
-  max-width: 11em;
-  margin: 0;
-  color: #ff4a94;
-  font-size: clamp(2.25rem, 3.8vw, 3.35rem);
-  line-height: 1.14;
-  letter-spacing: -0.045em;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.76);
-}
-
-.scene--request .request-photo-copy .scene-text {
-  max-width: 32em;
-  margin: 16px 0 0;
-  color: rgba(255, 255, 255, 0.94);
-  font-size: clamp(15px, 1.3vw, 17px);
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.92);
-}
-
 @media (min-width: 880px) {
   /* 旧コピー枠にはMDだけが残る。写真上の文章と左右で競合させない。 */
   .scene--request .request-copy.sheet { pointer-events: none; }
@@ -4495,33 +3524,6 @@ a { color: inherit; }
       linear-gradient(180deg, transparent 34%, rgba(10, 7, 14, 0.1) 48%, rgba(10, 7, 14, 0.9) 100%),
       linear-gradient(90deg, rgba(10, 7, 14, 0.34), transparent 78%);
     content: "";
-  }
-
-  .scene--request .request-photo-copy {
-    width: 100%;
-    padding: 0 18px 26px;
-  }
-
-  .scene--request .request-photo-copy .scene-label {
-    margin-bottom: 13px;
-    color: rgba(255, 255, 255, 0.84);
-    font-size: 13px;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.88);
-  }
-
-  .scene--request .request-photo-copy .paper-h {
-    max-width: 10.5em;
-    color: #ff4a94;
-    font-size: clamp(1.85rem, 8.2vw, 2.3rem);
-    text-shadow: 0 2px 7px rgba(0, 0, 0, 0.78);
-  }
-
-  .scene--request .request-photo-copy .scene-text {
-    margin-top: 12px;
-    color: rgba(255, 255, 255, 0.94);
-    font-size: 15px;
-    line-height: 1.75;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.94);
   }
 
   .scene--request .request-copy.sheet {
@@ -4681,8 +3683,6 @@ a { color: inherit; }
      行数はブラウザに均等割りさせる */
   text-wrap: balance;
 }
-/* 03 の個別の上限を解除（01・05・06 と同じ基準に戻す） */
-.play-copy .paper-h { font-size: clamp(2.15rem, 5.6vw, 3.5rem); line-height: 1.16; }
 
 /* 本文。11〜13pxは紙の上では小さすぎた */
 .request-copy .scene-text,
@@ -4713,88 +3713,15 @@ a { color: inherit; }
 }
 .final-night__content > p { max-width: 30em; }
 .cta--final { margin: 32px auto 0 0; }
-
-/* ===================== 04 プリクラストリーム =====================
-   写真をすべて別カットにし、左の画面外からはみ出す帯として
-   下から上へ途切れず流す。中央のコピーとは重ねない。 */
-
-.album {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.album__ink { position: absolute; inset: 0; }
-
-/* --- 画面外を通るプリクラ帯 --- */
-.purikura {
-  position: absolute;
-  left: clamp(-74px, -4.8vw, -40px);
-  /* PCではメイン写真の上下端を移動範囲にする。 */
-  top: 0;
-  bottom: 0;
-  width: clamp(160px, 14vw, 210px);
-  overflow: hidden;
-  transform: rotate(-6deg);
-  filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.42));
-}
-.purikura__track {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  will-change: transform;
-}
 @keyframes purikura-flow {
   from { transform: translate3d(0, 0, 0); }
   /* 4組中の1組分だけ送る。次の同一組が同じ位置へ来るため、
      画面高にかかわらずループの継ぎ目が露出しない。 */
   to { transform: translate3d(0, -25%, 0); }
 }
-.purikura__set {
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: column;
-  gap: 9px;
-  padding: 5px 6px 9px;
-}
-.purikura__cell {
-  display: block;
-  overflow: hidden;
-  /* 横写真を縦長に切り抜かず、プリクラの小さな連続カットとして見せる。 */
-  aspect-ratio: 3 / 2;
-  border: 5px solid var(--paper-photo);
-  background: #241c18;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.34);
-}
-.purikura__cell img { width: 100%; height: 100%; object-fit: cover; }
-.purikura__cell--1 img { object-position: 34% 50%; }
-.purikura__cell--2 img { object-position: 31% 50%; }
-.purikura__cell--3 img { object-position: 30% 50%; }
-.purikura__cell--4 img { object-position: 31% 50%; }
-.purikura__cell:nth-child(1) img { object-position: 52% 42%; }
-.purikura__cell:nth-child(2) img { object-position: 60% 45%; }
-.purikura__cell:nth-child(3) img { object-position: 50% 40%; }
-.purikura__cell:nth-child(4) img { object-position: 54% 44%; }
-.purikura__cell:nth-child(5) img { object-position: 40% 48%; }
-.purikura__cell:nth-child(6) img { object-position: 52% 46%; }
 
 /* --- 縁のシール --- */
 .seal { position: absolute; display: grid; place-items: center; }
-
-.seal--date {
-  right: clamp(24px, 5vw, 84px);
-  bottom: clamp(44px, 9vh, 96px);
-  padding: 5px 12px 6px;
-  background: #ffd23f;
-  box-shadow: 0 0 0 2.5px #fff, 0 5px 10px rgba(0, 0, 0, 0.28);
-  color: #3a2a06;
-  font-family: var(--font-mincho);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  transform: rotate(-5deg);
-}
 
 .seal--heart {
   right: clamp(10px, 3vw, 44px);
@@ -4804,159 +3731,24 @@ a { color: inherit; }
 }
 .seal--heart svg { width: 100%; height: auto; fill: #ff4aa2; filter: drop-shadow(0 0 0 #fff) drop-shadow(0 0 3px #fff); }
 
-.seal--star {
-  left: clamp(130px, 15vw, 210px);
-  top: clamp(34px, 8vh, 84px);
-  width: clamp(26px, 3vw, 40px);
-  aspect-ratio: 1;
-  background: linear-gradient(160deg, #fff6c8, #ffd23f 54%, #c9901c);
-  clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 92%, 50% 70%, 21% 92%, 32% 57%, 2% 35%, 39% 35%);
-  transform: rotate(-14deg);
-}
-
-.seal--kira {
-  left: clamp(150px, 17vw, 250px);
-  bottom: clamp(60px, 13vh, 140px);
-  width: clamp(20px, 2.4vw, 32px);
-  aspect-ratio: 1;
-  background: #fff;
-  clip-path: polygon(50% 0, 57% 43%, 100% 50%, 57% 57%, 50% 100%, 43% 57%, 0 50%, 43% 43%);
-  transform: rotate(10deg);
-}
-
-/* 入場。写真とコピーの間に差し込む */
-.motion-ready .album { opacity: 0; }
-.motion-ready .scene--new-memory.is-scene-in .album {
-  opacity: 1;
-  transition: opacity 520ms var(--ease-out) 240ms;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .purikura__track { animation: purikura-flow 28s linear infinite; }
-  .seal--kira { animation: kira 2.8s ease-in-out infinite; }
-}
-
 /* SPは点数を減らす */
 @media (max-width: 767px) {
-  .purikura {
-    left: -50px;
-    top: -8%;
-    bottom: -8%;
-    width: 96px;
-    transform: rotate(-4.5deg);
-  }
-  .purikura__set { gap: 6px; padding: 4px 4px 6px; }
-  .purikura__cell { border-width: 4px; }
-  .seal--star,
-  .seal--kira { display: none; }
-  .seal--date { right: 14px; bottom: 30px; }
   .seal--heart { right: 8px; bottom: 96px; width: 26px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .obj, .obj > span { animation: none; }
   .obj { opacity: 1; }
-  .obj--disc { transform: rotate(24deg); }
-  .obj--phone { transform: rotate(-14deg); }
-}
-
-.memory-copy .scene-title { max-width: 15em; margin-inline: auto; }
-.memory-copy { max-width: 44em; }
-
-/* ===================== 03 PLAY TOGETHER：整理 =====================
-   指示書の優先順位 1.写真 2.PLAY TOGETHER 3.最小限のホログラム。
-   クリアのガラケーは4項目に無いので撤去した。
-   残す3つは「増やさず、サイズ差を強める」方向で扱う。 */
-
-@media (min-width: 880px) {
-  /* 01と同じ「左＝紙、右＝写真」の比率・余白へ統一する。
-     旧ルールの40:60＋画面外への大きなbleedは、文字列を狭めて
-     改行と重なりを起こしていたため撤去。 */
-  .play-layout {
-    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-    align-items: stretch;
-    gap: clamp(34px, 5vw, 72px);
-  }
-  .play-photo {
-    z-index: 2;
-    align-self: stretch;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    margin: 0;
-    width: auto;
-    max-width: 100%;
-  }
-  .play-photo img {
-    flex: 1 1 auto;
-    min-height: 340px;
-    height: auto;
-    aspect-ratio: auto;
-    object-fit: cover;
-  }
-  .play-copy.sheet { z-index: 1; align-self: start; }
-
-  /* 2. PLAY TOGETHER のシールは、紙と写真の継ぎ目にまたがせる。
-     右端に置くと写真の上に完全に乗ってしまい、層の境目が見えない。 */
-  .y2k-sticker--play {
-    /* 38%だと TOGETHER の左端が柱（03 ── 遊ぶ）の罫線に乗ったので、
-       継ぎ目をまたぐ範囲を保ったまま右へ寄せる */
-    left: 50%;
-    right: auto;
-    top: clamp(22px, 3.6vw, 54px);
-    /* 300pxは紙と写真の両方に掛かりすぎていた。一段落とす */
-    width: clamp(178px, 15.5vw, 236px);
-  }
-  /* 3. 3層パララックス。奥・中・前の順に移動量を変える。
-     --scene-y は -40〜+40px なので係数で割り当てる。
-     どれも入場ルール (0,4,0) に負けていたので id で書き、
-     スクラブ対象の transition は切る（残すと値が追従しない）。 */
-  /* 当初は 20/49/108px にしたが、前の層が108px動くと
-     「シールが一緒にスクロールしてくる」見え方になった。
-     層の順序（奥＜中＜前）は保ったまま、全体を1/3に落とす。 */
-  #play .play-copy {
-    transform: translate3d(0, calc(var(--scene-y, 0px) * 0.12), 0);
-    transition: none;
-  }
-  #play .play-photo {
-    transform: translate3d(0, calc(var(--scene-y-reverse, 0px) * 0.6), 0) rotate(-3.5deg);
-    transition: none;
-  }
-  /* シールは登場のポップ（rotate＋scale）を殺さないよう、
-     動かすのは中の面だけにする */
-  #play .y2k-sticker--play .y2k-sticker__surface {
-    transform: translate3d(0, calc(var(--scene-y, 0px) * 0.5), 0);
-    transition: none;
-  }
-}
-
-/* SPは写真のはみ出しを止める */
-@media (max-width: 879px) {
-  /* 1カラムへ切り替わる幅では紙と写真の継ぎ目がないため、
-     PC用のダイカットシールを無理に重ねない。 */
-  .y2k-sticker--play { display: none; }
-  .play-photo { width: auto; margin-left: 0; }
 }
 
 /* ===================== 05 PRICE ===================== */
 
 .price-zone__in { position: relative; }
-.price-copy { width: 100%; }
 
 .price-main { margin-top: clamp(16px, 2.4vw, 30px); }
-
-.bignum {
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-start;
-  gap: clamp(8px, 1.4vw, 22px);
-  min-height: 0;
-  margin: 0;
-}
 /* 情報は 100 の右へ。一瞬で読める順に積む */
 .price-info { display: flex; flex-direction: column; gap: clamp(14px, 1.8vw, 22px); }
 .price-info .lead-ami { align-self: flex-start; }
-.price-copy .plan-prices { margin: 0; }
 
 @media (min-width: 1000px) {
   /* 100 と情報を横に並べる。100が左45%、情報が右 */
@@ -4979,162 +3771,16 @@ a { color: inherit; }
   }
   .price-photo img { aspect-ratio: 4 / 3; }
   .price-foil { right: clamp(200px, 22vw, 300px); top: clamp(-14px, -0.6vw, -4px); }
-  /* 見出しは写真とぶつからない幅で止める */
-  .price-copy .paper-h { max-width: 15em; }
 }
 
 @media (max-width: 999px) {
   /* SPは紙が縦積みなので、PC（+2.8deg）と逆に振ってリズムを作る */
   .price-photo { width: min(300px, 70%); margin: 22px auto 0; transform: rotate(-3deg); }
   .price-foil { right: 4px; top: 10px; transform: rotate(7deg) scale(0.86); }
-  .price-copy .plan-prices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-@media (max-width: 599px) {
-  .price-copy .plan-prices { grid-template-columns: 1fr; }
 }
 
 /* 情報列は縦積みなので、ボタンが列幅いっぱいに伸びて帯に見えていた */
 .price-info .ink-button { align-self: flex-start; }
-
-/* 版ズレは px 固定だと図版サイズでは見えない。字送りに比例させる */
-.bignum__ghost { transform: translate(-0.014em, 0.012em); }
-
-/* 見出しと情報の間の空きを詰める */
-.price-copy .paper-h { margin-bottom: 0; }
-
-/* ===================== 02 SONG REQUEST：UI精度 =====================
-   「グラフィック装飾のUI」に見えていた原因は実測で3つ。
-   ・線が全部1px（情報の階層が線で表現されていない）
-   ・PLAYの見た目が20px（タップ領域44pxは確保済みだが小さく見える）
-   ・数字が等幅でないので、走ると桁が揺れる
-   情報は増やさず、精度だけ上げる。 */
-
-/* 盤に角丸を与える。形状のコントラスト:
-   写真=スクエア / 盤=6px / 紙=2px / CTA=999px */
-.request-copy .replay-deck {
-  border-radius: 8px;
-  padding: 8px 8px 10px;
-}
-.request-copy .replay-deck { background-clip: content-box; background-origin: content-box; }
-
-/* 線に階層をつける。外枠は太く、内部の区切りは細く */
-.request-copy .replay-deck__top {
-  padding-top: 14px;
-  padding-bottom: 11px;
-  border-bottom: 1.5px solid rgba(150, 240, 255, 0.26);
-}
-.request-copy .replay-deck__track { margin-top: 13px; padding-bottom: 13px; }
-.request-copy .replay-deck__bar { margin-top: 0; }
-.request-copy .replay-deck__meta { padding-top: 9px; border-top: 0.5px solid rgba(255, 255, 255, 0.14); }
-
-/* 上の帯。ラベルと状態を字送りで分ける */
-.replay-deck__top { font-size: 9.5px; letter-spacing: 0.2em; }
-.replay-deck__top b { letter-spacing: 0.14em; }
-
-/* PLAY。円形のボタンとして見せる */
-.replay-deck__play {
-  width: 30px;
-  height: 30px;
-  min-width: 44px;
-  min-height: 44px;
-  margin: -7px;
-  border-radius: 50%;
-  color: var(--cyan);
-  font-size: 13px;
-  transition: transform 180ms var(--ease-out), background-color 180ms ease-out;
-}
-.replay-deck__play::before {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 30px;
-  height: 30px;
-  border: 1.5px solid rgba(86, 216, 232, 0.55);
-  border-radius: 50%;
-  background: rgba(86, 216, 232, 0.09);
-  transform: translate(-50%, -50%);
-  content: "";
-}
-.replay-deck__play > span { position: relative; padding-left: 2px; }
-
-/* TRACK ラベルと曲名を階層で分ける */
-.replay-deck__track small {
-  font-size: 9px;
-  letter-spacing: 0.26em;
-  color: rgba(255, 255, 255, 0.5);
-}
-.replay-deck__track strong {
-  margin-top: 3px;
-  font-size: 15px;
-  letter-spacing: 0.01em;
-  font-variant-numeric: tabular-nums;
-}
-.replay-deck__track em {
-  padding: 3px 8px 4px;
-  border: 1px solid rgba(255, 74, 148, 0.5);
-  border-radius: 3px;
-  font-size: 10px;
-  letter-spacing: 0.06em;
-}
-
-/* progress bar。太くして、進行端に位置の点を置く */
-.replay-deck__bar { position: relative; height: 8px; border-radius: 2px; }
-.replay-deck__bar::after {
-  position: absolute;
-  top: 50%;
-  left: calc(var(--deck, 0) * 100%);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 7px rgba(86, 216, 232, 0.9);
-  transform: translate(-50%, -50%);
-  opacity: calc(min(1, var(--deck, 0) * 12));
-  content: "";
-}
-
-/* 数字は等幅。走っても桁が揺れない */
-.replay-deck__meta {
-  font-size: 10.5px;
-  letter-spacing: 0.08em;
-  font-variant-numeric: tabular-nums;
-}
-
-/* 触れる反応は小さく。過剰にしない */
-@media (hover: hover) and (pointer: fine) {
-  .replay-deck__play:hover { transform: scale(1.06); }
-  .replay-deck__play:hover::before { border-color: rgba(189, 248, 255, 0.9); background: rgba(86, 216, 232, 0.18); }
-  .request-copy .replay-deck:hover .replay-deck__track em { border-color: rgba(255, 74, 148, 0.85); }
-}
-.replay-deck__play:active { transform: scale(0.94); }
-
-/* ===================== 01 SONG REQUEST：コンパクトな段送り =====================
-   200vhのpinが上下に大きな色面を作っていたため、通常スクロールへ戻す。
-   UIの段送りはセクションがviewportを通過する進捗で駆動する。 */
-
-/* 上の帯はラベル1つになったので右へ寄せる */
-.replay-deck__top { justify-content: flex-end; }
-
-/* 曲名の列が2つになった */
-.replay-deck__track { grid-template-columns: auto minmax(0, 1fr); }
-
-/* REQUEST MODE は 55% で点灯。実機のようにパッと切り替える */
-.replay-deck__top b { opacity: 0.32; transition: opacity 120ms steps(1, end); }
-.replay-deck.is-mode-on .replay-deck__top b {
-  opacity: 1;
-  animation: blink 2.6s steps(1, end) infinite;
-}
-
-/* デッキを主役の大きさに。CDは装飾へ後退 */
-.request-copy .replay-deck { max-width: 440px; }
-/* pinされる .scene__in が基準になったので、位置を取り直す。
-   紙面の右上、写真の外側に掛ける */
-#experience .obj--disc {
-  width: clamp(96px, 11.5vw, 150px);
-  right: -2%;
-  top: 12%;
-}
 
 @media (min-width: 880px) {
   .scene--request { height: auto; }
@@ -5144,31 +3790,6 @@ a { color: inherit; }
     display: grid;
     align-content: normal;
     min-height: 0;
-  }
-
-  /* 段はJSが 0→1 のランプ（--s-*）で渡す。CSSは掛けるだけ */
-
-  /* 0-15% PLAYが押し込まれる。
-     入場ルール .motion-ready .replay-deck__play (0,2,0) が
-     translateY(7px) を当てていて負けていたので詳細度を合わせ、
-     入場の移動と押し込みを1つの transform にまとめる。 */
-  .motion-ready .replay-deck.is-playing .replay-deck__play {
-    transform: scale(calc(1 - 0.08 * var(--s-play, 0)));
-    transition: none;
-  }
-
-  /* 5-15% TRACK情報が下からマスクで出る。
-     15%開始だと pin 直後にデッキが空箱に見えたので前へ寄せた */
-  .replay-deck__track p { clip-path: inset(0 0 calc((1 - var(--s-track, 1)) * 100%) 0); }
-
-  /* 25%以降CDが回り、90-100%で回転しながら上へ抜ける */
-  /* 入場ルールの transition: opacity が残っていると、
-     スクラブした値が遅れて追従する（プレビューでは固まる）。
-     詳細度を上げて transition を切る。 */
-  .motion-ready .scene--request.is-scene-in .obj--disc {
-    transform: rotate(calc(var(--pin, 0) * 260deg)) translateY(calc(var(--s-exit, 0) * -70px));
-    opacity: calc(1 - var(--s-exit, 0));
-    transition: none;
   }
 
   /* 75-90% 写真が前へ。
@@ -5197,18 +3818,10 @@ a { color: inherit; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .purikura__track,
-  .seal--kira { animation: none; }
-  .purikura__track { transform: translate3d(0, -12%, 0); will-change: auto; }
-  .album { opacity: 1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
   .replay-deck__play,
   .replay-deck__track p,
   #experience .obj--disc,
   .request-photo { transform: none; clip-path: none; opacity: 1; }
-  .replay-deck__top b { opacity: 1; animation: none; }
 }
 
 /* ===================== 型（タイプスケール）の統一 =====================
@@ -5256,26 +3869,6 @@ a { color: inherit; }
 .event-date,
 .event-sheet .event-date { font-size: clamp(1.5rem, 2.6vw, 2.125rem); }
 
-/* ===================== 05 の 100 を図版から数字へ =====================
-   図版として扱う前提で組んでいた値（行送り0.72 / 字送り-0.07em /
-   紙の左端を突き抜ける負のマージン / 6pxの縁取り）は、
-   72px では全部やり過ぎになる。素の数字として組み直す。 */
-
-.bignum__ink,
-.bignum__ghost {
-  font-size: clamp(3rem, 5.4vw, 4.5rem);
-  letter-spacing: -0.03em;
-  line-height: 0.95;
-}
-.bignum__stack {
-  margin-left: 0;
-  line-height: 0.95;
-}
-/* 縁取りは字の太さに比例させる。6pxは416px用の値だった */
-.bignum__ink { -webkit-text-stroke: 2.5px var(--print-ink); }
-.bignum__ja { font-size: clamp(1.15rem, 1.9vw, 1.75rem); }
-.bignum__unit { padding-bottom: 0; }
-
 /* 100 が図版でなくなったので、左に置く意味がなくなった。
    「100分」→ 内訳 → 金額 → 注記 → CTA と縦に読ませる */
 @media (min-width: 880px) {
@@ -5309,8 +3902,6 @@ a { color: inherit; }
     align-items: center;
     gap: clamp(28px, 4vw, 64px);
   }
-  .price-copy { width: auto; }
-  .price-copy .paper-h { max-width: none; }
 
   /* 写真は角のアクセントではなく、右の列そのものに戻す */
   .price-photo {
@@ -5361,7 +3952,6 @@ a { color: inherit; }
     display: block;
     max-width: 760px;
   }
-  .price-copy { width: auto; }
   /* 箔シールは紙の右上角に戻す */
   .price-foil {
     left: auto;
@@ -5406,76 +3996,12 @@ a { color: inherit; }
 .price-info .lead-ami,
 .price-info .ink-button { align-self: flex-start; }
 .price-info .plan-prices { margin: 0; }
-.price-copy .paper-note { margin-bottom: 0; }
 
 /* ===================== シールの影を外す =====================
    支給素材は絵柄自体が白フチと光彩を持っている。そこへ
    drop-shadow を掛けると、輪郭が柔らかいラスターなので
    影が形に沿わず「薄い黒のもや」として全体に広がっていた。 */
 .y2k-sticker { filter: none; }
-
-/* ===================== 04 の見出し =====================
-   1) 全面写真の上なので、紙面の見出しと同じ40pxでは負ける
-   2) text-shadow が 30px のぼかしだけで、明るい部分では
-      効かず、暗い部分では「文字の下の薄い黒」として見えていた
-      → ぼかしを絞って輪郭に効かせ、広いもやをやめる */
-.scene--new-memory .scene-title,
-.memory-copy .scene-title {
-  font-size: clamp(2rem, 3.9vw, 3.25rem);
-  /* 影は完全に外す。可読性は .memory-copy の背景で担保する */
-  text-shadow: none;
-}
-
-/* ===================== 04 プリクラを左右対称に =====================
-   1本だと画面の左だけが重く、中央の見出しに対して非対称だった。
-   同じ帯を右にも置き、流れる向きを逆にする。
-   （同方向だと2本が1つの動きに見えて、対称の意味が消える） */
-
-.purikura--r {
-  left: auto;
-  right: clamp(-74px, -4.8vw, -40px);
-  transform: rotate(6deg);
-}
-/* 右は逆向きに流す。負の delay で位相をずらし、
-   左右で同じコマが並ばないようにする */
-.purikura--r .purikura__track {
-  /* 左右とも写真の下から入り、上へ抜ける。位相だけをずらす。 */
-  animation-direction: normal;
-  animation-delay: -9s;
-}
-
-@media (max-width: 767px) {
-  /* SPは幅が足りないので右は出さない */
-  .purikura--r { display: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .purikura--r .purikura__track { animation: none; }
-}
-
-/* 04 の見出しは全面写真の一番明るい部分（逆光のグラス）に重なる。
-   写真側の座標で覆いを当てても、文字がどこに来るかは
-   画面幅で変わるので当たらない。文字ブロック自身に地を敷く。 */
-.memory-photo::after {
-  /* 一様な覆い。位置によるムラを作らない */
-  /* 縁取りが可読性を担うようになったので、白文字のために
-     濃くしていた分を戻す。一様であることは保つ */
-  background: linear-gradient(
-    180deg,
-    rgba(7, 8, 10, 0.38),
-    rgba(7, 8, 10, 0.4) 45%,
-    rgba(7, 8, 10, 0.72)
-  );
-}
-
-/* 文字ブロックに地を敷くと、それ自体が
-   「文字の後ろのドロップシャドウ」に見えてしまった。
-   局所的な覆いをやめ、写真全体を均一に落として
-   白文字の地を作る（halo が出ない代わりに写真は暗くなる）。 */
-.scene--new-memory .memory-copy {
-  padding: clamp(16px, 2vw, 28px) clamp(20px, 3vw, 44px);
-  background: none;
-}
 
 /* ===================== 型：もう一段上げる =====================
    40px は数字としては一般的なLPのレンジだが、この誌面では
@@ -5501,111 +4027,11 @@ a { color: inherit; }
   font-size: clamp(15px, 1.4vw, 18px);
 }
 
-/* ===================== 05 の箔シール：案A =====================
-   03 の PLAY TOGETHER と同じピンクだったため、2枚が同じ物に
-   見えていた。山吹イエローに振って反復を断つ。
-   紙のクリーム(#fbf7ee)とは明度差があるので沈まない。
-   膨らみの影だけマゼンタを残し、03との血縁は保つ。 */
-
-.price-foil .foil__eyebrow {
-  background: #ff4aa2;
-}
-
-.price-foil .foil__word {
-  color: #ffd233;
-  /* 和文は字面が大きいのでラテンより一段落とす */
-  font-size: clamp(1.45rem, 2.35vw, 1.95rem);
-  line-height: 1.18;
-  letter-spacing: 0.02em;
-  text-shadow:
-    0 -1.5px 0 #fff3c4,
-    0 1px 0 #fcbe1c, 0 2px 0 #f5a90d, 0 3px 0 #e59205,
-    0 4px 0 #cf7a02, 0 5px 0 #b26400, 0 6px 0 #8f4f00,
-    0 7px 3px rgba(74, 30, 4, 0.4);
-}
-
-/* ===================== 04 日付シール =====================
-   四角い黄色の板に白フチを1本引いただけで、
-   「貼った物」に見えていなかった。プリクラ帳の日付シールとして
-   組み直す：型抜きの白フチ、丸い書体、ハート、曜日の小さい帯。
-   白フチは box-shadow ではなく drop-shadow を重ねて作る
-   （box-shadow だと角が四角いままで型抜きに見えない）。 */
-
-.album__ink .seal--date {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 5px;
-  padding: 6px 13px 7px;
-  border-radius: 999px 999px 999px 999px / 60% 60% 60% 60%;
-  background: linear-gradient(160deg, #ffe27a, #ffd23f 42%, #f7b81f);
-  box-shadow: none;
-  color: #4a3403;
-  font-family: var(--font-display);
-  font-size: 12.5px;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  filter:
-    drop-shadow(0 0 3.5px #fff)
-    drop-shadow(0 0 3.5px #fff)
-    drop-shadow(0 0 2.5px #fff)
-    drop-shadow(0 6px 9px rgba(0, 0, 0, 0.42));
-  transform: rotate(-6deg);
-}
-
-.album__ink .seal--date b {
-  color: #f0357f;
-  font-size: 11px;
-  line-height: 1;
-}
-
-/* 曜日は日付より一段小さく、色を落として添える */
-.album__ink .seal--date i {
-  color: #8a6407;
-  font-size: 8.5px;
-  font-style: normal;
-  letter-spacing: 0.14em;
-}
-
-@media (max-width: 767px) {
-  .album__ink .seal--date { padding: 5px 10px 6px; font-size: 11px; }
-  .album__ink .seal--date i { display: none; }
-}
-
-/* ===================== 03 シールの切れ =====================
-   1) .reveal-ready [data-reveal].is-in の clip-path: inset(0) が
-      型抜きのシールにも掛かっていた。矩形で切る意味が無いうえ、
-      縁の光彩が落ちて「途切れている」ように見えていた
-   2) 器の縦横比が 1.315 で、画像の 1.365 と合わず潰れていた */
-
-.y2k-sticker--play,
-.reveal-ready .y2k-sticker--play[data-reveal="sticker"],
-.reveal-ready .y2k-sticker--play[data-reveal="sticker"].is-in {
-  clip-path: none;
-}
-
 .y2k-sticker__surface img {
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 640 / 469;
-}
-
-/* ===================== 04 の暗転を止める =====================
-   .memory-photo::after は opacity: calc(0.72 + 0.16 * var(--pin))
-   で、スクロールするほど覆いが濃くなっていた。
-   1620px の pin 区間を通して黒く沈んでいく見え方になるので固定する。
-   0.8 は、これまで見え方を確認してきた pin=0.5 相当の濃さ。 */
-.memory-photo::after {
-  opacity: 0.8;
-}
-
-/* 抜ける直前の「画面ごと退く」演出は、04 では地色が
-   ほぼ黒(#0e0b0d)なので、opacity 0.6 まで落とすと
-   そのまま黒へ沈む＝スクロールで暗転する現象になっていた。
-   04 だけ止める（02・07 は地の作りが違うので残す）。 */
-.scene--new-memory .scene__pin {
-  transform: none;
-  opacity: 1;
 }
 
 /* ===================== 05 リードの網掛け =====================
@@ -5637,17 +4063,6 @@ a { color: inherit; }
   width: clamp(132px, 13vw, 168px);
 }
 
-.price-foil .foil__word {
-  color: #f7a80c;
-  font-size: clamp(1.3rem, 2.1vw, 1.75rem);
-  line-height: 1.14;
-  text-shadow:
-    0 -1.5px 0 #ffe9a8,
-    0 1px 0 #e08f04, 0 2px 0 #c97c02, 0 3px 0 #b06900,
-    0 4px 0 #955700, 0 5px 0 #7b4700, 0 6px 0 #5f3600,
-    0 7px 3px rgba(50, 26, 2, 0.46);
-}
-
 /* ===================== 05 CTAをホバーで押し込む =====================
    :active と同じ「押された状態」をホバーでも見せる。
    box-shadow の 3px が土台なので、その分だけ沈めて影を1pxに
@@ -5667,31 +4082,6 @@ a { color: inherit; }
     box-shadow: 0 1px 0 #9c1550;
   }
   .price-info .ink-button:hover i { color: #fff; }
-}
-
-/* ===================== 04 日付シールを画像へ =====================
-   CSSで組んだ黄色のピルから、支給素材のクロム／ホロ箔に差し替え。
-   絵柄が自前で白フチと光沢を持つので、こちらで足すのは
-   落ち影だけにする。 */
-
-.album__ink .seal--date {
-  display: block;
-  /* 176pxだと 520x132 の帯が高さ45pxまで潰れ、
-     クロムの階調が出ずに安く見えていた。倍近くまで上げる */
-  width: clamp(196px, 28vw, 420px);
-  padding: 0;
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
-  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.5));
-  transform: rotate(-6deg);
-}
-
-.album__ink .seal--date img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 640 / 177;
 }
 
 /* ===================== 06 の下：記憶の壁 =====================
@@ -5854,13 +4244,6 @@ a { color: inherit; }
   letter-spacing: 0.24em;
 }
 
-/* --- ルビ・FVの情報帯も角ゴシックへ --- */
-.ruby__t,
-.cover__request span,
-.cover__request small {
-  font-family: var(--font-main);
-}
-
 /* --- CTAは丸ゴシックのまま残す --- */
 /* 一度は角ゴシックへ変えたが戻した。予約ボタンはページで最も
    重要な要素で、丸ゴシックが持っていた愛嬌を汎用UIの見た目に
@@ -6018,14 +4401,9 @@ a { color: inherit; }
      奥に重ねた2枚目とシールも範囲に入れる必要があるので、
      矩形で切るのはやめて none にする。 */
   .reveal-ready .request-photo[data-reveal].is-in { clip-path: none; }
-  .play-photo {
-    width: min(78%, 300px);
-    margin-inline: auto;
-  }
   .scene--request .request-layout { gap: 28px; }
   /* 幅が減るぶん、高さの下限も下げる（余った箱が出ないように） */
   .request-photo { min-height: 0; }
-  .play-photo { min-height: 0; }
   .request-photo img,
   .play-photo img { aspect-ratio: 4 / 3; }
 }
@@ -6098,93 +4476,6 @@ body { padding-bottom: 0; }
   content: "";
 }
 
-/* ===================== 指示1・2・4：重なりの解消 =====================
-   実測（SP 390px）
-     04 見出し 20〜370 に対し、左のプリクラ帯が45px、
-        日付シールが192px 重なっていた
-     05 見出しに One More Time が SP115px / PC153px 重なっていた
-     03 のシールは 880px 未満で完全非表示だった            */
-
-/* --- 1) 04：帯を画面外へ寄せ、日付は写真だけの上部へ --- */
-/* 実測（SP 390px）: コピー塊はセクション下部（334〜462）にあり、
-   見出し(376〜446)の下は17pxしか無い。日付を「右下」に置くと
-   必ず見出しに掛かる。上半分（40〜330）は写真だけなので
-   そこへ逃がす。 */
-@media (max-width: 767px) {
-  .purikura--l {
-    left: -68px;
-    width: 84px;
-    /* 傾きが大きいと外接矩形が横に膨らんで見出しに掛かる。
-       帯は top/bottom で伸ばしているので translateY は付けない */
-    transform: rotate(-2.4deg);
-  }
-  /* 見出しの先頭にも内側余白を足して、帯との間を空ける */
-  .scene--new-memory .memory-copy { padding-inline: 30px; }
-
-  .album__ink .seal--date {
-    display: none;
-  }
-}
-
-/* ===================== 05 料金比較の視認性 =====================
-   関西・関東を縦に流すと比較するまでにスクロールが必要になる。
-   SPも2列を保ち、エリア名→金額の順で一目で比較できる
-   小さな料金票として整理する。 */
-.price-copy .plan-prices {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(8px, 1.6vw, 14px);
-}
-
-.price-copy .plan-prices > div {
-  position: relative;
-  min-width: 0;
-  gap: 7px;
-  padding: clamp(12px, 1.7vw, 17px) clamp(9px, 1.5vw, 15px) clamp(11px, 1.5vw, 15px);
-  border: 1px solid rgba(35, 24, 21, 0.2);
-  border-bottom: 3px solid var(--print-ink);
-  background: rgba(255, 255, 255, 0.62);
-}
-
-.price-copy .plan-prices > div::before {
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  width: 34%;
-  height: 4px;
-  background: var(--print-accent);
-  content: "";
-}
-
-.price-copy .plan-prices dt {
-  align-self: flex-start;
-  padding: 2px 7px 3px;
-  background: var(--print-accent);
-  color: #fff;
-  font-size: clamp(11px, 1.1vw, 12px);
-  line-height: 1.35;
-  letter-spacing: 0.15em;
-}
-
-.price-copy .plan-prices dd {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: nowrap;
-  margin: 0;
-  color: var(--print-ink);
-  font-size: clamp(2rem, 3.1vw, 2.6rem);
-  line-height: 1;
-}
-
-@media (max-width: 599px) {
-  .price-copy .plan-prices {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .price-copy .plan-prices dd {
-    font-size: clamp(1.8rem, 8.4vw, 2.2rem);
-  }
-}
-
 /* --- 2) 05：シールを見出しに重ねない --- */
 /* 紙の右上角へ、見出しより上の帯に収める。
    補助装飾なので見出しより強くしない（サイズを一段落とす） */
@@ -6203,37 +4494,6 @@ body { padding-bottom: 0; }
     right: 6px;
     width: clamp(96px, 26vw, 124px);
     transform: translateY(-42%) rotate(7deg) scale(1);
-  }
-}
-
-/* --- 4) 03：SPでもシールを出す --- */
-@media (max-width: 879px) {
-  .y2k-sticker--play {
-    display: block;
-    /* 写真の右上角。紙と写真の継ぎ目にまたがる */
-    left: auto;
-    right: 4%;
-    top: auto;
-    bottom: clamp(144px, 40vw, 168px);
-    width: clamp(100px, 30vw, 130px);
-  }
-  /* PCの大きな浮遊量は使わない。登場時だけ軽く動かす */
-  #play .y2k-sticker--play .y2k-sticker__surface {
-    transform: none;
-  }
-}
-
-/* ===================== 局所ブラッシュアップ最終調整 =====================
-   装飾を増やさず、コピーと操作領域を守るための調整だけを行う。 */
-
-/* 04：1メッセージに対して180vhは長いため、静けさを残して空走を短縮。 */
-@media (min-width: 768px) {
-  .scene--new-memory { height: 150vh; }
-
-  /* 固定CTAに日付シールが隠れない安全域。 */
-  .album__ink .seal--date {
-    bottom: max(165px, calc(141px + env(safe-area-inset-bottom, 0px)));
-    width: clamp(220px, 22vw, 300px);
   }
 }
 
@@ -6298,207 +4558,11 @@ body { padding-bottom: 0; }
   line-height: 1.28;
 }
 
-.scene--new-memory .scene-title,
-.memory-copy .scene-title {
-  margin-inline: auto;
-  white-space: nowrap;
-}
-
-@media (max-width: 767px) {
-  .scene--new-memory .scene-title,
-  .memory-copy .scene-title {
-    font-size: clamp(1.05rem, 5vw, 1.35rem);
-    letter-spacing: -0.06em;
-  }
-}
-
 /* 04：プリクラ写真はメイン写真の下部を横切り、右から左へ流す。
    4組の同一セットを1組分だけ送るため、継ぎ目なくループする。 */
 @keyframes purikura-flow-x {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-25%, 0, 0); }
-}
-
-.purikura--r {
-  display: none;
-}
-
-.purikura--l {
-  left: -14px;
-  right: -14px;
-  top: auto;
-  bottom: 70px;
-  width: auto;
-  height: clamp(140px, 16vh, 170px);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  background: #0e0b0d;
-  transform: rotate(-1.2deg);
-}
-
-.purikura--l .purikura__track,
-.purikura--r .purikura__track {
-  display: flex;
-  flex-direction: row;
-  width: max-content;
-  will-change: transform;
-}
-
-.purikura--l .purikura__set,
-.purikura--r .purikura__set {
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: row;
-  gap: 8px;
-  padding: 5px 4px 8px;
-}
-
-.purikura--l .purikura__cell,
-.purikura--r .purikura__cell {
-  flex: 0 0 clamp(170px, 15vw, 230px);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .purikura--l .purikura__track,
-  .purikura--r .purikura__track {
-    animation: purikura-flow-x 30s linear infinite;
-  }
-
-  .purikura--r .purikura__track {
-    animation-direction: reverse;
-    animation-delay: -8s;
-  }
-}
-
-@media (min-width: 768px) {
-  /* PCでは中央写真の左右に帯幅を確保し、縦2本を対称配置する。 */
-  .scene--new-memory {
-    --puri-rail: clamp(132px, 11vw, 170px);
-  }
-
-  .scene--new-memory .memory-photo {
-    left: calc(var(--puri-rail) + 14px);
-    right: calc(var(--puri-rail) + 14px);
-    bottom: 0;
-  }
-
-  .purikura--l,
-  .purikura--r {
-    /* 上側の切れ目を画面内に置かず、ヘッダーの裏まで通す。
-       下まで延長すると3セット分の帯長を超えて空白が出るため、
-       入り口は下部CTAの直上に保つ。 */
-    top: -72px;
-    bottom: 0;
-    width: var(--puri-rail);
-    height: auto;
-    /* 動いている写真を帯の上下端で切らない。
-       セクション外だけ .scene__pin 側で隠し、連続して流れて見せる。 */
-    overflow: visible;
-    display: block;
-    background: #0e0b0d;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
-  }
-
-  .purikura--l {
-    /* 傾けた外枠が画面外で切れない位置まで内側へ入れる。 */
-    left: 12px;
-    right: auto;
-    transform: rotate(-1.6deg);
-  }
-
-  .purikura--r {
-    left: auto;
-    right: 12px;
-    transform: rotate(1.6deg);
-  }
-
-  .purikura--l .purikura__track,
-  .purikura--r .purikura__track {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .purikura--l .purikura__set,
-  .purikura--r .purikura__set {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 8px;
-    padding: 5px 6px 9px;
-  }
-
-  .purikura--l .purikura__cell,
-  .purikura--r .purikura__cell {
-    flex: 0 0 auto;
-    width: 100%;
-  }
-}
-
-@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-  .purikura--l .purikura__track,
-  .purikura--r .purikura__track {
-    animation: purikura-flow 28s linear infinite;
-  }
-
-  .purikura--r .purikura__track {
-    animation-delay: -9s;
-  }
-}
-
-/* SPでも同じ方向へ流す。写真とコピーの境界に置き、
-   人物の顔と見出しを避ける。 */
-@media (max-width: 767px) {
-  .purikura--l {
-    left: -6px;
-    right: -6px;
-    top: auto;
-    bottom: 10px;
-    width: auto;
-    height: 88px;
-    overflow: hidden;
-    padding-block: 4px;
-    background: #0e0b0d;
-    transform: rotate(-1deg);
-  }
-
-  .purikura--l .purikura__track {
-    display: flex;
-    width: max-content;
-  }
-
-  .purikura--l .purikura__set {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    padding: 4px;
-  }
-
-  .purikura--l .purikura__cell {
-    flex-basis: clamp(108px, 32vw, 142px);
-    border-width: 3px;
-  }
-
-  /* 新しい乾杯写真は左端の人物がプリクラ帯に隠れやすい。
-     写真を左へ寄せ、帯の見える幅も少し抑えて3人の表情を残す。 */
-  .memory-photo img {
-    object-position: 15% 45%;
-  }
-
-  .scene--new-memory .memory-copy {
-    padding-top: 30px;
-    padding-bottom: 126px;
-    padding-left: 18px;
-    padding-right: 18px;
-  }
-}
-
-@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
-  .purikura--l .purikura__track {
-    animation-duration: 24s;
-  }
 }
 
 /* 02・04：写真セクションの白い見出し箱を撤去する最終指定。 */
@@ -6517,50 +4581,12 @@ body { padding-bottom: 0; }
   text-shadow: none;
 }
 
-/* 03 SP：シールを写真から外し、白い紙面の右上角へ。
-   ラベルと見出しを覆わないよう、紙面の外側に多く逃がして
-   角へ約1/3だけ重ねる。 */
-@media (max-width: 879px) {
-  #play .y2k-sticker--play {
-    top: -10px;
-    right: 0;
-    bottom: auto;
-    left: auto;
-    width: clamp(92px, 25vw, 106px);
-  }
-}
-
 /* 07 SP：上マージンからbodyの水色地が帯状に見えていたため、
    06の終端と最終写真を直接つなぐ。 */
 @media (max-width: 767px) {
   .final-night {
     margin-top: 0;
     margin-bottom: 0;
-  }
-}
-
-/* ===================== 03 シールを下へ =====================
-   実測では上端（PC y70〜247 / SP y12〜89）に置いていた。
-   紙面の下側へ移して、見出しとラベルから完全に離す。 */
-
-@media (min-width: 880px) {
-  #play .y2k-sticker--play {
-    top: auto;
-    bottom: clamp(38px, 5.4vw, 86px);
-    /* 41%だと本文（実測で右端660px）に掛かる。
-       紙の右端(723)より外へ出して、写真の左下にまたがらせる */
-    left: auto;
-    right: clamp(20%, 34%, 38%);
-  }
-}
-
-@media (max-width: 879px) {
-  #play .y2k-sticker--play {
-    top: auto;
-    bottom: 22px;
-    right: 8%;
-    left: auto;
-    width: clamp(96px, 27vw, 118px);
   }
 }
 
@@ -6620,29 +4646,9 @@ body { padding-bottom: 0; }
   width: clamp(26px, 7vw, 34px);
   transform: rotate(-14deg);
 }
-.request-seal--star {
-  left: auto;
-  top: -15px;
-  right: 14%;
-  width: clamp(24px, 6.4vw, 32px);
-  transform: rotate(9deg);
-}
-.request-seal--kira {
-  left: auto;
-  bottom: auto;
-  right: -10px;
-  top: 52%;
-  width: clamp(18px, 4.6vw, 24px);
-}
-
-/* 既存の .seal--star / .seal--kira は狭い画面で display:none に
-   なっている。01のシールはその指定より後で上書きする。 */
-.request-seal--star,
-.request-seal--kira { display: block; }
 
 /* PCではCDと役割が重なるので、キラだけ落とす */
 @media (min-width: 880px) {
-  .request-seal--kira { display: none; }
   /* PCは横幅に余裕があるので右下へ振る */
   .request-photo__back { left: 46%; right: -40px; bottom: -38px; }
 }
@@ -6753,62 +4759,6 @@ body { padding-bottom: 0; }
 
   .scene--request .scene__in {
     padding-bottom: clamp(64px, 17vw, 88px);
-  }
-}
-
-/* ===================== 03 / SPの写真を主役へ =====================
-   小さなシールを増やさず、写真の面積と1本のチェック帯で密度を作る。
-   01のホログラム台紙とは違うリズムにして、各場面の個性を分ける。 */
-
-.play-photo__check { display: none; }
-
-@media (max-width: 767px) {
-  .play-photo,
-  .reveal-ready .play-photo[data-reveal].is-in {
-    position: relative;
-    left: 50%;
-    z-index: 0;
-    isolation: isolate;
-    width: min(calc(100vw - 28px), 362px);
-    max-width: none;
-    margin-inline: 0;
-    padding-bottom: 7px;
-    overflow: visible;
-    clip-path: none;
-    translate: -50% 0;
-    rotate: -2deg;
-  }
-
-  .play-photo__check {
-    position: absolute;
-    z-index: -1;
-    top: 43%;
-    right: -22px;
-    left: -22px;
-    display: block;
-    height: clamp(64px, 19vw, 76px);
-    border: 1px solid rgba(255, 255, 255, 0.82);
-    background-color: #f39acb;
-    background-image:
-      linear-gradient(45deg, #68dce8 25%, transparent 25%),
-      linear-gradient(-45deg, #68dce8 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, #68dce8 75%),
-      linear-gradient(-45deg, transparent 75%, #68dce8 75%);
-    background-position: 0 0, 0 10px, 10px -10px, -10px 0;
-    background-size: 20px 20px;
-    box-shadow: 0 7px 16px rgba(37, 25, 63, 0.2);
-    transform: rotate(4deg);
-  }
-
-  .play-photo > img {
-    position: relative;
-    z-index: 2;
-  }
-
-  #play .y2k-sticker--play {
-    right: 2px;
-    bottom: 20px;
-    z-index: 6;
   }
 }
 
@@ -6943,15 +4893,6 @@ body { padding-bottom: 0; }
     line-height: 1.72;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.92);
   }
-
-  .scene--request .replay-deck {
-    width: 100%;
-    max-width: none;
-    margin-top: 22px;
-    border-color: rgba(189, 248, 255, 0.6);
-    background: rgba(10, 9, 22, 0.9);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
-  }
 }
 
 /* ===================== 02 / 客入りが見える動画位置 =====================
@@ -7004,254 +4945,6 @@ body { padding-bottom: 0; }
     width: clamp(96px, 29vw, 118px);
     transform: rotate(5deg);
   }
-}
-
-/* ===================== 01 携帯プレーヤー =====================
-   参考は2000年代のHDDプレーヤーの製品図。
-   ブランドマークは入れない（商標）。フラットベクターの質感で、
-   本体・画面・十字キー・イヤホンとケーブルのループで構成する。
-   JSのフックは従来のまま：--deck が進捗、data-deck-time が時間。 */
-
-.mdplayer {
-  position: relative;
-  display: block;
-  width: min(100%, 340px);
-  margin: clamp(18px, 2.4vw, 26px) 0 0;
-  padding: 0 0 26px 44px;
-}
-
-/* --- イヤホンとケーブル --- */
-.mdplayer__cable {
-  /* 枠全体を覆う。height:auto だと viewBox の比で潰れ、
-     ケーブルが本体の高さまで届かなかった */
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-}
-.mdplayer__wire {
-  fill: none;
-  stroke: #2f3238;
-  stroke-width: 4;
-  stroke-linecap: round;
-}
-.mdplayer__bud { fill: #17191d; }
-
-/* --- 本体 --- */
-.mdplayer__body {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: min(196px, 62%);
-  margin-left: auto;
-  margin-right: 12%;
-  padding: 16px 14px 18px;
-  border-radius: 10px 10px 13px 13px;
-  background:
-    linear-gradient(104deg, #f2f5fa 0%, #cfd8e6 22%, #eef2f8 48%, #c3cddd 78%, #e6ebf3 100%);
-  box-shadow:
-    inset 0 1px 0 #fff,
-    inset 0 -2px 4px rgba(60, 72, 92, 0.28),
-    0 3px 3px rgba(37, 25, 63, 0.2),
-    0 16px 28px rgba(37, 25, 63, 0.3);
-}
-
-/* 上端のヘッドホン端子と HOLD スイッチ */
-.mdplayer__jack {
-  position: absolute;
-  top: -7px;
-  right: 26px;
-  width: 26px;
-  height: 12px;
-  border-radius: 3px 3px 0 0;
-  background: linear-gradient(180deg, #3a3f46, #23272c);
-}
-.mdplayer__hold {
-  position: absolute;
-  top: -5px;
-  left: 24px;
-  width: 34px;
-  height: 8px;
-  border-radius: 3px 3px 0 0;
-  background: linear-gradient(180deg, #b9c3d2, #8e9aab);
-}
-
-/* --- 画面 --- */
-.mdplayer__screen {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  padding: 11px 11px 12px;
-  border-radius: 4px;
-  background: linear-gradient(168deg, #2b3560, #1b2245 62%, #161b38);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16), inset 0 2px 8px rgba(0, 0, 0, 0.5);
-  color: #cfe0ff;
-  font-family: var(--font-main);
-}
-.mdplayer__screen b {
-  align-self: flex-end;
-  color: #7f9ad6;
-  font-size: 8px;
-  font-weight: 900;
-  letter-spacing: 0.16em;
-}
-.mdplayer__screen p { display: grid; gap: 2px; margin: 0; }
-.mdplayer__screen small {
-  color: #7f9ad6;
-  font-size: 7.5px;
-  font-weight: 900;
-  letter-spacing: 0.2em;
-}
-.mdplayer__screen strong {
-  color: #eaf1ff;
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
-
-.mdplayer__bar {
-  position: relative;
-  height: 5px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.14);
-  overflow: hidden;
-}
-.mdplayer__bar i {
-  position: absolute;
-  inset: 0;
-  border-radius: 2px;
-  background: linear-gradient(90deg, #63e6ff, #ff6cc0);
-  transform: scaleX(var(--deck, 0));
-  transform-origin: left center;
-}
-.mdplayer__meta {
-  display: flex;
-  justify-content: space-between;
-  color: #8fa6dd;
-  font-size: 7.5px;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  font-variant-numeric: tabular-nums;
-}
-
-/* --- キー --- */
-.mdplayer__keys {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 7px;
-}
-.mdplayer__key {
-  display: grid;
-  place-items: center;
-  min-height: 22px;
-  border-radius: 3px;
-  background: linear-gradient(180deg, #cdd7e6, #a9b6c9);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 1px 1px rgba(50, 60, 78, 0.3);
-  color: #5c6a80;
-  font-size: 6.5px;
-  font-weight: 900;
-  line-height: 1.15;
-  letter-spacing: 0.06em;
-  text-align: center;
-}
-.mdplayer__key--stop::after {
-  width: 7px;
-  height: 7px;
-  background: #5c6a80;
-  content: "";
-}
-
-/* --- 十字キー --- */
-.mdplayer__pad {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 86px;
-  height: 86px;
-  margin: 2px auto 0;
-}
-.mdplayer__dir {
-  position: absolute;
-  width: 28px;
-  height: 25px;
-  background: linear-gradient(180deg, #cdd7e6, #a3b1c6);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
-}
-.mdplayer__dir--up { top: 0; border-radius: 5px 5px 0 0; }
-.mdplayer__dir--down { bottom: 0; border-radius: 0 0 5px 5px; }
-.mdplayer__dir--left { left: 0; width: 25px; height: 28px; border-radius: 5px 0 0 5px; }
-.mdplayer__dir--right { right: 0; width: 25px; height: 28px; border-radius: 0 5px 5px 0; }
-
-.mdplayer__play {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  padding: 0;
-  border: 0;
-  border-radius: 7px;
-  background: linear-gradient(180deg, #dbe3ef, #b3c0d2);
-  box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(50, 60, 78, 0.35);
-  color: #46536a;
-  font-size: 11px;
-  cursor: pointer;
-}
-.mdplayer__play:active { transform: translateY(1px); }
-
-@media (max-width: 879px) {
-  .mdplayer { width: 100%; padding-left: 34px; }
-  .mdplayer__body { width: min(184px, 58%); margin-right: 6%; }
-}
-
-/* ===================== プレーヤーを製品図に寄せる =====================
-   参考図は「左上に小さな仕様表記／大きな本体／フラットな面」で
-   構成されている。陰影を浅くして、図版としての読みを強める。 */
-
-.mdplayer { padding-top: 52px; }
-
-.mdplayer__spec {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 3;
-  display: grid;
-  gap: 3px;
-  margin: 0;
-  color: var(--print-ink);
-  font-family: var(--font-main);
-}
-.mdplayer__spec b {
-  font-size: 8.5px;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  line-height: 1.1;
-}
-
-/* 陰影を浅くしてベクター画らしくする */
-.mdplayer__body {
-  background: linear-gradient(100deg, #eff3f9 0%, #d5dde9 30%, #eef2f8 56%, #cad4e2 84%, #e9eef5 100%);
-  box-shadow:
-    inset 0 1px 0 #fff,
-    inset 0 -1px 2px rgba(60, 72, 92, 0.18),
-    0 10px 20px rgba(37, 25, 63, 0.2);
-}
-.mdplayer__key {
-  background: #c4cedd;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-}
-.mdplayer__dir {
-  background: #bdc8d8;
-  box-shadow: none;
-}
-.mdplayer__play {
-  background: #cfd9e7;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 /* ===================== 01 / 横型MD＋写真とコピーの分離 =====================
@@ -7307,50 +5000,6 @@ body { padding-bottom: 0; }
   letter-spacing: -0.045em;
 }
 
-/* 画面・補助キー・再生キーを横一列にしたMD本体。 */
-.scene--request .mdplayer {
-  width: min(100%, 570px);
-  margin-top: clamp(22px, 2.5vw, 30px);
-  padding: 40px 0 4px;
-}
-
-.scene--request .mdplayer__cable { display: none; }
-
-.scene--request .mdplayer__body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 104px 78px;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-  margin: 0;
-  padding: 16px;
-  border-radius: 11px;
-}
-
-.scene--request .mdplayer__screen {
-  min-width: 0;
-  min-height: 116px;
-  justify-content: center;
-}
-
-.scene--request .mdplayer__keys {
-  grid-template-columns: 1fr 1fr;
-  align-content: center;
-}
-
-.scene--request .mdplayer__key { min-height: 31px; }
-
-.scene--request .mdplayer__pad {
-  width: 72px;
-  height: 72px;
-  margin: 0;
-}
-
-.scene--request .mdplayer__play {
-  width: 34px;
-  height: 34px;
-}
-
 /* SPも写真を上、コピーを下へ分離する。 */
 @media (max-width: 767px) {
   .scene--request {
@@ -7400,31 +5049,6 @@ body { padding-bottom: 0; }
     margin-top: 0;
     font-size: clamp(1.9rem, 8.7vw, 2.35rem);
   }
-
-  .scene--request .mdplayer {
-    width: 100%;
-    margin-top: 22px;
-    padding: 34px 0 0;
-  }
-
-  .scene--request .mdplayer__spec { display: none; }
-
-  .scene--request .mdplayer__body {
-    grid-template-columns: minmax(0, 1fr) 76px 62px;
-    gap: 9px;
-    padding: 11px;
-  }
-
-  .scene--request .mdplayer__screen {
-    min-height: 102px;
-    padding: 9px;
-  }
-
-  .scene--request .mdplayer__screen strong { font-size: 10px; }
-  .scene--request .mdplayer__key { min-height: 27px; font-size: 5.8px; }
-  .scene--request .mdplayer__pad { width: 58px; height: 58px; }
-  .scene--request .mdplayer__dir { scale: 0.8; }
-  .scene--request .mdplayer__play { width: 30px; height: 30px; }
 }
 
 /* ===================== 01 / 02と同じ全面写真シーン（PC） =====================
@@ -7549,23 +5173,6 @@ body { padding-bottom: 0; }
     color: rgba(255, 255, 255, 0.9);
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
   }
-
-  .scene--request .mdplayer {
-    grid-column: 2;
-    grid-row: 1 / 4;
-    align-self: end;
-    width: 100%;
-    max-width: 570px;
-    margin: 0;
-  }
-
-  .scene--request .mdplayer__spec { color: rgba(255, 255, 255, 0.78); }
-
-  .scene--request .obj--disc {
-    z-index: 4;
-    top: 12%;
-    right: -2%;
-  }
 }
 
 /* ===================== 02 / 最終配置 ===================== */
@@ -7619,34 +5226,6 @@ body { padding-bottom: 0; }
   }
 }
 
-/* ===================== 03 料金：白い箱をやめる =====================
-   クリームの紙(#fbf7ee)の上に rgba(255,255,255,.62) の箱を
-   置いていたため、Webの部品を貼り付けたように見えていた。
-   紙面の表組みの作法に戻す：地は紙のまま、罫で仕切る。
-   エリア名のマゼンタのタブは「見出しの札」として残す。 */
-
-.price-copy .plan-prices > div {
-  padding: 10px 0 12px;
-  border: 0;
-  border-top: 1px solid rgba(35, 24, 21, 0.24);
-  border-bottom: 2.5px solid var(--print-ink);
-  background: none;
-  box-shadow: none;
-}
-/* 角の色帯も箱ありきの飾りだったので落とす */
-.price-copy .plan-prices > div::before { display: none; }
-
-.price-copy .plan-prices dt {
-  align-self: flex-start;
-  margin-bottom: 2px;
-}
-
-/* 数字は紙に直接刷った体にする */
-.price-copy .plan-prices dd {
-  color: var(--print-ink);
-  letter-spacing: -0.03em;
-}
-
 /* ===================== 01 ポータブルMD =====================
    前案はHDDプレーヤー型（縦長バー＋大画面）で、iPod以降の
    記号になっていた。MDディスクは72mm角なので、本体は平たい
@@ -7663,243 +5242,8 @@ body { padding-bottom: 0; }
   aspect-ratio: 340 / 300;
 }
 
-.md__spec {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: grid;
-  gap: 3px;
-  margin: 0;
-  color: var(--print-ink);
-  font-family: var(--font-main);
-}
-.md__spec b { font-size: 8px; font-weight: 900; letter-spacing: 0.14em; line-height: 1.1; }
-
-/* --- ケーブルとイヤホン --- */
-.md__cable {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-}
-.md__wire { fill: none; stroke: #2f3238; stroke-width: 3.4; stroke-linecap: round; }
-.md__bud { fill: #17191d; }
-
-/* --- 本体。MDディスクに合わせた平たい正方形 --- */
-.md__deck {
-  position: absolute;
-  top: 46px;
-  right: 0;
-  z-index: 2;
-  width: 156px;
-  aspect-ratio: 80 / 74;
-  border-radius: 7px;
-  background:
-    linear-gradient(128deg, #eef2f7 0%, #c9d3e0 26%, #e8edf4 52%, #b9c5d5 80%, #dfe6ee 100%);
-  box-shadow:
-    inset 0 1px 0 #fff,
-    inset 0 -1px 2px rgba(60, 72, 92, 0.22),
-    0 8px 16px rgba(37, 25, 63, 0.24);
-}
-
-/* 蓋のシーム。MDは上面がまるごと蓋 */
-.md__lid {
-  position: absolute;
-  inset: 7px 7px 15px;
-  border-radius: 4px;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.75),
-    0 0 0 1px rgba(84, 96, 116, 0.35);
-}
-/* ヒンジ側（奥）の帯 */
-.md__hinge {
-  position: absolute;
-  top: 11px;
-  left: 18%;
-  width: 64%;
-  height: 3px;
-  border-radius: 2px;
-  background: rgba(84, 96, 116, 0.3);
-}
-/* ヘッドホン端子 */
-.md__jack {
-  position: absolute;
-  right: 16px;
-  bottom: -6px;
-  width: 22px;
-  height: 10px;
-  border-radius: 0 0 3px 3px;
-  background: linear-gradient(180deg, #3a3f46, #23272c);
-}
-/* OPEN スライダー */
-.md__open {
-  position: absolute;
-  left: 10px;
-  bottom: 4px;
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 9px;
-  border-radius: 2px;
-  background: #aab6c6;
-  color: #4d596c;
-  font-family: var(--font-main);
-  font-size: 5.5px;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-}
-/* ジョグダイヤル */
-.md__jog {
-  position: absolute;
-  right: 14px;
-  bottom: 20px;
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: conic-gradient(from 210deg, #d7dfea, #aeb9c9, #e4eaf1, #b6c1d0, #d7dfea);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7), 0 1px 2px rgba(50, 60, 78, 0.3);
-}
-.md__jog i {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: #9aa7b8;
-}
-/* ネジ。物としての手掛かり */
-.md__screw {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: rgba(84, 96, 116, 0.45);
-}
-.md__screw--a { left: 9px; top: 9px; }
-.md__screw--b { right: 9px; top: 9px; }
-
-/* --- 有線リモコン --- */
-.md__remote {
-  position: absolute;
-  left: 6%;
-  bottom: 26px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  width: 104px;
-  padding: 9px 8px 11px;
-  border-radius: 6px;
-  background: linear-gradient(120deg, #e9eef5, #c2ccda 46%, #dfe6ee);
-  box-shadow:
-    inset 0 1px 0 #fff,
-    0 6px 12px rgba(37, 25, 63, 0.26);
-}
-/* 上端の回転カラー（早送り／巻き戻し） */
-.md__collar {
-  position: absolute;
-  top: -7px;
-  left: 50%;
-  width: 34px;
-  height: 12px;
-  border-radius: 3px 3px 0 0;
-  background: linear-gradient(180deg, #cfd8e4, #9fabbb);
-  transform: translateX(-50%);
-}
-/* 裏のクリップ */
-.md__clip {
-  position: absolute;
-  right: -5px;
-  top: 26%;
-  width: 5px;
-  height: 34px;
-  border-radius: 0 3px 3px 0;
-  background: #9fabbb;
-}
-
-/* --- リモコンの液晶。当時どおりモノクロ --- */
-.md__lcd {
-  display: grid;
-  gap: 3px;
-  width: 100%;
-  padding: 6px 6px 7px;
-  border-radius: 2px;
-  /* 黄緑のバックライト。ドット感を薄く重ねる */
-  background:
-    repeating-linear-gradient(90deg, rgba(60, 74, 30, 0.09) 0 1px, transparent 1px 2px),
-    linear-gradient(170deg, #cfd98a, #b9c672);
-  box-shadow: inset 0 0 0 1px rgba(70, 84, 40, 0.5), inset 0 1px 3px rgba(50, 62, 26, 0.35);
-  color: #2c3a12;
-  font-family: var(--font-main);
-}
-.md__lcd b {
-  justify-self: end;
-  font-size: 5.5px;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-}
-.md__lcd p {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: baseline;
-  gap: 3px;
-  margin: 0;
-}
-.md__lcd small { font-size: 5.5px; font-weight: 900; letter-spacing: 0.06em; }
-.md__lcd strong {
-  overflow: hidden;
-  font-size: 7.5px;
-  font-weight: 700;
-  letter-spacing: 0;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-/* 進捗はセグメント。当時の液晶は滑らかに伸びない */
-.md__bar {
-  position: relative;
-  height: 4px;
-  background: repeating-linear-gradient(90deg, rgba(54, 68, 26, 0.22) 0 4px, transparent 4px 6px);
-}
-.md__bar i {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(90deg, #2c3a12 0 4px, transparent 4px 6px);
-  /* scaleX だと升目まで伸びるので、切り出しで進める */
-  clip-path: inset(0 calc((1 - var(--deck, 0)) * 100%) 0 0);
-}
-.md__meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 5.5px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums;
-}
-
-.md__play {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: linear-gradient(180deg, #dbe3ef, #adbaca);
-  box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(50, 60, 78, 0.32);
-  color: #46536a;
-  font-size: 9px;
-  cursor: pointer;
-}
-.md__play:active { transform: translateY(1px); }
-
 @media (max-width: 879px) {
   .md { width: 100%; }
-  .md__deck { width: 44%; }
-  .md__remote { width: 30%; min-width: 92px; }
 }
 
 /* ===================== 03 料金：右に写真を立てる =====================
@@ -7916,7 +5260,6 @@ body { padding-bottom: 0; }
     gap: clamp(28px, 4vw, 66px);
     max-width: min(var(--content-max), 100%);
   }
-  .price-copy { width: auto; }
 
   .price-photo {
     position: relative;
@@ -7968,68 +5311,6 @@ body { padding-bottom: 0; }
   }
 }
 
-/* MDの仕様表記は写真の上に載るので、暗いインクだと読めない */
-.md__spec b { color: rgba(255, 255, 255, 0.86); }
-.md__spec { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); }
-
-/* ===================== MDを写真の上で「物」にする =====================
-   紙面向けに組んだ明るい銀のままだと、暗い写真の上では
-   白い板にしか見えず、蓋のシームもジョグも沈んでいた。
-   当時のMDに多かった濃色の金属に寄せ、面と面の境を立てる。 */
-
-.md__deck {
-  background:
-    linear-gradient(128deg, #9aa6b6 0%, #5f6b7c 24%, #8a95a5 48%, #4d5867 78%, #7d8899 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.5),
-    inset 0 -1px 2px rgba(12, 18, 28, 0.5),
-    0 10px 20px rgba(10, 6, 20, 0.5);
-}
-
-/* 蓋。一段明るい面にして、周囲に落ちる影で段差を作る */
-.md__lid {
-  inset: 8px 8px 17px;
-  border-radius: 4px;
-  background: linear-gradient(140deg, #aab5c4, #77839400 42%, #98a3b2);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    0 1px 0 rgba(255, 255, 255, 0.28),
-    0 -1px 0 rgba(12, 18, 28, 0.45);
-}
-.md__hinge { background: rgba(16, 22, 32, 0.5); height: 2.5px; }
-
-.md__open {
-  background: #39424f;
-  color: rgba(255, 255, 255, 0.8);
-}
-.md__jog {
-  right: 13px;
-  bottom: 18px;
-  width: 34px;
-  height: 34px;
-  background: conic-gradient(from 210deg, #b3bdcb, #6b7787, #c3ccd8, #5d6879, #b3bdcb);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45), 0 2px 3px rgba(10, 6, 20, 0.45);
-}
-.md__jog i { background: #3f4956; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3); }
-.md__screw { background: rgba(14, 20, 30, 0.55); }
-.md__jack { background: linear-gradient(180deg, #232830, #14181e); }
-
-/* リモコンも本体に合わせて一段落とす */
-.md__remote {
-  background: linear-gradient(120deg, #b6c1cf, #7d8998 46%, #a7b2c0);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 8px 14px rgba(10, 6, 20, 0.45);
-}
-.md__collar { background: linear-gradient(180deg, #aab5c3, #6f7a89); }
-.md__clip { background: #6f7a89; }
-.md__play {
-  background: linear-gradient(180deg, #c6d0dc, #8b96a6);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 2px rgba(10, 6, 20, 0.4);
-  color: #2b3340;
-}
-
-/* ケーブルは暗い写真だと沈むので、わずかに明るく */
-.md__wire { stroke: #1b1f26; stroke-width: 3.6; }
-
 /* 右カラムの上端に置くと人物の顔に重なる。
    卓の高さまで下げて、物が置かれているように見せる。 */
 @media (min-width: 880px) {
@@ -8053,188 +5334,6 @@ body { padding-bottom: 0; }
   isolation: isolate;
 }
 
-.scene--request .md__spec {
-  top: 8px;
-  left: 0;
-  z-index: 3;
-  gap: 2px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.72);
-}
-
-.scene--request .md__spec b {
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 8px;
-  letter-spacing: 0.13em;
-}
-
-.scene--request .md__cable {
-  z-index: 0;
-  overflow: visible;
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.16));
-}
-
-.scene--request .md__wire {
-  stroke: #20242b;
-  stroke-width: 4;
-}
-
-.scene--request .md__deck {
-  top: 22px;
-  right: 2px;
-  z-index: 2;
-  width: 196px;
-  aspect-ratio: 80 / 74;
-  border: 1px solid rgba(246, 249, 253, 0.5);
-  border-radius: 10px;
-  background:
-    linear-gradient(90deg, transparent 0 48%, rgba(255, 255, 255, 0.16) 49% 51%, transparent 52%),
-    linear-gradient(132deg, #d8dee7 0%, #8c98a8 22%, #c6cfda 46%, #697585 74%, #aeb8c5 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.84),
-    inset 0 -2px 3px rgba(23, 30, 40, 0.38),
-    0 14px 24px rgba(7, 4, 16, 0.48);
-}
-
-.scene--request .md__lid {
-  inset: 11px 11px 22px;
-  overflow: hidden;
-  border: 1px solid rgba(32, 40, 52, 0.44);
-  border-radius: 6px;
-  background:
-    linear-gradient(145deg, rgba(237, 243, 249, 0.74), rgba(105, 119, 137, 0.62)),
-    #8f9bab;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.72),
-    0 1px 0 rgba(255, 255, 255, 0.22),
-    0 2px 5px rgba(18, 24, 34, 0.28);
-}
-
-/* 透明窓から見えるMDディスク。大画面UIではなく「物」の記号にする。 */
-.scene--request .md__lid::before {
-  position: absolute;
-  left: 50%;
-  top: 48%;
-  width: 108px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, #222a35 0 7%, #d5dce5 7.5% 15%, transparent 15.5%),
-    conic-gradient(from 20deg, #c6e9f2, #f2bed8, #f3e4a8, #9de2dd, #c8c3ef, #c6e9f2);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72), 0 1px 4px rgba(17, 23, 32, 0.3);
-  content: "";
-  opacity: 0.8;
-  transform: translate(-50%, -50%);
-}
-
-.scene--request .md__lid::after {
-  position: absolute;
-  left: 14px;
-  bottom: 10px;
-  color: rgba(31, 39, 52, 0.74);
-  font-family: var(--font-main);
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: 0.16em;
-  content: "MINI DISC";
-}
-
-.scene--request .md__hinge {
-  top: 15px;
-  left: 22%;
-  z-index: 3;
-  width: 56%;
-  background: rgba(29, 37, 49, 0.42);
-}
-
-.scene--request .md__open {
-  left: 12px;
-  bottom: 6px;
-  width: 48px;
-  height: 10px;
-  background: #46515f;
-  color: rgba(255, 255, 255, 0.82);
-}
-
-.scene--request .md__jog {
-  right: 15px;
-  bottom: 24px;
-  z-index: 4;
-  width: 38px;
-  height: 38px;
-}
-
-.scene--request .md__remote {
-  left: 0;
-  top: 88px;
-  bottom: auto;
-  z-index: 3;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 42px;
-  align-items: center;
-  gap: 10px;
-  width: 300px;
-  min-width: 0;
-  padding: 11px 12px;
-  border: 1px solid rgba(242, 246, 251, 0.5);
-  border-radius: 9px;
-  background: linear-gradient(118deg, #c6ced9, #788493 48%, #aab5c2);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.62),
-    0 10px 18px rgba(7, 4, 16, 0.46);
-}
-
-.scene--request .md__remote::after {
-  position: absolute;
-  left: 13px;
-  bottom: -13px;
-  color: rgba(255, 255, 255, 0.62);
-  font-family: var(--font-main);
-  font-size: 6px;
-  font-weight: 900;
-  letter-spacing: 0.16em;
-  content: "HOLD   DISPLAY   VOL";
-}
-
-.scene--request .md__collar {
-  top: -6px;
-  left: 34px;
-  width: 52px;
-  height: 10px;
-  transform: none;
-}
-
-.scene--request .md__clip {
-  right: 16px;
-  top: -5px;
-  width: 54px;
-  height: 5px;
-  border-radius: 3px 3px 0 0;
-}
-
-.scene--request .md__lcd {
-  gap: 4px;
-  min-width: 0;
-  padding: 7px 9px 8px;
-}
-
-.scene--request .md__lcd b,
-.scene--request .md__lcd small,
-.scene--request .md__meta { font-size: 6px; }
-
-.scene--request .md__lcd strong {
-  font-size: 9px;
-  letter-spacing: 0.015em;
-}
-
-.scene--request .md__bar { height: 5px; }
-
-.scene--request .md__play {
-  width: 40px;
-  height: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  font-size: 12px;
-}
-
 @media (min-width: 880px) {
   .scene--request .request-copy .sheet__face {
     transform: translateY(-40px);
@@ -8255,48 +5354,10 @@ body { padding-bottom: 0; }
     height: 176px;
     margin: 22px auto 0;
   }
-
-  .scene--request .md__spec,
-  .scene--request .md__cable { display: none; }
-
-  .scene--request .md__deck {
-    top: 2px;
-    right: 0;
-    width: 136px;
-    border-radius: 8px;
-  }
-
-  .scene--request .md__lid { inset: 8px 8px 17px; }
-  .scene--request .md__lid::before { width: 74px; }
-  .scene--request .md__lid::after { left: 9px; bottom: 7px; font-size: 6px; }
-  .scene--request .md__hinge { top: 11px; }
-  .scene--request .md__open { left: 8px; bottom: 4px; width: 36px; height: 8px; }
-  .scene--request .md__jog { right: 10px; bottom: 18px; width: 29px; height: 29px; }
-
-  .scene--request .md__remote {
-    left: 0;
-    top: 76px;
-    grid-template-columns: minmax(0, 1fr) 34px;
-    gap: 7px;
-    width: 220px;
-    padding: 9px;
-    border-radius: 7px;
-  }
-
-  .scene--request .md__remote::after { left: 10px; bottom: -11px; font-size: 5px; }
-  .scene--request .md__collar { left: 24px; width: 42px; }
-  .scene--request .md__lcd { padding: 6px 7px; }
-  .scene--request .md__lcd b,
-  .scene--request .md__lcd small,
-  .scene--request .md__meta { font-size: 5px; }
-  .scene--request .md__lcd strong { font-size: 7px; }
-  .scene--request .md__play { width: 32px; height: 32px; font-size: 9px; }
 }
 
 @media (max-width: 380px) {
   .scene--request .md { height: 164px; }
-  .scene--request .md__deck { width: 124px; }
-  .scene--request .md__remote { top: 70px; width: 204px; }
 }
 
 /* ===================== 01 / 02 を03と同じ地へ =====================
@@ -8390,13 +5451,6 @@ body { padding-bottom: 0; }
   }
 }
 
-/* 01の最終構図：見出し群は写真内、MDは写真の次段。 */
-.scene--request .request-photo-copy {
-  position: absolute;
-  inset: auto auto 0 0;
-  z-index: 5;
-}
-
 @media (min-width: 880px) {
   .scene--request .request-copy .sheet__face {
     display: flex;
@@ -8457,13 +5511,6 @@ body { padding-bottom: 0; }
     background:
       linear-gradient(180deg, transparent 34%, rgba(10, 7, 14, 0.1) 48%, rgba(10, 7, 14, 0.9) 100%),
       linear-gradient(90deg, rgba(10, 7, 14, 0.34), transparent 78%);
-  }
-
-  .scene--request .request-photo-copy {
-    position: absolute;
-    inset: auto 0 0;
-    width: 100%;
-    padding: 0 18px 26px;
   }
 
   .scene--request .request-copy.sheet {
@@ -8868,30 +5915,6 @@ body { padding-bottom: 0; }
 
 .price-zone .price-photo figcaption { display: none; }
 
-.price-zone .price-copy {
-  position: relative;
-  z-index: 2;
-  align-self: end;
-  width: min(680px, 58%);
-  margin: 0;
-  padding: clamp(52px, 6vw, 84px) 0 clamp(90px, 7vw, 110px) var(--pad-x);
-  color: #fff;
-  background: transparent;
-  box-shadow: none;
-  transform: none;
-}
-
-.price-zone .price-copy > .sheet__fiber,
-.price-zone .price-copy > .tape { display: none; }
-
-.price-zone .price-copy .sheet__face {
-  padding: 0;
-  color: inherit;
-  background: transparent;
-  box-shadow: none;
-  clip-path: none;
-}
-
 .price-zone .scene-label {
   margin-bottom: clamp(14px, 1.7vw, 22px);
   color: rgba(255, 255, 255, 0.82);
@@ -8902,16 +5925,6 @@ body { padding-bottom: 0; }
 .price-zone .scene-label span { color: #ff5ca4; }
 .price-zone .scene-label i { background: #ff5ca4; }
 .price-zone .scene-label em { color: rgba(255, 255, 255, 0.62); }
-
-.price-zone .price-copy .paper-h {
-  max-width: none;
-  color: #ff5ca4;
-  font-family: var(--font-main);
-  font-size: clamp(2.35rem, 4.4vw, 4rem);
-  line-height: 1.14;
-  letter-spacing: -0.05em;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.72);
-}
 
 .price-zone .price-main { margin-top: clamp(18px, 2vw, 26px); }
 
@@ -8925,29 +5938,6 @@ body { padding-bottom: 0; }
   border-left-color: #ff5ca4;
   background: rgba(10, 7, 12, 0.26);
   text-shadow: 0 1px 5px rgba(0, 0, 0, 0.72);
-}
-
-.price-zone .price-copy .plan-prices {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(12px, 1.8vw, 22px);
-}
-
-.price-zone .price-copy .plan-prices > div {
-  padding: 10px 0 12px;
-  border-top-color: rgba(255, 255, 255, 0.34);
-  border-bottom-color: rgba(255, 255, 255, 0.92);
-}
-
-.price-zone .price-copy .plan-prices dt {
-  padding: 2px 8px 3px;
-  color: #fff;
-  background: #f23f8b;
-}
-
-.price-zone .price-copy .plan-prices dd {
-  color: #fff;
-  font-size: clamp(2.25rem, 3.7vw, 3.35rem);
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.72);
 }
 
 .price-zone .paper-note {
@@ -8990,18 +5980,9 @@ body { padding-bottom: 0; }
     );
   }
 
-  .price-zone .price-copy {
-    width: 100%;
-    padding: 0 18px calc(150px + env(safe-area-inset-bottom, 0px));
-  }
-
   .price-zone .scene-label {
     margin-bottom: 13px;
     font-size: 14px;
-  }
-
-  .price-zone .price-copy .paper-h {
-    font-size: clamp(2rem, 9vw, 2.45rem);
   }
 
   .price-zone .price-main { margin-top: 16px; }
@@ -9010,15 +5991,6 @@ body { padding-bottom: 0; }
   .price-zone .lead-ami {
     padding: 10px 11px;
     font-size: 13px;
-  }
-
-  .price-zone .price-copy .plan-prices {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-
-  .price-zone .price-copy .plan-prices dd {
-    font-size: clamp(2rem, 10vw, 2.55rem);
   }
 
   .price-zone .paper-note {
@@ -10056,5 +7028,109 @@ body { padding-bottom: 0; }
   .tama.is-hit .tama__pet,
   .tama.is-miss .tama__body {
     animation: none;
+  }
+}
+
+/* ===================== 01 / 見出し・写真・本文の3層構成 =====================
+   見出しは写真の前でシーンを宣言し、本文だけを写真下部の紙面へ。
+   PCは紙を浅く重ね、SPは写真と本文を分離して読みやすさを優先する。 */
+.scene--request .scene__in.request-layout {
+  grid-template-rows: auto auto auto;
+}
+
+.scene--request .request-heading {
+  position: relative;
+  z-index: 3;
+  grid-column: 1;
+  grid-row: 1;
+  width: min(1480px, 100%);
+}
+
+.scene--request .request-heading .scene-label {
+  margin: 0 0 clamp(14px, 1.7vw, 22px);
+  color: var(--print-sub);
+}
+
+.scene--request .request-heading .scene-label :is(b, span) {
+  color: var(--print-accent);
+}
+
+.scene--request .request-heading .scene-label i {
+  background: var(--print-accent);
+}
+
+.scene--request .request-heading .paper-h {
+  max-width: 12em;
+  margin: 0;
+  color: var(--print-accent);
+  font-family: var(--font-main);
+  font-size: clamp(2.35rem, 4.1vw, 3.85rem);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -0.055em;
+  text-shadow: none;
+}
+
+.scene--request .request-photo,
+.reveal-ready .scene--request .request-photo[data-reveal].is-in {
+  grid-row: 2;
+}
+
+.scene--request .request-copy.sheet {
+  grid-column: 1;
+  grid-row: 3;
+  width: min(820px, calc(100% - clamp(40px, 10vw, 160px)));
+  margin: clamp(-42px, -3vw, -30px) auto 0;
+}
+
+.scene--request .request-copy .sheet__face {
+  display: block;
+  padding: clamp(24px, 2.8vw, 34px) clamp(28px, 4vw, 50px) clamp(30px, 3.6vw, 44px);
+}
+
+.scene--request .request-copy__text {
+  width: 100%;
+}
+
+.scene--request .request-copy__text .scene-text {
+  max-width: 46em;
+  margin: 0;
+  font-size: clamp(14px, 1.2vw, 16px);
+  line-height: 1.85;
+}
+
+@media (max-width: 879px) {
+  .scene--request .scene__in.request-layout {
+    grid-template-rows: auto auto auto;
+  }
+
+  .scene--request .request-heading {
+    width: 100%;
+    margin-bottom: 20px;
+    padding-inline: 6px;
+  }
+
+  .scene--request .request-heading .scene-label {
+    margin-bottom: 13px;
+    font-size: 14px;
+  }
+
+  .scene--request .request-heading .paper-h {
+    max-width: 11em;
+    font-size: clamp(2rem, 9.4vw, 2.55rem);
+  }
+
+  .scene--request .request-copy.sheet {
+    width: calc(100% - 12px);
+    margin: 18px auto 0;
+  }
+
+  .scene--request .request-copy .sheet__face {
+    padding: 20px 18px 26px;
+  }
+
+  .scene--request .request-copy__text .scene-text {
+    font-size: 14px;
+    line-height: 1.72;
   }
 }

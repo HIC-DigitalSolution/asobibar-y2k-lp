@@ -1,0 +1,7 @@
+{
+  "name": "asobibar-lp-verify",
+  "private": true,
+  "type": "module",
+  "description": "見た目の検証。アプリ内ブラウザは rAF を回さないので、実機Chromeをヘッドレスで動かす。",
+  "dependencies": { "puppeteer-core": "^23" }
+}

@@ -52,3 +52,5 @@ tools/.fontsrc/
 !assets/chrome-orbit.png
 !assets/karaoke-scene.mp4
 !assets/karaoke-scene-poster.jpg
+tools/verify/node_modules/
+tools/verify/shots/
