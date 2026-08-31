@@ -112,55 +112,130 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
   const requestDeck = document.querySelector("[data-request-player]");
   const deckTime = document.querySelector("[data-deck-time]");
   const deckPlay = document.querySelector("[data-deck-play]");
+  const deckMode = document.querySelector("[data-deck-mode]");
+  const songPetTrack = document.querySelector("[data-song-pet-track]");
+  const songPetPrompt = document.querySelector("[data-song-pet-prompt]");
+  const songPetPrev = document.querySelector("[data-song-pet-prev]");
+  const songPetNext = document.querySelector("[data-song-pet-next]");
   const desktopMotion = window.matchMedia("(min-width: 1024px) and (pointer: fine)");
   const activeScenes = new Set();
   let scrollFrame = 0;
 
-  /* ---------- SONG REQUEST のスクラブ ----------
-     旧実装は is-playing で1回だけバーを流すだけだった。
-     スクロール量に直結させ、タイムコードも一緒に進める。
-     音は鳴らさない（ブラウザが止めるし、押しつけになる）。 */
-  const DECK_TOTAL = 225; /* 03:45 */
-  let deckSelfPlaying = false;
+  /* ---------- SONG PET / 5 HITゲーム ----------
+     待機中は左右で気分を選び、中央で開始。画面と同じ3ボタンを
+     5回押すとFEVERになる。音や保存は使わず、数秒で完結させる。 */
+  const SONG_PET_GOAL = 5;
+  const songPetSymbols = { left: "◀", center: "●", right: "▶" };
+  let songPetIndex = 0;
+  let songPetScore = 0;
+  let songPetExpected = "center";
+  let songPetActive = false;
+  let songPetFeedbackTimer = 0;
+  const songPetChoices = [
+    { label: "平成アゲ曲", mood: "happy" },
+    { label: "青春バラード", mood: "dreamy" },
+    { label: "みんなの定番", mood: "party" },
+  ];
 
   const paintDeck = (value) => {
     if (!requestDeck) return;
     const t = clamp01(value);
     requestDeck.style.setProperty("--deck", t.toFixed(4));
-    if (deckTime) {
-      const s = Math.floor(DECK_TOTAL * t);
-      const mm = String(Math.floor(s / 60)).padStart(2, "0");
-      const ss = String(s % 60).padStart(2, "0");
-      deckTime.textContent = `MEMORY ${mm}:${ss}`;
-    }
+    if (deckTime) deckTime.textContent = `HIT ${songPetScore}/${SONG_PET_GOAL}`;
   };
 
-  if (deckPlay) {
-    deckPlay.addEventListener("click", () => {
-      if (reduceMotion) {
-        paintDeck(1);
-        return;
-      }
-      const start = performance.now();
-      deckSelfPlaying = true;
-      const step = (now) => {
-        const t = clamp01((now - start) / 2600);
-        paintDeck(t);
-        if (t < 1) requestAnimationFrame(step);
-        else deckSelfPlaying = false;
-      };
-      requestAnimationFrame(step);
-    });
-  }
+  const flashSongPet = (state) => {
+    if (!requestDeck) return;
+    window.clearTimeout(songPetFeedbackTimer);
+    requestDeck.classList.remove("is-hit", "is-miss");
+    requestAnimationFrame(() => requestDeck.classList.add(state));
+    songPetFeedbackTimer = window.setTimeout(() => {
+      requestDeck.classList.remove("is-hit", "is-miss");
+    }, reduceMotion ? 0 : 280);
+  };
+
+  const chooseSongPetPrompt = () => {
+    const keys = Object.keys(songPetSymbols);
+    let next = keys[Math.floor(Math.random() * keys.length)];
+    if (keys.length > 1 && next === songPetExpected) {
+      next = keys[(keys.indexOf(next) + 1 + Math.floor(Math.random() * (keys.length - 1))) % keys.length];
+    }
+    songPetExpected = next;
+    if (songPetPrompt) songPetPrompt.textContent = `PUSH ${songPetSymbols[next]}`;
+  };
+
+  const resetSongPet = () => {
+    songPetActive = false;
+    songPetScore = 0;
+    paintDeck(0);
+    requestDeck?.classList.remove("is-mode-on", "is-dancing", "is-hit", "is-miss", "is-complete");
+    if (deckMode) deckMode.textContent = "SELECT";
+    if (songPetPrompt) songPetPrompt.textContent = "CHOOSE";
+  };
+
+  const selectSongPet = (direction) => {
+    if (!requestDeck || !songPetTrack) return;
+    songPetIndex = (songPetIndex + direction + songPetChoices.length) % songPetChoices.length;
+    const choice = songPetChoices[songPetIndex];
+    songPetTrack.textContent = choice.label;
+    requestDeck.dataset.petMood = choice.mood;
+    resetSongPet();
+  };
+
+  const startSongPet = () => {
+    songPetActive = true;
+    songPetScore = 0;
+    paintDeck(0);
+    requestDeck?.classList.remove("is-complete");
+    requestDeck?.classList.add("is-mode-on");
+    if (deckMode) deckMode.textContent = "PLAY";
+    chooseSongPetPrompt();
+  };
+
+  const hitSongPetButton = (key) => {
+    if (!requestDeck) return;
+
+    if (!songPetActive) {
+      if (key === "left") selectSongPet(-1);
+      else if (key === "right") selectSongPet(1);
+      else startSongPet();
+      return;
+    }
+
+    if (key !== songPetExpected) {
+      if (deckMode) deckMode.textContent = "MISS";
+      flashSongPet("is-miss");
+      window.setTimeout(() => {
+        if (songPetActive && deckMode) deckMode.textContent = "PLAY";
+      }, reduceMotion ? 0 : 260);
+      return;
+    }
+
+    songPetScore += 1;
+    paintDeck(songPetScore / SONG_PET_GOAL);
+    flashSongPet("is-hit");
+
+    if (songPetScore >= SONG_PET_GOAL) {
+      songPetActive = false;
+      requestDeck.classList.remove("is-mode-on");
+      requestDeck.classList.add("is-complete", "is-dancing");
+      if (deckMode) deckMode.textContent = "FEVER";
+      if (songPetPrompt) songPetPrompt.textContent = "GOOD!";
+      window.setTimeout(() => requestDeck.classList.remove("is-dancing"), reduceMotion ? 0 : 900);
+      return;
+    }
+
+    chooseSongPetPrompt();
+  };
+
+  songPetPrev?.addEventListener("click", () => hitSongPetButton("left"));
+  deckPlay?.addEventListener("click", () => hitSongPetButton("center"));
+  songPetNext?.addEventListener("click", () => hitSongPetButton("right"));
+  selectSongPet(0);
 
   const playScene = (scene) => {
     if (scene.classList.contains("is-scene-in")) return;
     scene.classList.add("is-scene-in");
-
-    /* SONG REQUEST は状態表示を点灯させる。バーの進みはスクロール直結。 */
-    if (scene.dataset.sceneMotion === "request" && requestDeck) {
-      window.setTimeout(() => requestDeck.classList.add("is-playing"), reduceMotion ? 0 : 150);
-    }
 
     /* 数字を主役にする。0から実数まで数え上げる */
     scene.querySelectorAll("[data-count]").forEach((el, i) => {
@@ -258,13 +333,10 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
         scene.style.setProperty("--scene-y-reverse", `${(travel * -28).toFixed(2)}px`);
       }
 
-      /* SONG REQUEST の段送り。pin区間を7つに割る。
-         progress bar は 35〜75% の帯だけを使い、
-         そこへ入る前は0、抜けたら1で止める。 */
-      if (requestDeck && scene.dataset.sceneMotion === "request") {
-        if (!deckSelfPlaying) paintDeck((pin - 0.35) / 0.4);
-        requestDeck.classList.toggle("is-mode-on", pin >= 0.55);
-
+      /* SONG REQUEST の写真・コピー用の段送り。
+         SONG PETは独立したミニ体験へ移したため、スクロールでは進めず
+         3ボタンを押したときだけ反応させる。 */
+      if (scene.dataset.sceneMotion === "request") {
         /* 段のランプをJSで出す。CSS側で clamp や min を calc に
            入れ子にすると、宣言ごと落ちる環境があった（実測で
            PLAYの押し込みとCDの退場が効かなかった）。

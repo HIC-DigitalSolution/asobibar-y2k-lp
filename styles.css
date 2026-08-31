@@ -16,35 +16,35 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("./assets/font/zkgn-500.woff2") format("woff2");
+  src: url("./assets/font/zkgn-500.woff2?v=2") format("woff2");
 }
 @font-face {
   font-family: "Zen Kaku Gothic New";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("./assets/font/zkgn-700.woff2") format("woff2");
+  src: url("./assets/font/zkgn-700.woff2?v=2") format("woff2");
 }
 @font-face {
   font-family: "Zen Kaku Gothic New";
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url("./assets/font/zkgn-900.woff2") format("woff2");
+  src: url("./assets/font/zkgn-900.woff2?v=2") format("woff2");
 }
 @font-face {
   font-family: "Mochiy Pop One";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("./assets/font/mochiy-400.woff2") format("woff2");
+  src: url("./assets/font/mochiy-400.woff2?v=2") format("woff2");
 }
 @font-face {
   font-family: "Zen Kurenaido";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("./assets/font/kurenaido-400.woff2") format("woff2");
+  src: url("./assets/font/kurenaido-400.woff2?v=2") format("woff2");
 }
 
 /* =========================================================
@@ -4206,6 +4206,175 @@ a { color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   .tama.is-mode-on .tama__status { animation: none; }
+}
+
+/* ===================== SONG PET / 独立ミニ体験 =====================
+   01の説明から端末を切り離し、01→02の間で少しだけ触れる寄り道にする。
+   セクション番号は増やさず、ページ全体の進行を長く見せない。 */
+
+.scene--request .request-copy .sheet__face {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.scene--request .request-copy__text {
+  width: min(100%, 760px);
+}
+
+.song-pet-break {
+  position: relative;
+  z-index: 2;
+  padding: clamp(30px, 4vw, 54px) var(--pad-x) clamp(48px, 7vw, 92px);
+  background: transparent;
+}
+
+.song-pet-break__in {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(270px, 340px);
+  align-items: center;
+  gap: clamp(34px, 7vw, 92px);
+  width: min(980px, 100%);
+  min-height: 430px;
+  margin: 0 auto;
+  padding: clamp(36px, 5vw, 62px) clamp(30px, 6vw, 76px);
+  color: var(--print-ink);
+  filter: drop-shadow(0 18px 24px rgba(70, 38, 83, 0.18));
+  isolation: isolate;
+}
+
+.song-pet-break__in::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(rgba(251, 247, 238, 0.97), rgba(251, 247, 238, 0.97)),
+    var(--grain-fine);
+  clip-path: polygon(0 2%, 7% 0, 15% 1.5%, 24% 0, 35% 1%, 46% 0, 58% 1.4%, 70% 0, 82% 1.2%, 92% 0, 100% 2%, 99% 97%, 91% 100%, 80% 98.5%, 69% 100%, 57% 98.6%, 45% 100%, 33% 98.4%, 21% 100%, 10% 98.5%, 0 100%);
+  content: "";
+}
+
+.song-pet-break__in::after {
+  position: absolute;
+  top: -14px;
+  left: clamp(28px, 8vw, 104px);
+  width: 112px;
+  height: 30px;
+  background: rgba(86, 216, 232, 0.62);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.52);
+  content: "";
+  mix-blend-mode: multiply;
+  transform: rotate(-3deg);
+}
+
+.song-pet-break__copy {
+  min-width: 0;
+}
+
+.song-pet-break__eyebrow {
+  display: inline-block;
+  margin: 0 0 16px;
+  padding: 5px 12px 6px;
+  color: #fff;
+  background: var(--print-accent);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  transform: rotate(-1.5deg);
+}
+
+.song-pet-break__copy h2 {
+  max-width: 10em;
+  margin: 0;
+  color: var(--print-accent);
+  font-family: var(--font-main);
+  font-size: clamp(2.15rem, 4.1vw, 3.75rem);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -0.055em;
+}
+
+.song-pet-break__copy > p:last-child {
+  margin: clamp(16px, 2vw, 24px) 0 0;
+  color: var(--print-ink);
+  font-family: var(--font-main);
+  font-size: clamp(14px, 1.2vw, 16px);
+  font-weight: 700;
+  line-height: 1.8;
+}
+
+.song-pet-break .tama {
+  justify-self: center;
+  width: clamp(255px, 24vw, 324px);
+  margin: 0;
+  transform: rotate(3deg);
+}
+
+.tama__keys button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--print-accent);
+}
+
+.tama.is-dancing .tama__pet {
+  animation: tamaDance 0.34s steps(2, end) infinite;
+  transform-origin: 50% 88%;
+}
+
+.tama.is-complete .tama__screen {
+  box-shadow:
+    inset 0 0 0 2px rgba(64, 74, 48, 0.5),
+    inset 0 3px 7px rgba(37, 48, 26, 0.28),
+    0 0 0 3px rgba(255, 255, 255, 0.72),
+    0 0 18px rgba(222, 255, 153, 0.68);
+}
+
+.tama[data-pet-mood="dreamy"] .tama__pet { transform: rotate(-3deg); }
+.tama[data-pet-mood="party"] .tama__pet { transform: scale(1.06); }
+
+@keyframes tamaDance {
+  0% { transform: translate3d(-4px, 0, 0) rotate(-4deg); }
+  50% { transform: translate3d(4px, -3px, 0) rotate(4deg); }
+  100% { transform: translate3d(-4px, 0, 0) rotate(-4deg); }
+}
+
+@media (max-width: 879px) {
+  .song-pet-break {
+    padding: 18px 12px clamp(58px, 16vw, 82px);
+  }
+
+  .song-pet-break__in {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    min-height: 0;
+    padding: 42px 22px 48px;
+    text-align: center;
+  }
+
+  .song-pet-break__in::after {
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+  }
+
+  .song-pet-break__eyebrow { margin-bottom: 14px; }
+
+  .song-pet-break__copy h2 {
+    max-width: 11em;
+    margin-inline: auto;
+    font-size: clamp(2rem, 9.5vw, 2.65rem);
+  }
+
+  .song-pet-break__copy > p:last-child {
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .song-pet-break .tama {
+    width: min(76vw, 286px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tama.is-dancing .tama__pet { animation: none; }
 }
 
 
@@ -9645,5 +9814,247 @@ body { padding-bottom: 0; }
     top: 14px;
     right: auto;
     left: 5px;
+  }
+}
+
+/* 01からSONG PETを外した後の最終上書き。
+   履歴CSSの2カラム指定より後ろに置き、空の右列を作らない。 */
+.scene--request .request-copy.sheet {
+  width: min(900px, calc(100% - clamp(22px, 5vw, 76px)));
+}
+
+.scene--request .request-copy .sheet__face {
+  display: block;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.scene--request .request-copy__text {
+  width: min(100%, 760px);
+}
+
+@media (max-width: 879px) {
+  .scene--request .request-copy.sheet {
+    width: calc(100% - 12px);
+  }
+}
+
+/* 03 / 関西・関東の料金比較
+   全幅の赤い罫線をやめ、エリア名・金額・中央区切りだけに整理する。 */
+.price-panel .plan-prices {
+  gap: 0;
+  padding: clamp(4px, 0.6vw, 8px) 0;
+  border: 0;
+}
+
+.price-panel .plan-prices > div {
+  position: relative;
+  min-width: 0;
+  padding: clamp(14px, 1.8vw, 22px) clamp(18px, 3vw, 42px);
+  border: 0;
+}
+
+.price-panel .plan-prices > div:first-child {
+  padding-left: 0;
+}
+
+.price-panel .plan-prices > div + div {
+  padding-right: 0;
+  border-left: 1px dashed rgba(35, 24, 21, 0.3);
+}
+
+.price-panel .plan-prices dt {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  padding: 0;
+  color: var(--print-ink);
+  background: transparent;
+  font-size: clamp(13px, 1.05vw, 15px);
+  line-height: 1;
+  letter-spacing: 0.14em;
+}
+
+.price-panel .plan-prices dt::before {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  border: 1px solid rgba(35, 24, 21, 0.42);
+  background: var(--cyan);
+  box-shadow: 2px 2px 0 rgba(35, 24, 21, 0.18);
+  content: "";
+  transform: rotate(45deg);
+}
+
+.price-panel .plan-prices > div:last-child dt::before {
+  background: #f08fbd;
+}
+
+.price-panel .plan-prices dd {
+  display: flex;
+  align-items: baseline;
+  gap: 0.16em;
+  margin: 11px 0 0;
+  color: var(--print-ink);
+  font-size: clamp(2.55rem, 4.4vw, 4rem);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+}
+
+.price-panel .plan-prices dd span {
+  font-variant-numeric: tabular-nums;
+}
+
+.price-panel .plan-prices dd small {
+  margin: 0;
+  color: var(--print-sub);
+  font-size: 0.34em;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 767px) {
+  .price-panel .plan-prices {
+    gap: 0;
+    padding: 2px 0;
+  }
+
+  .price-panel .plan-prices > div {
+    padding: 12px 10px 14px;
+  }
+
+  .price-panel .plan-prices > div:first-child {
+    padding-left: 0;
+    padding-right: 12px;
+  }
+
+  .price-panel .plan-prices > div + div {
+    padding-right: 0;
+    padding-left: 12px;
+  }
+
+  .price-panel .plan-prices dt {
+    gap: 7px;
+    font-size: 12px;
+  }
+
+  .price-panel .plan-prices dt::before {
+    width: 8px;
+    height: 8px;
+    box-shadow: 1px 1px 0 rgba(35, 24, 21, 0.18);
+  }
+
+  .price-panel .plan-prices dd {
+    gap: 0.12em;
+    margin-top: 9px;
+    font-size: clamp(2rem, 10.2vw, 2.55rem);
+  }
+
+  .price-panel .plan-prices dd small {
+    font-size: 0.32em;
+  }
+}
+
+/* SONG PETを「大セクション」ではなく01→02間の短い寄り道へ戻す。 */
+.scene--request .scene__in.request-layout {
+  padding-bottom: clamp(44px, 5vw, 68px);
+}
+
+.song-pet-break {
+  padding: clamp(12px, 2vw, 24px) var(--pad-x) clamp(34px, 4vw, 54px);
+}
+
+.song-pet-break__in {
+  min-height: 360px;
+  gap: clamp(28px, 5vw, 68px);
+  padding: clamp(28px, 3.6vw, 46px) clamp(28px, 5vw, 64px);
+}
+
+@media (min-width: 880px) {
+  .experience-zone > .scene--karaoke {
+    margin-top: clamp(20px, 2.6vw, 36px);
+  }
+}
+
+.tama__screen {
+  grid-template-rows: auto 1fr auto auto auto;
+}
+
+.tama__prompt {
+  display: block;
+  min-height: 1.25em;
+  margin-top: 3px;
+  color: #28351c;
+  font-size: 7px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-align: center;
+}
+
+/* 見た目だけでなく実際のタップ領域も44pxにする。 */
+.song-pet-break .tama__keys {
+  gap: 14px;
+  margin-top: 13px;
+}
+
+.song-pet-break .tama__keys button {
+  width: 44px;
+  height: 44px;
+  font-size: 11px;
+}
+
+.tama.is-hit .tama__pet {
+  animation: tamaHit 0.26s var(--ease-back) both;
+}
+
+.tama.is-miss .tama__body {
+  animation: tamaMiss 0.24s ease-out both;
+}
+
+.tama.is-miss .tama__screen {
+  box-shadow:
+    inset 0 0 0 2px rgba(64, 74, 48, 0.5),
+    inset 0 3px 7px rgba(37, 48, 26, 0.28),
+    0 0 0 3px rgba(205, 60, 88, 0.34);
+}
+
+@keyframes tamaHit {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  55% { transform: translate3d(0, -6px, 0) scale(1.08); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes tamaMiss {
+  0%, 100% { transform: translateX(0); }
+  30% { transform: translateX(-4px); }
+  70% { transform: translateX(4px); }
+}
+
+@media (max-width: 879px) {
+  .scene--request .scene__in.request-layout {
+    padding-bottom: clamp(46px, 13vw, 62px);
+  }
+
+  .song-pet-break {
+    padding: 8px 12px clamp(38px, 11vw, 52px);
+  }
+
+  .song-pet-break__in {
+    gap: 24px;
+    padding: 36px 18px 38px;
+  }
+
+  .song-pet-break .tama {
+    width: min(72vw, 272px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tama.is-hit .tama__pet,
+  .tama.is-miss .tama__body {
+    animation: none;
   }
 }
