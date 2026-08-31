@@ -90,3 +90,14 @@ HTMLにもJSにも出てこないクラス109種を対象に、**568ルールを
 
 **この規模の追記型CSSを機械的に割るのは、専用の作業として時間を取るべき**で、
 他の作業のついでにやると壊す。`no-dead-css` と同様、manual の課題として残す。
+
+
+### 追記: 公開アセットの整合性（2026-08-31）
+
+GitHub Pagesで参照画像が欠落しないよう、HOW TOの軽量JPEG 3点、food写真、
+FVの `hero-collage-current.jpg` を `.gitignore` の許可対象へ追加した。
+FVはGit対象外だった `image.png` から同内容の公開用JPEGへ参照を変更した。
+
+- `index.html` が参照するローカルassetsについて、missing / ignored が0件
+- `node scripts/harness/harness-check.mjs` をpush前に実行
+- `node --check script.js`、`git diff --check`、CSS括弧数を確認

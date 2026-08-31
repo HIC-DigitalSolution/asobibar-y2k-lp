@@ -7134,3 +7134,86 @@ body { padding-bottom: 0; }
     line-height: 1.72;
   }
 }
+
+/* ===================== 01 写真を当時のMVに見せる =====================
+   案A（走査線）＋案C（4:3の枠）。外枠と映像を分離し、装飾画像へ
+   object-fit が漏れないようにする。架空のREC・時刻表示は加えない。 */
+
+/* 16:9の外枠の中央に4:3の映像を置き、左右を当時の映像帯にする。 */
+.scene--request .request-photo,
+.reveal-ready .scene--request .request-photo[data-reveal].is-in {
+  position: relative;
+  display: block;
+  width: min(1120px, 100%);
+  min-height: 0;
+  aspect-ratio: 16 / 9;
+  margin-inline: auto;
+  padding: 0;
+  overflow: hidden;
+  background: #0e0b0d;
+}
+
+.request-photo__screen {
+  position: absolute;
+  inset-block: 0;
+  left: 12.5%;
+  z-index: 2;
+  display: block;
+  width: 75%;
+  overflow: hidden;
+  background: #171312;
+}
+
+.scene--request .request-photo .request-photo__screen > img,
+.reveal-ready .scene--request .request-photo[data-reveal].is-in .request-photo__screen > img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  object-position: 50% 50%;
+  transform: none;
+}
+
+/* 走査線・わずかな色ズレ・四隅の落ち。映像面の外へは掛けない。 */
+.request-photo__crt {
+  position: absolute;
+  inset-block: 0;
+  left: 12.5%;
+  z-index: 3;
+  width: 75%;
+  pointer-events: none;
+  background:
+    radial-gradient(118% 96% at 50% 50%, transparent 52%, rgba(35, 24, 21, 0.34) 100%),
+    repeating-linear-gradient(
+      180deg,
+      rgba(35, 24, 21, 0.15) 0 1px,
+      transparent 1px 2px
+    );
+  box-shadow:
+    inset 1px 0 0 rgba(255, 74, 148, 0.16),
+    inset -1px 0 0 rgba(0, 168, 204, 0.16);
+  mix-blend-mode: multiply;
+}
+
+@media (max-width: 767px) {
+  .scene--request .request-photo,
+  .reveal-ready .scene--request .request-photo[data-reveal].is-in {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+  }
+
+  .request-photo__screen,
+  .request-photo__crt {
+    left: 0;
+    width: 100%;
+  }
+
+  .request-photo__crt {
+    background:
+      radial-gradient(120% 98% at 50% 50%, transparent 56%, rgba(35, 24, 21, 0.3) 100%),
+      repeating-linear-gradient(180deg, rgba(35, 24, 21, 0.12) 0 1px, transparent 1px 3px);
+  }
+}

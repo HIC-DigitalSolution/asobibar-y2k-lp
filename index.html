@@ -26,7 +26,7 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=379" />
+    <link rel="stylesheet" href="./styles.css?v=384" />
     <script src="./script.js?v=61" defer></script>
   </head>
 
@@ -50,9 +50,9 @@
         <div class="cover__stage">
           <div class="cover__visual">
             <picture class="cover__keyvisual" aria-hidden="true">
-              <source media="(max-width: 767px)" srcset="./assets/image.png"/>
+              <source media="(max-width: 767px)" srcset="./assets/hero-collage-current.jpg"/>
               <img
-                src="./assets/image.png"
+                src="./assets/hero-collage-current.jpg"
                 alt=""
                 width="1536"
                 height="1024"
@@ -90,6 +90,8 @@
 
           <figure class="request-photo scene-photo" data-reveal="media">
             <span class="request-photo__holo" aria-hidden="true"></span>
+            <!-- 当時のMVの見え方。走査線と色ズレと四隅の落ち。映像枠だけ黒帯を使う -->
+            <span class="request-photo__crt" aria-hidden="true"></span>
             <!-- 奥にもう1枚。アルバムに複数枚挟んだ体にして
                  「1枚だけ」の寂しさを解く。角だけ見える。 -->
             <span class="request-photo__back" aria-hidden="true">
@@ -106,14 +108,16 @@
             <span class="request-chrome request-chrome--orbit" aria-hidden="true">
               <img src="./assets/chrome-orbit.png" alt="" width="512" height="341" loading="lazy" decoding="async" />
             </span>
-            <img
-              src="./assets/request-conversation.jpg"
-              alt="店内で会話を楽しむ男女"
-              width="1800"
-              height="1212"
-              loading="eager"
-              decoding="async"
-            />
+            <span class="request-photo__screen">
+              <img
+                src="./assets/request-conversation.jpg"
+                alt="店内で会話を楽しむ男女"
+                width="1800"
+                height="1212"
+                loading="eager"
+                decoding="async"
+              />
+            </span>
             <!-- 窓枠にまたがるシール。04で使っている型をそのまま流用する -->
             <span class="seal seal--heart request-seal request-seal--heart" aria-hidden="true">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5 3.8 12.6a5 5 0 0 1 7.1-7L12 6.7l1.1-1.1a5 5 0 0 1 7.1 7Z"/></svg>
@@ -125,7 +129,7 @@
             <div class="sheet__face">
               <div class="request-copy__text">
                 <p class="scene-text">
-                  2000年代の曲をリクエスト。イントロが流れた瞬間の<br />「これ知ってる！」から、今夜の会話が始まります。
+                  2000年代の曲をリクエスト。曲だけじゃなく、当時のMVも大画面で流れます。<br />イントロと映像で「これ知ってる！」が起きた瞬間から、今夜の会話が始まります。
                 </p>
               </div>
             </div>
@@ -362,7 +366,7 @@
               <span class="howto-band howto-band--2">COLOR BAND</span>
               <span class="howto-band howto-band--3">COLOR BAND</span>
               <figure class="howto-photo howto-band-photo" data-howto-reveal>
-                <img src="./assets/ChatGPT Image 2026年8月28日 14_18_31.png" alt="" width="1800" height="1202" loading="lazy" decoding="async" />
+                <img src="./assets/howto-color-band-scene.jpg" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
                 <figcaption>気分に合わせて、今夜を選ぶ。</figcaption>
               </figure>
             </div>
@@ -380,11 +384,11 @@
             </div>
             <div class="howto-visual" aria-hidden="true">
               <figure class="howto-photo howto-amusement-photo" data-howto-reveal>
-                <img src="./assets/ビリヤード.png" alt="" width="1800" height="1200" loading="lazy" decoding="async" />
+                <img src="./assets/howto-billiards.jpg" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
                 <figcaption>遊びから、会話へ。</figcaption>
               </figure>
               <div class="howto-contact" data-howto-reveal>
-                <img src="./assets/トランプ.png" alt="" width="420" height="420" loading="lazy" decoding="async" />
+                <img src="./assets/howto-cards.jpg" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
                 <img src="./assets/wall/hifive.webp" alt="" width="420" height="420" loading="lazy" decoding="async" />
               </div>
             </div>

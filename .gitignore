@@ -21,6 +21,7 @@ assets/*
 !assets/hero-collage-typography-v2.jpg
 !assets/hero-collage-sp.jpg
 !assets/hero-collage-typography-no-disc.jpg
+!assets/hero-collage-current.jpg
 !assets/hero-collage-sp-no-disc.jpg
 
 # エディタ設定
@@ -52,5 +53,9 @@ tools/.fontsrc/
 !assets/chrome-orbit.png
 !assets/karaoke-scene.mp4
 !assets/karaoke-scene-poster.jpg
+!assets/howto-color-band-scene.jpg
+!assets/howto-billiards.jpg
+!assets/howto-cards.jpg
+!assets/food.jpg
 tools/verify/node_modules/
 tools/verify/shots/
