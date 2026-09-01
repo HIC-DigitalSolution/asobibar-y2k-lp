@@ -7486,6 +7486,10 @@ body { padding-bottom: 0; }
    4枚を扇状に重ねて、両端は画面外へ。束の散らばりはSP幅だと
    互いに潰し合って、どの写真も読めなくなる */
 @media (max-width: 767px) {
+  /* 束は flex 行で min-content が画面幅を超える。1fr で受けないと
+     グリッド列ごと広がって、コピー側の折り返し位置が画面外へ出る */
+  .cheki__in { grid-template-columns: minmax(0, 1fr); }
+
   .cheki-stack {
     display: flex;
     /* 基底の justify-self: center だとグリッド項目が max-content 幅になり、
