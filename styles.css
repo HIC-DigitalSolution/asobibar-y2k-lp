@@ -4971,7 +4971,9 @@ body { padding-bottom: 0; }
   .scene--request .scene__in.request-layout {
     grid-template-columns: minmax(0, 1.34fr) minmax(0, 0.96fr);
     align-items: center;
-    gap: clamp(38px, 4.5vw, 62px);
+    /* 見出しと写真の間が62pxまで開いて、写真の下は逆に詰まっていた。
+       上を削って下へ回す */
+    gap: clamp(26px, 2.6vw, 38px);
     padding-block: clamp(68px, 7vw, 96px);
   }
 
@@ -7105,7 +7107,10 @@ body { padding-bottom: 0; }
   grid-column: 1;
   grid-row: 3;
   width: min(820px, calc(100% - clamp(40px, 10vw, 160px)));
-  margin: clamp(-42px, -3vw, -30px) auto 0;
+  /* 元は負マージンで写真に被せる指定だったが、行間62pxに対して-42pxでは
+     被さらず、写真の下辺のMVプレーヤーの見出しに紙が乗るだけだった。
+     写真の下辺にはUIが並ぶので、ここは被せずに離して切る */
+  margin: clamp(12px, 1.4vw, 20px) auto 0;
 }
 
 .scene--request .request-copy .sheet__face {
