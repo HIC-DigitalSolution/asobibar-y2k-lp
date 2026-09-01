@@ -422,7 +422,6 @@ a { color: inherit; }
 .scene--play .scene-label span {
   border-color: rgba(37, 25, 63, 0.28);
   color: #a21563;
-  background: rgba(255, 255, 255, 0.36);
 }
 
 .scene--request .scene-title,
@@ -657,7 +656,7 @@ a { color: inherit; }
   font-size: clamp(2.1rem, 8vw, 4rem);
   font-weight: 900;
   line-height: 1;
-  letter-spacing: -0.05em;
+  letter-spacing: 0.015em;
   font-variant-numeric: tabular-nums;
 }
 .event-date i { color: var(--magenta-bright); font-style: normal; font-weight: 500; }
@@ -676,7 +675,6 @@ a { color: inherit; }
 .information-section .scene-label span {
   border-color: rgba(37, 25, 63, 0.22);
   color: #a21563;
-  background: rgba(255, 255, 255, 0.42);
 }
 /* ===================== HOW TO ASOBIBAR =====================
    公式サイトの内容を、平成ティーン誌の綴じ込み攻略特集として再構成。
@@ -6588,7 +6586,7 @@ body { padding-bottom: 0; }
 .price-title-overlay .scene-label {
   margin-bottom: clamp(14px, 1.6vw, 20px);
   color: rgba(255, 255, 255, 0.84);
-  text-shadow: none;
+  text-shadow: 0 1px 2px rgba(35, 24, 21, 0.72);
 }
 
 .price-title-overlay .paper-h {
@@ -6600,7 +6598,9 @@ body { padding-bottom: 0; }
   font-weight: 900;
   line-height: 1.1;
   letter-spacing: -0.06em;
-  text-shadow: none;
+  text-shadow:
+    0 1px 2px rgba(35, 24, 21, 0.62),
+    0 2px 7px rgba(35, 24, 21, 0.38);
 }
 
 .price-panel.sheet {
