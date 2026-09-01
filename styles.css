@@ -6588,7 +6588,7 @@ body { padding-bottom: 0; }
 .price-title-overlay .scene-label {
   margin-bottom: clamp(14px, 1.6vw, 20px);
   color: rgba(255, 255, 255, 0.84);
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.72);
+  text-shadow: none;
 }
 
 .price-title-overlay .paper-h {
@@ -6600,7 +6600,7 @@ body { padding-bottom: 0; }
   font-weight: 900;
   line-height: 1.1;
   letter-spacing: -0.06em;
-  text-shadow: 0 3px 16px rgba(0, 0, 0, 0.72);
+  text-shadow: none;
 }
 
 .price-panel.sheet {
@@ -6735,7 +6735,6 @@ body { padding-bottom: 0; }
 
   .price-title-overlay .paper-h {
     font-size: clamp(2.15rem, 10.4vw, 2.85rem);
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.76);
   }
 
   .price-panel.sheet {
