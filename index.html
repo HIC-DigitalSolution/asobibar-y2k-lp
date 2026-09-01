@@ -26,8 +26,8 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=412" />
-    <script src="./script.js?v=61" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=429" />
+    <script src="./script.js?v=69" defer></script>
   </head>
 
   <body>
@@ -328,7 +328,7 @@
               <p class="event-date"><time datetime="2026-09-07">2026.9.7</time><i>—</i><time datetime="2026-09-30">9.30</time></p>
 
               <dl class="event-list">
-                <div><dt>対象店舗</dt><dd>公式HPでご確認ください</dd></div>
+                <div><dt>対象店舗</dt><dd>全9店舗（予約時に選択）</dd></div>
                 <div><dt>予約方法</dt><dd data-reservation-method>公式HPから予約</dd></div>
               </dl>
             </div>
@@ -504,5 +504,102 @@
         <span class="cta__copy"><small>9月限定・席数限定</small><span data-reserve-label>Y2K NIGHTを予約する</span></span><i aria-hidden="true">→</i>
       </a>
     </div>
+    <!-- ==================== 店舗選択ダイアログ ====================
+         予約CTAから開く。<dialog> を使うのは Esc・フォーカスの閉じ込め・
+         インert化を自前で書かずに済ませるため。
+
+         店舗リンクは同一タブで開く（target="_blank" を付けない）。このLPは広告
+         流入なので Instagram / LINE のアプリ内ブラウザで開かれる。あの種の
+         WebView は _blank を黙って落とすことがあり、押しても何も起きない。
+         予約はここで完了する導線なので、LPを残す価値より確実に飛ぶ方が優先。
+
+         料金は店舗ごとに出さない。LPが定義しているのは関西/関東の2区分だけで、
+         名古屋・福岡の額は未確認。料金セクションに任せる。 -->
+    <dialog class="storepick" data-storepick aria-labelledby="storepick-title">
+      <div class="sheet sheet--torn-bottom storepick__sheet">
+        <span class="sheet__fiber" aria-hidden="true"></span>
+        <div class="sheet__face storepick__face">
+          <button type="button" class="storepick__close" data-storepick-close aria-label="閉じる">
+            <span aria-hidden="true">×</span>
+          </button>
+
+          <!-- 液晶の帯。ガラケーの記号は縁にだけ置く。
+               中心は普通に読める一覧のままにする（予約導線なので装飾に面積を渡さない） -->
+          <p class="storepick__lcd" aria-hidden="true">
+            <span class="storepick__ant"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>
+            <b>ASOBIBAR</b>
+            <span class="storepick__lcdday">9/7-30</span>
+          </p>
+
+          <!-- 見出しは1つだけ。「店舗を選ぶ」と「どの店で遊びますか？」は
+               同じことを2回言っていて、その分リストの高さを食っていた。 -->
+          <header class="storepick__head">
+            <h2 class="paper-h" id="storepick-title">公式LINEを選択</h2>
+            <p class="storepick__lead">ご利用予定の店舗を選んで、公式LINEからご予約ください。料金はエリア・曜日によって異なります。<a href="#price" data-storepick-close>料金を見る</a></p>
+          </header>
+
+          <nav class="storepick__tabs" aria-label="エリアで絞り込む">
+            <!-- autofocus はここ。既定では DOM 先頭の閉じるボタンに当たり、
+                 開いた瞬間に「閉じる」が選ばれている状態になる。 -->
+            <button type="button" data-storepick-tab="west" aria-current="true" autofocus><span>関西・名古屋・福岡</span></button>
+            <button type="button" data-storepick-tab="east"><span>東京</span></button>
+          </nav>
+
+          <div class="storepick__list" data-storepick-panel="west">
+            <p class="storepick__area">KOBE<i aria-hidden="true"></i>神戸</p>
+            <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/ovqzUJi">
+              <span class="storeline__name">神戸三宮店</span>
+              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+            </a>
+
+            <p class="storepick__area">OSAKA<i aria-hidden="true"></i>大阪</p>
+            <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/ovqzUJi">
+              <span class="storeline__name">梅田お初天神店</span>
+              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+            </a>
+            <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/ovqzUJi">
+              <span class="storeline__name">心斎橋店</span>
+              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+            </a>
+
+            <p class="storepick__area">NAGOYA<i aria-hidden="true"></i>名古屋</p>
+            <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/wc06IWtq">
+              <span class="storeline__name">名古屋栄錦通り店</span>
+              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+            </a>
+            <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/wc06IWtq">
+              <span class="storeline__name">名古屋住吉複合店</span>
+              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+            </a>
+
+            <p class="storepick__area">FUKUOKA<i aria-hidden="true"></i>福岡</p>
+            <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/7mdcxl8">
+              <span class="storeline__name">天神大名店</span>
+              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+            </a>
+          </div>
+
+          <div class="storepick__list" data-storepick-panel="east" hidden>
+            <p class="storepick__area">TOKYO<i aria-hidden="true"></i>東京</p>
+            <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/6Fvrmdw">
+              <span class="storeline__name">新宿歌舞伎町タワー前店</span>
+              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+            </a>
+            <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/QxzxqGM">
+              <span class="storeline__name">渋谷横丁前店</span>
+              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+            </a>
+            <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/OnM70Fz">
+              <span class="storeline__name">恵比寿店</span>
+              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+            </a>
+          </div>
+
+          <p class="storepick__note">※ 9月7日〜30日の期間限定。席数に限りがあります。</p>
+        </div>
+        <span class="tape tape--y storepick__tape1" aria-hidden="true"></span>
+        <span class="tape tape--c storepick__tape2" aria-hidden="true"></span>
+      </div>
+    </dialog>
   </body>
 </html>

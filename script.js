@@ -807,3 +807,107 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
     );
   });
 })();
+
+/* ---------- 店舗選択ダイアログ ----------
+   予約CTAを押したら、公式HPへ飛ばす前に店舗を選ばせる。
+   旧来は3つのCTAが全部トップページに飛ばしていて、来訪者が自分の
+   店舗を自力で探し直していた。
+
+   <dialog> を使うのは、Esc・フォーカスの閉じ込め・背面の inert 化が
+   最初から付いてくるため。自前で書くとどれかひとつを落とす。
+
+   店舗ごとの LINE URL は data-line に入る。空のうちは HTML の href
+   （公式HP）のまま動かさない。押しても何も起きないリンクを作らない
+   ためで、これは上の予約リンクと同じ方針。 */
+(() => {
+  const dialog = document.querySelector("[data-storepick]");
+  if (!dialog || typeof dialog.showModal !== "function") return;
+
+  /* 店舗ごとのLINEへ差し替える。プロトコルを見るのは、data属性に
+     javascript: を書かれても踏まないため。 */
+  dialog.querySelectorAll("[data-line]").forEach((a) => {
+    const raw = a.dataset.line;
+    if (!raw) return;
+    try {
+      const url = new URL(raw);
+      if (url.protocol === "https:") a.href = url.href;
+    } catch {
+      /* 不正なURLなら href（公式HP）のまま */
+    }
+  });
+
+  const tabs = [...dialog.querySelectorAll("[data-storepick-tab]")];
+  const panels = [...dialog.querySelectorAll("[data-storepick-panel]")];
+
+  const showArea = (area) => {
+    tabs.forEach((t) => {
+      const on = t.dataset.storepickTab === area;
+      /* aria-current を消すときは属性ごと外す。false のまま残すと
+         支援技術には「現在地ではない」ではなく値付きで読まれる。 */
+      if (on) t.setAttribute("aria-current", "true");
+      else t.removeAttribute("aria-current");
+    });
+    panels.forEach((p) => {
+      p.hidden = p.dataset.storepickPanel !== area;
+    });
+    const shown = dialog.querySelector("[data-storepick-panel]:not([hidden])");
+    if (shown) {
+      shown.scrollTo({ top: 0 });
+      syncMore(shown);
+    }
+  };
+
+  tabs.forEach((t) => {
+    t.addEventListener("click", () => showArea(t.dataset.storepickTab));
+  });
+
+  /* 下にまだ店舗があるかを、影の有無で伝える。最後まで見たら消す。
+     出しっぱなしにすると、下端に永久に影が乗って紙が汚れて見える。 */
+  const syncMore = (panel) => {
+    const more = panel.scrollHeight - panel.clientHeight - panel.scrollTop > 4;
+    if (more) panel.setAttribute("data-more", "");
+    else panel.removeAttribute("data-more");
+  };
+  panels.forEach((panel) => {
+    panel.addEventListener("scroll", () => syncMore(panel), { passive: true });
+  });
+
+  /* 開いている間だけ背面のスクロールを止める。ダイアログ内は
+     .storepick__face が overscroll-behavior: contain で受ける。 */
+  let scrollLock = "";
+  const open = () => {
+    scrollLock = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    dialog.showModal();
+    /* 影の判定は開いてから。閉じている <dialog> は高さ0で、
+       scrollHeight と clientHeight が両方0になり必ず「続きなし」になる。 */
+    panels.filter((p) => !p.hidden).forEach(syncMore);
+  };
+  dialog.addEventListener("close", () => {
+    document.body.style.overflow = scrollLock;
+  });
+
+  document.querySelectorAll("[data-reserve]").forEach((a) => {
+    a.addEventListener("click", (ev) => {
+      /* 修飾キー・中クリックは別タブで開きたい意思なので邪魔しない */
+      if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey || ev.button !== 0) return;
+      ev.preventDefault();
+      open();
+    });
+  });
+
+  dialog.querySelectorAll("[data-storepick-close]").forEach((el) => {
+    el.addEventListener("click", () => dialog.close());
+  });
+
+  /* 背景クリックで閉じる。判定は座標。::backdrop はイベントの
+     target にならず、target === dialog だけで見ると紙の余白を
+     押しても閉じてしまう。 */
+  dialog.addEventListener("click", (ev) => {
+    if (ev.target !== dialog) return;
+    const box = dialog.getBoundingClientRect();
+    const outside =
+      ev.clientX < box.left || ev.clientX > box.right || ev.clientY < box.top || ev.clientY > box.bottom;
+    if (outside) dialog.close();
+  });
+})();

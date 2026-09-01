@@ -7760,3 +7760,355 @@ body { padding-bottom: 0; }
 
 .ctabar__txt b { color: var(--print-ink); }
 .ctabar__txt span { color: #6b4a63; }
+
+/* ===================== 店舗選択ダイアログ =====================
+   参考にした画面は黒地に金だったが、あれは却下済みの方向性。構成だけ borrow して、
+   このLPの語彙（ちぎれ紙・マステ・マゼンタ）で組み直す。
+
+   <dialog> を使う。Esc・フォーカスの閉じ込め・背面の inert 化が最初から付いてくる。
+   自前で書くと、たいてい最後のひとつを取りこぼす。 */
+
+.storepick {
+  width: min(560px, calc(100vw - 28px));
+  max-height: min(86svh, 760px);
+  padding: 0;
+  border: 0;
+  overflow: visible;
+  background: transparent;
+}
+
+/* 地は純黒にしない。LPの影に使っている墨紫を薄く敷く */
+.storepick::backdrop {
+  background: rgba(37, 25, 63, 0.62);
+  backdrop-filter: blur(3px);
+}
+
+/* 高さは「箱に収める」ではなく「余りをリストに配る」で解く。
+   max-height だけ指定していたときは、見出し＋タブ＋注記の合計が箱を超えた分だけ
+   中身が下にはみ出し、注記とちぎれ口が画面外に落ちていた（実測167px）。
+   dialog[open] にだけ flex を効かせる。素の .storepick に置くと、閉じている間の
+   display:none をこちらが上書きしてしまい、ダイアログが出っぱなしになる。 */
+.storepick[open] { display: flex; }
+.storepick__sheet {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* スクロールさせるのは店舗リストだけ。紙の面ごと流すと、ちぎれ口の clip-path が
+   本文を斜めに切って「壊れている」ように見えるうえ、エリアタブまで一緒に流れて
+   スクロール中に切り替えられなくなる。見出し・タブ・注記は動かさない。 */
+.storepick__face {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  /* min-height:0 が無いと、flex アイテムの既定の min-height:auto が効いて
+     リストが縮まず、結局はみ出す。overflow を持つ子を flex で潰す時の定石。 */
+  min-height: 0;
+  padding-top: clamp(20px, 3vw, 30px);
+}
+
+.storepick__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1.5px solid var(--print-ink);
+  border-radius: 50%;
+  color: var(--print-ink);
+  font-size: 18px;
+  line-height: 1;
+  background: var(--paper-fiber);
+  cursor: pointer;
+}
+.storepick__close:active { transform: translateY(1px); }
+
+/* 液晶の帯。ガラケーの記号はここと予約ボタンの2箇所だけに留める。
+   筐体・キーパッド・ドット書体は入れない。ラフで測ったら装飾が248px食って
+   店舗行が21pxまで潰れた。ここは予約導線なので、面積は情報に渡す。
+   地は黒ではなく当時のバックライトの若草色。「真っ黒の地」は却下済み。 */
+.storepick__lcd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 clamp(14px, 2vw, 18px);
+  /* 右は閉じるボタンの分だけ空ける。詰めると日付がボタンの下に隠れる */
+  padding: 6px 46px 6px 10px;
+  border: 1.5px solid var(--print-ink);
+  color: #141a0f;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  /* 走査線を1層だけ。重ねると帯が濁って文字が読めなくなる */
+  background-image:
+    repeating-linear-gradient(180deg, rgba(20, 26, 15, 0.07) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #c6d6b4, #aec39a);
+  box-shadow: inset 0 0 12px rgba(20, 26, 15, 0.22);
+}
+.storepick__lcd b { flex: 1 1 auto; font-size: 11px; letter-spacing: 0.14em; }
+.storepick__lcdday { font-variant-numeric: tabular-nums; }
+
+.storepick__ant { display: inline-flex; align-items: flex-end; gap: 1.5px; height: 9px; }
+.storepick__ant i { width: 2.5px; background: currentColor; opacity: 0.22; }
+.storepick__ant i.on { opacity: 1; }
+.storepick__ant i:nth-child(1) { height: 3px; }
+.storepick__ant i:nth-child(2) { height: 5px; }
+.storepick__ant i:nth-child(3) { height: 7px; }
+.storepick__ant i:nth-child(4) { height: 9px; }
+
+.storepick__head { padding-right: 44px; }
+/* 見出しはここでは主役ではない。選ぶ対象はリストなので、見出しに高さを
+   渡しすぎると本体が見えなくなる（実測: 見出し部が360px、リストが310px）。 */
+.storepick__head .paper-h {
+  margin-bottom: 0;
+  font-size: clamp(1.35rem, 4.4vw, 1.7rem);
+  line-height: 1.25;
+}
+
+.storepick__lead {
+  margin: 8px 0 0;
+  color: var(--print-sub);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+/* リンクは途中で折らない。「料金を見/る」で割れる */
+.storepick__lead a { color: var(--print-accent); font-weight: 900; white-space: nowrap; }
+
+/* タブ。HOW TOの目次と同じ型。新しいUIを発明せず既にある語彙を使う */
+.storepick__tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: clamp(16px, 2.4vw, 22px) 0 0;
+  border: 2px solid var(--print-ink);
+}
+.storepick__tabs button {
+  min-height: 46px;
+  padding: 8px 10px;
+  border: 0;
+  border-right: 1px solid rgba(35, 24, 21, 0.25);
+  color: var(--print-ink);
+  font-family: var(--font-main);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  background: transparent;
+  cursor: pointer;
+}
+.storepick__tabs button:last-child { border-right: 0; }
+.storepick__tabs button[aria-current="true"] {
+  color: #fff;
+  background:
+    repeating-linear-gradient(112deg, transparent 0 11px, rgba(255, 255, 255, 0.1) 11px 13px),
+    var(--magenta);
+}
+
+.storepick__list {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 96px;
+  margin-top: clamp(14px, 2vw, 20px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* 続きがある間だけ、下端に紙の影を落とす。
+   切れ目が罫線の位置と揃うと「ここで終わり」に見えて、下の店舗に
+   誰も辿り着かない。data-more は script.js がスクロール位置で付け外しする。 */
+.storepick__list[data-more]::after {
+  content: "";
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  display: block;
+  height: 34px;
+  margin-top: -34px;
+  background: linear-gradient(to top, var(--paper) 12%, rgba(251, 247, 238, 0));
+  pointer-events: none;
+}
+
+/* 地名の見出し。誌面の柱と同じ調子で、英字を主・和文を従に */
+.storepick__area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 20px 0 6px;
+  color: var(--print-sub);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+.storepick__area:first-child { margin-top: 0; }
+.storepick__area i {
+  flex: 1 1 auto;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, rgba(35, 24, 21, 0.42) 0 3px, transparent 3px 6px);
+}
+
+/* 店舗の行。罫線ではなく破線で、ノートの行に見せる */
+.storeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 2px 13px 4px;
+  border-bottom: 1px dashed rgba(35, 24, 21, 0.34);
+  color: var(--print-ink);
+  text-decoration: none;
+}
+.storeline:last-child { border-bottom: 0; }
+.storeline__name {
+  font-size: clamp(0.95rem, 3.4vw, 1.05rem);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+/* 発信キー。ガラケーの記号の2つ目。緑は「発信」とLINEの両方に効く。
+   押せる面積は落とさない（最低44px）。キーらしい立体は border ではなく
+   下側の影で作る。border を太くすると内側の文字幅が削れる。 */
+.storeline__go {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1.5px solid #3f6b28;
+  border-radius: 9px;
+  color: #1b2c0a;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  background: linear-gradient(170deg, #e7ffd0, #a7d472 54%, #7cae4c);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 3px rgba(20, 40, 5, 0.18),
+    0 2px 0 #5d8a37;
+}
+.storeline__go i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #06c755;
+  box-shadow: 0 0 0 1.5px rgba(27, 44, 10, 0.35);
+}
+.storeline:active .storeline__go {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 2px rgba(20, 40, 5, 0.2), 0 0 0 #5d8a37;
+  transform: translateY(2px);
+}
+
+.storepick__empty {
+  margin: 0;
+  padding: 14px 2px;
+  color: var(--print-sub);
+  font-family: var(--font-hand);
+  font-size: 13px;
+}
+
+.storepick__note {
+  margin: clamp(16px, 2.2vw, 22px) 0 0;
+  color: var(--print-sub);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.storepick__tape1 { top: -12px; left: 26px; width: 104px; height: 30px; transform: rotate(-3.4deg); }
+.storepick__tape2 { right: 22px; bottom: -10px; width: 88px; height: 26px; transform: rotate(2.6deg); }
+
+@media (max-width: 480px) {
+  .storeline { flex-wrap: wrap; gap: 8px; }
+  .storeline__go { margin-left: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .storepick__close:active,
+  .storeline:active .storeline__go { transform: none; }
+}
+
+/* ===================== ダイアログの開き方 =====================
+   ガラケーが開く動き。上辺をヒンジにして紙を起こし、液晶のバックライトが
+   一拍おいて点いて、アンテナが1本ずつ立つ。
+
+   演出でリストに触れるまでを遅らせない。ここは予約導線で、待たせた分だけ
+   落ちる。「着信中」を見せてから一覧に切り替える案は面白いが、応答までの
+   1秒が丸ごと損になるので採らなかった。全部で360msに収め、
+   pointer-events も止めない（動いている最中でも押せる）。 */
+/* 回転は全体に配る。--ease-back を当てた版は、回転の9割を最初の60msで
+   使い切っていて（実測: 60ms 時点で既に -3.6deg）、動いているのに
+   何も起きていないように見えた。中身は早めに不透明にして、
+   回り切るのを待たずに読めるようにする。 */
+/* ヒンジは下辺。畳んだ蓋が下から起き上がって、こちらを向く。
+   最初は上辺をヒンジにして下辺が手前に倒れてくる形にしていたが、
+   それはガラケーの開き方の逆だった。折りたたみは下が蝶番で、
+   閉じている間は蓋が伏せてある。伏せた面は正面から見ると潰れて見えるので、
+   rotateX(+72deg)（上辺が奥へ）から 0 へ持ち上げる。
+
+   キーフレームは2つだけにして弧を easing に任せる。途中に角度の停留点を
+   置いた版は 110ms→220ms で5度しか動かず、そこだけ止まって見えた。 */
+@keyframes storepickFlip {
+  from { transform: perspective(1300px) rotateX(72deg); opacity: 0; }
+  20%  { opacity: 1; }
+  to   { transform: perspective(1300px) rotateX(0); opacity: 1; }
+}
+@keyframes storepickVeil {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+/* バックライトの点き方。蛍光管は一瞬明るく振れてから落ち着く */
+@keyframes storepickLcdOn {
+  0%   { filter: brightness(0.7) saturate(0.35); }
+  48%  { filter: brightness(0.7) saturate(0.35); }
+  58%  { filter: brightness(1.3) saturate(1.18); }
+  64%  { filter: brightness(0.88) saturate(0.95); }
+  72%  { filter: brightness(1.12) saturate(1.06); }
+  100% { filter: none; }
+}
+@keyframes storepickBar {
+  from { opacity: 0.22; }
+  to   { opacity: 1; }
+}
+
+.storepick[open] .storepick__sheet {
+  transform-origin: 50% 100%;
+  animation: storepickFlip 440ms cubic-bezier(0.22, 0.61, 0.25, 1.06) both;
+}
+.storepick[open]::backdrop { animation: storepickVeil 220ms ease both; }
+.storepick[open] .storepick__lcd { animation: storepickLcdOn 700ms ease-out both; }
+
+/* アンテナは点灯後に1本ずつ。既に立っている本数だけを対象にする */
+.storepick[open] .storepick__ant i.on {
+  animation: storepickBar 160ms ease-out both;
+}
+.storepick[open] .storepick__ant i.on:nth-child(1) { animation-delay: 380ms; }
+.storepick[open] .storepick__ant i.on:nth-child(2) { animation-delay: 455ms; }
+.storepick[open] .storepick__ant i.on:nth-child(3) { animation-delay: 530ms; }
+
+/* マステは紙が起き切ってから貼られる */
+@keyframes storepickTape {
+  from { opacity: 0; transform: var(--tape-tf) scale(0.6); }
+  to   { opacity: 1; transform: var(--tape-tf) scale(1); }
+}
+.storepick__tape1 { --tape-tf: rotate(-3.4deg); }
+.storepick__tape2 { --tape-tf: rotate(2.6deg); }
+.storepick[open] .storepick__tape1,
+.storepick[open] .storepick__tape2 {
+  animation: storepickTape 240ms var(--ease-back, cubic-bezier(0.175, 0.885, 0.32, 1.275)) both;
+  animation-delay: 380ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .storepick[open] .storepick__sheet,
+  .storepick[open]::backdrop,
+  .storepick[open] .storepick__lcd,
+  .storepick[open] .storepick__ant i.on,
+  .storepick[open] .storepick__tape1,
+  .storepick[open] .storepick__tape2 { animation: none; }
+}
