@@ -160,18 +160,34 @@ a { color: inherit; }
   gap: 16px;
   min-height: 66px;
   padding: 10px var(--gutter);
-  border-bottom: 1px solid rgba(190, 235, 242, 0.32);
-  background:
-    linear-gradient(180deg, rgba(50, 59, 66, 0.96), rgba(15, 20, 25, 0.93));
-  box-shadow: 0 8px 22px rgba(28, 38, 45, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(16px) saturate(112%);
+  /* 地が不透明なので backdrop-filter は効かない。外した */
+  border-bottom: 0;
+  background: linear-gradient(96deg, #bdf1f7 0%, #ffd9ec 42%, #f6dcf7 74%, #fff6dd 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 0 rgba(255, 255, 255, 0.5),
+    0 8px 20px rgba(90, 60, 130, 0.14);
+}
+
+/* 明るいバーは明るいセクションの上に来ると境界が消える。
+   下辺のキャンディ罫で必ず切る */
+.bar::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ff8ac4 0 8px, #fff 8px 16px, #8fe4f0 16px 24px, #fff 24px 32px
+  );
+  opacity: 0.85;
+  content: "";
 }
 
 .bar__brand { display: grid; gap: 3px; text-decoration: none; }
 .bar__brand img { width: 112px; }
 
 .bar__tag {
-  color: #9beef3;
+  color: #a2179e;
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.22em;
@@ -181,20 +197,20 @@ a { color: inherit; }
   display: flex;
   align-items: baseline;
   margin: 0;
-  color: #cbd6d9;
+  color: #6b4a63;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
 }
 
 .bar__nombre b {
-  color: #ff78b3;
+  color: #e4007f;
   font-size: 16px;
   font-variant-numeric: tabular-nums;
 }
 
 .bar__nombre span {
-  color: #cbd6d9;
+  color: #6b4a63;
   font-size: 11px;
   font-variant-numeric: tabular-nums;
 }
@@ -1212,6 +1228,9 @@ a { color: inherit; }
   text-align: center;
 }
 .foot .bar__brand { justify-items: center; }
+/* フッターの地は暗いので、ヘッダーを明るくしたときの色をそのまま
+   持ち込めない。ロゴは白抜きのまま、タグは水色に戻す */
+.foot .bar__tag { color: #9beef3; }
 .foot nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 20px; }
 .foot nav a { color: var(--muted); font-size: 12px; font-weight: 700; text-decoration: none; }
 .foot small { color: #75767b; font-size: 10px; letter-spacing: 0.08em; }
