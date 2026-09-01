@@ -7367,28 +7367,26 @@ body { padding-bottom: 0; }
 .cheki__facts {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: clamp(10px, 1.4vw, 16px);
+  align-items: baseline;
+  gap: clamp(10px, 1.4vw, 14px);
   margin: 0;
+  padding-top: clamp(12px, 1.6vw, 16px);
+  border-top: 1px solid rgba(35, 24, 21, 0.18);
+  font-size: clamp(0.92rem, 1.5vw, 1.02rem);
+  line-height: 1.7;
 }
 
 .cheki__facts strong {
   flex-shrink: 0;
-  padding: 0.5em 1.05em;
-  border: 2px solid var(--print-accent);
-  border-radius: 999px;
   color: var(--print-accent);
-  font-size: clamp(0.9rem, 1.6vw, 1.05rem);
   font-weight: 900;
   letter-spacing: 0.04em;
-  line-height: 1;
-  rotate: -2.5deg;
 }
 
 .cheki__facts span {
-  font-size: clamp(0.92rem, 1.5vw, 1.02rem);
+  padding-left: clamp(10px, 1.4vw, 14px);
+  border-left: 1px solid rgba(35, 24, 21, 0.22);
   font-weight: 700;
-  line-height: 1.7;
 }
 
 /* ---------- 撮った写真の束 ---------- */
@@ -7446,36 +7444,7 @@ body { padding-bottom: 0; }
   box-shadow: 0 1px 3px rgba(37, 25, 63, 0.18);
 }
 
-/* 「数量限定」のゴム印。バッジより限定の緊張感が出る */
-.cheki-stamp {
-  position: absolute;
-  z-index: 5;
-  display: grid;
-  place-items: center;
-  width: 108px;
-  height: 108px;
-  border: 3px solid var(--print-accent);
-  border-radius: 50%;
-  color: var(--print-accent);
-  line-height: 1.2;
-  text-align: center;
-  rotate: -11deg;
-  opacity: 0.94;
-}
-
-.cheki-stamp b {
-  font-size: 1.05rem;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-}
-
-.cheki-stamp small {
-  font-size: 0.56rem;
-  letter-spacing: 0.22em;
-  opacity: 0.82;
-}
-
-/* 入場の clip-path は影・マステ・ハンコを切る。ここだけ外す。
+/* 入場の clip-path は影とマステを切る。ここだけ外す。
    .reveal-ready [data-reveal].is-in (0,3,0) に勝てる詳細度で書く */
 .reveal-ready .scene--cheki .cheki-stack[data-reveal],
 .reveal-ready .scene--cheki .cheki-stack[data-reveal].is-in {
@@ -7510,20 +7479,7 @@ body { padding-bottom: 0; }
   .cheki-card figcaption { left: 8px; bottom: 7px; font-size: 0.66rem; }
   .cheki-stack__tape { display: none; }
 
-  /* ハンコは束の右上、文字とぶつからない位置。
-     .cheki-stack は左右に負のマージンで画面幅いっぱいまで
-     広がっているので、right は画面右端からの距離になる */
-  .cheki-stamp {
-    top: -34px;
-    right: 26px;
-    width: 82px;
-    height: 82px;
-    border-width: 2px;
-  }
-  .cheki-stamp b { font-size: 0.8rem; }
-  .cheki-stamp small { font-size: 0.46rem; }
-  .cheki__facts { padding-right: 92px; }
-  .cheki__facts strong { display: none; }
+
 }
 
 /* ---------- PC: 机に散らばった3枚 ---------- */
@@ -7551,14 +7507,9 @@ body { padding-bottom: 0; }
 
   .cheki-stack__tape--a { left: 6%; top: -1%; rotate: -14deg; }
   .cheki-stack__tape--b { right: 8%; top: -4%; rotate: 9deg; }
-
-  .cheki-stamp { right: -2%; bottom: 15%; }
-  .cheki__facts strong { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .cheki-card,
-  .cheki-stack__tape,
-  .cheki-stamp,
-  .cheki__facts strong { rotate: none; }
+  .cheki-stack__tape { rotate: none; }
 }
