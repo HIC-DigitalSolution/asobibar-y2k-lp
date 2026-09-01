@@ -579,7 +579,11 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
   if (!bar || !("IntersectionObserver" in window)) return;
 
   const heroCta = document.querySelector(".cover .cta");
-  const finalSection = document.querySelector("#reserve");
+  /* 監視するのは最終CTA本体で、それを含むセクションではない。
+     #reserve を見ていた版は、セクションが18%見えた時点でバーを消していた。
+     あのセクションは上300pxが写真と見出しなので、中のCTAはまだ画面外。
+     実測で scrollY 7300〜7600 の約400px、押せるCTAが0個になっていた。 */
+  const finalSection = document.querySelector(".cta--final") || document.querySelector("#reserve");
   const requestScene = document.querySelector("#experience");
   if (!heroCta && !finalSection) return;
 
@@ -601,7 +605,9 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
       });
       sync();
     },
-    { threshold: 0.18 },
+    /* ボタン1つ分を見るので閾値を上げる。0.18 だとボタンの13px分で
+       消えてしまい、バーが先に引っ込む。 */
+    { threshold: 0.75 },
   );
 
   if (heroCta) {
