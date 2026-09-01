@@ -59,3 +59,7 @@ tools/.fontsrc/
 !assets/food.jpg
 tools/verify/node_modules/
 tools/verify/shots/
+!assets/cheki-01.webp
+!assets/cheki-02.webp
+!assets/cheki-03.webp
+!assets/cheki-04.webp

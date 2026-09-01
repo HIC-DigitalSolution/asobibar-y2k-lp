@@ -837,7 +837,7 @@ a { color: inherit; }
 
 .howto-index button:last-child { border-right: 0; }
 .howto-index button[aria-current="true"] {
-  color: #fff;
+  color: #ffffff;
   background:
     repeating-linear-gradient(112deg, transparent 0 11px, rgba(255, 255, 255, 0.1) 11px 13px),
     var(--magenta);
@@ -3625,7 +3625,6 @@ a { color: inherit; }
   align-self: end;
   width: 100%;
   max-width: none;
-  margin: 0;
   padding: 0 clamp(28px, 4vw, 56px) clamp(52px, 5.5vw, 76px);
 }
 
@@ -7136,17 +7135,18 @@ body { padding-bottom: 0; }
 }
 
 /* ===================== 01 写真を当時のMVに見せる =====================
-   案A（走査線）＋案C（4:3の枠）。外枠と映像を分離し、装飾画像へ
-   object-fit が漏れないようにする。架空のREC・時刻表示は加えない。 */
+   案A（走査線）＋案C（4:3の枠）＋最小限の再生UI。
+   架空の時刻は加えず、実際の体験内容だけを表示する。 */
 
-/* 16:9の外枠の中央に4:3の映像を置き、左右を当時の映像帯にする。 */
+/* 3:2の外枠に4:3映像を置き、黒帯を細くして写真を主役にする。 */
 .scene--request .request-photo,
 .reveal-ready .scene--request .request-photo[data-reveal].is-in {
   position: relative;
   display: block;
   width: min(1120px, 100%);
+  height: auto;
   min-height: 0;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 3 / 2;
   margin-inline: auto;
   padding: 0;
   overflow: hidden;
@@ -7156,10 +7156,10 @@ body { padding-bottom: 0; }
 .request-photo__screen {
   position: absolute;
   inset-block: 0;
-  left: 12.5%;
+  left: 5.5556%;
   z-index: 2;
   display: block;
-  width: 75%;
+  width: 88.8889%;
   overflow: hidden;
   background: #171312;
 }
@@ -7181,9 +7181,9 @@ body { padding-bottom: 0; }
 .request-photo__crt {
   position: absolute;
   inset-block: 0;
-  left: 12.5%;
+  left: 5.5556%;
   z-index: 3;
-  width: 75%;
+  width: 88.8889%;
   pointer-events: none;
   background:
     radial-gradient(118% 96% at 50% 50%, transparent 52%, rgba(35, 24, 21, 0.34) 100%),
@@ -7196,6 +7196,75 @@ body { padding-bottom: 0; }
     inset 1px 0 0 rgba(255, 74, 148, 0.16),
     inset -1px 0 0 rgba(0, 168, 204, 0.16);
   mix-blend-mode: multiply;
+}
+
+/* 写真を「MV再生シーン」として読ませる、必要最小限の操作表示。 */
+.request-photo__mvbar {
+  position: absolute;
+  right: 5.5556%;
+  bottom: 0;
+  left: 5.5556%;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: auto auto minmax(72px, 1fr);
+  align-items: center;
+  gap: clamp(9px, 1.2vw, 16px);
+  min-height: clamp(38px, 4.3vw, 46px);
+  padding: 7px clamp(12px, 1.6vw, 20px);
+  color: var(--paper);
+  border-top: 1px solid rgba(105, 220, 232, 0.68);
+  background: rgba(14, 11, 13, 0.88);
+  font-family: var(--font-main);
+  backdrop-filter: none;
+}
+
+.request-photo__mvplay {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: #0e0b0d;
+  border-radius: 50%;
+  background: #69dce8;
+  font-size: 10px;
+  font-style: normal;
+  line-height: 1;
+  text-indent: 1px;
+}
+
+.request-photo__mvlabel {
+  display: grid;
+  gap: 1px;
+  white-space: nowrap;
+}
+
+.request-photo__mvlabel b {
+  font-size: clamp(10px, 1vw, 12px);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.request-photo__mvlabel small {
+  color: rgba(251, 247, 238, 0.68);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.request-photo__mvprogress {
+  display: block;
+  height: 2px;
+  overflow: hidden;
+  background: rgba(251, 247, 238, 0.26);
+}
+
+.request-photo__mvprogress > i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #ff4a94;
+  transform: scaleX(calc(0.18 + var(--scene-progress, 0) * 0.72));
+  transform-origin: 0 50%;
 }
 
 @media (max-width: 767px) {
@@ -7216,4 +7285,280 @@ body { padding-bottom: 0; }
       radial-gradient(120% 98% at 50% 50%, transparent 56%, rgba(35, 24, 21, 0.3) 100%),
       repeating-linear-gradient(180deg, rgba(35, 24, 21, 0.12) 0 1px, transparent 1px 3px);
   }
+
+  .request-photo__mvbar {
+    right: 0;
+    left: 0;
+    grid-template-columns: auto auto 1fr;
+    gap: 8px;
+    min-height: 40px;
+    padding: 7px 10px;
+  }
+
+  .request-photo__mvlabel b { font-size: 10px; }
+  .request-photo__mvlabel small { font-size: 7px; }
+}
+/* ===================== 03 CHEKI PHOTO =====================
+   02（暗い）と info-zone（藤〜桃のグラデ）の間に挟まる紙面。
+   下端だけ info-zone の入り色へ送って、境界を帯に見せない。
+
+   PCは机に散らばった3枚、SPは横一列で画面外へ流す。DOMは共通で
+   組み方だけ変える。傾きは transform ではなく独立プロパティ rotate
+   で持たせる。[data-reveal] の入場が transform を使うので、同じ
+   土俵に乗せると (0,3,0) と殴り合いになって静的な傾きが消える。 */
+
+.scene--cheki {
+  position: relative;
+  isolation: isolate;
+  margin-inline: 0;
+  border-inline: 0;
+  border-radius: 0;
+  box-shadow: none;
+  /* --gutter は SP で 14px まで詰まる。他セクション（料金36px／02は18px）
+     に対して 03 だけ左が詰まって見えたので、独自に下限を持たせる */
+  padding: clamp(56px, 7vw, 100px) clamp(24px, 6.4vw, 64px) clamp(64px, 8vw, 112px);
+  background:
+    radial-gradient(circle at 84% 10%, rgba(255, 226, 240, 0.55), transparent 44%),
+    linear-gradient(180deg, var(--paper) 0%, var(--paper) 76%, #ddd2ef 100%);
+  color: var(--print-ink);
+  overflow: hidden;
+}
+
+.scene--cheki::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--grain-fine);
+  opacity: 0.5;
+  pointer-events: none;
+  content: "";
+}
+
+.cheki__in {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: clamp(28px, 4vw, 56px);
+  width: min(1060px, 100%);
+  margin-inline: auto;
+  align-items: center;
+}
+
+.scene--cheki .scene-label { color: var(--print-sub); }
+.scene--cheki .scene-label span { color: var(--print-ink); }
+
+/* 1行で組む。折り返すと「1枚」が行頭に落ちて意味の切れ目がずれる */
+.scene--cheki .paper-h {
+  white-space: nowrap;
+  font-size: clamp(1.5rem, 5.4vw, 2.9rem);
+}
+
+.cheki__lead {
+  margin: 0 0 clamp(16px, 2.2vw, 24px);
+  max-width: 26em;
+  color: var(--print-sub);
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+  line-height: 1.9;
+}
+
+/* 事実は2つだけ。増やさない。
+   書体は本文と揃える。ここで手書き体に振ると、ラベル・見出し・本文と
+   合わせて1画面に4書体並んで散らかる */
+.cheki__facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(10px, 1.4vw, 16px);
+  margin: 0;
+}
+
+.cheki__facts strong {
+  flex-shrink: 0;
+  padding: 0.5em 1.05em;
+  border: 2px solid var(--print-accent);
+  border-radius: 999px;
+  color: var(--print-accent);
+  font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  rotate: -2.5deg;
+}
+
+.cheki__facts span {
+  font-size: clamp(0.92rem, 1.5vw, 1.02rem);
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+/* ---------- 撮った写真の束 ---------- */
+
+.cheki-stack {
+  position: relative;
+  justify-self: center;
+  width: 100%;
+}
+
+.cheki-card {
+  margin: 0;
+  padding: 8px 8px 34px;
+  background: var(--paper-photo);
+  box-shadow: var(--shadow-photo);
+}
+
+.cheki-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  object-fit: cover;
+  background: #efe7dc;
+}
+
+/* 現像したてのわずかな色被り。黒は使わない */
+.cheki-card::after {
+  position: absolute;
+  inset: 8px 8px 34px;
+  background: linear-gradient(200deg, rgba(255, 244, 220, 0.24), transparent 46%, rgba(180, 205, 225, 0.18));
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  content: "";
+}
+
+/* 白フチへの書き込み。手書き体はここだけに残す */
+.cheki-card figcaption {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  font-family: var(--font-hand);
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--print-sub);
+}
+
+.cheki-stack__tape {
+  position: absolute;
+  z-index: 4;
+  width: 82px;
+  height: 25px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.66), rgba(255, 233, 210, 0.5));
+  box-shadow: 0 1px 3px rgba(37, 25, 63, 0.18);
+}
+
+/* 「数量限定」のゴム印。バッジより限定の緊張感が出る */
+.cheki-stamp {
+  position: absolute;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 108px;
+  height: 108px;
+  border: 3px solid var(--print-accent);
+  border-radius: 50%;
+  color: var(--print-accent);
+  line-height: 1.2;
+  text-align: center;
+  rotate: -11deg;
+  opacity: 0.94;
+}
+
+.cheki-stamp b {
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.cheki-stamp small {
+  font-size: 0.56rem;
+  letter-spacing: 0.22em;
+  opacity: 0.82;
+}
+
+/* 入場の clip-path は影・マステ・ハンコを切る。ここだけ外す。
+   .reveal-ready [data-reveal].is-in (0,3,0) に勝てる詳細度で書く */
+.reveal-ready .scene--cheki .cheki-stack[data-reveal],
+.reveal-ready .scene--cheki .cheki-stack[data-reveal].is-in {
+  clip-path: none;
+}
+
+/* ---------- SP: 横一列のストリップ ----------
+   4枚を扇状に重ねて、両端は画面外へ。束の散らばりはSP幅だと
+   互いに潰し合って、どの写真も読めなくなる */
+@media (max-width: 767px) {
+  .cheki-stack {
+    display: flex;
+    /* 基底の justify-self: center だとグリッド項目が max-content 幅になり、
+       負のマージンが左右非対称に効いてハンコが画面外へ出る */
+    justify-self: stretch;
+    justify-content: center;
+    margin-inline: calc(clamp(24px, 6.4vw, 64px) * -1);
+    padding-block: 10px 4px;
+  }
+  .cheki-card {
+    position: relative;
+    flex: 0 0 auto;
+    width: 34vw;
+    margin-inline: -3vw;
+    padding: 6px 6px 26px;
+  }
+  .cheki-card::after { inset: 6px 6px 26px; }
+  .cheki-card--1 { rotate: -7deg; z-index: 1; }
+  .cheki-card--2 { rotate: 2.5deg; z-index: 2; }
+  .cheki-card--3 { rotate: -3deg; z-index: 3; }
+  .cheki-card--4 { rotate: 7deg; z-index: 2; }
+  .cheki-card figcaption { left: 8px; bottom: 7px; font-size: 0.66rem; }
+  .cheki-stack__tape { display: none; }
+
+  /* ハンコは束の右上、文字とぶつからない位置。
+     .cheki-stack は左右に負のマージンで画面幅いっぱいまで
+     広がっているので、right は画面右端からの距離になる */
+  .cheki-stamp {
+    top: -34px;
+    right: 26px;
+    width: 82px;
+    height: 82px;
+    border-width: 2px;
+  }
+  .cheki-stamp b { font-size: 0.8rem; }
+  .cheki-stamp small { font-size: 0.46rem; }
+  .cheki__facts { padding-right: 92px; }
+  .cheki__facts strong { display: none; }
+}
+
+/* ---------- PC: 机に散らばった3枚 ---------- */
+@media (min-width: 768px) {
+  .cheki__in {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+    gap: clamp(32px, 3.6vw, 56px);
+  }
+
+  .cheki-stack {
+    width: min(440px, 100%);
+    aspect-ratio: 1 / 1.02;
+  }
+
+  .cheki-card {
+    position: absolute;
+    padding: 9px 9px 40px;
+  }
+  .cheki-card::after { inset: 9px 9px 40px; }
+
+  .cheki-card--1 { width: 46%; left: 0; top: 4%; rotate: -7deg; z-index: 1; }
+  .cheki-card--2 { width: 46%; right: 2%; top: 0; rotate: 5.5deg; z-index: 2; }
+  .cheki-card--3 { width: 56%; left: 20%; bottom: 0; rotate: -2deg; z-index: 3; }
+  .cheki-card--4 { display: none; }
+
+  .cheki-stack__tape--a { left: 6%; top: -1%; rotate: -14deg; }
+  .cheki-stack__tape--b { right: 8%; top: -4%; rotate: 9deg; }
+
+  .cheki-stamp { right: -2%; bottom: 15%; }
+  .cheki__facts strong { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cheki-card,
+  .cheki-stack__tape,
+  .cheki-stamp,
+  .cheki__facts strong { rotate: none; }
 }

@@ -26,7 +26,7 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=384" />
+    <link rel="stylesheet" href="./styles.css?v=395" />
     <script src="./script.js?v=61" defer></script>
   </head>
 
@@ -39,7 +39,7 @@
         <span class="bar__tag">Y2K NIGHT</span>
       </a>
       <!-- 誌面のノンブル。スクロールでページ番号が進む -->
-      <p class="bar__nombre" aria-hidden="true">P.<b data-nombre>01</b><span>/P.06</span></p>
+      <p class="bar__nombre" aria-hidden="true">P.<b data-nombre>01</b><span>/P.07</span></p>
     </header>
 
     <main id="main">
@@ -105,9 +105,6 @@
                 <i>×</i>
               </span>
             </span>
-            <span class="request-chrome request-chrome--orbit" aria-hidden="true">
-              <img src="./assets/chrome-orbit.png" alt="" width="512" height="341" loading="lazy" decoding="async" />
-            </span>
             <span class="request-photo__screen">
               <img
                 src="./assets/request-conversation.jpg"
@@ -117,6 +114,11 @@
                 loading="eager"
                 decoding="async"
               />
+            </span>
+            <span class="request-photo__mvbar" aria-hidden="true">
+              <i class="request-photo__mvplay">▶</i>
+              <span class="request-photo__mvlabel"><b>2000年代MV</b><small>REQUEST PLAYBACK</small></span>
+              <span class="request-photo__mvprogress"><i></i></span>
             </span>
             <!-- 窓枠にまたがるシール。04で使っている型をそのまま流用する -->
             <span class="seal seal--heart request-seal request-seal--heart" aria-hidden="true">
@@ -216,11 +218,50 @@
         </div>
       </section>
 
+<!-- ==================== SCENE 03 / CHEKI PHOTO ====================
+     PCは机に散らばった3枚、SPは横一列で画面外へ流す。同じDOMで
+     組み方だけ変える。写真は4枚とも今夜撮った1枚という体で、
+     文字情報は「数量限定」と「持ち帰り可能」の2つしか置かない。 -->
+<section class="scene scene--cheki" id="cheki" data-theme="cheki" data-page="03" data-scene-motion="cheki" aria-labelledby="cheki-title">
+  <div class="cheki__in">
+    <div class="cheki__copy" data-reveal="copy">
+      <p class="scene-label"><b>03</b><i aria-hidden="true"></i><span>チェキ撮影</span><em>CHEKI PHOTO</em></p>
+      <h2 class="paper-h" id="cheki-title">今夜を、1枚持ち帰る。</h2>
+      <p class="cheki__lead">会場でチェキ撮影を実施します。</p>
+      <p class="cheki__facts">
+        <strong>数量限定</strong>
+        <span>撮影した写真は持ち帰り可能</span>
+      </p>
+    </div>
+
+    <div class="cheki-stack" data-reveal="media">
+      <span class="cheki-stack__tape cheki-stack__tape--a" aria-hidden="true"></span>
+      <span class="cheki-stack__tape cheki-stack__tape--b" aria-hidden="true"></span>
+
+      <figure class="cheki-card cheki-card--1">
+        <img src="./assets/cheki-01.webp" alt="グラスを合わせて笑い合う参加者" width="760" height="760" loading="lazy" decoding="async" />
+      </figure>
+      <figure class="cheki-card cheki-card--2">
+        <img src="./assets/cheki-02.webp" alt="トランプを手に盛り上がる参加者" width="760" height="760" loading="lazy" decoding="async" />
+      </figure>
+      <figure class="cheki-card cheki-card--3">
+        <img src="./assets/cheki-03.webp" alt="乾杯するふたりの手元" width="760" height="760" loading="lazy" decoding="async" />
+        <figcaption>2026.9</figcaption>
+      </figure>
+      <figure class="cheki-card cheki-card--4">
+        <img src="./assets/cheki-04.webp" alt="グラス片手に語り合う参加者" width="760" height="760" loading="lazy" decoding="async" />
+      </figure>
+
+      <span class="cheki-stamp"><b>数量限定</b><small aria-hidden="true">LIMITED</small></span>
+    </div>
+  </div>
+</section>
+
       <!-- ==================== PRICE ==================== -->
-      <!-- 05と06は地を共有する。別々に背景を持たせると
+      <!-- 04と05は地を共有する。別々に背景を持たせると
            境界で色が繋がらず、水色の帯として分かれて見えた。 -->
       <div class="info-zone">
-      <section class="information-section price-zone" id="price" data-theme="price" data-page="03" data-scene-motion="price" aria-labelledby="price-title">
+      <section class="information-section price-zone" id="price" data-theme="price" data-page="04" data-scene-motion="price" aria-labelledby="price-title">
         <div class="price-zone__in">
 
           <figure class="price-photo scene-photo" data-reveal="media">
@@ -230,7 +271,7 @@
           </figure>
 
           <div class="price-title-overlay">
-            <p class="scene-label"><b>03</b><i aria-hidden="true"></i><span>料金</span><em>PRICE</em></p>
+            <p class="scene-label"><b>04</b><i aria-hidden="true"></i><span>料金</span><em>PRICE</em></p>
             <h2 class="paper-h" id="price-title">100分プラン誕生！</h2>
           </div>
 
@@ -271,12 +312,12 @@
       </section>
 
       <!-- ==================== EVENT INFORMATION ==================== -->
-      <section class="information-section event-zone" id="event" data-theme="event" data-page="04" data-scene-motion="event" aria-labelledby="event-title">
+      <section class="information-section event-zone" id="event" data-theme="event" data-page="05" data-scene-motion="event" aria-labelledby="event-title">
         <div class="event-zone__in">
           <div class="sheet sheet--torn-bottom event-sheet">
             <span class="sheet__fiber" aria-hidden="true"></span>
             <div class="sheet__face">
-              <p class="scene-label"><b>04</b><i aria-hidden="true"></i><span>開催情報</span><em>EVENT INFORMATION</em></p>
+              <p class="scene-label"><b>05</b><i aria-hidden="true"></i><span>開催情報</span><em>EVENT INFORMATION</em></p>
 
               <h2 class="paper-h" id="event-title">9月まるっと開催</h2>
 
@@ -336,7 +377,7 @@
       </div>
 
       <!-- ==================== HOW TO ASOBIBAR ==================== -->
-      <section class="howto-section" id="howto" data-theme="howto" data-page="05" aria-labelledby="howto-title">
+      <section class="howto-section" id="howto" data-theme="howto" data-page="06" aria-labelledby="howto-title">
         <div class="howto-guide">
           <header class="howto-head">
             <span class="howto-head__tape" aria-hidden="true"></span>
@@ -419,7 +460,7 @@
         </div>
       </section>
       <!-- ==================== FINAL CTA ==================== -->
-      <section class="final-night" id="reserve" data-theme="reserve" data-page="06" data-scene-motion="final" aria-labelledby="last-title">
+      <section class="final-night" id="reserve" data-theme="reserve" data-page="07" data-scene-motion="final" aria-labelledby="last-title">
         <div class="scene__pin">
           <figure class="final-night__photo">
           <img
@@ -431,7 +472,7 @@
           />
           </figure>
           <div class="final-night__content">
-          <p class="scene-label"><b>06</b><i aria-hidden="true"></i><span>予約</span><em>RESERVE</em></p>
+          <p class="scene-label"><b>07</b><i aria-hidden="true"></i><span>予約</span><em>RESERVE</em></p>
           <h2 id="last-title">懐かしいだけで終わらない。<br />今夜を、<br class="sp-br" />新しい思い出に。</h2>
           <p>あの頃の曲から始まる、大人のY2Kナイトへ。</p>
             <a class="cta cta--final" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
@@ -448,7 +489,7 @@
         <span class="bar__tag">Y2K NIGHT</span>
       </a>
       <nav aria-label="フッターナビゲーション">
-        <a href="#experience">曲リクエスト</a><a href="#karaoke">つながる</a><a href="#price">料金</a><a href="#event">開催情報</a><a href="#howto">楽しみ方</a><a href="#reserve">予約</a>
+        <a href="#experience">曲リクエスト</a><a href="#karaoke">つながる</a><a href="#cheki">チェキ</a><a href="#price">料金</a><a href="#event">開催情報</a><a href="#howto">楽しみ方</a><a href="#reserve">予約</a>
       </nav>
       <small>© ASOBIBAR Y2K NIGHT</small>
     </footer>
