@@ -46,14 +46,23 @@ LPのルールを足すならこの2つに書いてください。**symlink 側�
 それを参照している他のプロジェクト全部に効きます。**
 
 **`git clone` しただけでは動きません。** symlink はリポジトリの外を指しているので、
-`Job/LP/` が無い環境では解決できず、pre-commit がその場で失敗します。別マシンで
-作業するときは、共有部分を実ファイルに戻してください:
+共有元が無い環境では8本すべてが dead link になり、`harness-check.mjs` は
+モジュールが見つからず起動しません。hook を入れていれば、その時点で
+コミットも通らなくなります。
+
+共有元（`lp-harness`）を先に取得し、その場所を指定して実ファイルに戻してください。
+プロジェクト内の相対パスは共有元の相対パスとそのまま一致します:
 
 ```sh
-for l in $(find . -type l -not -path "./tools/*"); do
-  t=$(readlink "$l"); rm "$l"; cp -R "$(dirname "$l")/$t" "$l"
+SHARED=/path/to/lp-harness          # 共有ハーネス（このマシンでは ../）を置いた場所
+for l in $(find . -type l -not -path './tools/*'); do
+  rm "$l" && cp -R "$SHARED/${l#./}" "$l"
 done
 ```
+
+戻したあとは `node scripts/harness/harness-check.mjs` が動くことを確認します。
+**この状態でコミットすると symlink が実ファイルに戻った差分が乗ります。**
+共有構成を維持するなら、その差分は捨ててください。
 
 **作業完了を報告する前に `harness-check.mjs` を走らせてください。**読み取り専用です。
 
