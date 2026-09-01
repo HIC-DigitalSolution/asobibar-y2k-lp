@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# Push is the last point where a problem is still cheap, so the heavier checks live here.
+#
+# The diff is measured against @{upstream}, never against a long-lived integration branch:
+# a branch that has drifted by thousands of files would make every gate a question about
+# the whole backlog instead of about your change. Override with HARNESS_BASE=<ref>.
+#
+# As with pre-commit: git runs this at the REPO root and core.hooksPath is repo-wide, so
+# anchor to the project that owns this hook first. harness-check scopes the diff to this
+# project's subtree itself, so a push containing only sibling-project commits costs one
+# node startup and reports an empty diff.
+
+set -eu
+
+PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$PROJECT_ROOT"
+
+if ! node scripts/harness/harness-check.mjs --upstream; then
+	echo "" >&2
+	echo "pre-push: harness invariants failed on the commits being pushed." >&2
+	exit 1
+fi
+
+exec node scripts/harness/harness-run.mjs --stage pre-push

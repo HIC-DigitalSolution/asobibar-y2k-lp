@@ -28,6 +28,33 @@ node scripts/harness/new-plan.mjs task <slug> --title "..."  # exec-plan / adr /
 - `harness/contracts/workflow.yaml` — 計画と検証記録の作法
 - `.githooks/` — clone ごとに1回 `sh scripts/install-hooks.sh`
 
+### 共通部分は、このリポジトリの外にあります
+
+ハーネスは**エンジンと汎用ルールを他プロジェクトと共有**しています。実体は
+`../` （`Job/LP/`）に1部だけあり、ここからは symlink で参照しています。
+
+| 参照（symlink） | 実体 |
+| --- | --- |
+| `scripts/harness/` | `../../scripts/harness` |
+| `harness/contracts/{workflow,secrets}.yaml` | `../../../harness/contracts/` |
+| `harness/scenarios/{workflow,harness-self-test}.yaml` | `../../../harness/scenarios/` |
+| `harness/*/\_examples/`、`harness/README.md` | 同上 |
+
+**このLP固有なのは実ファイルのものだけ**です:
+`harness/contracts/asobibar-lp.yaml` と `harness/scenarios/asobibar-lp.yaml`。
+LPのルールを足すならこの2つに書いてください。**symlink 側を編集すると、
+それを参照している他のプロジェクト全部に効きます。**
+
+**`git clone` しただけでは動きません。** symlink はリポジトリの外を指しているので、
+`Job/LP/` が無い環境では解決できず、pre-commit がその場で失敗します。別マシンで
+作業するときは、共有部分を実ファイルに戻してください:
+
+```sh
+for l in $(find . -type l -not -path "./tools/*"); do
+  t=$(readlink "$l"); rm "$l"; cp -R "$(dirname "$l")/$t" "$l"
+done
+```
+
 **作業完了を報告する前に `harness-check.mjs` を走らせてください。**読み取り専用です。
 
 `[manual]` と出る行は、機械が判定できない規則です。**あれが確認事項の本体**で、

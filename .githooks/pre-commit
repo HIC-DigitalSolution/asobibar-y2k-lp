@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# Kept deliberately light. A commit happens dozens of times a day, so anything slow here
+# trains people to reach for --no-verify, which disables every gate at once.
+#
+# This hook knows only WHICH STAGE to run. What runs, and for which paths, is defined in
+# harness/ — so adding a check never means editing a hook, and the same rules apply to
+# Codex, Claude Code, and a human typing git commit.
+#
+# Two facts drive the anchoring below:
+#   1. git runs hooks with cwd at the REPO root, which is not this project when the
+#      harness is installed in a subdirectory.
+#   2. core.hooksPath is a per-REPO setting, so this hook fires on every commit anywhere
+#      in the repo — including work that has nothing to do with this project.
+# Hence: anchor to the project that owns this hook, scope the diff to it, and get out of
+# the way immediately when a commit does not touch it.
+
+set -eu
+
+PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$PROJECT_ROOT"
+
+# `-- .` scopes the pathspec to this project. Without it, a commit to a sibling project
+# in the same repo would be gated by rules written for this one.
+STAGED="$(git -c core.quotePath=false diff --cached --name-only --diff-filter=ACMR -- .)"
+
+if [ -z "$STAGED" ]; then
+	exit 0
+fi
+
+if ! node scripts/harness/harness-check.mjs --staged; then
+	echo "" >&2
+	echo "pre-commit: harness invariants failed. Fix what is listed above, or run" >&2
+	echo "            git commit --no-verify only if you can say why it is safe." >&2
+	exit 1
+fi
+
+exec node scripts/harness/harness-run.mjs --stage pre-commit
