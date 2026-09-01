@@ -1,0 +1,1 @@
+../../../docs/design-docs/lp-visual-knowledge.md
