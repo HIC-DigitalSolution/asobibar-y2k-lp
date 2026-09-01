@@ -7731,3 +7731,32 @@ body { padding-bottom: 0; }
   /* 目次がセクション内で sticky するので、その分だけ上げる */
   .howto-ticket { bottom: 54px; }
 }
+
+/* ===================== 固定CTAバー =====================
+   ヘッダー・フッターと揃えて明るくする。地が不透明になるので
+   backdrop-filter は落とす。上辺のキャンディ罫は、明るい本文の
+   上に重なったときに境界を作るため。 */
+
+.ctabar {
+  border-top: 0;
+  background: linear-gradient(96deg, #bdf1f7 0%, #ffd9ec 42%, #f6dcf7 74%, #fff6dd 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.5),
+    0 -10px 26px rgba(90, 60, 130, 0.16);
+  backdrop-filter: none;
+}
+
+.ctabar::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ff8ac4 0 8px, #fff 8px 16px, #8fe4f0 16px 24px, #fff 24px 32px
+  );
+  opacity: 0.85;
+  content: "";
+}
+
+.ctabar__txt b { color: var(--print-ink); }
+.ctabar__txt span { color: #6b4a63; }
