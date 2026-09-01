@@ -7657,3 +7657,77 @@ body { padding-bottom: 0; }
     transform: rotate(-6deg);
   }
 }
+
+/* ===================== HOW TO の重なりと空きの整理 =====================
+   1) COLOR BANDのチップが写真の下に潜って、端だけ出て切れて見えていた。
+      幅を詰めて写真の縁をまたぐ位置へ移し、写真より前に出す。
+      multiply なので写真に乗った側は色が沈み、紙に出た側で文字が読める。
+   2) 黄色いチケットが料理写真2枚のキャプションを隠していた。
+      写真を上げて、チケットに専用の帯を作る。
+   3) .howto-step の min-height 500px が中身（最大438px）に対して
+      大きく、01の下に150px以上の空きができていた。 */
+
+@media (min-width: 768px) {
+  .howto-step { min-height: 0; }
+
+  .howto-visual--band .howto-band {
+    z-index: 4;
+    height: 32px;
+    /* multiply のままだと写真に乗った側が暗部に沈んで、
+       紙に出た分だけが「切れたチップ」に見える */
+    mix-blend-mode: normal;
+    font-size: 9px;
+  }
+  .howto-band--1 { background: rgba(255, 138, 190, 0.92); }
+  .howto-band--2 { background: rgba(150, 235, 246, 0.92); }
+  .howto-band--3 { background: rgba(255, 222, 110, 0.92); }
+
+  /* 2枚目が1枚目のキャプションに乗るので、1枚目だけ左に振る */
+  .howto-food__photo--1 figcaption { right: auto; left: 12px; }
+  .howto-band--1 { top: 4%; right: -5%; left: auto; width: 36%; }
+  .howto-band--2 { top: 45%; left: -7%; right: auto; width: 34%; }
+  .howto-band--3 { right: 6%; bottom: -3%; left: auto; width: 32%; }
+
+  .howto-food { min-height: 470px; }
+  .howto-food__photo--1 { top: 0; height: 52%; }
+  .howto-food__photo--2 { top: 7%; height: 50%; }
+  .howto-ticket { bottom: 0; }
+}
+
+/* ===================== フッター =====================
+   ヘッダーを明るくした結果、ここだけが暗い面として残っていた。
+   上下でミルキーグラデを挟んで綴じる。 */
+
+.foot {
+  border-top: 0;
+  background: linear-gradient(96deg, #fff6dd 0%, #f6dcf7 26%, #ffd9ec 58%, #bdf1f7 100%);
+  color: var(--print-ink);
+}
+
+.foot::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ff8ac4 0 8px, #fff 8px 16px, #8fe4f0 16px 24px, #fff 24px 32px
+  );
+  opacity: 0.85;
+  content: "";
+}
+
+.foot { position: relative; }
+.foot .bar__tag { color: #a2179e; }
+.foot nav a { color: #6b4a63; }
+.foot nav a:hover { color: var(--print-accent); }
+.foot small { color: rgba(35, 24, 21, 0.56); }
+
+/* SPも同じ。写真を上げてチケットに帯を作る */
+@media (max-width: 767px) {
+  .howto-food { min-height: 476px; }
+  .howto-food__photo--1 { top: 0; height: 45%; }
+  .howto-food__photo--2 { top: 5%; height: 44%; }
+  .howto-food__photo--1 figcaption { right: auto; left: 10px; }
+  /* 目次がセクション内で sticky するので、その分だけ上げる */
+  .howto-ticket { bottom: 54px; }
+}
