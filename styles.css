@@ -7520,3 +7520,78 @@ body { padding-bottom: 0; }
   .cheki-card,
   .cheki-stack__tape { rotate: none; }
 }
+
+/* ---------- 当時のプリクラの落書き ----------
+   写真の上に手で描き足した体。字体を増やさないよう、記号は
+   インラインSVGの1本線で描き、文字だけ既存の手書き体を使う。
+   線・傾き・色は写真に足していい範囲。紫と黒は使わない。
+   枚数を増やすとただの装飾に見えるので、1枚につき1〜2個まで。 */
+
+.cheki-doodle {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  line-height: 0;
+}
+
+.cheki-doodle svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  /* 下地が明るいとペンが消える。うっすら白を回して輪郭を逃がす */
+  filter: drop-shadow(0 0 1.6px rgba(255, 255, 255, 0.9));
+}
+
+/* 白フチではなく写真の内側に描く */
+.cheki-doodle--heart {
+  top: 9%;
+  right: 11%;
+  width: 15%;
+  color: var(--magenta-bright);
+  rotate: 9deg;
+}
+
+.cheki-doodle--sparkle {
+  top: 8%;
+  left: 9%;
+  width: 26%;
+  color: #ffd233;
+  rotate: -6deg;
+}
+
+.cheki-doodle--star {
+  top: 7%;
+  right: 8%;
+  width: 15%;
+  color: #00d0e8;
+  rotate: -12deg;
+}
+
+.cheki-doodle--swirl {
+  top: 12%;
+  left: 6%;
+  width: 34%;
+  color: var(--magenta-bright);
+  rotate: -4deg;
+}
+
+.cheki-doodle--word {
+  right: 10px;
+  bottom: 11px;
+  color: var(--magenta-bright);
+  font-family: var(--font-hand);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  rotate: -7deg;
+}
+
+@media (max-width: 767px) {
+  .cheki-doodle--word { right: 8px; bottom: 7px; font-size: 0.7rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cheki-doodle { rotate: none; }
+}
