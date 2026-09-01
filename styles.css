@@ -7619,3 +7619,37 @@ body { padding-bottom: 0; }
 @media (prefers-reduced-motion: reduce) {
   .cheki-doodle { rotate: none; }
 }
+
+/* ---------- 01 本文の紙を写真に被せる ----------
+   写真の下辺にはMVプレーヤーの操作表示が並ぶので、被せる前に
+   プレーヤーを持ち上げて帯を空ける。そうしないと紙が見出しを切る。
+   SPは写真も紙も画面幅いっぱいで被せる余地がないので、PCだけ。 */
+
+/* 被せ側の目印。SPは被せないので出さない */
+.tape--r2 { display: none; }
+
+@media (min-width: 880px) {
+  .request-photo__mvbar { bottom: clamp(56px, 6vw, 90px); }
+
+  .scene--request .request-copy.sheet {
+    position: relative;
+    z-index: 3;
+    /* 行間は clamp(26px, 2.6vw, 38px)。それを食い切って写真へ乗る量 */
+    margin-top: calc(-1 * clamp(52px, 5.8vw, 88px));
+  }
+
+  .scene--request .request-copy .sheet__face {
+    box-shadow:
+      0 2px 3px rgba(37, 25, 63, 0.16),
+      0 18px 34px rgba(37, 25, 63, 0.26);
+  }
+
+  .tape--r2 {
+    display: block;
+    top: -13px;
+    left: 46px;
+    width: 96px;
+    height: 26px;
+    transform: rotate(-6deg);
+  }
+}
