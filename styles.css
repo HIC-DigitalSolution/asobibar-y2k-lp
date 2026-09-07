@@ -8141,146 +8141,56 @@ body { padding-bottom: 0; }
    番組の画はプレイヤーの中だけに入っています。墨紫は .mix-screen の中に
    そのまま残してあるので、戻すならそのグラデーションを .mix-zone に返すだけです。 */
 
-/* ---------- MIX / キーアート ----------
-   支給された1枚をそのまま敷く。ロゴもコピーも画像に焼き込まれているので、
-   HTML側に文字段は持たない（前は `.mix-lock` / `.mix-sub` / `.mix-foot` を
-   組んでいたが、画像と二重になるので削除した）。
+/* ---------- MIX / 次回開催の告知バナー ----------
+   **9月のイベントではないので、節として作らない。**支給されたバナー1枚を
+   中央に置いた告知帯にしてある。仕様表もナレーションも持たない。
 
-   **焼き込みの小さい文字はSPで読めない。** 1290px幅の画像内で約24pxの行が、
-   390pxの画面では約7pxになる。読ませる必要のある事実は下の `.mix-spec` に
-   HTMLで置いてある。焼き込みの文言は `alt` に全部入れてある。
+   地は墨紫のまま。前後（03チェキ / 05プラン）が明るい紙の地なので、
+   ここだけ暗いと「別の話」として読める。それが狙い。
+   却下済みの「真っ黒の地」にはしていない。
 
-   見出し `#mix-title` は画像の中にあるので、`.skip` で読み上げにだけ残している。 */
+   彩度を持つのはバナーの中のオレンジだけ。面には出さないので、
+   走査すると予約CTAがページで最も彩度の高い面のまま残る（lp-visual-knowledge §2）。 */
+
 .mix-zone {
-  padding: 0 0 clamp(48px, 7vw, 88px);
+  padding: clamp(38px, 6vw, 68px) 0 clamp(40px, 6.5vw, 76px);
   color: var(--ivory);
   background: linear-gradient(172deg, #1b1233 0%, #241a3f 46%, #2a1a38 100%);
 }
 
-.mix-key {
-  position: relative;
+.mix-teaser {
   display: grid;
-  place-items: center;
-  overflow: hidden;
-  /* 却下済みの「真っ黒の地」にしない。節のグラデーションの上端と同じ墨紫。
-     SPは写真が全幅を占め、PCはぼかした同じ写真が覆うので、実際にはほぼ見えない。 */
-  background: #1b1233;
-}
-
-/* 外側を埋める同じ画像。バナーは 1290px 幅までしか無いので、
-   広い画面で引き伸ばさずに済ませるための逃げ。新しい記号ではない。
-   SPでは鮮明な1枚が全幅を占めるので出さない。 */
-.mix-key__wash { display: none; }
-@media (min-width: 768px) {
-  .mix-key__wash {
-    position: absolute;
-    display: block;
-    inset: -40px;
-    width: calc(100% + 80px);
-    height: calc(100% + 80px);
-    object-fit: cover;
-    filter: blur(30px) brightness(0.52) saturate(0.95);
-  }
-}
-
-.mix-key__photo {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  margin: 0;
-  aspect-ratio: 1290 / 1073;
-}
-@media (min-width: 768px) {
-  .mix-key__photo {
-    /* 原寸 1290px。1080 で頭打ちにして、拡大させない */
-    width: min(100%, 1080px);
-    height: auto;
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
-  }
-}
-.mix-key__photo > img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  /* 比率は画像と同じなので切り取りは起きない。contain でも同じだが、
-     端数の丸めで1pxの隙間が出ないよう cover にしている */
-  object-fit: cover;
-}
-
-/* ---------- キーアートの下 ---------- */
-.mix-zone__in {
-  display: grid;
-  gap: clamp(20px, 3vw, 32px);
-  width: min(100% - var(--gutter) * 2, 760px);
+  justify-items: center;
+  gap: clamp(14px, 2.4vw, 22px);
+  width: min(100% - var(--gutter) * 2, 640px);
   margin-inline: auto;
-  padding-top: clamp(28px, 4.5vw, 48px);
 }
 
-.mix-narration {
+/* バナー本体。原寸 750px なので 640 で頭打ちにして拡大させない。
+   細いオレンジの縁は、バナーの中の「全員オレンジバンド」から取った1本。 */
+.mix-teaser__art {
+  width: 100%;
   margin: 0;
-  color: rgba(242, 236, 223, 0.86);
-  font-size: clamp(0.85rem, 3.1vw, 0.95rem);
-  line-height: 2.05;
-  text-align: center;
+  border: 1px solid rgba(255, 122, 16, 0.55);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
 }
-.mix-narration b { color: #ff8f2e; }
-.mix-narration em {
-  color: var(--mix-gold);
-  font-style: normal;
-  font-weight: 700;
-}
-
-/* 仕様。罫線は細く */
-.mix-spec { display: grid; margin: 0; }
-.mix-spec > div {
-  display: grid;
-  grid-template-columns: 7.5em minmax(0, 1fr);
-  gap: 10px;
-  align-items: baseline;
-  padding: 12px 2px;
-  border-bottom: 1px solid rgba(242, 236, 223, 0.16);
-}
-.mix-spec > div:last-child { border-bottom: 0; }
-.mix-spec dt {
-  color: rgba(242, 236, 223, 0.6);
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-}
-.mix-spec dd {
-  margin: 0;
-  color: var(--white);
-  font-size: clamp(0.95rem, 3.2vw, 1.05rem);
-  font-weight: 900;
-}
-.mix-spec dd small {
+.mix-teaser__art img {
   display: block;
-  margin-top: 4px;
-  color: rgba(242, 236, 223, 0.6);
-  font-size: 11px;
-  font-weight: 500;
-  line-height: 1.7;
+  width: 100%;
+  height: auto;
 }
 
-/* 「金・土は実施しない」だけ強調する。注記に落とすと流し読みで消える。
-   開催期間の9/7〜9/30が金土を含む以上、見落としは
-   「行ったらやっていなかった」になる。それは事故。 */
-.mix-spec__warn dd { color: #ffcf7a; }
-.mix-spec__warn dd::before {
-  display: inline-block;
-  margin-right: 8px;
-  padding: 2px 8px 3px;
-  border-radius: 2px;
-  color: #2a1500;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  vertical-align: 0.14em;
-  background: #ff8f2e;
-  content: "注意";
-}
-
-@media (max-width: 480px) {
-  .mix-spec > div { grid-template-columns: 1fr; gap: 3px; }
+.mix-soon {
+  /* バナーの「全員オレンジバンド」と同じ、オレンジの太字＋発光。
+     **ドット書体はやめた。**13px のドットは地が暗いと点が沈んで読めない
+     （実測 4.90 で数値上は通っていたが、読める文字にはなっていなかった）。 */
+  margin: 0;
+  color: #ff8c1a;
+  font-family: var(--font-main);
+  font-size: clamp(1.5rem, 6.2vw, 1.95rem);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 18px rgba(255, 122, 16, 0.55), 0 2px 0 rgba(10, 4, 12, 0.6);
 }
 
 /* PC専用の改行。SPでは自然に折り返させる。既存の .sp-br の逆で、

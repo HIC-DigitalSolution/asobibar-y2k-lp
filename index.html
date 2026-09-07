@@ -28,7 +28,7 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
     <!-- 見出しはFV内に出るので先に取る -->
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=461" />
+    <link rel="stylesheet" href="./styles.css?v=466" />
     <script src="./script.js?v=74" defer></script>
   </head>
 
@@ -221,52 +221,35 @@
   </div>
 </section>
 
-      <!-- ==================== MIX SESSION ====================
-           支給されたキーアート1枚が主役。ロゴもコピーも画像に焼き込まれているので、
-           HTML側に文字段は持たない。焼き込みの文言は alt に全部入れてある。
+      <!-- ==================== MIX SESSION（次回開催の告知） ====================
+           **これは9月のイベントではありません。**節ではなく**告知バナー1枚**として
+           置いています。開催月も仕様（組数・曜日）も確定していないので出しません。
+           **推測で日程を書かないこと。**（2026-09-07に依頼者が「10月開催」の表示を削除）
+           前は仕様表を持っていましたが、9月のLPの真ん中に次回の仕様が並ぶ形になるので外しました。
 
-           **SPでは焼き込みの小さい文字が読めない**（1290px幅の画像内で約26pxの行が、
-           390pxの画面では約8pxになる）。読ませる必要のある事実は下の `.mix-spec` に
-           HTMLで置いて、そちらで担保する。
+           位置は 03チェキ と 05プラン のあいだのまま（依頼者の指定）。
+           `data-page` も 04 のままなので、ノンブルの連番は変わりません。
 
-           金・土できないことは注記ではなく仕様の1行として出す。開催期間の
-           9/7〜9/30 は金土を含むので、書き落とすと「行ったらやっていなかった」
-           が起きる。それは事故になる。 -->
+           ロゴもコピーもバナー画像に焼き込まれています。焼き込みの文言は alt に全部入れてあります。
+           **画像を差し替えたら alt も直すこと。**
+
+           **バナーの上に見出しもバッジも置きません。**「NEXT」も「10月開催」も
+           2026-09-07 に依頼者の指示で外しました。バナー1枚と Coming soon... だけです。
+           HTMLの見出しは読み上げ専用（.skip）で、画面には出ません。 -->
       <section class="scene mix-zone" id="mix" data-theme="mix" data-page="04" data-scene-motion="mix" aria-labelledby="mix-title">
+        <div class="mix-teaser">
 
-        <!-- 支給されたキーアート1枚。コピーは画像に焼き込まれている。
-             **SPでは焼き込みの小さい文字が読めない**（1290px幅の画像内で約24pxの行が、
-             390pxの画面では約7pxになる）。読ませる必要のある事実は下の
-             `.mix-spec` にHTMLで置いてあるので、そちらで担保する。
-             読み上げ・検索・翻訳のために、焼き込みの文言は alt に全部入れる。 -->
-        <div class="mix-key">
-          <img class="mix-key__wash" src="./assets/mix-band-key.webp" alt=""
-               width="1290" height="1073" loading="lazy" decoding="async" aria-hidden="true" />
+          <h2 class="skip" id="mix-title">MIX交流上等バンド</h2>
 
-          <figure class="mix-key__photo">
+          <figure class="mix-teaser__art">
             <img src="./assets/mix-band-key.webp"
-                 alt="MIX交流上等 — ASOBIBARで始まる、1日限りの恋愛リアリティ体験。最大4〜6組のグループが交差する。ゲームで指名。気持ちが揺れ動く。全員オレンジバンド。オレンジのバンドを付けた8人が、ダーツとビリヤードのある店内に集まっている"
-                 width="1290" height="1073" loading="lazy" decoding="async" />
+                 alt="MIX交流上等 — ASOBIBARで始まる、1日限りの恋愛リアリティ体験。今日出会った最大4〜6組のグループが交差する。ゲームで指名。気持ちが揺れ動く。全員オレンジバンド。オレンジのバンドを付けた8人が、ダーツとビリヤードのある店内に集まっている"
+                 width="750" height="627" loading="lazy" decoding="async" />
           </figure>
 
-          <!-- 見出しは画像の中にあるので、読み上げ用にだけ残す -->
-          <h2 class="skip" id="mix-title">MIX交流上等</h2>
+          <p class="mix-soon">Coming soon...</p>
+
         </div>
-
-        <div class="mix-zone__in">
-          <p class="mix-narration">
-            オレンジのバンドを付けたら、それだけで参加。<b>チャイムが鳴ると、お題が出される。</b><br class="pc-br" />
-            <em>——そこで何が起きるかは、その場にいた人にしか分からない。</em>
-          </p>
-
-          <!-- 仕様は読ませたい場所。世界観を持ち込まない（lp-visual-knowledge §4）ので
-               白地・墨文字のパネルに載せる。 -->
-          <dl class="mix-spec">
-            <div><dt>組数</dt><dd>最大4〜6組<small>男性グループ・女性グループを、それぞれ1組として数えます</small></dd></div>
-            <div class="mix-spec__warn"><dt>実施しない日</dt><dd>金・土<small>それ以外は開催期間中ずっと実施します</small></dd></div>
-          </dl>
-        </div>
-
       </section>
 
       <!-- ==================== PRICE ==================== -->
@@ -283,7 +266,7 @@
           </figure>
 
           <div class="price-title-overlay">
-            <p class="scene-label"><b>05</b><i aria-hidden="true"></i><span>料金</span><em>PRICE</em></p>
+            <p class="scene-label"><b>05</b><i aria-hidden="true"></i><span>プラン</span><em>PLAN</em></p>
             <h2 class="paper-h" id="price-title">100分プラン誕生！</h2>
           </div>
 
@@ -464,7 +447,7 @@
         <span class="bar__tag">Y2K NIGHT</span>
       </a>
       <nav aria-label="フッターナビゲーション">
-        <a href="#experience">曲リクエスト</a><a href="#karaoke">つながる</a><a href="#cheki">チェキ</a><a href="#mix">ミックス交流</a><a href="#price">料金</a><a href="#event">開催情報</a><a href="#howto">楽しみ方</a><a href="#reserve">予約</a>
+        <a href="#experience">曲リクエスト</a><a href="#karaoke">つながる</a><a href="#cheki">チェキ</a><a href="#mix">MIX交流上等</a><a href="#price">プラン</a><a href="#event">開催情報</a><a href="#howto">楽しみ方</a><a href="#reserve">予約</a>
       </nav>
       <small>© ASOBIBAR Y2K NIGHT</small>
     </footer>
