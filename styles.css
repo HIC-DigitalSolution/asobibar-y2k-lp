@@ -8142,17 +8142,15 @@ body { padding-bottom: 0; }
    そのまま残してあるので、戻すならそのグラデーションを .mix-zone に返すだけです。 */
 
 /* ---------- MIX / キーアート ----------
-   店の実写1枚に、中央寄せの文字段を1本立てるだけ。番組バナー一般の型で、
-   特定作品の再現ではない。**実在番組のロゴの字形・字組み、キーアートそのもの、
-   出演者、配信社のマークは使っていない。**
+   支給された1枚をそのまま敷く。ロゴもコピーも画像に焼き込まれているので、
+   HTML側に文字段は持たない（前は `.mix-lock` / `.mix-sub` / `.mix-foot` を
+   組んでいたが、画像と二重になるので削除した）。
 
-   **写真は加工しない。**（`.duo` の色替えは 2026-09-04 に依頼者が差し戻し済み）
-   乗せているのは文字を読ませるための暗幕だけで、LPが既に `.karaoke-photo::after`
-   などで使っているのと同じ手。色相は動かしていない。
+   **焼き込みの小さい文字はSPで読めない。** 1290px幅の画像内で約24pxの行が、
+   390pxの画面では約7pxになる。読ませる必要のある事実は下の `.mix-spec` に
+   HTMLで置いてある。焼き込みの文言は `alt` に全部入れてある。
 
-   彩度を持つのは **マゼンタの文字だけ**（lp-visual-knowledge §2）。
-   面には出さないので、走査すると予約CTAがページで最も彩度の高い面のまま残る。 */
-
+   見出し `#mix-title` は画像の中にあるので、`.skip` で読み上げにだけ残している。 */
 .mix-zone {
   padding: 0 0 clamp(48px, 7vw, 88px);
   color: var(--ivory);
@@ -8169,8 +8167,9 @@ body { padding-bottom: 0; }
   background: #1b1233;
 }
 
-/* 外側を埋める同じ写真。**拡大せずに済ませるための逃げ**であって、
-   新しい記号を足しているわけではない。SPでは鮮明な1枚が全幅を占めるので出さない。 */
+/* 外側を埋める同じ画像。バナーは 1290px 幅までしか無いので、
+   広い画面で引き伸ばさずに済ませるための逃げ。新しい記号ではない。
+   SPでは鮮明な1枚が全幅を占めるので出さない。 */
 .mix-key__wash { display: none; }
 @media (min-width: 768px) {
   .mix-key__wash {
@@ -8189,16 +8188,13 @@ body { padding-bottom: 0; }
   z-index: 1;
   width: 100%;
   margin: 0;
-  aspect-ratio: 1055 / 1491;
+  aspect-ratio: 1290 / 1073;
 }
 @media (min-width: 768px) {
   .mix-key__photo {
-    /* **幅で決める。** 高さで決めていたら 1280x720 のような
-       「横に広くて縦が短い」画面でポスターが 397px まで痩せて、
-       スマホより細くなった上に一行コピーが折り返した。 */
-    width: clamp(430px, 42vw, 580px);
+    /* 原寸 1290px。1080 で頭打ちにして、拡大させない */
+    width: min(100%, 1080px);
     height: auto;
-    max-width: 100%;
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
   }
 }
@@ -8206,104 +8202,9 @@ body { padding-bottom: 0; }
   display: block;
   width: 100%;
   height: 100%;
+  /* 比率は画像と同じなので切り取りは起きない。contain でも同じだが、
+     端数の丸めで1pxの隙間が出ないよう cover にしている */
   object-fit: cover;
-  /* 上に天井、下に空いた床。頭が切れないよう上寄りに置く */
-  object-position: 50% 22%;
-}
-
-/* 文字は空いている床の上に置く。顔に被せない。
-   下からの暗幕は写真の中の暗い床に馴染ませるためで、色は足していない。 */
-.mix-key__type {
-  position: absolute;
-  z-index: 2;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: grid;
-  justify-items: center;
-  gap: clamp(8px, 1.5vw, 14px);
-  padding: clamp(56px, 12vw, 120px) clamp(14px, 3vw, 22px) clamp(20px, 3.4vw, 34px);
-  text-align: center;
-  background: linear-gradient(180deg, transparent 0%, rgba(8, 4, 18, 0.72) 46%, rgba(8, 4, 18, 0.94) 100%);
-}
-
-.mix-kicker {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.9);
-  font-family: var(--font-dot);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.22em;
-}
-
-.mix-head {
-  display: grid;
-  justify-items: center;
-  gap: clamp(8px, 1.5vw, 13px);
-  margin: 0;
-}
-
-/* ロゴ。LPが元から持っている Mochiy Pop One。
-   **4書体目の Reggae One はやめました**（「ヤンキー漫画」という私の推測で
-   選んだ書体で、参考にしているものとは関係がなかった）。 */
-.mix-lock {
-  color: #ff2d9b;
-  font-family: var(--font-display);
-  font-size: clamp(2.5rem, 12.5vw, 4.4rem);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.005em;
-  text-shadow:
-    0 0 26px rgba(255, 45, 155, 0.5),
-    0 3px 0 rgba(10, 4, 22, 0.6),
-    0 12px 30px rgba(0, 0, 0, 0.65);
-}
-
-/* 一行コピー。両側の罫はダッシュの代わり */
-.mix-sub {
-  display: flex;
-  align-items: center;
-  gap: clamp(8px, 2vw, 16px);
-  color: #fff;
-  font-family: var(--font-main);
-  font-size: clamp(0.78rem, 3.2vw, 0.9rem);
-  font-weight: 500;
-  letter-spacing: 0.03em;
-}
-.mix-sub::before,
-.mix-sub::after {
-  flex: 0 0 auto;
-  width: clamp(12px, 4.5vw, 22px);
-  height: 1px;
-  background: rgba(255, 255, 255, 0.72);
-  content: "";
-}
-
-/* 下段。ブランド行と参加条件を1本に */
-.mix-foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 6px 12px;
-  margin: clamp(2px, 0.8vw, 6px) 0 0;
-}
-.mix-foot b {
-  color: #ff2d9b;
-  font-family: var(--font-dot);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.16em;
-}
-.mix-foot i {
-  width: 1px;
-  height: 13px;
-  background: rgba(255, 255, 255, 0.42);
-}
-.mix-foot span {
-  color: rgba(255, 255, 255, 0.84);
-  font-size: 11px;
-  letter-spacing: 0.03em;
 }
 
 /* ---------- キーアートの下 ---------- */
@@ -8322,6 +8223,7 @@ body { padding-bottom: 0; }
   line-height: 2.05;
   text-align: center;
 }
+.mix-narration b { color: #ff8f2e; }
 .mix-narration em {
   color: var(--mix-gold);
   font-style: normal;
@@ -8558,7 +8460,6 @@ body { padding-bottom: 0; }
 
 .scene-label,
 .howto-kicker,
-.mix-kicker,
 .howto-brief__t span {
   font-family: var(--font-dot);
   font-weight: 400;

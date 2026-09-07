@@ -28,7 +28,7 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
     <!-- 見出しはFV内に出るので先に取る -->
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=459" />
+    <link rel="stylesheet" href="./styles.css?v=461" />
     <script src="./script.js?v=74" defer></script>
   </head>
 
@@ -222,66 +222,48 @@
 </section>
 
       <!-- ==================== MIX SESSION ====================
-           イベントの中身は書かない。依頼者の判断で伏せている。
-           「鳴るまで分からない」を訴求の軸にしているので、例を足すと軸が崩れる。
-           中身が変わってもLPを直さずに済む副次効果もある。
+           支給されたキーアート1枚が主役。ロゴもコピーも画像に焼き込まれているので、
+           HTML側に文字段は持たない。焼き込みの文言は alt に全部入れてある。
+
+           **SPでは焼き込みの小さい文字が読めない**（1290px幅の画像内で約26pxの行が、
+           390pxの画面では約8pxになる）。読ませる必要のある事実は下の `.mix-spec` に
+           HTMLで置いて、そちらで担保する。
 
            金・土できないことは注記ではなく仕様の1行として出す。開催期間の
            9/7〜9/30 は金土を含むので、書き落とすと「行ったらやっていなかった」
            が起きる。それは事故になる。 -->
-      <!-- ==================== MIX SESSION ====================
-           恋愛リアリティショーのキーアートの組み方を借りる。借りるのは
-           **構図**（色の違う2つの世界を継ぎ目で突き合わせ、その上に文字を1本立てる）と
-           中央寄せの文字段（小さいキッカー → 大きいロゴ → ダッシュで挟んだ一行 →
-           下段のブランド行）だけ。ここまでは番組バナー一般の型。
-
-           **実在番組のロゴの字形・字組み、キーアートそのもの、出演者、配信社のマークは
-           使わない。** 商用ページで実在ブランドを流用すると、パロディの意図でも
-           商標の問題になる。写真は店の実写、書体はLPが元から持っている Mochiy Pop One。
-
-           **写真は加工しない。** 色を変えるのは 2026-09-04 に依頼者が差し戻し済み
-           （`.duo`）。左右の寒暖差は写真そのものが持っている色（左＝青いネオン、
-           右＝マゼンタの照明）で作る。乗せているのは文字を読ませるための暗幕だけ。 -->
       <section class="scene mix-zone" id="mix" data-theme="mix" data-page="04" data-scene-motion="mix" aria-labelledby="mix-title">
 
+        <!-- 支給されたキーアート1枚。コピーは画像に焼き込まれている。
+             **SPでは焼き込みの小さい文字が読めない**（1290px幅の画像内で約24pxの行が、
+             390pxの画面では約7pxになる）。読ませる必要のある事実は下の
+             `.mix-spec` にHTMLで置いてあるので、そちらで担保する。
+             読み上げ・検索・翻訳のために、焼き込みの文言は alt に全部入れる。 -->
         <div class="mix-key">
-          <!-- 全面に敷く同じ写真。ぼかして暗くしてあるだけで、別素材ではない。
-               縦位置の1枚をPCの横長枠に伸ばすと 1055px → 1440px の拡大でぼやけるので、
-               鮮明な1枚は等倍のまま中央に置き、外側はこれで埋める。 -->
-          <img class="mix-key__wash" src="./assets/mix-band-group.webp" alt=""
-               width="1055" height="1491" loading="lazy" decoding="async" aria-hidden="true" />
+          <img class="mix-key__wash" src="./assets/mix-band-key.webp" alt=""
+               width="1290" height="1073" loading="lazy" decoding="async" aria-hidden="true" />
 
           <figure class="mix-key__photo">
-            <img src="./assets/mix-band-group.webp"
-                 alt="オレンジのミックス交流上等バンドを付けた8人が、ダーツとネオンのある店内に集まっている"
-                 width="1055" height="1491" loading="lazy" decoding="async" />
-
-            <figcaption class="mix-key__type">
-              <p class="mix-kicker">ASOBIBAR Y2K NIGHT</p>
-              <h2 class="mix-head" id="mix-title">
-                <span class="mix-lock">交流上等</span>
-                <span class="mix-sub">チャイムが鳴るたびに、気持ちが揺れ動く</span>
-              </h2>
-              <p class="mix-foot">
-                <b>MIX SESSION</b><i aria-hidden="true"></i><span>このバンドを付けたら、それだけで参加</span>
-              </p>
-            </figcaption>
+            <img src="./assets/mix-band-key.webp"
+                 alt="MIX交流上等 — ASOBIBARで始まる、1日限りの恋愛リアリティ体験。最大4〜6組のグループが交差する。ゲームで指名。気持ちが揺れ動く。全員オレンジバンド。オレンジのバンドを付けた8人が、ダーツとビリヤードのある店内に集まっている"
+                 width="1290" height="1073" loading="lazy" decoding="async" />
           </figure>
+
+          <!-- 見出しは画像の中にあるので、読み上げ用にだけ残す -->
+          <h2 class="skip" id="mix-title">MIX交流上等</h2>
         </div>
 
         <div class="mix-zone__in">
           <p class="mix-narration">
-            2時間の一区切りのなかで、セッションごとにチャイムが鳴る。<br class="pc-br" />
-            <em>——その瞬間に始まるのが何なのかは、その場にいた人にしか分からない。</em>
+            オレンジのバンドを付けたら、それだけで参加。<b>チャイムが鳴ると、お題が出される。</b><br class="pc-br" />
+            <em>——そこで何が起きるかは、その場にいた人にしか分からない。</em>
           </p>
 
           <!-- 仕様は読ませたい場所。世界観を持ち込まない（lp-visual-knowledge §4）ので
                白地・墨文字のパネルに載せる。 -->
           <dl class="mix-spec">
-            <div><dt>一区切り</dt><dd>2時間</dd></div>
-            <div><dt>組数</dt><dd>最大4組<small>男性グループ・女性グループを、それぞれ1組として数えます</small></dd></div>
-            <div><dt>人数</dt><dd>指定なし<small>現時点。変更の可能性があります</small></dd></div>
-            <div class="mix-spec__warn"><dt>実施しない日</dt><dd>金・土<small>それ以外の曜日で実施します</small></dd></div>
+            <div><dt>組数</dt><dd>最大4〜6組<small>男性グループ・女性グループを、それぞれ1組として数えます</small></dd></div>
+            <div class="mix-spec__warn"><dt>実施しない日</dt><dd>金・土<small>それ以外は開催期間中ずっと実施します</small></dd></div>
           </dl>
         </div>
 
