@@ -7803,10 +7803,23 @@ body { padding-bottom: 0; }
    最初から付いてきます。自前で書くと、たいてい最後のひとつを取りこぼします。 */
 
 .storepick {
+  /* **縦の余白は1つのスケールに揃える。**ここが揃っていないと、値が
+     どれだけ大きくても「余白が綺麗じゃない」画面になる。基準は `vw` ではなく
+     `svh` にしている。詰まって見えるのは横幅ではなく**画面の高さが足りないとき**で、
+     `vw` はそこに反応しない（iPhone SE と iPhone 15 は幅がほぼ同じで高さが177px違う）。 */
+  --sp-1: clamp(5px, 0.9svh, 8px);    /* くっつけたい2つ（キッカーと見出し） */
+  --sp-2: clamp(8px, 1.4svh, 12px);   /* 同じ群の中（店舗カード同士） */
+  --sp-3: clamp(11px, 1.9svh, 16px);  /* 見出しとその中身 */
+  --sp-4: clamp(16px, 2.9svh, 26px);  /* 群と群、シートの上下 */
+  --sp-5: clamp(20px, 3.6svh, 32px);  /* 手順1と手順2のあいだ */
+  --sp-x: clamp(18px, 4.2vw, 26px);   /* 左右だけは横幅に連動させる */
+
   width: min(430px, calc(100vw - 28px));
-  /* 92svh。**東京(3店)がiPhone SE 375×667に収まる下限がここ**でした
-     （88svhだと3店目が19px切れて、フェードが出た状態になる）。 */
-  max-height: min(92svh, 780px);
+  /* 94svh。**東京(3店)がiPhone SE 375×667に収まる下限がここ**です。
+     余白を広げたぶん92svhでは3px足りず（320×568では大阪も6px足りず）、
+     3px を内側から削り返すとせっかく揃えたリズムが崩れるので、外を1回だけ動かしました。
+     `vh` ではなく `svh` なので、モバイルのツールバーが出ている状態が基準です。 */
+  max-height: min(94svh, 780px);
   padding: 0;
   border: 0;
   overflow: visible;
@@ -7832,7 +7845,7 @@ body { padding-bottom: 0; }
      リストが縮まず、結局はみ出す。overflow を持つ子を flex で潰す時の定石。 */
   min-width: 0;
   min-height: 0;
-  padding: clamp(18px, 3.4vw, 24px) 0 clamp(16px, 2.6vw, 20px);
+  padding: var(--sp-4) 0 var(--sp-4);
   border-radius: 16px;
   background: #fff;
   box-shadow: 0 22px 54px rgba(20, 10, 32, 0.5);
@@ -7870,13 +7883,13 @@ body { padding-bottom: 0; }
 
 .storepick__head {
   flex: 0 0 auto;
-  padding: 0 clamp(16px, 3.2vw, 22px) clamp(13px, 2vw, 16px);
-  padding-right: 56px;
+  padding: 0 var(--sp-x) var(--sp-4);
+  padding-right: 58px;
   border-bottom: 1px solid rgba(35, 24, 21, 0.11);
 }
 .storepick__kick {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: var(--sp-1);
   /* 0.44 だと実測コントラスト 2.80 で、10pxの文字としては不合格だった */
   color: rgba(35, 24, 21, 0.62);
   font-family: var(--font-main);
@@ -7896,20 +7909,19 @@ body { padding-bottom: 0; }
   letter-spacing: 0.005em;
 }
 .storepick__lead {
-  margin: 8px 0 0;
+  margin: var(--sp-2) 0 0;
   color: rgba(35, 24, 21, 0.7);
   font-size: 12.5px;
   line-height: 1.7;
 }
-/* リンクは途中で折らない。「料金を見/る」で割れる */
-.storepick__lead a { color: var(--print-accent); font-weight: 900; white-space: nowrap; }
-
 .storepick__body {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   min-height: 0;
-  padding: clamp(12px, 2.2vw, 16px) clamp(16px, 3.2vw, 22px) 0;
+  /* 上は罫線をはさんでヘッダの下余白と同じ値。**左右非対称や上下バラバラの
+     余白は、値の大小より先に「雑」に見える。** */
+  padding: var(--sp-4) var(--sp-x) 0;
 }
 
 /* 手順の番号。エリアと店舗が「1つの長い一覧」ではなく「2段階」だと言うため */
@@ -7917,10 +7929,13 @@ body { padding-bottom: 0; }
   display: flex;
   flex: 0 0 auto;
   align-items: center;
-  gap: 7px;
-  margin: 0 0 9px;
+  gap: 8px;
+  margin: 0 0 var(--sp-3);
 }
-.storepick__step + .storepick__step { margin-top: clamp(15px, 2.6vw, 19px); }
+/* **隣接セレクタ（`+`）ではあいだの <nav> をまたげず、このルールは一度も
+   当たっていませんでした。**実測すると手順2の上が 0px で、チップに貼り付いていた。
+   「余白が綺麗じゃない」の実体はここです。 */
+.storepick__areas + .storepick__step { margin-top: var(--sp-5); }
 .storepick__step b {
   display: grid;
   place-items: center;
@@ -7941,15 +7956,18 @@ body { padding-bottom: 0; }
 
 /* エリアのチップ。選択中は墨のベタで表す。**マゼンタは使わない** —
    本体のCTAより強い色をこの画面に置かないため。 */
+/* **flex-wrap をやめて3列のグリッドに。**5個を折り返させると 4+1 になって
+   「東京」だけが2段目に取り残され、幅もバラバラになる。3+2 の等幅なら
+   端末幅が変わっても崩れ方が変わらない。 */
 .storepick__areas {
-  display: flex;
+  display: grid;
   flex: 0 0 auto;
-  flex-wrap: wrap;
-  gap: 7px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
 }
 .storepick__areas button {
-  min-height: 38px;
-  padding: 0 15px;
+  min-height: 40px;
+  padding: 0 8px;
   border: 1px solid rgba(35, 24, 21, 0.2);
   border-radius: 999px;
   color: rgba(35, 24, 21, 0.66);
@@ -7995,13 +8013,13 @@ body { padding-bottom: 0; }
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 12px 13px;
+  padding: clamp(12px, 2svh, 15px) clamp(13px, 3.6vw, 16px);
   border-radius: 12px;
   background: #f6f3ec;
   color: var(--print-ink);
   text-decoration: none;
 }
-.storeline + .storeline { margin-top: 8px; }
+.storeline + .storeline { margin-top: var(--sp-2); }
 /* 長い店舗名（新宿歌舞伎町タワー前店）は2行に折る。**ボタンを下に落とさない。**
    前は max-width:400px で flex-wrap させていて、その1枚だけカードが縦に伸び、
    他の店と高さが揃わなかった。min-width:0 が無いと flex の既定 min-width:auto で
@@ -8040,8 +8058,8 @@ body { padding-bottom: 0; }
 
 .storepick__note {
   flex: 0 0 auto;
-  margin: clamp(12px, 2vw, 15px) 0 0;
-  padding: 0 clamp(16px, 3.2vw, 22px);
+  margin: var(--sp-4) 0 0;
+  padding: 0 var(--sp-x);
   /* 0.46 だと実測 2.97 で不合格。注記でも読めないと意味がない */
   color: rgba(35, 24, 21, 0.62);
   font-size: 11px;
@@ -8054,6 +8072,28 @@ body { padding-bottom: 0; }
 
    いまは下から少し上がって出るだけ。予約導線なので、演出でリストに触れるまでを
    遅らせません。全部で200ms、pointer-events も止めません（動いている最中でも押せる）。 */
+/* 高さが足りない端末（iPhone SE 375×667 / 320×568）でだけスケールを詰める。
+   **収まらない端末に合わせて全端末の余白を削らない。**ここを落とさないと
+   東京(3店)の3枚目が切れます（実測で8px足りませんでした）。 */
+@media (max-height: 700px) {
+  .storepick {
+    --sp-3: 11px;
+    --sp-4: 15px;
+    --sp-5: 18px;
+  }
+}
+/* iPhone SE 第1世代（320×568）。ここでも大阪・名古屋(2店)が5px足りなかった。
+   **東京(3店)だけはどう詰めても入りません**（71px足りない）。そこはリストが
+   スクロールし、下端のフェード（[data-more]::after）が「まだ続く」と伝えます。 */
+@media (max-height: 600px) {
+  .storepick {
+    --sp-2: 8px;
+    --sp-3: 10px;
+    --sp-4: 13px;
+    --sp-5: 15px;
+  }
+}
+
 @keyframes storepickRise {
   from { transform: translateY(14px) scale(0.985); opacity: 0; }
   to   { transform: none; opacity: 1; }
