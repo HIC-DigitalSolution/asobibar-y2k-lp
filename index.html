@@ -26,8 +26,10 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=429" />
-    <script src="./script.js?v=70" defer></script>
+    <!-- 見出しはFV内に出るので先に取る -->
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2" crossorigin />
+    <link rel="stylesheet" href="./styles.css?v=459" />
+    <script src="./script.js?v=74" defer></script>
   </head>
 
   <body>
@@ -39,7 +41,7 @@
         <span class="bar__tag">Y2K NIGHT</span>
       </a>
       <!-- 誌面のノンブル。スクロールでページ番号が進む -->
-      <p class="bar__nombre" aria-hidden="true">P.<b data-nombre>01</b><span>/P.07</span></p>
+      <p class="bar__nombre" aria-hidden="true">P.<b data-nombre>01</b><span>/P.08</span></p>
     </header>
 
     <main id="main">
@@ -73,13 +75,14 @@
 
           <div class="cover__info">
             <a class="cta cta--metal" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-              <span class="cta__copy"><small>9月限定・席数限定</small><span data-reserve-label>Y2K NIGHTを予約する</span></span><i aria-hidden="true">→</i>
+              <span class="cta__copy"><small>9月限定・席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
             </a>
           </div>
         </div>
       </section>
 
       <div class="experience-zone">
+
       <!-- ==================== SCENE 01 / SONG REQUEST ==================== -->
       <section class="scene scene--request" id="experience" data-theme="request" data-page="01" data-scene-motion="request" aria-labelledby="request-title">
         <div class="scene__in request-layout">
@@ -142,49 +145,6 @@
         </div>
       </section>
 
-      <!-- 01の説明から切り離した、3ボタンで遊べる短い寄り道。 -->
-      <section class="song-pet-break" id="song-pet" aria-labelledby="song-pet-title" data-song-pet>
-        <div class="song-pet-break__in">
-          <div class="song-pet-break__copy">
-            <p class="song-pet-break__eyebrow">ちょっと寄り道</p>
-            <h2 id="song-pet-title">今夜の気分、<br />どれにする？</h2>
-            <p>◀ / ▶で気分をかえて、●でスタート。<br />おなじボタンを5 HITでFEVER！</p>
-          </div>
-
-          <div class="tama" data-request-player aria-label="3つのボタンで遊べるSONG PET">
-            <span class="tama__ring" aria-hidden="true"></span>
-            <span class="tama__chain" aria-hidden="true"><i></i><i></i><i></i></span>
-            <div class="tama__body">
-              <span class="tama__shine" aria-hidden="true"></span>
-              <p class="tama__brand" aria-hidden="true">SONG PET</p>
-              <div class="tama__screen" aria-live="polite">
-                <div class="tama__screen-top">
-                  <b class="tama__status" data-deck-mode>SELECT</b>
-                  <span data-deck-time>HIT 0/5</span>
-                </div>
-                <svg class="tama__pet" viewBox="0 0 64 48" aria-hidden="true">
-                  <path d="M22 8h20v4h6v4h4v20h-4v4H16v-4h-4V16h4v-4h6Z" />
-                  <path class="tama__pet-cut" d="M24 20h4v4h-4zm12 0h4v4h-4zm-8 10h8v4h-8z" />
-                  <path d="M18 4h8v4h-8zm20 0h8v4h-8z" />
-                </svg>
-                <strong data-song-pet-track>平成アゲ曲</strong>
-                <span class="tama__prompt" data-song-pet-prompt>CHOOSE</span>
-                <div class="tama__bar" aria-hidden="true"><i></i></div>
-              </div>
-              <div class="tama__keys">
-                <button type="button" data-song-pet-prev aria-label="左ボタン／前の気分へ"><span aria-hidden="true">◀</span></button>
-                <button class="tama__play" type="button" data-deck-play aria-label="中央ボタン／ゲームを始める">
-                  <span aria-hidden="true">●</span>
-                </button>
-                <button type="button" data-song-pet-next aria-label="右ボタン／次の気分へ"><span aria-hidden="true">▶</span></button>
-              </div>
-              <small aria-hidden="true">3 BUTTON POCKET GAME</small>
-            </div>
-            <span class="tama__charm" aria-hidden="true">♪</span>
-          </div>
-        </div>
-      </section>
-
       <!-- ==================== SCENE 02 / KARAOKE & TALK ==================== -->
       <section class="scene scene--karaoke" id="karaoke" data-theme="karaoke" data-page="02" data-scene-motion="karaoke" aria-labelledby="karaoke-title">
         <div class="scene__pin">
@@ -214,7 +174,7 @@
           </div>
           <div class="karaoke-copy">
             <p class="scene-label scene-label--number-only"><b>02</b><i aria-hidden="true"></i></p>
-            <h2 class="scene-title" id="karaoke-title">平成初期の熱気を、<br />今のASOBIBARで。</h2>
+            <h2 class="scene-title" id="karaoke-title">平成初期の熱気を、<br />今のASOBIBARで</h2>
             <p class="scene-text">懐かしい音楽も、あの頃の空気も。ASOBIBARなら、その中で遊べます。</p>
           </div>
         </div>
@@ -228,7 +188,7 @@
   <div class="cheki__in">
     <div class="cheki__copy" data-reveal="copy">
       <p class="scene-label"><b>03</b><i aria-hidden="true"></i><span>チェキ撮影</span><em>CHEKI PHOTO</em></p>
-      <h2 class="paper-h" id="cheki-title">今夜を、1枚持ち帰る。</h2>
+      <h2 class="paper-h" id="cheki-title">今夜を1枚持ち帰る</h2>
       <p class="cheki__lead">会場でチェキ撮影を実施します。</p>
       <p class="cheki__facts">
         <strong>数量限定</strong>
@@ -261,11 +221,77 @@
   </div>
 </section>
 
+      <!-- ==================== MIX SESSION ====================
+           イベントの中身は書かない。依頼者の判断で伏せている。
+           「鳴るまで分からない」を訴求の軸にしているので、例を足すと軸が崩れる。
+           中身が変わってもLPを直さずに済む副次効果もある。
+
+           金・土できないことは注記ではなく仕様の1行として出す。開催期間の
+           9/7〜9/30 は金土を含むので、書き落とすと「行ったらやっていなかった」
+           が起きる。それは事故になる。 -->
+      <!-- ==================== MIX SESSION ====================
+           恋愛リアリティショーのキーアートの組み方を借りる。借りるのは
+           **構図**（色の違う2つの世界を継ぎ目で突き合わせ、その上に文字を1本立てる）と
+           中央寄せの文字段（小さいキッカー → 大きいロゴ → ダッシュで挟んだ一行 →
+           下段のブランド行）だけ。ここまでは番組バナー一般の型。
+
+           **実在番組のロゴの字形・字組み、キーアートそのもの、出演者、配信社のマークは
+           使わない。** 商用ページで実在ブランドを流用すると、パロディの意図でも
+           商標の問題になる。写真は店の実写、書体はLPが元から持っている Mochiy Pop One。
+
+           **写真は加工しない。** 色を変えるのは 2026-09-04 に依頼者が差し戻し済み
+           （`.duo`）。左右の寒暖差は写真そのものが持っている色（左＝青いネオン、
+           右＝マゼンタの照明）で作る。乗せているのは文字を読ませるための暗幕だけ。 -->
+      <section class="scene mix-zone" id="mix" data-theme="mix" data-page="04" data-scene-motion="mix" aria-labelledby="mix-title">
+
+        <div class="mix-key">
+          <!-- 全面に敷く同じ写真。ぼかして暗くしてあるだけで、別素材ではない。
+               縦位置の1枚をPCの横長枠に伸ばすと 1055px → 1440px の拡大でぼやけるので、
+               鮮明な1枚は等倍のまま中央に置き、外側はこれで埋める。 -->
+          <img class="mix-key__wash" src="./assets/mix-band-group.webp" alt=""
+               width="1055" height="1491" loading="lazy" decoding="async" aria-hidden="true" />
+
+          <figure class="mix-key__photo">
+            <img src="./assets/mix-band-group.webp"
+                 alt="オレンジのミックス交流上等バンドを付けた8人が、ダーツとネオンのある店内に集まっている"
+                 width="1055" height="1491" loading="lazy" decoding="async" />
+
+            <figcaption class="mix-key__type">
+              <p class="mix-kicker">ASOBIBAR Y2K NIGHT</p>
+              <h2 class="mix-head" id="mix-title">
+                <span class="mix-lock">交流上等</span>
+                <span class="mix-sub">チャイムが鳴るたびに、気持ちが揺れ動く</span>
+              </h2>
+              <p class="mix-foot">
+                <b>MIX SESSION</b><i aria-hidden="true"></i><span>このバンドを付けたら、それだけで参加</span>
+              </p>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="mix-zone__in">
+          <p class="mix-narration">
+            2時間の一区切りのなかで、セッションごとにチャイムが鳴る。<br class="pc-br" />
+            <em>——その瞬間に始まるのが何なのかは、その場にいた人にしか分からない。</em>
+          </p>
+
+          <!-- 仕様は読ませたい場所。世界観を持ち込まない（lp-visual-knowledge §4）ので
+               白地・墨文字のパネルに載せる。 -->
+          <dl class="mix-spec">
+            <div><dt>一区切り</dt><dd>2時間</dd></div>
+            <div><dt>組数</dt><dd>最大4組<small>男性グループ・女性グループを、それぞれ1組として数えます</small></dd></div>
+            <div><dt>人数</dt><dd>指定なし<small>現時点。変更の可能性があります</small></dd></div>
+            <div class="mix-spec__warn"><dt>実施しない日</dt><dd>金・土<small>それ以外の曜日で実施します</small></dd></div>
+          </dl>
+        </div>
+
+      </section>
+
       <!-- ==================== PRICE ==================== -->
-      <!-- 04と05は地を共有する。別々に背景を持たせると
+      <!-- 05と06は地を共有する。別々に背景を持たせると
            境界で色が繋がらず、水色の帯として分かれて見えた。 -->
       <div class="info-zone">
-      <section class="information-section price-zone" id="price" data-theme="price" data-page="04" data-scene-motion="price" aria-labelledby="price-title">
+      <section class="information-section price-zone" id="price" data-theme="price" data-page="05" data-scene-motion="price" aria-labelledby="price-title">
         <div class="price-zone__in">
 
           <figure class="price-photo scene-photo" data-reveal="media">
@@ -275,7 +301,7 @@
           </figure>
 
           <div class="price-title-overlay">
-            <p class="scene-label"><b>04</b><i aria-hidden="true"></i><span>料金</span><em>PRICE</em></p>
+            <p class="scene-label"><b>05</b><i aria-hidden="true"></i><span>料金</span><em>PRICE</em></p>
             <h2 class="paper-h" id="price-title">100分プラン誕生！</h2>
           </div>
 
@@ -316,14 +342,14 @@
       </section>
 
       <!-- ==================== EVENT INFORMATION ==================== -->
-      <section class="information-section event-zone" id="event" data-theme="event" data-page="05" data-scene-motion="event" aria-labelledby="event-title">
+      <section class="information-section event-zone" id="event" data-theme="event" data-page="06" data-scene-motion="event" aria-labelledby="event-title">
         <div class="event-zone__in">
           <div class="sheet sheet--torn-bottom event-sheet">
             <span class="sheet__fiber" aria-hidden="true"></span>
             <div class="sheet__face">
-              <p class="scene-label"><b>05</b><i aria-hidden="true"></i><span>開催情報</span><em>EVENT INFORMATION</em></p>
+              <p class="scene-label"><b>06</b><i aria-hidden="true"></i><span>開催情報</span><em>EVENT INFORMATION</em></p>
 
-              <h2 class="paper-h" id="event-title">9月7日から、月末まで。</h2>
+              <h2 class="paper-h" id="event-title">9月7日から、月末まで</h2>
 
               <p class="event-date"><time datetime="2026-09-07">2026.9.7</time><i>—</i><time datetime="2026-09-30">9.30</time></p>
 
@@ -380,91 +406,51 @@
       </div>
       </div>
 
-      <!-- ==================== HOW TO ASOBIBAR ==================== -->
-      <section class="howto-section" id="howto" data-theme="howto" data-page="06" aria-labelledby="howto-title">
+      <!-- ==================== HOW TO ASOBIBAR ====================
+           元は3ステップで 2,420px（総丈の27.6%）あり、ページ最大の塊が
+           最終CTAの直前に置かれていた。流入の半分は店を知らない人なので
+           消せないが、押す直前に27.6%を店の一般説明へ渡す理由も無い。
+           写真1枚＋3行のカード3枚に畳んだ。 -->
+      <section class="howto-section howto-section--brief" id="howto" data-theme="howto" data-page="07" data-scene-motion="howto" aria-labelledby="howto-title">
         <div class="howto-guide">
           <header class="howto-head">
             <span class="howto-head__tape" aria-hidden="true"></span>
             <p class="howto-kicker"><b>GUIDE</b><i aria-hidden="true"></i><span>ASOBIBARの楽しみ方</span></p>
             <h2 class="howto-title" id="howto-title"><span>HOW TO</span><em>ASOBIBAR?</em></h2>
             <div class="howto-intro">
-              <h3>ASOBIBARって、<br />どんな場所？</h3>
-              <p>人とつながるきっかけも、同じ瞬間に笑える遊びも。はじめての夜を楽しむための、3つのポイントをご紹介します。</p>
+              <h3>はじめてでも大丈夫</h3>
+              <p>ASOBIBARは、人とつながるきっかけと、同じ瞬間に笑える遊びが、同じ場所にあるお店です。覚えておくことは3つだけ。</p>
             </div>
           </header>
 
-          <nav class="howto-index" aria-label="HOW TO ASOBIBAR 目次">
-            <button type="button" data-howto-jump="howto-band" aria-current="true"><b>01</b><span>COLOR BAND</span></button>
-            <button type="button" data-howto-jump="howto-amusement"><b>02</b><span>AMUSEMENT</span></button>
-            <button type="button" data-howto-jump="howto-menu"><b>03</b><span>TREND MENU</span></button>
-          </nav>
-
-          <section class="howto-step" id="howto-band" data-howto-step>
-            <div class="howto-copy" data-howto-reveal>
-              <span class="howto-no" aria-hidden="true">01</span>
-              <p class="howto-ruby">カラーバンド</p>
-              <h3>COLOR<br />BAND<small>その日の気分に合わせて楽しむ</small></h3>
-              <p>カラーバンドに応じた遊び方やアミューズメントをご提案させて頂きます！<br /><mark>ASOBIBARで非日常の体験</mark>を是非お楽しみ下さい。</p>
-            </div>
-            <div class="howto-visual howto-visual--band" aria-hidden="true">
-              <span class="howto-band howto-band--1">COLOR BAND</span>
-              <span class="howto-band howto-band--2">COLOR BAND</span>
-              <span class="howto-band howto-band--3">COLOR BAND</span>
-              <figure class="howto-photo howto-band-photo" data-howto-reveal>
+          <ul class="howto-brief">
+            <li>
+              <figure class="howto-brief__ph">
                 <img src="./assets/howto-color-band-scene.jpg" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
-                <figcaption>気分に合わせて、今夜を選ぶ。</figcaption>
               </figure>
-            </div>
-          </section>
-
-          <section class="howto-step" id="howto-amusement" data-howto-step>
-            <div class="howto-copy" data-howto-reveal>
-              <span class="howto-no" aria-hidden="true">02</span>
-              <p class="howto-ruby">アミューズメント</p>
-              <h3>AMUSEMENT<small>同じ遊びが、会話のきっかけになる</small></h3>
-              <p>ダーツ / ビリヤード / エアホッケー / 卓球 / 最新ゲーム / トランプやジェンガなど、<mark>様々なアミューズメント</mark>をご用意しております。</p>
-              <ul class="howto-amusement-list" aria-label="アミューズメント一覧">
-                <li>ダーツ</li><li>ビリヤード</li><li>卓球</li><li>最新ゲーム</li><li>トランプ</li><li>ジェンガ</li>
-              </ul>
-            </div>
-            <div class="howto-visual" aria-hidden="true">
-              <figure class="howto-photo howto-amusement-photo" data-howto-reveal>
+              <b class="howto-brief__t"><span>COLOR BAND</span>カラーバンド</b>
+              <p>その日の気分で色を選ぶと、それに合った遊び方をスタッフがご提案します。</p>
+            </li>
+            <li>
+              <figure class="howto-brief__ph">
                 <img src="./assets/howto-billiards.jpg" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
-                <figcaption>遊びから、会話へ。</figcaption>
               </figure>
-              <div class="howto-contact" data-howto-reveal>
-                <img src="./assets/howto-cards.jpg" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
-                <img src="./assets/wall/hifive.webp" alt="" width="420" height="420" loading="lazy" decoding="async" />
-              </div>
-            </div>
-          </section>
-
-          <section class="howto-step" id="howto-menu" data-howto-step>
-            <div class="howto-copy" data-howto-reveal>
-              <span class="howto-no" aria-hidden="true">03</span>
-              <p class="howto-ruby">女性にも人気のフード</p>
-              <h3>TREND<br />MENU<small>遊んだあとは、ゆっくり乾杯</small></h3>
-              <p>女性に人気のスイーツやフードメニューも豊富にご用意。フォトスポットやVIPルームも完備しているので、<mark>女子会や友達同士でもゆったり</mark>お楽しみいただけます。</p>
-            </div>
-            <div class="howto-visual howto-food" aria-hidden="true">
-              <figure class="howto-photo howto-food__photo howto-food__photo--1" data-howto-reveal>
-                <img src="./assets/wall/waffle.webp" alt="" width="420" height="420" loading="lazy" decoding="async" />
-                <figcaption>SWEETS</figcaption>
-              </figure>
-              <figure class="howto-photo howto-food__photo howto-food__photo--2" data-howto-reveal>
+              <b class="howto-brief__t"><span>AMUSEMENT</span>アミューズメント</b>
+              <p>ダーツ / ビリヤード / エアホッケー / 卓球 / 最新ゲーム / トランプ / ジェンガ。</p>
+            </li>
+            <li>
+              <figure class="howto-brief__ph">
                 <img src="./assets/food.jpg" alt="" width="420" height="420" loading="lazy" decoding="async" />
-                <figcaption>DRINK</figcaption>
               </figure>
-              <div class="howto-ticket" data-howto-reveal>
-                <b>LINE予約で無料フードチケットをプレゼント！</b>
-                <small>ASOBIBAR TREND MENU</small>
-              </div>
-            </div>
-          </section>
+              <b class="howto-brief__t"><span>TREND MENU</span>フード・ドリンク</b>
+              <p>女性に人気のスイーツもフードも豊富。フォトスポットとVIPルームもあります。</p>
+            </li>
+          </ul>
         </div>
       </section>
+
       <!-- ==================== FINAL CTA ==================== -->
-      <section class="final-night" id="reserve" data-theme="reserve" data-page="07" data-scene-motion="final" aria-labelledby="last-title">
+      <section class="final-night" id="reserve" data-theme="reserve" data-page="08" data-scene-motion="final" aria-labelledby="last-title">
         <div class="scene__pin">
           <figure class="final-night__photo">
           <img
@@ -476,11 +462,14 @@
           />
           </figure>
           <div class="final-night__content">
-          <p class="scene-label"><b>07</b><i aria-hidden="true"></i><span>予約</span><em>RESERVE</em></p>
-          <h2 id="last-title">懐かしいだけで終わらない。<br />今夜を、<br class="sp-br" />新しい思い出に。</h2>
+          <p class="scene-label"><b>08</b><i aria-hidden="true"></i><span>予約</span><em>RESERVE</em></p>
+          <!-- 元は HOW TO の3枚目の末尾にあった。押す理由の中でいちばん強い
+               一言が、店の一般説明の最後に埋まっていた。押す直前へ移す。 -->
+          <p class="final-perk"><b>LINE予約で無料フードチケット</b><small>ASOBIBAR TREND MENU</small></p>
+          <h2 id="last-title">懐かしいだけで終わらない。<br />今夜を、<br class="sp-br" />新しい思い出に</h2>
           <p>あの頃の曲から始まる、大人のY2Kナイトへ。</p>
             <a class="cta cta--final" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-              <span class="cta__copy"><small>9月限定・席数限定</small><span data-reserve-label>Y2K NIGHTを予約する</span></span><i aria-hidden="true">→</i>
+              <span class="cta__copy"><small>9月限定・席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
             </a>
           </div>
         </div>
@@ -493,7 +482,7 @@
         <span class="bar__tag">Y2K NIGHT</span>
       </a>
       <nav aria-label="フッターナビゲーション">
-        <a href="#experience">曲リクエスト</a><a href="#karaoke">つながる</a><a href="#cheki">チェキ</a><a href="#price">料金</a><a href="#event">開催情報</a><a href="#howto">楽しみ方</a><a href="#reserve">予約</a>
+        <a href="#experience">曲リクエスト</a><a href="#karaoke">つながる</a><a href="#cheki">チェキ</a><a href="#mix">ミックス交流</a><a href="#price">料金</a><a href="#event">開催情報</a><a href="#howto">楽しみ方</a><a href="#reserve">予約</a>
       </nav>
       <small>© ASOBIBAR Y2K NIGHT</small>
     </footer>
@@ -501,7 +490,7 @@
     <div class="ctabar" data-ctabar>
       <p class="ctabar__txt"><b>Y2Kを無限リピート！</b><span>2026.9.7〜9.30</span></p>
       <a class="cta cta--bar" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-        <span class="cta__copy"><small>9月限定・席数限定</small><span data-reserve-label>Y2K NIGHTを予約する</span></span><i aria-hidden="true">→</i>
+        <span class="cta__copy"><small>9月限定・席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
       </a>
     </div>
     <!-- ==================== 店舗選択ダイアログ ====================

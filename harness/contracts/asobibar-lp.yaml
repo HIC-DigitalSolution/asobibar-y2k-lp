@@ -58,7 +58,7 @@ invariants:
         - 'font-family:\s*"?Arial Black'
         - 'font-family:\s*"?Helvetica'
         - 'font-family:\s*"?ヒラギノ'
-      hint: 'fix: 使えるのは var(--font-main) / var(--font-display) / var(--font-hand) の3つだけ。セルフホストしたサブセットしか手元に無い。'
+      hint: 'fix: 本文で使えるのは var(--font-main) / var(--font-display) / var(--font-hand) の3つ。セルフホストしたサブセットしか手元に無い。var(--font-yankee) は表示専用で「交流上等」の4字しか焼いていないので、他所に広げると豆腐になる。'
 
   # ---- 開発サーバのURLが残ると本番で壊れる ----
   - id: no-local-urls
@@ -127,7 +127,7 @@ invariants:
     statement: HTMLから消えた部品のCSSを残さない。
     check:
       type: manual
-      note: '機械的な一括削除は過去にCSSを壊した（単一行ルールの本体を落とし、括弧が620/593になった）。1クラスずつ、HTMLに0件であることを確認してから消す。現在 replay-deck / md__* / mdplayer__* が該当。'
+      note: '機械的な一括削除は過去にCSSを壊した（単一行ルールの本体を落とし、括弧が620/593になった）。1クラスずつ、HTMLに0件であることを確認してから消す。現在 replay-deck / md__* / mdplayer__* / howto-step / howto-index / howto-no / howto-ruby / howto-band / howto-contact / howto-food / howto-ticket / song-pet-break / tama__* が該当。後半は 2026-09-04 の構成組み直しで本文から外した分で、**構成が確定するまで戻せるように残してある。**'
 
   - id: design-direction
     statement: 方向性（平成のシールとテープの誌面）から外れる要素を足さない。

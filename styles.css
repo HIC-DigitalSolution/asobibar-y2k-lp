@@ -46,6 +46,20 @@
   font-display: swap;
   src: url("./assets/font/kurenaido-400.woff2?v=2") format("woff2");
 }
+/* 表示専用の4書体目。MIX SESSION の見出し「交流上等」だけに使う。
+   サブセットもその4字だけなので 0.9KB。本文に使うと即座に化けるので広げない。
+   増やすときは tools/build-fonts.py の FONTS の収録文字も足すこと。 */
+/* 見出しとラベル用のドット書体。2000年代の画面の記号として使う。
+   **本文には当てない。**料金・FAQ・注意書きは Zen Kaku Gothic New のまま。
+   読ませたい場所に世界観を持ち込まない（lp-visual-knowledge §4）。
+   サブセットは23.7KB（OpenType機能を落としてある。理由は tools/build-fonts.py）。 */
+@font-face {
+  font-family: "DotGothic16";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/font/dot-400.woff2?v=1") format("woff2");
+}
 
 /* =========================================================
    ASOBIBAR Y2K NIGHT
@@ -77,6 +91,10 @@
   --font-main: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
   --font-display: "Mochiy Pop One", "Hiragino Maru Gothic ProN", sans-serif;
   --font-hand: "Zen Kurenaido", "Hiragino Kaku Gothic ProN", sans-serif;
+  /* 見出し・ラベル専用。本文に広げない */
+  --font-dot: "DotGothic16", "Zen Kaku Gothic New", system-ui, sans-serif;
+  --mix-gold: #f0c874;
+  --mix-gold-dim: #c9a75e;
 
   --gutter: clamp(18px, 4.5vw, 64px);
   --section-space: clamp(56px, 7vw, 96px);
@@ -8112,3 +8130,485 @@ body { padding-bottom: 0; }
   .storepick[open] .storepick__tape1,
   .storepick[open] .storepick__tape2 { animation: none; }
 }
+
+/* ===================== MIX SESSION =====================
+   恋愛リアリティーショーのパロディ。ただし記号はジャンル一般のものだけ使う
+   （白抜き太ゴシックのテロップ、エピソード表記、ナレーション調）。
+   実在番組のロゴやタイトルの字組みは再現しない。商用ページで実在ブランドを
+   流用すると、パロディの意図でも商標の問題になる。
+
+   節ごと方向Aに組み直しました（2026-09-04）。地は墨紫から #003ed6 に変わり、
+   番組の画はプレイヤーの中だけに入っています。墨紫は .mix-screen の中に
+   そのまま残してあるので、戻すならそのグラデーションを .mix-zone に返すだけです。 */
+
+/* ---------- MIX / キーアート ----------
+   店の実写1枚に、中央寄せの文字段を1本立てるだけ。番組バナー一般の型で、
+   特定作品の再現ではない。**実在番組のロゴの字形・字組み、キーアートそのもの、
+   出演者、配信社のマークは使っていない。**
+
+   **写真は加工しない。**（`.duo` の色替えは 2026-09-04 に依頼者が差し戻し済み）
+   乗せているのは文字を読ませるための暗幕だけで、LPが既に `.karaoke-photo::after`
+   などで使っているのと同じ手。色相は動かしていない。
+
+   彩度を持つのは **マゼンタの文字だけ**（lp-visual-knowledge §2）。
+   面には出さないので、走査すると予約CTAがページで最も彩度の高い面のまま残る。 */
+
+.mix-zone {
+  padding: 0 0 clamp(48px, 7vw, 88px);
+  color: var(--ivory);
+  background: linear-gradient(172deg, #1b1233 0%, #241a3f 46%, #2a1a38 100%);
+}
+
+.mix-key {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  /* 却下済みの「真っ黒の地」にしない。節のグラデーションの上端と同じ墨紫。
+     SPは写真が全幅を占め、PCはぼかした同じ写真が覆うので、実際にはほぼ見えない。 */
+  background: #1b1233;
+}
+
+/* 外側を埋める同じ写真。**拡大せずに済ませるための逃げ**であって、
+   新しい記号を足しているわけではない。SPでは鮮明な1枚が全幅を占めるので出さない。 */
+.mix-key__wash { display: none; }
+@media (min-width: 768px) {
+  .mix-key__wash {
+    position: absolute;
+    display: block;
+    inset: -40px;
+    width: calc(100% + 80px);
+    height: calc(100% + 80px);
+    object-fit: cover;
+    filter: blur(30px) brightness(0.52) saturate(0.95);
+  }
+}
+
+.mix-key__photo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin: 0;
+  aspect-ratio: 1055 / 1491;
+}
+@media (min-width: 768px) {
+  .mix-key__photo {
+    /* **幅で決める。** 高さで決めていたら 1280x720 のような
+       「横に広くて縦が短い」画面でポスターが 397px まで痩せて、
+       スマホより細くなった上に一行コピーが折り返した。 */
+    width: clamp(430px, 42vw, 580px);
+    height: auto;
+    max-width: 100%;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+  }
+}
+.mix-key__photo > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 上に天井、下に空いた床。頭が切れないよう上寄りに置く */
+  object-position: 50% 22%;
+}
+
+/* 文字は空いている床の上に置く。顔に被せない。
+   下からの暗幕は写真の中の暗い床に馴染ませるためで、色は足していない。 */
+.mix-key__type {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  justify-items: center;
+  gap: clamp(8px, 1.5vw, 14px);
+  padding: clamp(56px, 12vw, 120px) clamp(14px, 3vw, 22px) clamp(20px, 3.4vw, 34px);
+  text-align: center;
+  background: linear-gradient(180deg, transparent 0%, rgba(8, 4, 18, 0.72) 46%, rgba(8, 4, 18, 0.94) 100%);
+}
+
+.mix-kicker {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-dot);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+}
+
+.mix-head {
+  display: grid;
+  justify-items: center;
+  gap: clamp(8px, 1.5vw, 13px);
+  margin: 0;
+}
+
+/* ロゴ。LPが元から持っている Mochiy Pop One。
+   **4書体目の Reggae One はやめました**（「ヤンキー漫画」という私の推測で
+   選んだ書体で、参考にしているものとは関係がなかった）。 */
+.mix-lock {
+  color: #ff2d9b;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 12.5vw, 4.4rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  text-shadow:
+    0 0 26px rgba(255, 45, 155, 0.5),
+    0 3px 0 rgba(10, 4, 22, 0.6),
+    0 12px 30px rgba(0, 0, 0, 0.65);
+}
+
+/* 一行コピー。両側の罫はダッシュの代わり */
+.mix-sub {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 2vw, 16px);
+  color: #fff;
+  font-family: var(--font-main);
+  font-size: clamp(0.78rem, 3.2vw, 0.9rem);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+.mix-sub::before,
+.mix-sub::after {
+  flex: 0 0 auto;
+  width: clamp(12px, 4.5vw, 22px);
+  height: 1px;
+  background: rgba(255, 255, 255, 0.72);
+  content: "";
+}
+
+/* 下段。ブランド行と参加条件を1本に */
+.mix-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 12px;
+  margin: clamp(2px, 0.8vw, 6px) 0 0;
+}
+.mix-foot b {
+  color: #ff2d9b;
+  font-family: var(--font-dot);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+}
+.mix-foot i {
+  width: 1px;
+  height: 13px;
+  background: rgba(255, 255, 255, 0.42);
+}
+.mix-foot span {
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+}
+
+/* ---------- キーアートの下 ---------- */
+.mix-zone__in {
+  display: grid;
+  gap: clamp(20px, 3vw, 32px);
+  width: min(100% - var(--gutter) * 2, 760px);
+  margin-inline: auto;
+  padding-top: clamp(28px, 4.5vw, 48px);
+}
+
+.mix-narration {
+  margin: 0;
+  color: rgba(242, 236, 223, 0.86);
+  font-size: clamp(0.85rem, 3.1vw, 0.95rem);
+  line-height: 2.05;
+  text-align: center;
+}
+.mix-narration em {
+  color: var(--mix-gold);
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* 仕様。罫線は細く */
+.mix-spec { display: grid; margin: 0; }
+.mix-spec > div {
+  display: grid;
+  grid-template-columns: 7.5em minmax(0, 1fr);
+  gap: 10px;
+  align-items: baseline;
+  padding: 12px 2px;
+  border-bottom: 1px solid rgba(242, 236, 223, 0.16);
+}
+.mix-spec > div:last-child { border-bottom: 0; }
+.mix-spec dt {
+  color: rgba(242, 236, 223, 0.6);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+.mix-spec dd {
+  margin: 0;
+  color: var(--white);
+  font-size: clamp(0.95rem, 3.2vw, 1.05rem);
+  font-weight: 900;
+}
+.mix-spec dd small {
+  display: block;
+  margin-top: 4px;
+  color: rgba(242, 236, 223, 0.6);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+/* 「金・土は実施しない」だけ強調する。注記に落とすと流し読みで消える。
+   開催期間の9/7〜9/30が金土を含む以上、見落としは
+   「行ったらやっていなかった」になる。それは事故。 */
+.mix-spec__warn dd { color: #ffcf7a; }
+.mix-spec__warn dd::before {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 2px 8px 3px;
+  border-radius: 2px;
+  color: #2a1500;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  vertical-align: 0.14em;
+  background: #ff8f2e;
+  content: "注意";
+}
+
+@media (max-width: 480px) {
+  .mix-spec > div { grid-template-columns: 1fr; gap: 3px; }
+}
+
+/* PC専用の改行。SPでは自然に折り返させる。既存の .sp-br の逆で、
+   これが無いと文末が行頭に1〜2文字だけ残る */
+.pc-br { display: inline; }
+@media (max-width: 767px) { .pc-br { display: none; } }
+
+/* ==========================================================================
+   構成の組み直し（案A）で足した4ブロック
+   ワイヤーフレーム: https://claude.ai/code/artifact/2bd6588e-40f9-4d13-a2e9-18a3124c81f3
+
+   既存の語彙（ちぎれ紙・マステ・scene-label・paper-h）だけで組む。
+   ここで新しい世界観の手は増やさない。手を9つから1つに絞る話は別工程。
+   ========================================================================== */
+
+/* ---------- FV ----------
+   実測で表紙は 358px しかなく、844px の画面では下のセクションが先に見えていた。
+   キービジュアルは 3:2 のまま切らない（既存の判断）。
+
+   ここに `期間 / 料金 / 特典` の事実3つを置いていたが、
+   **2026-09-04 に依頼者の判断で削除した。**FVはキービジュアルとCTAだけ。
+   料金は 05、特典は最終CTAの直前（.final-perk）にある。 */
+.cover { --bar-h: 66px; }
+
+/* ---------- 08 HOW TO（圧縮版） ----------
+   元の3ステップ（.howto-step / .howto-index）は本文から外した。
+   CSS は戻せるように残してある。構成が確定したら消す。 */
+.howto-section--brief { padding-block: clamp(34px, 4.2vw, 56px); }
+
+.howto-brief {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: clamp(18px, 2.4vw, 30px);
+  list-style: none;
+}
+
+.howto-brief > li {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.howto-brief__ph {
+  margin: 0;
+  overflow: hidden;
+  border: 3px solid var(--paper-photo);
+  border-radius: 10px;
+  box-shadow: 0 2px 0 rgba(35, 24, 21, 0.18);
+}
+
+.howto-brief__ph img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.howto-brief__t {
+  display: grid;
+  gap: 1px;
+  color: var(--print-ink);
+  font-family: var(--font-main);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.howto-brief__t span {
+  color: #a21563;
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+}
+
+.howto-brief p {
+  margin: 0;
+  color: var(--print-sub);
+  font-family: var(--font-main);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.8;
+}
+
+@media (max-width: 767px) {
+  .howto-brief { grid-template-columns: 1fr; gap: 16px; }
+  .howto-brief > li {
+    display: grid;
+    grid-template-columns: 104px minmax(0, 1fr);
+    gap: 4px 12px;
+  }
+  .howto-brief__ph { grid-row: 1 / span 2; }
+  .howto-brief__ph img { aspect-ratio: 1 / 1; }
+}
+
+/* ---------- 10 最終CTAの直前に置く特典 ----------
+   元は HOW TO の3枚目の末尾（86.1%地点）にあった。 */
+.final-perk {
+  display: inline-grid;
+  gap: 2px;
+  margin: 0 0 14px;
+  padding: 10px 18px;
+  border: 2px dashed rgba(255, 255, 255, 0.66);
+  border-radius: 12px;
+  background: rgba(162, 21, 99, 0.5);
+}
+
+.final-perk b {
+  color: #fff;
+  font-family: var(--font-main);
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+}
+
+.final-perk small {
+  color: rgba(255, 255, 255, 0.68);
+  font-family: var(--font-main);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+@media (max-width: 767px) {
+  .final-perk { padding: 9px 14px; }
+  .final-perk b { font-size: 12.5px; }
+}
+
+/* PC（≥900px）では情報パネルがキービジュアルの上に絶対配置される。
+   事実3行を縦に積むとパネルが 200px 伸び、1440×900 で
+   **CTAがファーストビューの外（top 927px / vh 900px）に出ていた。**
+   固定バーは01に着くまで出ないので、PCの1画面目に押せるCTAが0個になる。
+   横1列に畳んで、パネルの高さを 200px → 約30px に戻す。 */
+@media (min-width: 900px) {
+  /* stage は aspect-ratio: 3/2 なので、画面が横に広いほど背が高くなる
+     （1920幅で1280px）。パネルを 72% で置くと 1920×1080 で
+     **CTAの下端が 1104px** になり、また画面外へ出た。
+     縦の余りが足りないときはビューポート基準へ切り替える。
+     事実3つを消したのでパネルはCTA1つ（実測ちょうど 70px）だけ。
+     表紙は 66px のスティッキーバーの下から始まるので、CTAの下端は
+     `66 + top + 70`。画面内に収めるには top ≤ 100svh - 136px。
+     **130px でやって 1280×720 が 726/720 で 6px はみ出した。**逃げ込みで 150px。 */
+  .cover__info { width: min(58%, 780px); top: min(72%, calc(100svh - 150px)); }
+
+}
+
+/* ==========================================================================
+   D案 — 見た目の工程（2026-09-04）
+   計画: docs/exec-plans/active/y2k-visual-pass-d.md
+
+   ダンダダン5周年サイトの実測から「CSSで再現できるもの」だけを取った。
+   向こうは593枚の画像で出しているが、**画像を1枚も作らずに同じ記号を置く。**
+
+   当初は3手あった。**依頼者の判断で残ったのは①だけ。**
+     ① 見出しとラベルをドット書体に（本文はそのまま）
+     ② ~~写真を2色ハーフトーン（青）に~~   → 差し戻し。写真は元のまま
+     ③ ~~CTAをべた塗りマゼンタに~~         → 差し戻し。CTAは元のクロームのまま
+
+   ②③を戻したので、**画面の彩度は元の水準に返っている。**
+   書体だけで足す形になったぶん、CTAが沈む心配も無くなった。
+   ここに②③を足し直すときは、必ずセットで戻すこと（片方だけだと
+   写真がCTAより強くなる。lp-visual-knowledge §2 / §5）。
+   ========================================================================== */
+
+/* ---------- ① 見出しとラベル ---------- */
+.paper-h,
+.scene-title,
+#last-title {
+  font-family: var(--font-dot);
+  font-weight: 400;
+  /* ドット書体は字面が小さく、既存の -0.055em では字が離れて見える。
+     詰めを戻して、サイズを一段上げる */
+  letter-spacing: 0.005em;
+  font-size: clamp(1.72rem, 4.2vw, 2.7rem);
+  line-height: 1.24;
+}
+
+.scene-label,
+.howto-kicker,
+.mix-kicker,
+.howto-brief__t span {
+  font-family: var(--font-dot);
+  font-weight: 400;
+}
+
+/* ドット書体は 900 を持たない。既存の font-weight: 900 が残っていると
+   ブラウザが合成ボールドを掛けて、ドットが潰れて滲む。 */
+.scene-label b {
+  font-weight: 400;
+}
+
+/* ---------- 角丸を落とす（パネルだけ） ----------
+   セクションカードの角丸は落とさない。ちぎれ紙のクリップと噛み合っていて、
+   0にすると紙の縁が直線で切れる。落とすのは中のパネル。 */
+.howto-brief__ph,
+.final-perk,
+.plan-prices > div {
+  border-radius: 0;
+}
+
+/* ---------- ① の取りこぼしを回収する（2026-09-04・依頼者の指摘） ----------
+   「セクション3と1・2でタイトルの書体が違う」。実測したら、ドットが効いていたのは
+   **8つ中3つだけ**だった（03 チェキ / 06 開催情報 / 08 予約）。
+
+   原因は詳細度。上の `.paper-h, .scene-title, #last-title` は (0,1,0) しかなく、
+   セクションごとの作り込みで後から書いた (0,2,0)〜(0,3,0) のルールに負けていた:
+
+     .scene--karaoke .scene-title              (0,2,0)
+     .price-title-overlay .paper-h             (0,2,0)
+     .scene--request .request-heading .paper-h (0,3,0)
+     .scene--request .request-copy__text .paper-h (0,3,0)
+
+   `#last-title` だけ効いていたのは ID (1,0,0) だったから。**偶然。**
+
+   ここは `!important` を使わず、**同じセレクタをファイル末尾で書き直して**勝つ。
+   important を撒くと、次にこの見出しを触る人が理由を追えなくなる。
+
+   **font-size は各セクションのまま残す。**サイズの違いは意図した緩急で、
+   依頼者が言っているのは書体のこと。触ると全セクションの版面が動く。
+   **letter-spacing は上書きする。**元は -0.045em 〜 -0.06em の詰めで、
+   ドットは字面が小さいぶん、詰めるとドット同士がぶつかって読めなくなる。
+   **font-weight も 400 に落とす。**DotGothic16 は 400 しか持たないので、
+   900 のままだとブラウザが合成ボールドを掛けてドットが潰れる。 */
+.scene--karaoke .scene-title,
+.price-title-overlay .paper-h,
+.scene--request .request-heading .paper-h,
+.scene--request .request-copy .paper-h,
+.scene--request .request-copy__text .paper-h {
+  font-family: var(--font-dot);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+}
+

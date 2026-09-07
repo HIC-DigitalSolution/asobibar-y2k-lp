@@ -13,7 +13,7 @@
    LINE予約URLが確定したら、承認済みのHTTPS URLをここに入れる。
    --------------------------------------------------------- */
 const OFFICIAL_RESERVATION_URL = "https://asobibar.net/";
-const OFFICIAL_RESERVATION_LABEL = "Y2K NIGHTを予約する";
+const OFFICIAL_RESERVATION_LABEL = "LINE予約はこちら";
 const LINE_RESERVATION_URL = "";
 const LINE_RESERVATION_LABEL = "LINEで予約する";
 
@@ -21,6 +21,41 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 
 const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const easeOutCubic = (t) => 1 - (1 - t) ** 3;
+
+/* ---------- 監視が本当に動くかを、隠す前に確かめる ----------
+   `"IntersectionObserver" in window` が true でも、コールバックが
+   一度も返らない環境がある。エラーは出ない。ただ何も起きない。
+   このLPは `motion-ready` / `reveal-ready` を付けた時点で本文を
+   `opacity: 0` にするので、**監視が動かない環境ではページが真っ白になる。**
+   実際にアプリ内のブラウザペインで踏んだ（rAFも回らないのでHeroも開始しない）。
+
+   だから隠すのは「監視が返ってきた後」にする。返ってこなければ
+   アニメーションのほうを捨てて、中身を出す。
+   docs/design-docs/lp-visual-knowledge.md §6 */
+const probeObserver = (onLive, onDead) => {
+  if (!("IntersectionObserver" in window)) {
+    onDead();
+    return;
+  }
+  const probe = document.createElement("div");
+  probe.setAttribute("aria-hidden", "true");
+  probe.style.cssText =
+    "position:fixed;top:0;left:0;width:1px;height:1px;pointer-events:none;opacity:0";
+  document.body.appendChild(probe);
+
+  let settled = false;
+  const finish = (live) => {
+    if (settled) return;
+    settled = true;
+    window.clearTimeout(timer);
+    io.disconnect();
+    probe.remove();
+    (live ? onLive : onDead)();
+  };
+  const io = new IntersectionObserver(() => finish(true));
+  io.observe(probe);
+  const timer = window.setTimeout(() => finish(false), 400);
+};
 
 /* ---------- 見出しを行に割る ----------
    ブロックごとフェードさせると、読む順番と動きが噛み合わない。
@@ -268,32 +303,51 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
     });
   };
 
-  if (reduceMotion || !("IntersectionObserver" in window)) {
+  if (reduceMotion) {
     scenes.forEach(playScene);
     return;
   }
 
-  document.documentElement.classList.add("motion-ready");
-
-  const entranceObserver = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        playScene(entry.target);
-        observer.unobserve(entry.target);
-      });
-    },
-    { rootMargin: "0px 0px -10%", threshold: 0.16 },
-  );
-
-  scenes
-    .filter((scene) => scene.dataset.sceneMotion !== "hero")
-    .forEach((scene) => entranceObserver.observe(scene));
-
-  /* 最初の描画を1フレーム見せてからHeroを開始し、CLSを発生させずに
-     背景→情報→CTAの順序を作る。 */
   const hero = scenes.find((scene) => scene.dataset.sceneMotion === "hero");
-  if (hero) requestAnimationFrame(() => requestAnimationFrame(() => playScene(hero)));
+
+  probeObserver(
+    () => {
+      /* 監視が返ってきた。ここで初めて隠してよい */
+      document.documentElement.classList.add("motion-ready");
+
+      const entranceObserver = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            playScene(entry.target);
+            observer.unobserve(entry.target);
+          });
+        },
+        { rootMargin: "0px 0px -10%", threshold: 0.16 },
+      );
+
+      scenes
+        .filter((scene) => scene.dataset.sceneMotion !== "hero")
+        .forEach((scene) => entranceObserver.observe(scene));
+
+      /* 最初の描画を1フレーム見せてからHeroを開始し、CLSを発生させずに
+         背景→情報→CTAの順序を作る。
+         **rAF も「回らない」ことがある**ので setTimeout を併走させ、
+         先に来たほうで着地させる。片方だけだとFVが出ないまま残る。 */
+      if (hero) {
+        let heroStarted = false;
+        const startHero = () => {
+          if (heroStarted) return;
+          heroStarted = true;
+          playScene(hero);
+        };
+        requestAnimationFrame(() => requestAnimationFrame(startHero));
+        window.setTimeout(startHero, 300);
+      }
+    },
+    /* 返ってこなかった。動きを捨てて中身を出す */
+    () => scenes.forEach(playScene),
+  );
 
   const updateSceneProgress = () => {
     scrollFrame = 0;
@@ -446,13 +500,18 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
   const items = [...document.querySelectorAll("[data-reveal]")];
   if (!items.length) return;
 
-  if (reduceMotion || !("IntersectionObserver" in window)) {
-    items.forEach((el) => el.classList.add("is-in"));
+  const showAll = () => items.forEach((el) => el.classList.add("is-in"));
+
+  if (reduceMotion) {
+    showAll();
     return;
   }
 
-  /* JSが正常に起動した時だけ非表示状態を有効にする。
-     file://表示や通信障害でJSが読めない場合も本文を消さない。 */
+  /* JSが正常に起動した「だけ」では足りない。監視が実際に返ってくる
+     ことまで確かめてから隠す（probeObserver のコメントを参照）。 */
+  probeObserver(() => startReveal(), showAll);
+
+  function startReveal() {
   document.documentElement.classList.add("reveal-ready");
 
   const io = new IntersectionObserver(
@@ -490,6 +549,7 @@ const easeOutCubic = (t) => 1 - (1 - t) ** 3;
     },
     { passive: true },
   );
+  }
 })();
 
 /* ---------- HOW TO ASOBIBAR ----------

@@ -21,3 +21,9 @@ node scripts/harness/new-plan.mjs gotcha <slug>
 
 Rule of thumb: if you had to *work out* something non-obvious, it belongs here. If it is
 already obvious from the code, it does not.
+
+## gotchas の索引
+
+- [単語からジャンルを推測して、参考の実物を見なかった](./gotchas/guessed-genre-from-a-word.md) — 作品名が出たら画像を1枚もらう。連想で手を動かさない
+- [料金を体験より前に出して、順番が壊れた](./gotchas/section-order-benefit-before-price.md)
+  — 同じ問いを2回解くと、2回目は「効かない変更」ではなく別の何かを壊す変更になる
