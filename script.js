@@ -902,6 +902,9 @@ const probeObserver = (onLive, onDead) => {
     }
   });
 
+  /* エリアのチップと、エリアごとの店舗リスト。**2026-09-07に2タブ式から
+     5エリアに変えました。**仕組み（data-storepick-tab / -panel）はそのままです。
+     どのエリアも最大3店なので、通常はスクロールしません。syncMore は保険で残します。 */
   const tabs = [...dialog.querySelectorAll("[data-storepick-tab]")];
   const panels = [...dialog.querySelectorAll("[data-storepick-panel]")];
 
@@ -939,7 +942,7 @@ const probeObserver = (onLive, onDead) => {
   });
 
   /* 開いている間だけ背面のスクロールを止める。ダイアログ内は
-     .storepick__face が overscroll-behavior: contain で受ける。 */
+     .storepick__list が overscroll-behavior: contain で受ける。 */
   let scrollLock = "";
   const open = () => {
     scrollLock = document.body.style.overflow;

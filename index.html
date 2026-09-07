@@ -28,8 +28,8 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
     <!-- 見出しはFV内に出るので先に取る -->
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=466" />
-    <script src="./script.js?v=74" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=471" />
+    <script src="./script.js?v=75" defer></script>
   </head>
 
   <body>
@@ -468,91 +468,97 @@
          予約はここで完了する導線なので、LPを残す価値より確実に飛ぶ方が優先。
 
          料金は店舗ごとに出さない。LPが定義しているのは関西/関東の2区分だけで、
-         名古屋・福岡の額は未確認。料金セクションに任せる。 -->
+         名古屋・福岡の額は未確認。料金セクションに任せる。
+
+         **2026-09-07に組み直し。**「押したあと急にちゃっちくなった」と言われた版から、
+         ちぎれ紙・マステ2枚・液晶帯・網点タブ・シアンの枠・ジェルボタンを全部外して、
+         白いシート1枚にした。彩度を持つのは **LINEの緑 #06C755 だけ**。
+         前の緑（#a7d472 のグラデ＋ベベル）は**LINEの色ですらなかった**。
+         判断の根拠は docs/design-docs/lp-visual-knowledge.md の
+         「彩度はCTAのために取っておく」「世界観は1つの決定で作る」。 -->
     <dialog class="storepick" data-storepick aria-labelledby="storepick-title">
-      <div class="sheet sheet--torn-bottom storepick__sheet">
-        <span class="sheet__fiber" aria-hidden="true"></span>
-        <div class="sheet__face storepick__face">
-          <button type="button" class="storepick__close" data-storepick-close aria-label="閉じる">
-            <span aria-hidden="true">×</span>
-          </button>
+      <div class="storepick__sheet">
+        <button type="button" class="storepick__close" data-storepick-close aria-label="閉じる">
+          <span aria-hidden="true">×</span>
+        </button>
 
-          <!-- 液晶の帯。ガラケーの記号は縁にだけ置く。
-               中心は普通に読める一覧のままにする（予約導線なので装飾に面積を渡さない） -->
-          <p class="storepick__lcd" aria-hidden="true">
-            <span class="storepick__ant"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>
-            <b>ASOBIBAR</b>
-            <span class="storepick__lcdday">9/7-30</span>
-          </p>
+        <header class="storepick__head">
+          <span class="storepick__kick">ASOBIBAR / 9.7 - 9.30</span>
+          <h2 id="storepick-title">店舗を選んでご予約</h2>
+          <p class="storepick__lead">ご利用予定の店舗を選んで、公式LINEからご予約ください。料金はエリア・曜日によって異なります。<a href="#price" data-storepick-close>料金を見る</a></p>
+        </header>
 
-          <!-- 見出しは1つだけ。「店舗を選ぶ」と「どの店で遊びますか？」は
-               同じことを2回言っていて、その分リストの高さを食っていた。 -->
-          <header class="storepick__head">
-            <h2 class="paper-h" id="storepick-title">公式LINEを選択</h2>
-            <p class="storepick__lead">ご利用予定の店舗を選んで、公式LINEからご予約ください。料金はエリア・曜日によって異なります。<a href="#price" data-storepick-close>料金を見る</a></p>
-          </header>
-
-          <nav class="storepick__tabs" aria-label="エリアで絞り込む">
-            <!-- autofocus はここ。既定では DOM 先頭の閉じるボタンに当たり、
+        <div class="storepick__body">
+          <!-- **9店を1画面に並べるのをやめた。**関西/東京の2タブ式だったときは、
+               実測で iPhone SE(375×667) に6店中3店しか入らず、スクロールできることを
+               伝える手掛かりも無かった。エリアを先に選ばせると最大3店なので、
+               どのエリアでも1画面に収まる。 -->
+          <p class="storepick__step"><b>1</b><span>エリアを選ぶ</span></p>
+          <nav class="storepick__areas" aria-label="エリアを選ぶ">
+            <!-- autofocus は先頭のチップ。既定では DOM 先頭の閉じるボタンに当たり、
                  開いた瞬間に「閉じる」が選ばれている状態になる。 -->
-            <button type="button" data-storepick-tab="west" aria-current="true" autofocus><span>関西・名古屋・福岡</span></button>
-            <button type="button" data-storepick-tab="east"><span>東京</span></button>
+            <button type="button" data-storepick-tab="kobe" aria-current="true" autofocus>神戸</button>
+            <button type="button" data-storepick-tab="osaka">大阪</button>
+            <button type="button" data-storepick-tab="nagoya">名古屋</button>
+            <button type="button" data-storepick-tab="fukuoka">福岡</button>
+            <button type="button" data-storepick-tab="tokyo">東京</button>
           </nav>
 
-          <div class="storepick__list" data-storepick-panel="west">
-            <p class="storepick__area">KOBE<i aria-hidden="true"></i>神戸</p>
+          <p class="storepick__step"><b>2</b><span>店舗を選んでLINEへ</span></p>
+
+          <div class="storepick__list" data-storepick-panel="kobe" aria-label="神戸の店舗">
             <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/ovqzUJi">
               <span class="storeline__name">神戸三宮店</span>
-              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+              <span class="storeline__go"><svg class="storeline__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg>LINEで予約</span>
             </a>
+          </div>
 
-            <p class="storepick__area">OSAKA<i aria-hidden="true"></i>大阪</p>
+          <div class="storepick__list" data-storepick-panel="osaka" aria-label="大阪の店舗" hidden>
             <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/ovqzUJi">
               <span class="storeline__name">梅田お初天神店</span>
-              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+              <span class="storeline__go"><svg class="storeline__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg>LINEで予約</span>
             </a>
             <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/ovqzUJi">
               <span class="storeline__name">心斎橋店</span>
-              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+              <span class="storeline__go"><svg class="storeline__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg>LINEで予約</span>
             </a>
+          </div>
 
-            <p class="storepick__area">NAGOYA<i aria-hidden="true"></i>名古屋</p>
+          <div class="storepick__list" data-storepick-panel="nagoya" aria-label="名古屋の店舗" hidden>
             <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/wc06IWtq">
               <span class="storeline__name">名古屋栄錦通り店</span>
-              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+              <span class="storeline__go"><svg class="storeline__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg>LINEで予約</span>
             </a>
             <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/wc06IWtq">
               <span class="storeline__name">名古屋住吉複合店</span>
-              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
-            </a>
-
-            <p class="storepick__area">FUKUOKA<i aria-hidden="true"></i>福岡</p>
-            <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/7mdcxl8">
-              <span class="storeline__name">天神大名店</span>
-              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+              <span class="storeline__go"><svg class="storeline__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg>LINEで予約</span>
             </a>
           </div>
 
-          <div class="storepick__list" data-storepick-panel="east" hidden>
-            <p class="storepick__area">TOKYO<i aria-hidden="true"></i>東京</p>
+          <div class="storepick__list" data-storepick-panel="fukuoka" aria-label="福岡の店舗" hidden>
+            <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/7mdcxl8">
+              <span class="storeline__name">天神大名店</span>
+              <span class="storeline__go"><svg class="storeline__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg>LINEで予約</span>
+            </a>
+          </div>
+
+          <div class="storepick__list" data-storepick-panel="tokyo" aria-label="東京の店舗" hidden>
             <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/6Fvrmdw">
               <span class="storeline__name">新宿歌舞伎町タワー前店</span>
-              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+              <span class="storeline__go"><svg class="storeline__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg>LINEで予約</span>
             </a>
             <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/QxzxqGM">
               <span class="storeline__name">渋谷横丁前店</span>
-              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+              <span class="storeline__go"><svg class="storeline__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg>LINEで予約</span>
             </a>
             <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/OnM70Fz">
               <span class="storeline__name">恵比寿店</span>
-              <span class="storeline__go"><i aria-hidden="true"></i>LINEで予約</span>
+              <span class="storeline__go"><svg class="storeline__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg>LINEで予約</span>
             </a>
           </div>
-
-          <p class="storepick__note">※ 9月7日〜30日の期間限定。席数に限りがあります。</p>
         </div>
-        <span class="tape tape--y storepick__tape1" aria-hidden="true"></span>
-        <span class="tape tape--c storepick__tape2" aria-hidden="true"></span>
+
+        <p class="storepick__note">※ 9月7日〜30日の期間限定。席数に限りがあります。</p>
       </div>
     </dialog>
   </body>
