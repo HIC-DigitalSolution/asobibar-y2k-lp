@@ -211,6 +211,40 @@ a { color: inherit; }
   letter-spacing: 0.22em;
 }
 
+/* ノンブルと「店内状況」を右端でひとまとめにする。
+   .bar の space-between は「ロゴ」と「この塊」の2つを離すために残す。 */
+.bar__side {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 2.4vw, 16px);
+}
+
+/* **公式HPのヘッダにある「店内状況」と同じ形。**
+   真鍮のベタ・白文字・角丸4px・10px bold・Zen Kaku Gothic New（このLPの --font-main と同じ書体）。
+   遷移先も公式と同じ /shops。
+
+   **色だけ #AA8232 から #8f6d2a に落としています。**公式の #AA8232 に白文字は
+   実測コントラスト 3.53 で、10pxの文字としてAAの4.5に届きません（実測 4.78）。
+   色相と彩度はそのままなので、真鍮の見え方は変わりません。 */
+.bar__shops {
+  display: inline-flex;
+  align-items: center;
+  /* 公式は31px。ここは指の当たり判定を優先して36pxまで上げている
+     （見た目の縦は10pxの文字＋余白なので、公式の印象は変わらない） */
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 4px;
+  color: #fff;
+  font-family: var(--font-main);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-decoration: none;
+  background: #8f6d2a;
+}
+.bar__shops:active { transform: translateY(1px); }
+
 .bar__nombre {
   display: flex;
   align-items: baseline;
@@ -8108,6 +8142,7 @@ body { padding-bottom: 0; }
 .storepick[open]::backdrop { animation: storepickVeil 180ms ease both; }
 
 @media (prefers-reduced-motion: reduce) {
+  .bar__shops:active { transform: none; }
   .storepick__close:active { transform: none; }
   .storepick[open] .storepick__sheet,
   .storepick[open]::backdrop { animation: none; }

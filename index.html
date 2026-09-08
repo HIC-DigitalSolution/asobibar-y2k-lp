@@ -28,7 +28,7 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
     <!-- 見出しはFV内に出るので先に取る -->
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=472" />
+    <link rel="stylesheet" href="./styles.css?v=473" />
     <script src="./script.js?v=75" defer></script>
   </head>
 
@@ -36,12 +36,18 @@
     <a class="skip" href="#main">本文へ移動</a>
 
     <header class="bar" data-bar>
-      <a class="bar__brand" href="#top" aria-label="ASOBIBAR Y2K NIGHT トップへ">
+      <!-- ロゴはASOBIBAR公式サイトへ（2026-09-08に依頼者の指示で #top から変更）。
+           他の asobibar.net へのリンクと同じく別タブ。このLPを閉じさせない。 -->
+      <a class="bar__brand" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" aria-label="ASOBIBAR 公式サイト（別タブで開く）">
         <img src="./assets/asobibar-logo-ink.svg" alt="ASOBIBAR" width="4564" height="796" />
         <span class="bar__tag">Y2K NIGHT</span>
       </a>
-      <!-- 誌面のノンブル。スクロールでページ番号が進む -->
-      <p class="bar__nombre" aria-hidden="true">P.<b data-nombre>01</b><span>/P.08</span></p>
+      <div class="bar__side">
+        <!-- 誌面のノンブル。スクロールでページ番号が進む -->
+        <p class="bar__nombre" aria-hidden="true">P.<b data-nombre>01</b><span>/P.08</span></p>
+        <!-- 公式HPのヘッダにある「店内状況」と同じボタン。遷移先も同じ /shops -->
+        <a class="bar__shops" href="https://asobibar.net/shops" target="_blank" rel="noopener noreferrer">店内状況</a>
+      </div>
     </header>
 
     <main id="main">
