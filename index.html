@@ -26,12 +26,12 @@
     <!-- **?v= は styles.css の @font-face と1文字違わず揃える。**片方だけ付いていると
          別のURLとして扱われ、preload の1本と CSS の1本で同じ書体を2回落とす
          （2026-09-14まで実際にそうなっていて、preload が効いていなかった）。 -->
-    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2?v=3" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2?v=3" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2?v=3" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2?v=4" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2?v=4" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2?v=4" crossorigin />
     <!-- 見出しはFV内に出るので先に取る -->
-    <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2?v=3" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=476" />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2?v=4" crossorigin />
+    <link rel="stylesheet" href="./styles.css?v=477" />
     <script src="./script.js?v=75" defer></script>
   </head>
 
@@ -330,7 +330,10 @@
                     </article>
                   </div>
 
-                  <p class="paper-note">※ 表示はすべて税込・お一人様あたりの金額です。OVER28プランの金曜は関東以外3,300円／関東3,800円。詳しい条件は公式HPをご確認ください。</p>
+                  <!-- 「19歳からの入場は三宮だけ」は依頼者から聞いた店舗の事実（2026-09-14）。
+                       **他店の下限が何歳かは聞いていないので書かない。**
+                       年齢制限を推測で埋めると、そのまま店頭でのトラブルになる（AGENTS.md）。 -->
+                  <p class="paper-note">※ 表示はすべて税込・お一人様あたりの金額です。OVER28プランの金曜は関東以外3,300円／関東3,800円。<b>19歳からのご入場は神戸三宮店のみです。</b>詳しい条件は公式HPをご確認ください。</p>
 
                   <a class="ink-button" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer">
                     料金・プランを詳しく見る<i aria-hidden="true">↗</i>

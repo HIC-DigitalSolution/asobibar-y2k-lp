@@ -21,35 +21,35 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("./assets/font/zkgn-500.woff2?v=3") format("woff2");
+  src: url("./assets/font/zkgn-500.woff2?v=4") format("woff2");
 }
 @font-face {
   font-family: "Zen Kaku Gothic New";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("./assets/font/zkgn-700.woff2?v=3") format("woff2");
+  src: url("./assets/font/zkgn-700.woff2?v=4") format("woff2");
 }
 @font-face {
   font-family: "Zen Kaku Gothic New";
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url("./assets/font/zkgn-900.woff2?v=3") format("woff2");
+  src: url("./assets/font/zkgn-900.woff2?v=4") format("woff2");
 }
 @font-face {
   font-family: "Mochiy Pop One";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("./assets/font/mochiy-400.woff2?v=3") format("woff2");
+  src: url("./assets/font/mochiy-400.woff2?v=4") format("woff2");
 }
 @font-face {
   font-family: "Zen Kurenaido";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("./assets/font/kurenaido-400.woff2?v=3") format("woff2");
+  src: url("./assets/font/kurenaido-400.woff2?v=4") format("woff2");
 }
 /* 表示専用の4書体目。MIX SESSION の見出し「交流上等」だけに使う。
    サブセットもその4字だけなので 0.9KB。本文に使うと即座に化けるので広げない。
@@ -63,7 +63,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("./assets/font/dot-400.woff2?v=3") format("woff2");
+  src: url("./assets/font/dot-400.woff2?v=4") format("woff2");
 }
 
 /* =========================================================
@@ -7084,6 +7084,13 @@ body { padding-bottom: 0; }
   font-weight: 900;
   line-height: 1.5;
   letter-spacing: 0.03em;
+}
+
+/* **年齢の下限は、読み落とすと店頭で断られる。**注記の中でここだけ墨にする。
+   アクセントの色は使わない（プランの条件と同じ強さになってしまう）。 */
+.paper-note b {
+  color: var(--print-ink);
+  font-weight: 900;
 }
 
 /* 期間。**条件より一段弱くする。**「誰が・いつの曜日か」を先に読ませたいので、
