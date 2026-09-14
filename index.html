@@ -26,12 +26,12 @@
     <!-- **?v= は styles.css の @font-face と1文字違わず揃える。**片方だけ付いていると
          別のURLとして扱われ、preload の1本と CSS の1本で同じ書体を2回落とす
          （2026-09-14まで実際にそうなっていて、preload が効いていなかった）。 -->
-    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2?v=4" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2?v=4" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2?v=4" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2?v=5" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2?v=5" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2?v=5" crossorigin />
     <!-- 見出しはFV内に出るので先に取る -->
-    <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2?v=4" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=478" />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2?v=5" crossorigin />
+    <link rel="stylesheet" href="./styles.css?v=479" />
     <script src="./script.js?v=75" defer></script>
   </head>
 
@@ -296,7 +296,7 @@
                     <article class="plan-card">
                       <div class="plan-card__head">
                         <h3 class="plan-card__name">U-25<span>100分プラン</span></h3>
-                        <p class="plan-card__cond">25歳以下・日〜木曜限定</p>
+                        <p class="plan-card__cond">25歳以下・日〜木曜</p>
                         <p class="plan-card__term"><time datetime="2026-09-01">9.1</time>〜<time datetime="2026-09-30">9.30</time></p>
                       </div>
                       <dl class="plan-prices">
@@ -309,17 +309,24 @@
                           <dd><span data-count="3000">3,000</span><small>円</small></dd>
                         </div>
                       </dl>
-                      <!-- 「19歳からの入場は三宮だけ」は依頼者から聞いた店舗の事実（2026-09-14）。
-                           U-25の年齢条件の一部なので、共通の注記ではなくこのカードの中に置く。
+                      <!-- 表示額は「日〜木曜」の額。金・土は＋500円で利用できる（2026-09-14に確認）。
+                           **「日〜木曜限定」ではない。**限定だと金土が使えないことになり、意味が逆になる。
+                           「19歳からの入場は三宮だけ」も依頼者から聞いた店舗の事実。
                            **他店の下限が何歳かは聞いていないので書かない。**
                            年齢制限を推測で埋めると、そのまま店頭でのトラブルになる（AGENTS.md）。 -->
-                      <p class="plan-card__note">※ 19歳からのご入場は神戸三宮店のみです。</p>
+                      <div class="plan-card__notes">
+                        <p class="plan-card__note">※ 金・土曜は＋500円です。</p>
+                        <p class="plan-card__note">※ 19歳からのご入場は神戸三宮店のみです。</p>
+                      </div>
+                      <a class="ink-button" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer">
+                        料金・プランを詳しく見る<i aria-hidden="true">↗</i>
+                      </a>
                     </article>
 
                     <article class="plan-card">
                       <div class="plan-card__head">
                         <h3 class="plan-card__name">OVER28<span>100分プラン</span></h3>
-                        <p class="plan-card__cond">28歳以上の男性・月〜金曜限定</p>
+                        <p class="plan-card__cond">28歳以上の男性・月〜木曜</p>
                         <p class="plan-card__term"><time datetime="2026-08-20">8.20</time>〜<time datetime="2026-09-30">9.30</time></p>
                       </div>
                       <dl class="plan-prices">
@@ -332,14 +339,21 @@
                           <dd><span data-count="3300">3,300</span><small>円</small></dd>
                         </div>
                       </dl>
+                      <!-- 表示額は「月〜木曜」の額。金曜は＋500円、土日は対象外。
+                           土日が対象外なのは公式キャンペーンLPに明記がある。
+                           **U-25と違い、こちらは金土が自動で＋500になるわけではない。** -->
+                      <div class="plan-card__notes">
+                        <p class="plan-card__note">※ 金曜は＋500円です。土日は対象外です。</p>
+                      </div>
+                      <!-- 依頼者の指示で、OVER28だけ公式キャンペーンLPへ（2026-09-14）。
+                           U-25側は今までどおり asobibar.net。 -->
+                      <a class="ink-button" href="https://asb-over28-campaign.hic-marketing.com" target="_blank" rel="noopener noreferrer">
+                        OVER28プランを詳しく見る<i aria-hidden="true">↗</i>
+                      </a>
                     </article>
                   </div>
 
-                  <p class="paper-note">※ 表示はすべて税込・お一人様あたりの金額です。OVER28プランの金曜は関東以外3,300円／関東3,800円。詳しい条件は公式HPをご確認ください。</p>
-
-                  <a class="ink-button" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer">
-                    料金・プランを詳しく見る<i aria-hidden="true">↗</i>
-                  </a>
+                  <p class="paper-note">※ 表示はすべて税込・お一人様あたりの金額です。詳しい条件は公式HPをご確認ください。</p>
                 </div>
               </div>
             </div>
