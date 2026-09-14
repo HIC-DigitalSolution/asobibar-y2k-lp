@@ -31,7 +31,7 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2?v=5" crossorigin />
     <!-- 見出しはFV内に出るので先に取る -->
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2?v=5" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=479" />
+    <link rel="stylesheet" href="./styles.css?v=480" />
     <script src="./script.js?v=75" defer></script>
   </head>
 
@@ -279,24 +279,23 @@
             <h2 class="paper-h" id="price-title">100分プラン誕生！</h2>
           </div>
 
-          <div class="price-panel sheet sheet--torn-bottom">
-            <span class="sheet__fiber" aria-hidden="true"></span>
-            <div class="sheet__face">
-              <div class="price-main">
-                <div class="price-info">
-                  <p class="lead-ami">100分間、マッチングし放題<b>＋</b>飲み放題。</p>
+          <!-- **2つのプランを別々の紙にする（2026-09-14の依頼）。**
+               1枚の紙に罫線で仕切ると、条件の違う2つが「同じ料金表の2行」に見える。
+               紙を分けると、読む前に形で別物だと分かる。
+               数字の出どころは docs/exec-plans/active/price-two-plans.md の表。 -->
+          <div class="price-sheets">
 
-                  <!-- 2プラン（2026-09-14の依頼）。数字の出どころは
-                       docs/exec-plans/active/price-two-plans.md に表で残してある。
-                       U-25 は依頼文、OVER28 は公式キャンペーンLPの実測値。
-                       エリア名を「関西」から「関東以外」に直したのは、予約ダイアログの
-                       エリアが 神戸・大阪・名古屋・福岡・東京 の5つで、
-                       「関西」だと福岡と名古屋が落ちるため。 -->
-                  <div class="plan-list">
+            <div class="price-panel sheet sheet--torn-bottom">
+              <span class="sheet__fiber" aria-hidden="true"></span>
+              <div class="sheet__face">
+                <div class="price-main">
+                  <div class="price-info">
+                    <p class="lead-ami">100分間、マッチングし放題<b>＋</b>飲み放題<b>＋</b>遊び放題。</p>
+
                     <article class="plan-card">
                       <div class="plan-card__head">
                         <h3 class="plan-card__name">U-25<span>100分プラン</span></h3>
-                        <p class="plan-card__cond">25歳以下・日〜木曜</p>
+                        <p class="plan-card__cond">24歳以下・日〜木曜</p>
                         <p class="plan-card__term"><time datetime="2026-09-01">9.1</time>〜<time datetime="2026-09-30">9.30</time></p>
                       </div>
                       <dl class="plan-prices">
@@ -311,21 +310,34 @@
                       </dl>
                       <!-- 表示額は「日〜木曜」の額。金・土は＋500円で利用できる（2026-09-14に確認）。
                            **「日〜木曜限定」ではない。**限定だと金土が使えないことになり、意味が逆になる。
-                           **対象店舗は全9店（2026-09-14に確認）。**三宮を1店だけ名指しするので、
-                           先に「全9店舗」と書かないと「三宮だけのプラン」と読まれる。
-                           「19歳からの入場は三宮だけ」も依頼者から聞いた店舗の事実。
-                           **他店の下限が何歳かは聞いていないので書かない。**
+                           **対象店舗は全9店。**三宮を1店だけ名指しするので、先に「全9店舗」を
+                           独立した行で出さないと「三宮だけのプラン」と読まれる。
+                           **他店の年齢の下限は聞いていないので書かない。**
                            年齢制限を推測で埋めると、そのまま店頭でのトラブルになる（AGENTS.md）。 -->
                       <div class="plan-card__notes">
                         <p class="plan-card__note">※ 金・土曜は＋500円です。</p>
-                        <p class="plan-card__note">※ 対象は全9店舗。19歳からのご入場は神戸三宮店のみです。</p>
+                        <p class="plan-card__note">※ 対象は全9店舗。</p>
+                        <p class="plan-card__note">※ 19歳からのご入場は神戸三宮店のみです。</p>
+                        <p class="plan-card__note">※ 表示はすべて税込・お一人様あたりの金額です。詳しい条件は公式HPをご確認ください。</p>
                       </div>
                     </article>
+                  </div>
+                </div>
+              </div>
+              <span class="tape tape--y tape--a1" aria-hidden="true"></span>
+            </div>
+
+            <div class="price-panel price-panel--b sheet sheet--torn-bottom">
+              <span class="sheet__fiber" aria-hidden="true"></span>
+              <div class="sheet__face">
+                <div class="price-main">
+                  <div class="price-info">
+                    <p class="lead-ami">100分間、マッチングし放題<b>＋</b>飲み放題<b>＋</b>遊び放題。</p>
 
                     <article class="plan-card">
                       <div class="plan-card__head">
                         <h3 class="plan-card__name">OVER28<span>100分プラン</span></h3>
-                        <p class="plan-card__cond">28歳以上の男性・月〜木曜</p>
+                        <p class="plan-card__cond">28歳以上の男性・月〜金曜</p>
                         <p class="plan-card__term"><time datetime="2026-08-20">8.20</time>〜<time datetime="2026-09-30">9.30</time></p>
                       </div>
                       <dl class="plan-prices">
@@ -338,32 +350,27 @@
                           <dd><span data-count="3300">3,300</span><small>円</small></dd>
                         </div>
                       </dl>
-                      <!-- 表示額は「月〜木曜」の額。金曜は＋500円、土日は対象外。
-                           土日が対象外なのは公式キャンペーンLPに明記がある。
-                           **U-25と違い、こちらは金土が自動で＋500になるわけではない。**
-
-                           **全9店は公式キャンペーンLPを数えた結果（2026-09-14）。**
-                           関西・名古屋・福岡タブが6店、東京タブが3店で、このLPの9店と一致する。
-                           依頼文ではなく一次情報で確かめた数なので、U-25側と同じ書き方にしてよい。 -->
+                      <!-- 表示額は月〜木曜の額で、金曜だけ＋500円。土日は対象外
+                           （公式キャンペーンLPに明記）。**U-25と違い、金土が自動で
+                           ＋500になるわけではない。**
+                           全9店は公式キャンペーンLPを数えた結果（関西・名古屋・福岡6店＋東京3店）。 -->
                       <div class="plan-card__notes">
                         <p class="plan-card__note">※ 金曜は＋500円です。土日は対象外です。</p>
                         <p class="plan-card__note">※ 対象は全9店舗。</p>
+                        <p class="plan-card__note">※ 表示はすべて税込・お一人様あたりの金額です。</p>
                       </div>
                       <!-- 依頼者の指示で、OVER28だけ公式キャンペーンLPへ（2026-09-14）。
-                           **U-25側にはボタンを置かない（依頼者の指示）。**
-                           カードは4行のグリッドのままなので、U-25は4行目が空くだけで
-                           上の3行の位置は動かない。 -->
+                           **U-25側にはボタンを置かない（依頼者の指示）。** -->
                       <a class="ink-button" href="https://asb-over28-campaign.hic-marketing.com" target="_blank" rel="noopener noreferrer">
                         OVER28プランを詳しく見る<i aria-hidden="true">↗</i>
                       </a>
                     </article>
                   </div>
-
-                  <p class="paper-note">※ 表示はすべて税込・お一人様あたりの金額です。詳しい条件は公式HPをご確認ください。</p>
                 </div>
               </div>
+              <span class="tape tape--y tape--a1" aria-hidden="true"></span>
             </div>
-            <span class="tape tape--y tape--a1" aria-hidden="true"></span>
+
           </div>
 
           <span class="foil price-foil" aria-hidden="true">

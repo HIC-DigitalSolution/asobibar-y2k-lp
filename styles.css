@@ -7013,40 +7013,46 @@ body { padding-bottom: 0; }
   }
 }
 
-/* 05プランが2つになった（2026-09-14の依頼）。
-   **プランの区別に色を足さない。**ここは読ませる場所なので、区別は「名前」と
-   「条件の1行」だけでつける（docs/design-docs/lp-visual-knowledge.md
-   ／ 読ませたい場所に世界観を持ち込まない ／ アクセントは2色だけ）。
-   並べ方はPCで横2つ、SPで縦2つ。**数字を小さくする前に、並べ方で吸収する。** */
-.plan-list {
+/* 05プランを2つの紙に分ける（2026-09-14の依頼）。
+   **1枚の紙に罫線で仕切ると、条件の違う2つが「同じ料金表の2行」に見える。**
+   紙を分けると、読む前に形で別物だと分かる。
+   紙が1プランを持つので、金額は元どおり紙の幅いっぱいに戻す
+   （カードに押し込んでいたときの縮小指定は全部外した）。 */
+.price-sheets {
+  position: relative;
+  z-index: 4;
+  grid-column: 1;
+  grid-row: 2;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  /* 3行目が注記、4行目がCTA。注記の本数はプランで違う（U-25が2本、OVER28が1本）が、
-     行が共通なのでボタンの上端は2枚で揃う。 */
-  grid-template-rows: auto auto auto auto;
+  gap: clamp(22px, 3vw, 38px);
+  width: min(1080px, calc(100% - (2 * var(--pad-x))));
+  margin: clamp(-62px, -4vw, -42px) auto 0;
 }
 
-/* **2枚の金額を同じ高さに揃えるための subgrid。**条件の一行は
-   OVER28のほうが長く、768px前後で2行に折り返す。カードを独立した箱にすると
-   そこで金額の行がずれ、「2,500と2,800が同じ段にある」という読み方が壊れる。
-   subgrid が無い環境では単に揃わないだけで、内容は読める。 */
-.plan-card {
-  display: grid;
-  grid-row: span 4;
-  grid-template-rows: subgrid;
-  row-gap: 0;
-  min-width: 0;
-  padding-right: clamp(16px, 2.4vw, 36px);
+/* 位置と幅はラッパーが持つ。紙そのものは持たない。 */
+.price-sheets > .price-panel.sheet {
+  grid-column: auto;
+  grid-row: auto;
+  width: auto;
+  margin: 0;
 }
 
-/* **プラン同士の区切りは実線、プランの中のエリア区切りは破線。**
-   同じ太さの破線を2種類の意味に使うと、4つの金額が横一列に見えて
-   どれが同じプランなのか読めなくなる（実測で見えたのはここ）。 */
-.plan-card + .plan-card {
-  padding-right: 0;
-  padding-left: clamp(16px, 2.4vw, 36px);
-  border-left: 1px solid rgba(35, 24, 21, 0.42);
+/* 2枚目はわずかに逆へ倒す。**同じ角度で2枚並べると、1枚の紙を
+   罫線で割ったようにしか見えない。**机に別々に置いた形にする。 */
+.price-sheets > .price-panel--b.sheet { transform: rotate(-0.3deg); }
+
+/* マステも2枚目は反対の角へ。片側に2つ並ぶと同じ紙の飾りに見える。 */
+.price-panel--b > .tape--a1 {
+  right: -18px;
+  left: auto;
+  transform: rotate(30deg);
 }
+
+@media (min-width: 1150px) {
+  .price-panel--b > .tape--a1 { right: -26px; left: auto; }
+}
+
+.plan-card { min-width: 0; }
 
 .plan-card__head {
   display: flex;
@@ -7062,7 +7068,7 @@ body { padding-bottom: 0; }
   margin: 0;
   color: var(--print-ink);
   font-family: var(--font-dot);
-  font-size: clamp(18px, 1.7vw, 24px);
+  font-size: clamp(20px, 2vw, 28px);
   font-weight: 400;
   line-height: 1;
   letter-spacing: 0.03em;
@@ -7071,7 +7077,7 @@ body { padding-bottom: 0; }
 .plan-card__name span {
   color: var(--print-sub);
   font-family: var(--font-main);
-  font-size: clamp(10px, 0.85vw, 11px);
+  font-size: clamp(10px, 0.85vw, 11.5px);
   font-weight: 700;
   letter-spacing: 0.08em;
 }
@@ -7082,7 +7088,7 @@ body { padding-bottom: 0; }
 .plan-card__cond {
   margin: 0;
   color: var(--print-accent);
-  font-size: clamp(10px, 0.92vw, 12px);
+  font-size: clamp(11px, 1vw, 13px);
   font-weight: 900;
   line-height: 1.5;
   letter-spacing: 0.03em;
@@ -7095,7 +7101,7 @@ body { padding-bottom: 0; }
 .plan-card__term {
   margin: 0;
   color: var(--print-sub);
-  font-size: clamp(10px, 0.82vw, 11px);
+  font-size: clamp(10px, 0.85vw, 11.5px);
   font-weight: 700;
   line-height: 1.5;
   letter-spacing: 0.04em;
@@ -7103,57 +7109,37 @@ body { padding-bottom: 0; }
   white-space: nowrap;
 }
 
-/* **年齢の下限は、読み落とすと店頭で断られる。**共通の注記に混ぜず、
-   U-25のカードの中に置く。色は墨。アクセントは条件の一行に取ってあるので
-   ここには使わない（同じ強さになって、どちらも読まれなくなる）。 */
-.plan-card__notes { margin: clamp(10px, 1.4vw, 14px) 0 0; }
+/* 注記。色は墨。**アクセントは条件の一行に取ってあるのでここには使わない**
+   （同じ強さになって、どちらも読まれなくなる）。
+   「対象は全9店舗。」と「19歳…神戸三宮店のみ」を別の行にしているのは依頼者の指示で、
+   1行に続けると、店舗数の話と年齢の話が1つの条件に見えるため。 */
+.plan-card__notes { margin: clamp(12px, 1.6vw, 18px) 0 0; }
 
 .plan-card__note {
   margin: 0;
   color: var(--print-ink);
   font-family: var(--font-main);
-  font-size: clamp(10px, 0.85vw, 11.5px);
+  font-size: clamp(10.5px, 0.9vw, 12px);
   font-weight: 700;
-  line-height: 1.7;
+  line-height: 1.75;
   letter-spacing: 0.01em;
 }
 
-.plan-card__note + .plan-card__note { margin-top: 5px; }
+.plan-card__note + .plan-card__note { margin-top: 4px; }
 
-/* カードの中のCTA。**紙の下に1本だけ置いていたときと見た目は変えず、
-   プランごとに1本にする。**遷移先がプランで違う（U-25は公式HP、
-   OVER28は公式キャンペーンLP）ので、1本では行き先を選べない。
-   align-self: end は、注記の本数が違っても2枚のボタンの上端を揃えるため。 */
-.plan-card .ink-button {
-  align-self: end;
-  justify-self: start;
-  margin-top: clamp(14px, 1.8vw, 20px);
+/* 最後の1行（税込・公式HP）は他の条件より弱く。金額の条件ではなく但し書き。 */
+.plan-card__note:last-child {
+  color: var(--print-sub);
+  font-weight: 500;
 }
 
-/* カードの中に入ったぶん、金額まわりの寸法を詰める。
-   菱形の色（シアン＝関東以外／ピンク＝関東）は2枚で揃うので、
-   同じ色が同じエリアを指す。 */
-.price-panel .plan-card .plan-prices { padding: clamp(8px, 1vw, 12px) 0 0; }
-.price-panel .plan-card .plan-prices > div { padding: 0 clamp(10px, 1.4vw, 18px); }
-.price-panel .plan-card .plan-prices > div:first-child { padding-left: 0; }
-.price-panel .plan-card .plan-prices > div + div { padding-right: 0; }
-.price-panel .plan-card .plan-prices dt { font-size: clamp(11px, 0.85vw, 12.5px); letter-spacing: 0.1em; }
-.price-panel .plan-card .plan-prices dd { margin-top: 9px; font-size: clamp(1.75rem, 2.6vw, 2.6rem); }
+.plan-card .ink-button {
+  justify-self: start;
+  margin-top: clamp(16px, 2vw, 22px);
+}
 
 @media (max-width: 767px) {
-  .plan-list { grid-template-columns: 1fr; grid-template-rows: none; }
-  .plan-card { display: block; grid-row: auto; padding-right: 0; }
-  .plan-card + .plan-card {
-    margin-top: clamp(16px, 4.6vw, 22px);
-    padding-top: clamp(16px, 4.6vw, 22px);
-    padding-left: 0;
-    border-top: 1px solid rgba(35, 24, 21, 0.42);
-    border-left: 0;
-  }
-  .price-panel .plan-card .plan-prices > div { padding: 0 10px; }
-  .price-panel .plan-card .plan-prices > div:first-child { padding-left: 0; padding-right: 12px; }
-  .price-panel .plan-card .plan-prices > div + div { padding-right: 0; padding-left: 12px; }
-  .price-panel .plan-card .plan-prices dd { margin-top: 8px; font-size: clamp(1.9rem, 9.2vw, 2.4rem); }
+  .price-sheets { gap: clamp(18px, 5vw, 26px); }
 }
 
 /* SONG PETを「大セクション」ではなく01→02間の短い寄り道へ戻す。 */
