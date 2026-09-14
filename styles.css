@@ -7041,6 +7041,31 @@ body { padding-bottom: 0; }
    罫線で割ったようにしか見えない。**机に別々に置いた形にする。 */
 .price-sheets > .price-panel--b.sheet { transform: rotate(-0.3deg); }
 
+/* **紙の地の色を2枚で変える（2026-09-14の依頼）。**
+   色を「足す」のではなく、紙そのものの色を替える。
+   **彩度は予約ボタンのために取ってあるので、ここで上げると
+   いちばん押してほしいものが弱くなる**（docs/design-docs/lp-visual-knowledge.md）。
+   どちらも「紙」に見える範囲の色味だけにして、文字は墨のまま触っていない。
+   ちぎれ口の繊維も紙ごとに替える。**地だけ替えると、破れた断面に
+   前の紙の色が残って別の紙が下に敷いてあるように見える。** */
+.price-sheets > .price-panel {
+  --sheet-paper: 233, 245, 248;   /* U-25：冷たい紙 */
+  --sheet-fiber: #f4fbfd;
+}
+
+.price-sheets > .price-panel--b {
+  --sheet-paper: 253, 241, 227;   /* OVER28：温かい紙 */
+  --sheet-fiber: #fffdf5;
+}
+
+.price-sheets > .price-panel > .sheet__fiber { background: var(--sheet-fiber); }
+
+.price-sheets > .price-panel .sheet__face {
+  background:
+    linear-gradient(rgba(var(--sheet-paper), 0.95), rgba(var(--sheet-paper), 0.97)),
+    var(--grain-fine);
+}
+
 /* マステも2枚目は反対の角へ。片側に2つ並ぶと同じ紙の飾りに見える。 */
 .price-panel--b > .tape--a1 {
   right: -18px;
