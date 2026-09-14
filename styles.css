@@ -7008,6 +7008,105 @@ body { padding-bottom: 0; }
   }
 }
 
+/* 05プランが2つになった（2026-09-14の依頼）。
+   **プランの区別に色を足さない。**ここは読ませる場所なので、区別は「名前」と
+   「条件の1行」だけでつける（docs/design-docs/lp-visual-knowledge.md
+   ／ 読ませたい場所に世界観を持ち込まない ／ アクセントは2色だけ）。
+   並べ方はPCで横2つ、SPで縦2つ。**数字を小さくする前に、並べ方で吸収する。** */
+.plan-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+}
+
+/* **2枚の金額を同じ高さに揃えるための subgrid。**条件の一行は
+   OVER28のほうが長く、768px前後で2行に折り返す。カードを独立した箱にすると
+   そこで金額の行がずれ、「2,500と2,800が同じ段にある」という読み方が壊れる。
+   subgrid が無い環境では単に揃わないだけで、内容は読める。 */
+.plan-card {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  min-width: 0;
+  padding-right: clamp(16px, 2.4vw, 36px);
+}
+
+/* **プラン同士の区切りは実線、プランの中のエリア区切りは破線。**
+   同じ太さの破線を2種類の意味に使うと、4つの金額が横一列に見えて
+   どれが同じプランなのか読めなくなる（実測で見えたのはここ）。 */
+.plan-card + .plan-card {
+  padding-right: 0;
+  padding-left: clamp(16px, 2.4vw, 36px);
+  border-left: 1px solid rgba(35, 24, 21, 0.42);
+}
+
+.plan-card__head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 5px clamp(8px, 1vw, 12px);
+}
+
+.plan-card__name {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  color: var(--print-ink);
+  font-family: var(--font-dot);
+  font-size: clamp(18px, 1.7vw, 24px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.03em;
+}
+
+.plan-card__name span {
+  color: var(--print-sub);
+  font-family: var(--font-main);
+  font-size: clamp(10px, 0.85vw, 11px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+/* **「誰の・いつの」プランかは、金額と同じだけ読まれないと意味がない。**
+   注記に逃がさず、名前のすぐ隣に置く。ここを下に落とすと
+   2,500円だけが目に入って、日〜木曜であることが伝わらない。 */
+.plan-card__cond {
+  margin: 0;
+  color: var(--print-accent);
+  font-size: clamp(10px, 0.92vw, 12px);
+  font-weight: 900;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+}
+
+/* カードの中に入ったぶん、金額まわりの寸法を詰める。
+   菱形の色（シアン＝関東以外／ピンク＝関東）は2枚で揃うので、
+   同じ色が同じエリアを指す。 */
+.price-panel .plan-card .plan-prices { padding: clamp(8px, 1vw, 12px) 0 0; }
+.price-panel .plan-card .plan-prices > div { padding: 0 clamp(10px, 1.4vw, 18px); }
+.price-panel .plan-card .plan-prices > div:first-child { padding-left: 0; }
+.price-panel .plan-card .plan-prices > div + div { padding-right: 0; }
+.price-panel .plan-card .plan-prices dt { font-size: clamp(11px, 0.85vw, 12.5px); letter-spacing: 0.1em; }
+.price-panel .plan-card .plan-prices dd { margin-top: 9px; font-size: clamp(1.75rem, 2.6vw, 2.6rem); }
+
+@media (max-width: 767px) {
+  .plan-list { grid-template-columns: 1fr; grid-template-rows: none; }
+  .plan-card { display: block; grid-row: auto; padding-right: 0; }
+  .plan-card + .plan-card {
+    margin-top: clamp(16px, 4.6vw, 22px);
+    padding-top: clamp(16px, 4.6vw, 22px);
+    padding-left: 0;
+    border-top: 1px solid rgba(35, 24, 21, 0.42);
+    border-left: 0;
+  }
+  .price-panel .plan-card .plan-prices > div { padding: 0 10px; }
+  .price-panel .plan-card .plan-prices > div:first-child { padding-left: 0; padding-right: 12px; }
+  .price-panel .plan-card .plan-prices > div + div { padding-right: 0; padding-left: 12px; }
+  .price-panel .plan-card .plan-prices dd { margin-top: 8px; font-size: clamp(1.9rem, 9.2vw, 2.4rem); }
+}
+
 /* SONG PETを「大セクション」ではなく01→02間の短い寄り道へ戻す。 */
 .scene--request .scene__in.request-layout {
   padding-bottom: clamp(44px, 5vw, 68px);
