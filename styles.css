@@ -7086,6 +7086,21 @@ body { padding-bottom: 0; }
   letter-spacing: 0.03em;
 }
 
+/* 期間。**条件より一段弱くする。**「誰が・いつの曜日か」を先に読ませたいので、
+   ここが同じ強さで出ると、先に日付を読んで条件を飛ばす。
+   2つのプランで開始日が違う（U-25は9.1、OVER28は公式LPどおり8.20）ので、
+   片方だけ書くと同じ期間だと誤読される。両方に出す。 */
+.plan-card__term {
+  margin: 0;
+  color: var(--print-sub);
+  font-size: clamp(10px, 0.82vw, 11px);
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 /* カードの中に入ったぶん、金額まわりの寸法を詰める。
    菱形の色（シアン＝関東以外／ピンク＝関東）は2枚で揃うので、
    同じ色が同じエリアを指す。 */
