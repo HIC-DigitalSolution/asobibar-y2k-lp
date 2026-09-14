@@ -7021,7 +7021,9 @@ body { padding-bottom: 0; }
 .plan-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
+  /* 3行目はカード内の注記の行。U-25にしか無いので、OVER28側は
+     下に空きが出るだけで、金額の行の位置は動かない。 */
+  grid-template-rows: auto auto auto;
 }
 
 /* **2枚の金額を同じ高さに揃えるための subgrid。**条件の一行は
@@ -7030,7 +7032,7 @@ body { padding-bottom: 0; }
    subgrid が無い環境では単に揃わないだけで、内容は読める。 */
 .plan-card {
   display: grid;
-  grid-row: span 2;
+  grid-row: span 3;
   grid-template-rows: subgrid;
   row-gap: 0;
   min-width: 0;
@@ -7086,13 +7088,6 @@ body { padding-bottom: 0; }
   letter-spacing: 0.03em;
 }
 
-/* **年齢の下限は、読み落とすと店頭で断られる。**注記の中でここだけ墨にする。
-   アクセントの色は使わない（プランの条件と同じ強さになってしまう）。 */
-.paper-note b {
-  color: var(--print-ink);
-  font-weight: 900;
-}
-
 /* 期間。**条件より一段弱くする。**「誰が・いつの曜日か」を先に読ませたいので、
    ここが同じ強さで出ると、先に日付を読んで条件を飛ばす。
    2つのプランで開始日が違う（U-25は9.1、OVER28は公式LPどおり8.20）ので、
@@ -7106,6 +7101,19 @@ body { padding-bottom: 0; }
   letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+}
+
+/* **年齢の下限は、読み落とすと店頭で断られる。**共通の注記に混ぜず、
+   U-25のカードの中に置く。色は墨。アクセントは条件の一行に取ってあるので
+   ここには使わない（同じ強さになって、どちらも読まれなくなる）。 */
+.plan-card__note {
+  margin: clamp(10px, 1.4vw, 14px) 0 0;
+  color: var(--print-ink);
+  font-family: var(--font-main);
+  font-size: clamp(10px, 0.85vw, 11.5px);
+  font-weight: 700;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
 }
 
 /* カードの中に入ったぶん、金額まわりの寸法を詰める。
