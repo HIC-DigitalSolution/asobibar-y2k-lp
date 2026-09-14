@@ -23,12 +23,15 @@
     <link rel="preload" as="image" href="./assets/hero-collage-typography-no-disc.jpg?v=4" fetchpriority="high" />
 
     <!-- 本文と見出しは最初の画面で必ず要るので先に取る -->
-    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2" crossorigin />
+    <!-- **?v= は styles.css の @font-face と1文字違わず揃える。**片方だけ付いていると
+         別のURLとして扱われ、preload の1本と CSS の1本で同じ書体を2回落とす
+         （2026-09-14まで実際にそうなっていて、preload が効いていなかった）。 -->
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-500.woff2?v=3" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-700.woff2?v=3" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2?v=3" crossorigin />
     <!-- 見出しはFV内に出るので先に取る -->
-    <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=474" />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2?v=3" crossorigin />
+    <link rel="stylesheet" href="./styles.css?v=475" />
     <script src="./script.js?v=75" defer></script>
   </head>
 

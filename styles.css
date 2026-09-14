@@ -11,40 +11,45 @@
      python3 tools/build-fonts.py <元TTFのディレクトリ>
    忘れるとその字だけ別書体に化ける。 */
 
+/* **サブセットを作り直したら、この `?v=` を必ず動かす。**
+   woff2 のURLが変わらないと、前に来た人のブラウザは**古い文字数のファイルを
+   キャッシュから出し続ける。**今回それで「状」「況」「下」が既存ユーザーにだけ
+   別書体で出る状態になっていた（2026-09-14に v2 → v3）。
+   styles.css の ?v= を上げても、中に書いてあるこのURLは別物なので効かない。 */
 @font-face {
   font-family: "Zen Kaku Gothic New";
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("./assets/font/zkgn-500.woff2?v=2") format("woff2");
+  src: url("./assets/font/zkgn-500.woff2?v=3") format("woff2");
 }
 @font-face {
   font-family: "Zen Kaku Gothic New";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("./assets/font/zkgn-700.woff2?v=2") format("woff2");
+  src: url("./assets/font/zkgn-700.woff2?v=3") format("woff2");
 }
 @font-face {
   font-family: "Zen Kaku Gothic New";
   font-style: normal;
   font-weight: 900;
   font-display: swap;
-  src: url("./assets/font/zkgn-900.woff2?v=2") format("woff2");
+  src: url("./assets/font/zkgn-900.woff2?v=3") format("woff2");
 }
 @font-face {
   font-family: "Mochiy Pop One";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("./assets/font/mochiy-400.woff2?v=2") format("woff2");
+  src: url("./assets/font/mochiy-400.woff2?v=3") format("woff2");
 }
 @font-face {
   font-family: "Zen Kurenaido";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("./assets/font/kurenaido-400.woff2?v=2") format("woff2");
+  src: url("./assets/font/kurenaido-400.woff2?v=3") format("woff2");
 }
 /* 表示専用の4書体目。MIX SESSION の見出し「交流上等」だけに使う。
    サブセットもその4字だけなので 0.9KB。本文に使うと即座に化けるので広げない。
@@ -58,7 +63,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("./assets/font/dot-400.woff2?v=1") format("woff2");
+  src: url("./assets/font/dot-400.woff2?v=3") format("woff2");
 }
 
 /* =========================================================
