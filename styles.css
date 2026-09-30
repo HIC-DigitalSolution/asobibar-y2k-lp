@@ -71,6 +71,11 @@
    Digital nostalgia: violet / cyan / magenta / chrome / ivory
    ========================================================= */
 
+/* **`hidden` を確実に効かせる。**UAの `[hidden]{display:none}` は作者スタイルに負ける。
+   節を伏せるのに `hidden` を使っているので（2026-09-30に05プランを非表示）、
+   ここが無いと属性だけ付いて表示は残る、という一番厄介な壊れ方をする。 */
+[hidden] { display: none !important; }
+
 :root {
   --black: #07080a;
   --graphite: #101216;

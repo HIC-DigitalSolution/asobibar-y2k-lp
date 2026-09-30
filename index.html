@@ -43,8 +43,8 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2?v=5" crossorigin />
     <!-- 見出しはFV内に出るので先に取る -->
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2?v=5" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=482" />
-    <script src="./script.js?v=75" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=483" />
+    <script src="./script.js?v=76" defer></script>
   </head>
 
   <body>
@@ -64,7 +64,7 @@
       </a>
       <div class="bar__side">
         <!-- 誌面のノンブル。スクロールでページ番号が進む -->
-        <p class="bar__nombre" aria-hidden="true">P.<b data-nombre>01</b><span>/P.08</span></p>
+        <p class="bar__nombre" aria-hidden="true">P.<b data-nombre>01</b><span>/P.07</span></p>
         <!-- 公式HPのヘッダにある「店内状況」と同じボタン。遷移先も同じ /shops -->
         <a class="bar__shops" href="https://asobibar.net/shops" target="_blank" rel="noopener noreferrer">店内状況</a>
       </div>
@@ -101,7 +101,7 @@
 
           <div class="cover__info">
             <a class="cta cta--metal" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-              <span class="cta__copy"><small>9月限定・席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
+              <span class="cta__copy"><small>10月末まで・席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
             </a>
           </div>
         </div>
@@ -248,7 +248,7 @@
 </section>
 
       <!-- ==================== MIX SESSION（次回開催の告知） ====================
-           **これは9月のイベントではありません。**節ではなく**告知バナー1枚**として
+           **これはこのLPのイベント（Y2K NIGHT）ではありません。**節ではなく**告知バナー1枚**として
            置いています。開催月も仕様（組数・曜日）も確定していないので出しません。
            **推測で日程を書かないこと。**（2026-09-07に依頼者が「10月開催」の表示を削除）
            前は仕様表を持っていましたが、9月のLPの真ん中に次回の仕様が並ぶ形になるので外しました。
@@ -282,7 +282,20 @@
       <!-- 05と06は地を共有する。別々に背景を持たせると
            境界で色が繋がらず、水色の帯として分かれて見えた。 -->
       <div class="info-zone">
-      <section class="information-section price-zone" id="price" data-theme="price" data-page="05" data-scene-motion="price" aria-labelledby="price-title">
+      <!-- **05プランは非表示（2026-09-30の依頼）。消していません。**
+           戻すときは4か所そろえて戻すこと。バラバラに戻すと誌面の番号が狂います。
+             1. この <section> から hidden を外す
+             2. data-page を 05 に戻し、開催情報=06 / 楽しみ方=07 / 予約=08 に戻す
+             2b. **誌面に印刷されている番号も戻す。**開催情報の .scene-label を
+                 <b>05</b>→<b>06</b>、予約を <b>07</b>→<b>08</b>。
+                 data-page だけ直すと、ヘッダのノンブルと本文の番号が食い違う
+                 （2026-09-30に一度やらかした）。
+             3. ノンブルの「/P.07」を「/P.08」に戻す（.bar__nombre）
+             4. フッターナビに <a href="#price">プラン</a> を戻す
+           script.js のノンブルは [hidden] の節を数えないので、そちらは触らなくて良い。
+           中のプラン2枚の期間（9.1〜9.30 / 8.20〜9.30）は**イベント期間とは別物**なので、
+           今回の10月末までの変更では動かしていません。 -->
+      <section hidden class="information-section price-zone" id="price" data-theme="price" data-page="05" data-scene-motion="price" aria-labelledby="price-title">
         <div class="price-zone__in">
 
           <figure class="price-photo scene-photo" data-reveal="media">
@@ -399,16 +412,16 @@
       </section>
 
       <!-- ==================== EVENT INFORMATION ==================== -->
-      <section class="information-section event-zone" id="event" data-theme="event" data-page="06" data-scene-motion="event" aria-labelledby="event-title">
+      <section class="information-section event-zone" id="event" data-theme="event" data-page="05" data-scene-motion="event" aria-labelledby="event-title">
         <div class="event-zone__in">
           <div class="sheet sheet--torn-bottom event-sheet">
             <span class="sheet__fiber" aria-hidden="true"></span>
             <div class="sheet__face">
-              <p class="scene-label"><b>06</b><i aria-hidden="true"></i><span>開催情報</span><em>EVENT INFORMATION</em></p>
+              <p class="scene-label"><b>05</b><i aria-hidden="true"></i><span>開催情報</span><em>EVENT INFORMATION</em></p>
 
-              <h2 class="paper-h" id="event-title">9月7日から、月末まで</h2>
+              <h2 class="paper-h" id="event-title">9月7日から、10月末まで</h2>
 
-              <p class="event-date"><time datetime="2026-09-07">2026.9.7</time><i>—</i><time datetime="2026-09-30">9.30</time></p>
+              <p class="event-date"><time datetime="2026-09-07">2026.9.7</time><i>—</i><time datetime="2026-10-31">10.31</time></p>
 
               <dl class="event-list">
                 <div><dt>対象店舗</dt><dd>全9店舗（予約時に選択）</dd></div>
@@ -468,7 +481,7 @@
            最終CTAの直前に置かれていた。流入の半分は店を知らない人なので
            消せないが、押す直前に27.6%を店の一般説明へ渡す理由も無い。
            写真1枚＋3行のカード3枚に畳んだ。 -->
-      <section class="howto-section howto-section--brief" id="howto" data-theme="howto" data-page="07" data-scene-motion="howto" aria-labelledby="howto-title">
+      <section class="howto-section howto-section--brief" id="howto" data-theme="howto" data-page="06" data-scene-motion="howto" aria-labelledby="howto-title">
         <div class="howto-guide">
           <header class="howto-head">
             <span class="howto-head__tape" aria-hidden="true"></span>
@@ -507,7 +520,7 @@
       </section>
 
       <!-- ==================== FINAL CTA ==================== -->
-      <section class="final-night" id="reserve" data-theme="reserve" data-page="08" data-scene-motion="final" aria-labelledby="last-title">
+      <section class="final-night" id="reserve" data-theme="reserve" data-page="07" data-scene-motion="final" aria-labelledby="last-title">
         <div class="scene__pin">
           <figure class="final-night__photo">
           <img
@@ -519,14 +532,14 @@
           />
           </figure>
           <div class="final-night__content">
-          <p class="scene-label"><b>08</b><i aria-hidden="true"></i><span>予約</span><em>RESERVE</em></p>
+          <p class="scene-label"><b>07</b><i aria-hidden="true"></i><span>予約</span><em>RESERVE</em></p>
           <!-- 元は HOW TO の3枚目の末尾にあった。押す理由の中でいちばん強い
                一言が、店の一般説明の最後に埋まっていた。押す直前へ移す。 -->
           <p class="final-perk"><b>LINE予約で無料フードチケット</b><small>ASOBIBAR TREND MENU</small></p>
           <h2 id="last-title">懐かしいだけで終わらない。<br />今夜を、<br class="sp-br" />新しい思い出に</h2>
           <p>あの頃の曲から始まる、大人のY2Kナイトへ。</p>
             <a class="cta cta--final" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-              <span class="cta__copy"><small>9月限定・席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
+              <span class="cta__copy"><small>10月末まで・席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
             </a>
           </div>
         </div>
@@ -541,15 +554,15 @@
         <span class="bar__tag">Y2K NIGHT</span>
       </a>
       <nav aria-label="フッターナビゲーション">
-        <a href="#experience">曲リクエスト</a><a href="#karaoke">つながる</a><a href="#cheki">チェキ</a><a href="#mix">MIX交流上等</a><a href="#price">プラン</a><a href="#event">開催情報</a><a href="#howto">楽しみ方</a><a href="#reserve">予約</a>
+        <a href="#experience">曲リクエスト</a><a href="#karaoke">つながる</a><a href="#cheki">チェキ</a><a href="#mix">MIX交流上等</a><a href="#event">開催情報</a><a href="#howto">楽しみ方</a><a href="#reserve">予約</a>
       </nav>
       <small>© ASOBIBAR Y2K NIGHT</small>
     </footer>
 
     <div class="ctabar" data-ctabar>
-      <p class="ctabar__txt"><b>Y2Kを無限リピート！</b><span>2026.9.7〜9.30</span></p>
+      <p class="ctabar__txt"><b>Y2Kを無限リピート！</b><span>2026.9.7〜10.31</span></p>
       <a class="cta cta--bar" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-        <span class="cta__copy"><small>9月限定・席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
+        <span class="cta__copy"><small>10月末まで・席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
       </a>
     </div>
     <!-- ==================== 店舗選択ダイアログ ====================
@@ -578,7 +591,7 @@
         </button>
 
         <header class="storepick__head">
-          <span class="storepick__kick">ASOBIBAR / 9.7 - 9.30</span>
+          <span class="storepick__kick">ASOBIBAR / 9.7 - 10.31</span>
           <h2 id="storepick-title">店舗を選んでご予約</h2>
           <p class="storepick__lead">ご利用予定の店舗を選んで、公式LINEからご予約ください。料金はエリア・曜日によって異なります。</p>
         </header>
@@ -653,7 +666,7 @@
           </div>
         </div>
 
-        <p class="storepick__note">※ 9月7日〜30日の期間限定。席数に限りがあります。</p>
+        <p class="storepick__note">※ 9月7日〜10月31日の期間限定。席数に限りがあります。</p>
       </div>
     </dialog>
   </body>

@@ -460,7 +460,10 @@ const probeObserver = (onLive, onDead) => {
 /* ---------- ノンブル（ページ番号） ---------- */
 (() => {
   const nombre = document.querySelector("[data-nombre]");
-  const sections = [...document.querySelectorAll("[data-theme]")];
+  /* **伏せた節（[hidden]）はノンブルに数えない。**display:none の要素は
+     getBoundingClientRect() が全部0を返すので `top <= mid` が常に真になり、
+     見ていない節の番号が出る。属性で判定すればレイアウトに依存しない。 */
+  const sections = [...document.querySelectorAll("[data-theme]")].filter((s) => !s.hidden);
   let ticking = false;
 
   const update = () => {
