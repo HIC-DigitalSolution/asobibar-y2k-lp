@@ -2448,6 +2448,99 @@ a { color: inherit; }
   font-weight: 700;
 }
 
+/* ==== 開催店舗（2026-11-17） ====================================
+   `.event-list`（dt/dd ＋ リーダーの点線）を置き換えたもの。
+   **あの組み方は項目が2行しか無いと紙が空になった。**PC 1440 で紙の幅は
+   984px あるのに、中身は見出しと2行だけ。しかも値の列を
+   `minmax(190px, 280px)` で固定していたので、点線が 836px で終わって
+   値は 969px から始まり、**133px の空白が開いて点線が切れて見えていた。**
+
+   ここは面で埋める。エリアを列にして、PC では5列が1行に収まる
+   （984px / 5 = 196px）。`auto-fit` なので幅が減れば勝手に折り返す。
+
+   **店舗名はダイアログ（.storepick）の実データと1文字も変えていない。**
+   省略形にしない。店が増減したら2か所直すこと。 */
+.venue-list {
+  display: grid;
+  /* 5列 = エリアごとに1列。984px に 5 列を収めるには
+     5*172 + 4*16 = 924px。186px だと 1002px で4列に落ちて東京だけ
+     2段目に回り、段が揃わなかった。 */
+  grid-template-columns: repeat(auto-fit, minmax(172px, 1fr));
+  gap: 22px 16px;
+  width: min(984px, 100%);
+  margin: 26px auto 0;
+  padding: 24px 0 0;
+  border-top: 1px solid rgba(37, 25, 63, 0.28);
+  list-style: none;
+}
+.venue-list li { display: grid; gap: 7px; align-content: start; }
+.venue-list b {
+  color: var(--print-accent);
+  font-family: var(--font-main);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+.venue-list span {
+  color: var(--print-ink);
+  font-family: var(--font-main);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+/* 注記の中で、語のまとまりごとに折る。**`（残数限り）` が
+   `（残 / 数限り）` と熟語の途中で割れていた**（390px で実測）。
+   b に意味は持たせていない。改行させない単位の目印としてだけ使う。 */
+.venue-note b { display: inline-block; font-weight: inherit; }
+/* 「予約方法」。**店舗一覧の付帯情報なので、店名より弱くする。**
+   元は .event-list の dt/dd の1行だった。 */
+.venue-meta {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  width: min(984px, 100%);
+  margin: 20px auto 0;
+  padding-top: 16px;
+  border-top: 1px solid rgba(37, 25, 63, 0.18);
+}
+.venue-meta b {
+  flex: 0 0 auto;
+  color: var(--print-accent);
+  font-family: var(--font-main);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+.venue-meta span {
+  color: var(--print-ink);
+  font-family: var(--font-main);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.venue-note {
+  width: min(984px, 100%);
+  margin: 14px auto 0;
+  color: #6c5f58;
+  font-family: var(--font-main);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+@media (max-width: 767px) {
+  .venue-list {
+    grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+    gap: 18px 14px;
+    margin-top: 20px;
+    padding-top: 18px;
+  }
+  .venue-list span { font-size: 13px; }
+  .venue-meta { margin-top: 16px; padding-top: 14px; gap: 10px; }
+  .venue-meta span { font-size: 13px; }
+  .venue-note { margin-top: 12px; font-size: 11px; }
+}
+
 /* --- 02 / 04 / 07 は紙にしない ---
    コピーの容器が幅いっぱいなので、背面に紙を敷くと写真を覆い尽くした。
    加えて巨大英字が <p> 経由で明朝になり、書体まで崩れた。

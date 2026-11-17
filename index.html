@@ -50,7 +50,7 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2?v=5" crossorigin />
     <!-- 見出しはFV内に出るので先に取る -->
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2?v=5" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=484" />
+    <link rel="stylesheet" href="./styles.css?v=486" />
     <script src="./script.js?v=76" defer></script>
   </head>
 
@@ -110,15 +110,7 @@
             </div>
           </div>
 
-<!-- **予約導線を全部伏せた（2026-11-17の依頼）。消していません。**
-           戻すときは、次の4か所から hidden を外すだけです:
-             1. .cover__info          （FVのCTA）
-             2. .final-perk と .cta--final（07の特典表記と最終CTA）
-             3. .ctabar               （固定CTAバー）
-             4. .storepick            （店舗選択ダイアログ）
-           script.js は触っていません。要素はDOMに残るので querySelector は
-           null になりません。**消すのではなく伏せる理由がここにもあります。** -->
-          <div class="cover__info" hidden>
+<div class="cover__info">
             <a class="cta cta--metal" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
               <span class="cta__copy"><small>席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
             </a>
@@ -436,7 +428,7 @@
           <div class="sheet sheet--torn-bottom event-sheet">
             <span class="sheet__fiber" aria-hidden="true"></span>
             <div class="sheet__face">
-              <p class="scene-label"><b>05</b><i aria-hidden="true"></i><span>開催情報</span><em>EVENT INFORMATION</em></p>
+              <p class="scene-label"><b>05</b><i aria-hidden="true"></i><span>開催店舗</span><em>VENUES</em></p>
 
               <!-- **期間の表記を外した（2026-11-17の依頼）。**見出しそのものが期間だったので
                    「Y2K NIGHT、開催中。」に差し替え、その下の .event-date は落とした。
@@ -446,10 +438,28 @@
                    .event-date のCSS（727行〜）とリビールの遅延指定は残してある。 -->
               <h2 class="paper-h" id="event-title">Y2K NIGHT、開催中。</h2>
 
-              <dl class="event-list">
-                <div><dt>対象店舗</dt><dd>全9店舗（予約時に選択）</dd></div>
-                <div><dt>予約方法</dt><dd data-reservation-method>公式HPから予約</dd></div>
-              </dl>
+              <!-- **2026-11-17。「開催情報」→「開催店舗」に変え、中身を実際の9店舗にした。**
+                   きっかけは2つ。紙が見出し＋2行しか持たず、PCでほぼ空白の帳票に見えていたこと。
+                   それと**予約ダイアログを伏せたことで、9店舗がページのどこにも出なくなったこと。**
+                   「全9店舗」とだけ書いてあって、どの店か分からない状態だった。
+
+                   **店舗名はダイアログの実データをそのまま持ってきている。**推測で足していない。
+                   店が増減したら、ダイアログ（.storepick）側と2か所直すこと。
+
+                   元は次の2行:
+                     <div><dt>対象店舗</dt><dd>全9店舗（予約時に選択）</dd></div>
+                     <div><dt>予約方法</dt><dd data-reservation-method>公式HPから予約</dd></div>
+                   **「対象店舗 全9店舗」は戻していない。**店名を9件そのまま出した以上、
+                   件数だけの行は重複する。**「予約方法」は .venue-meta として残した。** -->
+              <ul class="venue-list">
+                <li><b>神戸</b><span>神戸三宮店</span></li>
+                <li><b>大阪</b><span>梅田お初天神店</span><span>心斎橋店</span></li>
+                <li><b>名古屋</b><span>名古屋栄錦通り店</span><span>名古屋住吉複合店</span></li>
+                <li><b>福岡</b><span>天神大名店</span></li>
+                <li><b>東京</b><span>新宿歌舞伎町タワー前店</span><span>渋谷横丁前店</span><span>恵比寿店</span></li>
+              </ul>
+              <p class="venue-meta"><b>予約方法</b><span data-reservation-method>公式HPから予約</span></p>
+              <p class="venue-note">※ 新宿歌舞伎町タワー前店は、<b>チェキ・リクエスト券のみ</b><b>（残数限り）</b></p>
             </div>
             <span class="tape tape--c tape--e1" aria-hidden="true"></span>
           </div>
@@ -558,10 +568,10 @@
           <p class="scene-label"><b>07</b><i aria-hidden="true"></i><span>予約</span><em>RESERVE</em></p>
           <!-- 元は HOW TO の3枚目の末尾にあった。押す理由の中でいちばん強い
                一言が、店の一般説明の最後に埋まっていた。押す直前へ移す。 -->
-          <p class="final-perk" hidden><b>LINE予約で無料フードチケット</b><small>ASOBIBAR TREND MENU</small></p>
+          <p class="final-perk"><b>LINE予約で無料フードチケット</b><small>ASOBIBAR TREND MENU</small></p>
           <h2 id="last-title">懐かしいだけで終わらない。<br />今夜を、<br class="sp-br" />新しい思い出に</h2>
           <p>あの頃の曲から始まる、大人のY2Kナイトへ。</p>
-            <a class="cta cta--final" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve hidden>
+            <a class="cta cta--final" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
               <span class="cta__copy"><small>席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
             </a>
           </div>
@@ -577,12 +587,12 @@
         <span class="bar__tag">Y2K NIGHT</span>
       </a>
       <nav aria-label="フッターナビゲーション">
-        <a href="#experience">曲リクエスト</a><a href="#karaoke">つながる</a><a href="#cheki">チェキ</a><a href="#mix">MIX交流上等</a><a href="#event">開催情報</a><a href="#howto">楽しみ方</a><a href="#reserve">予約</a>
+        <a href="#experience">曲リクエスト</a><a href="#karaoke">つながる</a><a href="#cheki">チェキ</a><a href="#mix">MIX交流上等</a><a href="#event">開催店舗</a><a href="#howto">楽しみ方</a><a href="#reserve">予約</a>
       </nav>
       <small>© ASOBIBAR Y2K NIGHT</small>
     </footer>
 
-    <div class="ctabar" data-ctabar hidden>
+    <div class="ctabar" data-ctabar>
       <p class="ctabar__txt"><b>Y2Kを無限リピート！</b></p>
       <a class="cta cta--bar" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
         <span class="cta__copy"><small>席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
@@ -607,7 +617,7 @@
          前の緑（#a7d472 のグラデ＋ベベル）は**LINEの色ですらなかった**。
          判断の根拠は docs/design-docs/lp-visual-knowledge.md の
          「彩度はCTAのために取っておく」「世界観は1つの決定で作る」。 -->
-    <dialog class="storepick" data-storepick aria-labelledby="storepick-title" hidden>
+    <dialog class="storepick" data-storepick aria-labelledby="storepick-title">
       <div class="storepick__sheet">
         <button type="button" class="storepick__close" data-storepick-close aria-label="閉じる">
           <span aria-hidden="true">×</span>
