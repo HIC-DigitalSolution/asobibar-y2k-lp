@@ -50,7 +50,7 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2?v=5" crossorigin />
     <!-- 見出しはFV内に出るので先に取る -->
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2?v=5" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=483" />
+    <link rel="stylesheet" href="./styles.css?v=484" />
     <script src="./script.js?v=76" defer></script>
   </head>
 
@@ -112,7 +112,7 @@
 
           <div class="cover__info">
             <a class="cta cta--metal" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-              <span class="cta__copy"><small>10月末まで・席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
+              <span class="cta__copy"><small>席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
             </a>
           </div>
         </div>
@@ -430,9 +430,13 @@
             <div class="sheet__face">
               <p class="scene-label"><b>05</b><i aria-hidden="true"></i><span>開催情報</span><em>EVENT INFORMATION</em></p>
 
-              <h2 class="paper-h" id="event-title">9月7日から、10月末まで</h2>
-
-              <p class="event-date"><time datetime="2026-09-07">2026.9.7</time><i>—</i><time datetime="2026-10-31">10.31</time></p>
+              <!-- **期間の表記を外した（2026-11-17の依頼）。**見出しそのものが期間だったので
+                   「Y2K NIGHT、開催中。」に差し替え、その下の .event-date は落とした。
+                   元は次の2行:
+                     <h2 class="paper-h" id="event-title">9月7日から、10月末まで</h2>
+                     <p class="event-date"><time datetime="2026-09-07">2026.9.7</time><i>—</i><time datetime="2026-10-31">10.31</time></p>
+                   .event-date のCSS（727行〜）とリビールの遅延指定は残してある。 -->
+              <h2 class="paper-h" id="event-title">Y2K NIGHT、開催中。</h2>
 
               <dl class="event-list">
                 <div><dt>対象店舗</dt><dd>全9店舗（予約時に選択）</dd></div>
@@ -550,7 +554,7 @@
           <h2 id="last-title">懐かしいだけで終わらない。<br />今夜を、<br class="sp-br" />新しい思い出に</h2>
           <p>あの頃の曲から始まる、大人のY2Kナイトへ。</p>
             <a class="cta cta--final" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-              <span class="cta__copy"><small>10月末まで・席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
+              <span class="cta__copy"><small>席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
             </a>
           </div>
         </div>
@@ -571,9 +575,9 @@
     </footer>
 
     <div class="ctabar" data-ctabar>
-      <p class="ctabar__txt"><b>Y2Kを無限リピート！</b><span>2026.9.7〜10.31</span></p>
+      <p class="ctabar__txt"><b>Y2Kを無限リピート！</b></p>
       <a class="cta cta--bar" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-        <span class="cta__copy"><small>10月末まで・席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
+        <span class="cta__copy"><small>席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
       </a>
     </div>
     <!-- ==================== 店舗選択ダイアログ ====================
@@ -602,7 +606,7 @@
         </button>
 
         <header class="storepick__head">
-          <span class="storepick__kick">ASOBIBAR / 9.7 - 10.31</span>
+          <span class="storepick__kick">ASOBIBAR / Y2K NIGHT</span>
           <h2 id="storepick-title">店舗を選んでご予約</h2>
           <p class="storepick__lead">ご利用予定の店舗を選んで、公式LINEからご予約ください。料金はエリア・曜日によって異なります。</p>
         </header>
@@ -663,7 +667,11 @@
 
           <div class="storepick__list" data-storepick-panel="tokyo" aria-label="東京の店舗" hidden>
             <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/6Fvrmdw">
-              <span class="storeline__name">新宿歌舞伎町タワー前店</span>
+              <span class="storeline__name">新宿歌舞伎町タワー前店<!--
+                   **新宿だけイベント本編が終了している（2026-11-17に依頼者が共有）。**
+                   チェキとリクエスト券は残数がなくなるまで続く。期間を外したことで
+                   「全店で開催中」に読めてしまうので、ここだけ注記を持たせる。
+                   文言は依頼者のメッセージから外していない。 --></span><small class="storeline__note">チェキ・リクエスト券のみ（残数限り）</small>
               <span class="storeline__go"><svg class="storeline__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg>LINEで予約</span>
             </a>
             <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/QxzxqGM">
@@ -677,7 +685,7 @@
           </div>
         </div>
 
-        <p class="storepick__note">※ 9月7日〜10月31日の期間限定。席数に限りがあります。</p>
+        <p class="storepick__note">※ 席数に限りがあります。</p>
       </div>
     </dialog>
   </body>

@@ -1,6 +1,6 @@
 # ASOBIBAR Y2K NIGHT LP — current context
 
-**Last updated:** 2026-08-31
+**Last updated:** 2026-11-17
 **Status:** 現在のデザインを維持しながら局所調整中
 **Canonical rules:** [`../AGENTS.md`](../AGENTS.md)
 
@@ -50,8 +50,8 @@ ASOBIBARの2026年9月企画「Y2K NIGHT」の1ページLP。
 ## Current implementation facts
 
 - 素の `index.html` / `styles.css` / `script.js`。ビルド工程なし
-- CSS cache key: `styles.css?v=369`
-- JS cache key: `script.js?v=59`
+- CSS cache key: `styles.css?v=484`
+- JS cache key: `script.js?v=76`
 - `main` へのpushはGitHub Pages本番公開
 - 予約先が未設定の場合は公式HPへフォールバック
 - 公開素材は `.gitignore` の `assets/` 許可リストへ追加が必要
@@ -69,6 +69,12 @@ ASOBIBARの2026年9月企画「Y2K NIGHT」の1ページLP。
 
 ## Known open items
 
+- **期間の表記はページ上に1つも無い**（2026-11-17の依頼で8か所から削除）。
+  終了日を持たないページとして運用する。日付を戻すなら8か所を同時に
+  （exec-plan `remove-event-period` に一覧がある）
+- **新宿歌舞伎町タワー前店だけ本編が終了している。**予約ダイアログのその行に
+  「チェキ・リクエスト券のみ（残数限り）」の注記がある。**文言は小林さん未確認。**
+  対象店舗は「全9店舗」のまま
 - `TODO(店舗確認)`：年齢制限、身分証、キャンセル規定は未確認。推測禁止
 - `LINE_RESERVATION_URL`：確定URLが入るまでは公式HPへフォールバック
 - `styles.css` に旧部品の死にルールが残る。機械的一括削除は禁止
