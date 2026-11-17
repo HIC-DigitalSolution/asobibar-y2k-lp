@@ -976,6 +976,24 @@ const probeObserver = (onLive, onDead) => {
     });
   });
 
+  /* 05「開催店舗」のエリアカードから、そのエリアを開いた状態で出す（2026-11-17）。
+
+     **`open()` の前に `showArea()` を呼ぶこと。**逆にすると、開いた瞬間だけ
+     前回のエリアが見えてから切り替わる。また `open()` の中の `syncMore()` は
+     「いま表示されているパネル」を測るので、先に切り替えておかないと
+     影の判定が1つ前のパネルに対して走る。
+
+     ボタンのキーがダイアログのパネルと食い違っていたら何もしない。
+     **押しても無反応なボタンを作らないため**、存在を確かめてから開く。 */
+  document.querySelectorAll("[data-area-open]").forEach((b) => {
+    b.addEventListener("click", () => {
+      const area = b.dataset.areaOpen;
+      if (!dialog.querySelector(`[data-storepick-panel="${area}"]`)) return;
+      showArea(area);
+      open();
+    });
+  });
+
   dialog.querySelectorAll("[data-storepick-close]").forEach((el) => {
     el.addEventListener("click", () => dialog.close());
   });

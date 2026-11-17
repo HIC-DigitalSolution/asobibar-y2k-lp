@@ -2448,158 +2448,245 @@ a { color: inherit; }
   font-weight: 700;
 }
 
-/* ==== 開催店舗（2026-11-17） ====================================
-   `.event-list`（dt/dd ＋ リーダーの点線）を置き換えたもの。
-   **あの組み方は項目が2行しか無いと紙が空になった。**PC 1440 で紙の幅は
-   984px あるのに、中身は見出しと2行だけ。しかも値の列を
-   `minmax(190px, 280px)` で固定していたので、点線が 836px で終わって
-   値は 969px から始まり、**133px の空白が開いて点線が切れて見えていた。**
+/* ==== 05 店舗選択 =================================================
+   2026-11-17、1日のうちに3度組み替えた。残骸は全部消してある
+   （どれもHTMLに0件であることを1クラスずつ確認した）:
 
-   ここは面で埋める。エリアを列にして、PC では5列が1行に収まる
-   （984px / 5 = 196px）。`auto-fit` なので幅が減れば勝手に折り返す。
+     1. `.event-list`   … dt/dd ＋ 点線。項目が2行しか無く紙が空に見えた
+     2. `.venue-list`   … 店名を5列に並べたもの。9店で縦に伸びた
+     3. `.venue-areas`  … エリアのチェキ5枚＋ダイアログ
 
-   **店舗名はダイアログ（.storepick）の実データと1文字も変えていない。**
-   省略形にしない。店が増減したら2か所直すこと。 */
-.venue-list {
-  display: grid;
-  /* 5列 = エリアごとに1列。984px に 5 列を収めるには
-     5*172 + 4*16 = 924px。186px だと 1002px で4列に落ちて東京だけ
-     2段目に回り、段が揃わなかった。 */
-  grid-template-columns: repeat(auto-fit, minmax(172px, 1fr));
-  gap: 22px 16px;
+   **いまの形（`.venue-pick`）は、依頼者がハロウィンLPを理想として
+   提示したもの**: 総数 → エリアのピルタブ → その場に店舗カード。 */
+
+/* ==== 05 店舗選択（2026-11-17） ====================================
+
+   ハロウィンLPと同じ骨格: 総数 → エリアのピルタブ（件数つき） → その場に店舗カード。
+   **切り替えは radio + 兄弟セレクタ。JSは1行も使っていない。**
+   スクリプトが落ちても一覧は出る（ハロウィンLPと同じ作り）。
+
+   **DOM順が効く。**`.vp__r` を先頭にまとめて置き、`~` で後ろの
+   `.vp__tabs` と `.vp__panel` を掴んでいる。順番を入れ替えると切り替えが死ぬ。
+
+   **緑の塗りボタンを正面から使えるのはタブのおかげ。**画面に出るのは
+   最大3個で、9個並べたときのように紙の中で彩度がCTAを超えない
+   （lp-visual-knowledge §2）。 */
+.venue-pick {
   width: min(984px, 100%);
-  margin: 26px auto 0;
-  padding: 24px 0 0;
+  margin: 24px auto 0;
+  padding: 22px 0 0;
   border-top: 1px solid rgba(37, 25, 63, 0.28);
-  list-style: none;
 }
-.venue-list li { display: grid; gap: 0; align-content: start; }
-.venue-list b {
+.vp__r { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+.vp__total {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin: 0;
   color: var(--print-accent);
   font-family: var(--font-main);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.16em;
 }
-.venue-list span {
+.vp__total b { color: var(--print-ink); font-size: 17px; letter-spacing: 0; }
+
+.vp__tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+/* ピルの中は2段（エリア名／件数）。**件数を出すのが効く。**
+   「関東」だけだと何店あるか分からず、押す前に期待が作れない。 */
+/* **件数（2店 など）は 2026-11-17 に外した。**依頼者から
+   「そんなに小さな文字入れても読めない」。10.5px は実際に読めない大きさだった。
+   件数は上の `.vp__total`（対象の店舗 8店）が持っている。 */
+.vp__tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 78px;
+  min-height: 44px;
+  padding: 7px 16px;
+  border: 1.5px solid rgba(37, 25, 63, 0.3);
+  border-radius: 999px;
+  background: var(--paper-photo);
   color: var(--print-ink);
   font-family: var(--font-main);
   font-size: 14px;
-  font-weight: 700;
-  line-height: 1.5;
+  font-weight: 900;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 160ms var(--ease), color 160ms var(--ease), border-color 160ms var(--ease);
 }
+.vp__tab:hover { border-color: var(--print-accent); }
+.vp__r:focus-visible + .vp__total + .vp__tabs .vp__tab,
+.vp__r:focus-visible ~ .vp__tabs .vp__tab[for] { outline: none; }
 
-/* 店名から各店のLINEへ（2026-11-17）。写真付き（同日・追記）。
-
-   **写真は公式サイトの店舗一覧から持ってきた実物。**9店ぶんあり、
-   `alt` が店名と一致していたので対応は確実。**推測で当てていない。**
-   店が増減したら、ダイアログ（.storepick）と合わせて3か所直すこと。
-
-   **ドキュメント §12（OPUS採用LP）の「写真1枠＋行の束」は採らなかった。**
-   あれは5部署の雰囲気を見せる一覧で、どの写真が出ても成立する。
-   ここは**自分が行く1店を選ぶ**場面なので、その店の写真が見えないと意味がない。
-   1枠を回す形だと、SPでは目当ての店が出るまで待つことになる。
-   **9枚とも出して、一度に見比べられるようにする。**
-
-   **緑のピルは置かない。**9個並ぶと紙の中で彩度がCTAより強くなる
-   （`lp-visual-knowledge` §2）。印は 14px のLINEマーク1つだけ。 */
-.venue-link {
-  display: grid;
-  gap: 7px;
-  padding: 4px 0 8px;
-  color: var(--print-ink);
-  text-decoration: none;
-  text-underline-offset: 3px;
+/* 選択中。**塗りで示す。**枠線の太さだけで差をつけると、
+   どれが選ばれているか一目で分からない。 */
+#vp-kanto:checked  ~ .vp__tabs .vp__tab[for="vp-kanto"],
+#vp-chubu:checked  ~ .vp__tabs .vp__tab[for="vp-chubu"],
+#vp-kansai:checked ~ .vp__tabs .vp__tab[for="vp-kansai"],
+#vp-kyushu:checked ~ .vp__tabs .vp__tab[for="vp-kyushu"] {
+  border-color: var(--print-ink);
+  background: var(--print-ink);
+  color: var(--paper-photo);
 }
-.venue-link__ph {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border-radius: 3px;
-  background: rgba(37, 25, 63, 0.06);
-}
-.venue-link__row {
-  display: flex;
-  gap: 7px;
-  align-items: flex-start;
-  /* 文字の行だけで 44px を確保する。写真を当てにすると、
-     画像が落ちてきていない間だけ押せる面積が減る。 */
-  min-height: 34px;
-}
-.venue-link__name { line-height: 1.5; }
-.venue-link__mk { flex: 0 0 auto; margin-top: 4px; color: #06c755; }
-.venue-link:hover .venue-link__name { text-decoration: underline; }
-.venue-link:hover .venue-link__ph { filter: brightness(1.06); }
-.venue-link:focus-visible {
-  outline: 2px solid var(--print-accent);
+#vp-kanto:focus-visible  ~ .vp__tabs .vp__tab[for="vp-kanto"],
+#vp-chubu:focus-visible  ~ .vp__tabs .vp__tab[for="vp-chubu"],
+#vp-kansai:focus-visible ~ .vp__tabs .vp__tab[for="vp-kansai"],
+#vp-kyushu:focus-visible ~ .vp__tabs .vp__tab[for="vp-kyushu"] {
+  outline: 3px solid var(--print-accent);
   outline-offset: 3px;
-  border-radius: 4px;
 }
-.venue-link:active { opacity: 0.6; }
+
+/* 列数は 1 → 2 → 3。**`auto-fit` は使わない。**九州は1店なので、
+   それだと1枚が984pxまで伸びて「右が空きすぎ」に戻る。
+   固定の列数なら、1店のときもカード幅が他のエリアと揃う。
+
+   **3列に切り替えるのは 900px から。**768pxで切り替えると
+   1枚が209px・写真189×106pxまで縮んで店内が判別できない。
+   900px はこのページがPCと見なす境目（`.cover__info` と同じ）。 */
+.vp__panel {
+  display: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 900px) {
+  .vp__panel { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+#vp-kanto:checked  ~ .vp__panel[data-vp-panel="kanto"],
+#vp-chubu:checked  ~ .vp__panel[data-vp-panel="chubu"],
+#vp-kansai:checked ~ .vp__panel[data-vp-panel="kansai"],
+#vp-kyushu:checked ~ .vp__panel[data-vp-panel="kyushu"] { display: grid; }
+
+/* カードは 写真（左・固定幅）＋ 中身（可変）。
+   `minmax(0, 1fr)` が無いと長い店名でカードが横に伸びる。 */
+/* PCは縦組み（写真が上）。SPは横組み（写真が左）。 */
+.vp__card {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 11px;
+  align-content: start;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--paper-photo);
+  box-shadow: var(--shadow-photo);
+}
+.vp__shot {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #e7e0d6;
+}
+.vp__shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* 03チェキと同じ刷り色の幕。ネオンの彩度を紙に寄せる。 */
+.vp__shot::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(200deg, rgba(255, 244, 220, 0.26), transparent 48%, rgba(180, 205, 225, 0.2));
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  content: "";
+}
+/* 店名とボタンの塊は左に 20px 開ける（2026-11-17の依頼）。
+   写真は断ち落としのまま、文字だけ内側に入れる。**ボタンも一緒に下げる。**
+   店名だけ動かすと、下のボタンと頭が揃わなくなる。 */
+.vp__body { display: grid; gap: 9px; min-width: 0; padding-left: 20px; }
+.vp__name {
+  color: var(--print-ink);
+  font-family: var(--font-main);
+  font-size: clamp(14px, 1.6vw, 16px);
+  font-weight: 900;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+.vp__acts { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* **LINEの正規のブランドグリーン #06C755 のベタ。**
+   グラデも内側のハイライトも掛けない（.storeline__go と同じ作法）。
+   押せる面積は44pxを切らない。 */
+.vp__line {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: #06c755;
+  color: #fff;
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.vp__line:active { background: #05ab4a; }
+/* 電話は白地に枠。**番号そのものを押せる形にする。**
+   緑を2つ並べるとどちらが主か分からなくなる。 */
+
 /* 注記の中で、語のまとまりごとに折る。**`（残数限り）` が
    `（残 / 数限り）` と熟語の途中で割れていた**（390px で実測）。
    b に意味は持たせていない。改行させない単位の目印としてだけ使う。 */
-.venue-note b { display: inline-block; font-weight: inherit; }
 /* 「予約方法」。**店舗一覧の付帯情報なので、店名より弱くする。**
    元は .event-list の dt/dd の1行だった。 */
-.venue-meta {
-  display: flex;
-  gap: 14px;
-  align-items: baseline;
-  width: min(984px, 100%);
-  margin: 20px auto 0;
-  padding-top: 16px;
-  border-top: 1px solid rgba(37, 25, 63, 0.18);
-}
-.venue-meta b {
-  flex: 0 0 auto;
-  color: var(--print-accent);
-  font-family: var(--font-main);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-}
-.venue-meta span {
-  color: var(--print-ink);
-  font-family: var(--font-main);
-  font-size: 14px;
-  font-weight: 700;
-}
 
+
+@media (max-width: 767px) {
+  /* SP。**写真を 96px まで落とす。**390px で 112px のままだと、
+     店名＋ボタン2つの列が 214px しか残らず「LINEで予約」と電話番号が
+     2段に割れる（実測）。 */
+  .venue-pick { margin-top: 20px; padding-top: 18px; }
+  .vp__tabs { gap: 6px; }
+  .vp__tab { min-width: 70px; padding: 6px 12px; font-size: 13px; }
+  /* **SPも縦組み。写真は全幅。**
+
+     最初は横組み（写真が左・104×78px）にしていたが、**その大きさでは
+     店内が判別できず、写真を足した意味が無かった。**依頼者からも指摘。
+     さらに緑のボタンが写真より目立ち、右側に死んだ余白が残っていた。
+
+     全幅なら写真は約306×172pxになる。タブで最大3店に絞っているので、
+     1列でも 関西（3店）で約730px。**1画面＋αに収まる。**
+
+     店名とボタンは写真の下に**1行で並べる**（名前が左、ボタンが右）。
+     縦に積むと右側がまた空く。 */
+  .vp__card { grid-template-columns: 1fr; gap: 10px; padding: 8px; }
+  .vp__shot { aspect-ratio: 16 / 9; }
+  .vp__name { font-size: 14.5px; }
+  .vp__line { font-size: 12.5px; padding-inline: 16px; }
+  /* 対象外の店についての注記（2026-11-17）。**一覧の外に置く。**
+   カードの中に入れると、その店が対象であるかのように読まれる。 */
 .venue-note {
   width: min(984px, 100%);
-  margin: 14px auto 0;
+  margin: 16px auto 0;
   color: #6c5f58;
   font-family: var(--font-main);
   font-size: 11.5px;
   font-weight: 600;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
-@media (max-width: 767px) {
-  /* **SPは1列にして、写真を左に置く。**2列のままだと1列あたり約150pxで、
-     16:9の写真が 150x84 まで縮んで店の判別がつかなくなる（実測）。
-     1列なら写真は 104px でも、名前と並んで横に伸びるぶん読みやすい。 */
-  .venue-list {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    margin-top: 20px;
-    padding-top: 18px;
-  }
-  .venue-list span { font-size: 13px; }
-  .venue-link {
-    grid-template-columns: 104px minmax(0, 1fr);
+/* **520px より下だけ1列。**2列にすると1枚が240pxを切り、店内が判別できない。
+   1列はカードが広いので、**店名とボタンを横1行に並べられる**（縦に積むと右が空く）。
+
+   520px 以上は2列。1列のままだと 767px でカードが 666×436px まで肥大して
+   1店が画面を占める。**ただし2列では名前の列が狭く、横1行にすると
+   `名古屋栄錦通り / 店` と店名が割れた**ので、そこから上は縦に積む。 */
+@media (max-width: 519px) {
+  .vp__panel { grid-template-columns: 1fr; gap: 12px; }
+  .vp__body {
+    display: flex;
     gap: 12px;
     align-items: center;
-    padding: 4px 0;
+    justify-content: space-between;
   }
-  .venue-link__row { min-height: 0; align-items: center; }
-  .venue-link__mk { margin-top: 0; }
-  .venue-meta { margin-top: 16px; padding-top: 14px; gap: 10px; }
-  .venue-meta span { font-size: 13px; }
-  .venue-note { margin-top: 12px; font-size: 11px; }
+}
+.venue-note b { display: inline-block; font-weight: inherit; }
+
+.venue-lead { margin-top: 12px; font-size: 13.5px; }
 }
 
 /* --- 02 / 04 / 07 は紙にしない ---
@@ -8392,6 +8479,19 @@ body { padding-bottom: 0; }
    前は max-width:400px で flex-wrap させていて、その1枚だけカードが縦に伸び、
    他の店と高さが揃わなかった。min-width:0 が無いと flex の既定 min-width:auto で
    縮まず、結局はみ出す。 */
+/* ダイアログの各店にも写真（2026-11-17）。**ここが実際に店を選ぶ場所**なので、
+   05のエリアカードより大きく出す必要はないが、無いと選べない。
+   84px は 390px 幅で、名前とLINEボタンを押し出さずに置ける上限（実測）。 */
+.storeline__shot {
+  flex: 0 0 auto;
+  width: 84px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #e7e0d6;
+}
+.storeline__shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
 .storeline__name {
   flex: 1 1 auto;
   min-width: 0;
