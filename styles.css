@@ -2473,7 +2473,7 @@ a { color: inherit; }
   border-top: 1px solid rgba(37, 25, 63, 0.28);
   list-style: none;
 }
-.venue-list li { display: grid; gap: 7px; align-content: start; }
+.venue-list li { display: grid; gap: 0; align-content: start; }
 .venue-list b {
   color: var(--print-accent);
   font-family: var(--font-main);
@@ -2488,6 +2488,56 @@ a { color: inherit; }
   font-weight: 700;
   line-height: 1.5;
 }
+
+/* 店名から各店のLINEへ（2026-11-17）。写真付き（同日・追記）。
+
+   **写真は公式サイトの店舗一覧から持ってきた実物。**9店ぶんあり、
+   `alt` が店名と一致していたので対応は確実。**推測で当てていない。**
+   店が増減したら、ダイアログ（.storepick）と合わせて3か所直すこと。
+
+   **ドキュメント §12（OPUS採用LP）の「写真1枠＋行の束」は採らなかった。**
+   あれは5部署の雰囲気を見せる一覧で、どの写真が出ても成立する。
+   ここは**自分が行く1店を選ぶ**場面なので、その店の写真が見えないと意味がない。
+   1枠を回す形だと、SPでは目当ての店が出るまで待つことになる。
+   **9枚とも出して、一度に見比べられるようにする。**
+
+   **緑のピルは置かない。**9個並ぶと紙の中で彩度がCTAより強くなる
+   （`lp-visual-knowledge` §2）。印は 14px のLINEマーク1つだけ。 */
+.venue-link {
+  display: grid;
+  gap: 7px;
+  padding: 4px 0 8px;
+  color: var(--print-ink);
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+.venue-link__ph {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 3px;
+  background: rgba(37, 25, 63, 0.06);
+}
+.venue-link__row {
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+  /* 文字の行だけで 44px を確保する。写真を当てにすると、
+     画像が落ちてきていない間だけ押せる面積が減る。 */
+  min-height: 34px;
+}
+.venue-link__name { line-height: 1.5; }
+.venue-link__mk { flex: 0 0 auto; margin-top: 4px; color: #06c755; }
+.venue-link:hover .venue-link__name { text-decoration: underline; }
+.venue-link:hover .venue-link__ph { filter: brightness(1.06); }
+.venue-link:focus-visible {
+  outline: 2px solid var(--print-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.venue-link:active { opacity: 0.6; }
 /* 注記の中で、語のまとまりごとに折る。**`（残数限り）` が
    `（残 / 数限り）` と熟語の途中で割れていた**（390px で実測）。
    b に意味は持たせていない。改行させない単位の目印としてだけ使う。 */
@@ -2529,13 +2579,24 @@ a { color: inherit; }
 }
 
 @media (max-width: 767px) {
+  /* **SPは1列にして、写真を左に置く。**2列のままだと1列あたり約150pxで、
+     16:9の写真が 150x84 まで縮んで店の判別がつかなくなる（実測）。
+     1列なら写真は 104px でも、名前と並んで横に伸びるぶん読みやすい。 */
   .venue-list {
-    grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
-    gap: 18px 14px;
+    grid-template-columns: 1fr;
+    gap: 20px;
     margin-top: 20px;
     padding-top: 18px;
   }
   .venue-list span { font-size: 13px; }
+  .venue-link {
+    grid-template-columns: 104px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    padding: 4px 0;
+  }
+  .venue-link__row { min-height: 0; align-items: center; }
+  .venue-link__mk { margin-top: 0; }
   .venue-meta { margin-top: 16px; padding-top: 14px; gap: 10px; }
   .venue-meta span { font-size: 13px; }
   .venue-note { margin-top: 12px; font-size: 11px; }
@@ -8649,7 +8710,17 @@ body { padding-bottom: 0; }
      表紙は 66px のスティッキーバーの下から始まるので、CTAの下端は
      `66 + top + 70`。画面内に収めるには top ≤ 100svh - 136px。
      **130px でやって 1280×720 が 726/720 で 6px はみ出した。**逃げ込みで 150px。 */
-  .cover__info { width: min(58%, 780px); top: min(72%, calc(100svh - 150px)); }
+  /* **2026-11-17、依頼で下げた。30px → さらに20px で合計50px。**
+     `72%` ではなく `72% + 50px` に足す。
+     **一律に下げてはいけない。**実測の余り（CTA下端から画面下まで）は
+     1920×1080 が 22px、1280×720 が 14px しかなく、30px 足すと
+     1920×1080 が 8px はみ出す。`min()` の右側（`100svh - 150px`）を
+     残してあるので、縦が足りない画面では勝手に頭打ちになる。
+     **1920×1080 と 1280×720 は下限に張り付いているので、ここから先は
+     いくら足しても動かない。**動かすには逃げの14pxを削るしかなく、
+     そうするとCTAの下端が画面の縁に接する。
+     結果: 1440×900 / 2560×1440 / 1024×768 / 900×700 が 50px 下がる。 */
+  .cover__info { width: min(58%, 780px); top: min(calc(72% + 80px), calc(100svh - 150px)); }
 
 }
 

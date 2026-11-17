@@ -888,13 +888,16 @@ const probeObserver = (onLive, onDead) => {
    店舗ごとの LINE URL は data-line に入る。空のうちは HTML の href
    （公式HP）のまま動かさない。押しても何も起きないリンクを作らない
    ためで、これは上の予約リンクと同じ方針。 */
-(() => {
-  const dialog = document.querySelector("[data-storepick]");
-  if (!dialog || typeof dialog.showModal !== "function") return;
+/* 店舗ごとのLINEへ差し替える。プロトコルを見るのは、data属性に
+   javascript: を書かれても踏まないため。
 
-  /* 店舗ごとのLINEへ差し替える。プロトコルを見るのは、data属性に
-     javascript: を書かれても踏まないため。 */
-  dialog.querySelectorAll("[data-line]").forEach((a) => {
+   **2026-11-17、ダイアログの外へ出した。**元は下の storepick の IIFE の中で
+   `dialog.querySelectorAll` していたので、05「開催店舗」に置いた店名リンクに
+   効かなかった。**しかもあの IIFE は `showModal` が無い環境で早期 return するため、
+   その場合は店名リンクのhrefも公式HPのままになっていた。**
+   差し替えはダイアログの有無と関係ない処理なので、独立させる。 */
+(() => {
+  document.querySelectorAll("[data-line]").forEach((a) => {
     const raw = a.dataset.line;
     if (!raw) return;
     try {
@@ -904,6 +907,11 @@ const probeObserver = (onLive, onDead) => {
       /* 不正なURLなら href（公式HP）のまま */
     }
   });
+})();
+
+(() => {
+  const dialog = document.querySelector("[data-storepick]");
+  if (!dialog || typeof dialog.showModal !== "function") return;
 
   /* エリアのチップと、エリアごとの店舗リスト。**2026-09-07に2タブ式から
      5エリアに変えました。**仕組み（data-storepick-tab / -panel）はそのままです。

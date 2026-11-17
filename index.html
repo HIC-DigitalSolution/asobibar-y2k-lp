@@ -39,7 +39,15 @@
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
-    <link rel="preload" as="image" href="./assets/hero-collage-typography-no-disc.jpg?v=4" fetchpriority="high" />
+    <!-- **2026-11-17、preload の宛先を直した。**
+         ここは `hero-collage-typography-no-disc.jpg`（735KB）を指していたが、
+         **その画像はページのどこにも出ていない。**実際に表示しているFVは
+         `hero-collage-current.jpg`（492KB）。
+         つまり 735KB を `fetchpriority="high"` で最優先に落として一度も使わず、
+         **本物のFV画像の取得を押しのけていた。**（index.html / styles.css /
+         script.js を全文検索して、あのファイルの参照はこの1行だけだった）
+         速くするための指定が、遅くする方向に効いていた。 -->
+    <link rel="preload" as="image" href="./assets/hero-collage-current.jpg" fetchpriority="high" />
 
     <!-- 本文と見出しは最初の画面で必ず要るので先に取る -->
     <!-- **?v= は styles.css の @font-face と1文字違わず揃える。**片方だけ付いていると
@@ -50,8 +58,8 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2?v=5" crossorigin />
     <!-- 見出しはFV内に出るので先に取る -->
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2?v=5" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=486" />
-    <script src="./script.js?v=76" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=493" />
+    <script src="./script.js?v=77" defer></script>
   </head>
 
   <body>
@@ -111,8 +119,13 @@
           </div>
 
 <div class="cover__info">
+            <!-- **CTAの小文字は外した（2026-11-17の依頼）。**3か所とも。
+                 元は `<small>10月末まで・席数限定</small>` → 期間を外して
+                 `<small>席数限定</small>` → さらに小文字ごと削除。
+                 **CTAの高さが変わるので、.cover__info の `100svh - 150px` の
+                 150px も測り直して合わせてある。** -->
             <a class="cta cta--metal" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-              <span class="cta__copy"><small>席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
+              <span class="cta__copy"><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
             </a>
           </div>
         </div>
@@ -278,10 +291,26 @@
 
           <h2 class="skip" id="mix-title">MIX交流上等バンド</h2>
 
+          <!-- **SPだけ別のバナーに差し替え（2026-11-17の依頼）。**
+               PC: mix-band-key.webp（750×627）/ SP: mix-band-key-sp.webp（1080×1080）。
+
+               **縦横比が 1.196 → 1.000 と変わる。**`<source>` にも width/height を
+               置いてあるのは、これが無いと img 側の 750×627 で場所取りしてから
+               正方形に入れ替わり、SPで縦に跳ねるため（CLS）。
+
+               **`<picture>` は alt を1つしか持てない。**2枚は焼き込みの文言が違う:
+                 PC … MIX交流上等 ／ 最大4〜6組 ／ ゲームで指名 ／ 全員オレンジバンド
+                 SP … ミックスマッチ上等 ／ ORIJINAL EVENT（組数・指名・バンドの記載なし）
+               **事実の側（4〜6組・指名・バンド）を alt に残している。**`.mix-spec` は
+               すでに無く、HTML側にこの事実を持つ場所が他に無いため。
+               **タイトルの食い違い（交流上等 / マッチ上等）は依頼者に確認中。** -->
           <figure class="mix-teaser__art">
-            <img src="./assets/mix-band-key.webp"
-                 alt="MIX交流上等 — ASOBIBARで始まる、1日限りの恋愛リアリティ体験。今日出会った最大4〜6組のグループが交差する。ゲームで指名。気持ちが揺れ動く。全員オレンジバンド。オレンジのバンドを付けた8人が、ダーツとビリヤードのある店内に集まっている"
-                 width="750" height="627" loading="lazy" decoding="async" />
+            <picture>
+              <source media="(max-width: 767px)" srcset="./assets/mix-band-key-sp.webp" width="1080" height="1080" />
+              <img src="./assets/mix-band-key.webp"
+                   alt="MIX交流上等 — ASOBIBARではじまる、1日限りの恋愛リアリティ体験。今日出会った最大4〜6組のグループが交差する。ゲームで指名。気持ちが揺れ動く。全員オレンジバンド。ダーツとビリヤードのある店内に集まった男女"
+                   width="750" height="627" loading="lazy" decoding="async" />
+            </picture>
           </figure>
 
           <p class="mix-soon">Coming soon...</p>
@@ -446,19 +475,36 @@
                    **店舗名はダイアログの実データをそのまま持ってきている。**推測で足していない。
                    店が増減したら、ダイアログ（.storepick）側と2か所直すこと。
 
+                   **2026-11-17、名古屋栄錦通り店の窓口を公式に合わせた（依頼者の判断）。**
+                   `lin.ee/wc06IWtq`（= 住吉の窓口 @817ifkir）→ `lin.ee/ovqzUJi`（= @328llfvv）。
+                   公式は「神戸三宮・梅田・心斎橋・名古屋栄」の4店を @328llfvv にまとめ、
+                   住吉だけ @817ifkir にしている。LPは名古屋2店を1つにまとめていた。
+
+                   **短縮URLの文字列だけで比べないこと。**`lin.ee/xxxx` は同じアカウントに
+                   対して複数発行できる。LPと公式は12本すべてURL文字列が違っていたが、
+                   **実際に辿って着地先のIDで突き合わせたら、違っていたのは名古屋栄の1店だけ**だった。
+                   一度「9店すべて不一致」と誤って報告している。**照合は必ず @ID で行う。**
+
+                   **2026-11-17、店名から各店のLINEへ直接飛ばすようにした。**
+                   `data-line` はダイアログの storeline と同じ値。**9店で6本**しかなく、
+                   関西3店が1本、名古屋2店が1本を共有している。**URLも推測で作らないこと。**
+                   `target="_blank"` は付けない。ダイアログ側と同じ理由で、Instagram/LINE の
+                   アプリ内ブラウザが _blank を黙って落とすことがある。
+                   href は公式HPのまま置き、script.js が https のときだけ差し替える。
+
                    元は次の2行:
                      <div><dt>対象店舗</dt><dd>全9店舗（予約時に選択）</dd></div>
                      <div><dt>予約方法</dt><dd data-reservation-method>公式HPから予約</dd></div>
                    **「対象店舗 全9店舗」は戻していない。**店名を9件そのまま出した以上、
                    件数だけの行は重複する。**「予約方法」は .venue-meta として残した。** -->
               <ul class="venue-list">
-                <li><b>神戸</b><span>神戸三宮店</span></li>
-                <li><b>大阪</b><span>梅田お初天神店</span><span>心斎橋店</span></li>
-                <li><b>名古屋</b><span>名古屋栄錦通り店</span><span>名古屋住吉複合店</span></li>
-                <li><b>福岡</b><span>天神大名店</span></li>
-                <li><b>東京</b><span>新宿歌舞伎町タワー前店</span><span>渋谷横丁前店</span><span>恵比寿店</span></li>
+                <li><b>神戸</b><a class="venue-link" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/ovqzUJi" aria-label="神戸三宮店をLINEで予約"><img class="venue-link__ph" src="./assets/shop-sannomiya.webp" alt="" width="800" height="450" loading="lazy" decoding="async" /><span class="venue-link__row"><span class="venue-link__name">神戸三宮店</span><svg class="venue-link__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg></span></a></li>
+                <li><b>大阪</b><a class="venue-link" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/ovqzUJi" aria-label="梅田お初天神店をLINEで予約"><img class="venue-link__ph" src="./assets/shop-ohatsu.webp" alt="" width="800" height="450" loading="lazy" decoding="async" /><span class="venue-link__row"><span class="venue-link__name">梅田お初天神店</span><svg class="venue-link__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg></span></a><a class="venue-link" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/ovqzUJi" aria-label="心斎橋店をLINEで予約"><img class="venue-link__ph" src="./assets/shop-shinsaibashi.webp" alt="" width="800" height="450" loading="lazy" decoding="async" /><span class="venue-link__row"><span class="venue-link__name">心斎橋店</span><svg class="venue-link__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg></span></a></li>
+                <li><b>名古屋</b><a class="venue-link" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/ovqzUJi" aria-label="名古屋栄錦通り店をLINEで予約"><img class="venue-link__ph" src="./assets/shop-sakae.webp" alt="" width="800" height="450" loading="lazy" decoding="async" /><span class="venue-link__row"><span class="venue-link__name">名古屋栄錦通り店</span><svg class="venue-link__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg></span></a><a class="venue-link" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/wc06IWtq" aria-label="名古屋住吉複合店をLINEで予約"><img class="venue-link__ph" src="./assets/shop-sumiyoshi.webp" alt="" width="800" height="450" loading="lazy" decoding="async" /><span class="venue-link__row"><span class="venue-link__name">名古屋住吉複合店</span><svg class="venue-link__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg></span></a></li>
+                <li><b>福岡</b><a class="venue-link" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/7mdcxl8" aria-label="天神大名店をLINEで予約"><img class="venue-link__ph" src="./assets/shop-tenjin.webp" alt="" width="800" height="450" loading="lazy" decoding="async" /><span class="venue-link__row"><span class="venue-link__name">天神大名店</span><svg class="venue-link__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg></span></a></li>
+                <li><b>東京</b><a class="venue-link" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/6Fvrmdw" aria-label="新宿歌舞伎町タワー前店をLINEで予約"><img class="venue-link__ph" src="./assets/shop-shinjuku.webp" alt="" width="800" height="450" loading="lazy" decoding="async" /><span class="venue-link__row"><span class="venue-link__name">新宿歌舞伎町タワー前店</span><svg class="venue-link__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg></span></a><a class="venue-link" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/QxzxqGM" aria-label="渋谷横丁前店をLINEで予約"><img class="venue-link__ph" src="./assets/shop-shibuya.webp" alt="" width="800" height="450" loading="lazy" decoding="async" /><span class="venue-link__row"><span class="venue-link__name">渋谷横丁前店</span><svg class="venue-link__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg></span></a><a class="venue-link" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/OnM70Fz" aria-label="恵比寿店をLINEで予約"><img class="venue-link__ph" src="./assets/shop-ebisu.webp" alt="" width="800" height="450" loading="lazy" decoding="async" /><span class="venue-link__row"><span class="venue-link__name">恵比寿店</span><svg class="venue-link__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg></span></a></li>
               </ul>
-              <p class="venue-meta"><b>予約方法</b><span data-reservation-method>公式HPから予約</span></p>
+              <p class="venue-meta"><b>予約方法</b><span>店名を選んで、各店の公式LINEへ</span></p>
               <p class="venue-note">※ 新宿歌舞伎町タワー前店は、<b>チェキ・リクエスト券のみ</b><b>（残数限り）</b></p>
             </div>
             <span class="tape tape--c tape--e1" aria-hidden="true"></span>
@@ -572,7 +618,7 @@
           <h2 id="last-title">懐かしいだけで終わらない。<br />今夜を、<br class="sp-br" />新しい思い出に</h2>
           <p>あの頃の曲から始まる、大人のY2Kナイトへ。</p>
             <a class="cta cta--final" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-              <span class="cta__copy"><small>席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
+              <span class="cta__copy"><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
             </a>
           </div>
         </div>
@@ -595,7 +641,7 @@
     <div class="ctabar" data-ctabar>
       <p class="ctabar__txt"><b>Y2Kを無限リピート！</b></p>
       <a class="cta cta--bar" href="https://asobibar.net/" target="_blank" rel="noopener noreferrer" data-reserve>
-        <span class="cta__copy"><small>席数限定</small><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
+        <span class="cta__copy"><span data-reserve-label>LINE予約はこちら</span></span><i aria-hidden="true">→</i>
       </a>
     </div>
     <!-- ==================== 店舗選択ダイアログ ====================
@@ -666,7 +712,7 @@
           </div>
 
           <div class="storepick__list" data-storepick-panel="nagoya" aria-label="名古屋の店舗" hidden>
-            <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/wc06IWtq">
+            <a class="storeline" href="https://asobibar.net/" rel="noopener noreferrer" data-line="https://lin.ee/ovqzUJi">
               <span class="storeline__name">名古屋栄錦通り店</span>
               <span class="storeline__go"><svg class="storeline__mk" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6C6.5 2.6 2 6.2 2 10.6c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.6 1.2-.5 6.3-3.7 8.6-6.4 1.5-1.7 2.4-3.4 2.4-4.5 0-4.4-4.5-8-11-8z"/></svg>LINEで予約</span>
             </a>
