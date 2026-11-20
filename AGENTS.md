@@ -174,7 +174,21 @@ Hero は `rAF` 2回と `setTimeout(300)` を併走させ、先に来たほうで
 
 ### MIX のキーアート（いまの形）
 
-**支給された完成バナー1枚です**（`assets/MIX-BAND.png` → `mix-band-key.webp`）。
+**支給された完成バナーで、PCとSPで別の2枚です。**
+PC … `assets/MIX-BAND-PC.png` → `mix-band-key-pc.webp`（1440×758）
+SP … `assets/MIX-BAND-SP.png` → `mix-band-key-sp-v2.webp`（1080×1080、767px以下）
+**画像にクエリでのキャッシュ破りを付けていないので、差し替えはファイル名を変えます。**
+同名で中身だけ替えると、一度見た人には古い画像が出続けます。
+
+**2枚とも下端に「詳細はこちら ＞」の帯が焼かれています。**バナー全体が
+`<a class="mix-teaser__link">` で1枚のリンクになっていて、飛び先は
+`https://mix-band-lp.hic-marketing.com/`（MIX交流上等バンドの専用LP）。
+別サイトなので `target="_blank" rel="noopener noreferrer"` です。
+
+**hover・focus の見た目は `a[href]` にだけ効かせてあります。**`a` 直書きに
+変えないこと。将来リンクを外したときに、飛び先が無いのに押せる顔が残ります。
+**`<a>` に `aria-label` を足さないこと。**img の alt が捨てられて、バナーの
+中身の説明が読み上げから消えます。
 **ロゴもコピーも画像に焼き込まれている**ので、HTML側に文字段は持ちません。
 見出し `#mix-title` は画像の中にあるため、`.skip` で読み上げにだけ残しています。
 **焼き込みの文言は `alt` に全部入れてあります。文言が変わったら `alt` も直すこと。**

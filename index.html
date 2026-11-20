@@ -58,7 +58,7 @@
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/zkgn-900.woff2?v=5" crossorigin />
     <!-- 見出しはFV内に出るので先に取る -->
     <link rel="preload" as="font" type="font/woff2" href="./assets/font/dot-400.woff2?v=5" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=504" />
+    <link rel="stylesheet" href="./styles.css?v=505" />
     <script src="./script.js?v=78" defer></script>
   </head>
 
@@ -291,29 +291,52 @@
 
           <h2 class="skip" id="mix-title">MIX交流上等バンド</h2>
 
-          <!-- **SPだけ別のバナーに差し替え（2026-11-17の依頼）。**
-               PC: mix-band-key.webp（750×627）/ SP: mix-band-key-sp.webp（1080×1080）。
+          <!-- **PC / SP で別のバナー。**2026-11-20 に両方とも新ビジュアルへ。
+               これで名前が「ミックスマッチ上等」で揃い、**下端の「詳細はこちら ＞」
+               の帯も2枚とも持っている。**
+               PC: mix-band-key-pc.webp（1440×758・原寸1731×910）
+               SP: mix-band-key-sp-v2.webp（1080×1080）
 
-               **縦横比が 1.196 → 1.000 と変わる。**`<source>` にも width/height を
-               置いてあるのは、これが無いと img 側の 750×627 で場所取りしてから
+               **ファイル名を変えているのは、画像にクエリでのキャッシュ破りを
+               付けていないため。**同名で中身だけ差し替えると、一度見た人には
+               古い画像が出続ける。
+
+               **縦横比が 1.900 と 1.000 で違う。**`<source>` にも width/height を
+               置いてあるのは、これが無いと img 側の比率で場所取りしてから
                正方形に入れ替わり、SPで縦に跳ねるため（CLS）。
 
-               **`<picture>` は alt を1つしか持てない。**2枚は焼き込みの文言が違う:
-                 PC … MIX交流上等 ／ 最大4〜6組 ／ ゲームで指名 ／ 全員オレンジバンド
-                 SP … ミックスマッチ上等 ／ ORIJINAL EVENT（組数・指名・バンドの記載なし）
-               **事実の側（4〜6組・指名・バンド）を alt に残している。**`.mix-spec` は
-               すでに無く、HTML側にこの事実を持つ場所が他に無いため。
-               **タイトルの食い違い（交流上等 / マッチ上等）は依頼者に確認中。** -->
-          <figure class="mix-teaser__art">
-            <picture>
-              <source media="(max-width: 767px)" srcset="./assets/mix-band-key-sp.webp" width="1080" height="1080" />
-              <img src="./assets/mix-band-key.webp"
-                   alt="MIX交流上等 — ASOBIBARではじまる、1日限りの恋愛リアリティ体験。今日出会った最大4〜6組のグループが交差する。ゲームで指名。気持ちが揺れ動く。全員オレンジバンド。ダーツとビリヤードのある店内に集まった男女"
-                   width="750" height="627" loading="lazy" decoding="async" />
-            </picture>
-          </figure>
+               **`<picture>` は alt を1つしか持てない。**今回の2枚は焼き込み文言が
+               同じなので、alt は1本で足りる（11-17版SPにあった ORIJINAL の
+               綴り間違いも、この版で ORIGINAL に直っている）。
+               **4〜6組・ゲームで指名・全員オレンジバンドは、どちらのバナーにも
+               もう焼かれていない。**`.mix-spec` も無く、この事実をHTMLに持つ場所が
+               他に無いので alt に残してある。
 
-          <p class="mix-soon">Coming soon...</p>
+               **`Coming soon...`（.mix-soon）は 2026-11-20 に外した。**バナー自身が
+               「詳細はこちら」と言っているのに真下で「近日公開」と言うのは矛盾で、
+               押しても何も起きない帯を本物のボタンに見せていたため。 -->
+
+          <!-- **バナー全体が1枚のリンク。**飛び先は MIX交流上等バンドの専用LP
+               （2026-11-20 に依頼者から受領）。バナー下端に「詳細はこちら ＞」が
+               焼かれているので、押せる形にしてある。
+
+               **別サイトなので新しいタブで開く。**このLPの他の外部リンク
+               （asobibar.net、asb-over28-campaign）と同じ扱い。`rel` を外さないこと。
+
+               **リンクの読み上げ文はこの img の alt。**`<a>` に aria-label を
+               足すと alt が捨てられて、バナーの中身の説明が消える。 -->
+          <a class="mix-teaser__link"
+             href="https://mix-band-lp.hic-marketing.com/"
+             target="_blank" rel="noopener noreferrer">
+            <figure class="mix-teaser__art">
+              <picture>
+                <source media="(max-width: 767px)" srcset="./assets/mix-band-key-sp-v2.webp" width="1080" height="1080" />
+                <img src="./assets/mix-band-key-pc.webp"
+                     alt="ASOBIBAR ミックスマッチ上等 — ASOBIBARではじまる、1日限りの恋愛リアリティ体験。今日出会った最大4〜6組のグループが交差する。ゲームで指名。気持ちが揺れ動く。全員オレンジバンド。詳細はこちら"
+                     width="1440" height="758" loading="lazy" decoding="async" />
+              </picture>
+            </figure>
+          </a>
 
         </div>
       </section>
